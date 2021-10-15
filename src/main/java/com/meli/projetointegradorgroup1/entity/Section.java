@@ -1,7 +1,9 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Section {
 
-    private String sectionCode;
-    private Warehouse warehouse;
+    public String sectionCode;
+    public Warehouse warehouse;
 }
