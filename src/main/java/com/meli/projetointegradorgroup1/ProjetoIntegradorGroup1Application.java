@@ -13,7 +13,5 @@ public class ProjetoIntegradorGroup1Application {
         SpringApplication.run(ProjetoIntegradorGroup1Application.class, args);
     }
 
-
-
 }
 
