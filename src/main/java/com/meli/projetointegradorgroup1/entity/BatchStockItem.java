@@ -5,6 +5,6 @@ public class BatchStockItem {
 
     public Product product;
     private int quantity;
-    public BatchStoch batchStoch;
+    public BatchStock batchStock;
 
 }
