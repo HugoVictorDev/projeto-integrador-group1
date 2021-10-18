@@ -2,6 +2,7 @@ package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,14 +13,19 @@ import javax.persistence.Table;
 public class Product {
 
     @Id
-    private String product_Id;
-    private String product_Name;
+    @Column(name = "PRODUCT_ID")
+    private String productId;
+    @Column(name = "PRODUCT_NAME")
+    private String productName;
     //data de producao
-    private String manufacturing_Date;
+    @Column(name = "MANUFACTURING_DATE")
+    private String manufacturingDate;
     //horario da producao
-    private String manufacturing_Time;
+    @Column(name = "MANUFACTURING_TIME")
+    private String manufacturingTime;
     //data de vencimento
-    private String due_Date;
+    @Column(name = "DUE_DATE")
+    private String dueDate;
 
 
 }
