@@ -1,6 +1,8 @@
 package com.meli.projetointegradorgroup1;
 
 
+import com.meli.projetointegradorgroup1.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,7 +14,6 @@ public class ProjetoIntegradorGroup1Application {
     public static void main(String[] args) {
         SpringApplication.run(ProjetoIntegradorGroup1Application.class, args);
     }
-
 
 
 }
