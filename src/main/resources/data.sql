@@ -11,6 +11,7 @@ VALUES ('lali', 'lela', 'lala', 'lala', 'lala'),
        ('DSFH', 'LJH', 'UKHF', 'JGFF', 'JFGFJ'),
        ('luli', 'l9la', 'l0la', 'lal3', 'lal8');
 
+--------------------------------------------------------------------------------
 
 INSERT INTO REPRESENTATIVE (NAME, CPF)
 VALUES ('IVO', '321.456.789.45');
@@ -29,3 +30,10 @@ VALUES ('BATCHNUMBER', 'CURRENTTEMPERATURE', 'MINIMUMTEMPERATURE', 'CURRENTQUALI
 --------------------------------------------------------------------------------
 
 --INSERT INTO BATCHSTOCKITEM ();
+VALUES ('SILAS', '789.456.789.45'),
+       ('IVO', '321.456.789.45');
+
+--------------------------------------------------------------------------------
+
+INSERT INTO INBOUNDER (ORDER_NUMBER, ORDER_DATE)
+VALUES ('jkjkhjk', '8978989');
