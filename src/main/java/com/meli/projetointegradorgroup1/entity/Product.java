@@ -1,14 +1,20 @@
 package com.meli.projetointegradorgroup1.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table
 public class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String productId;
     private String productName;
 
@@ -19,5 +25,8 @@ public class Product {
     //data de vencimento
     private String dueDate;
 
-
+    public Product(String productName, String dueDate) {
+        this.productName = productName;
+        this.dueDate = dueDate;
+    }
 }
