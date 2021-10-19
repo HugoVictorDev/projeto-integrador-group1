@@ -19,7 +19,7 @@ public class SellerController {
     SellerRepository sellerRepository;
 
     //Cadastrar vendedor
-    @PostMapping("/post")
+    @PostMapping("/create")
     public ResponseEntity<Seller> createSeller (@RequestBody Seller seller){
         try {
             Seller _seller = sellerRepository.save(new Seller(seller.getName(), seller.getCpf(), null));
@@ -30,7 +30,7 @@ public class SellerController {
     }
 
     //Consultar lista de  vendedores
-    @GetMapping("/getlist")
+    @GetMapping("/list")
     public ResponseEntity<List<Seller>> getSellerList(@RequestParam(required = false) String name) {
         try {
             List<Seller> sellers = new ArrayList<Seller>();
@@ -51,7 +51,7 @@ public class SellerController {
     }
 
     //busca vendedor pelo id
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Seller> getSellerById(@PathVariable("id") Long id) {
         Optional<Seller> sellerFind = sellerRepository.findById(id);
 
@@ -62,8 +62,8 @@ public class SellerController {
         }
     }
 
-
-    @PutMapping("/post/{id}")
+    // atualizando vendedor pelo ID
+    @PutMapping("/update/{id}")
     public ResponseEntity<Seller> updateSeller(@PathVariable("id") Long id, @RequestBody Seller seller) {
         Optional<Seller> sellerFind = sellerRepository.findById(id);
 
@@ -71,14 +71,35 @@ public class SellerController {
             Seller _seller = sellerFind.get();
             _seller.setName(seller.getName());
             _seller.setCpf(seller.getCpf());
-            _seller.setProductList(seller.getProductList());
+            _seller.setProductList(seller.getProductList()); // tem que ver como fazer a tratativa de edicao da lista.
             return new ResponseEntity<>(sellerRepository.save(_seller), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+//delete todos vendedores
+@DeleteMapping("/deleteall")
+public ResponseEntity<HttpStatus> deleteAllSellers() {
+    try {
+        sellerRepository.deleteAll();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
+}
+
+//deletar vendedor pelo ID
+@DeleteMapping("/delete/{id}")
+public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) {
+    try {
+        sellerRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
 
 
 }
