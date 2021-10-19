@@ -1,32 +1,30 @@
 package com.meli.projetointegradorgroup1.entity;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+
+
+
+@Table
 @NoArgsConstructor
 @Entity
-@Table
 public class Product {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
+
     private String productId;
+
     private String productName;
 
-    //data de producao
-    private String manufacturingDate;
-    //horario da producao
-    private String manufacturingTime;
-    //data de vencimento
-    private String dueDate;
+    @ManyToOne
+    private Seller seller;
 
-    public Product(String productName, String dueDate) {
-        this.productName = productName;
-        this.dueDate = dueDate;
-    }
+
+
+
 }
