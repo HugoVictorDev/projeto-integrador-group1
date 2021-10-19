@@ -11,23 +11,26 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    @Column(name = "productid")
     private Long productId;
 
-    @Column(name = "product_name")
+    @Column(name = "productname")
     private String productName;
 
     //data de producao
-    @Column(name = "manufacturing_date")
+    @Column(name = "manufacturingdate")
     private String manufacturingDate;
 
-    @Column(name = "manufacturing_time")
+    @Column(name = "manufacturingtime")
     //horario da producao
     private String manufacturingTime;
 
-    @Column(name = "due_date")
+    @Column(name = "duedate")
     //data de vencimento
     private String dueDate;
+
+    @ManyToOne
+    private Seller seller;
 
     public Product() {
     }

@@ -1,6 +1,6 @@
-create table produto (product_id long primary key auto_increment , product_name varchar(250), manufacturing_date varchar (max ), manufacturing_time varchar (max), due_date varchar (max));
+create table produto (productid long primary key auto_increment , productname varchar(250), manufacturingdate varchar (max ), manufacturingtime varchar (max), duedate varchar (max));
 
-INSERT INTO PRODUTO (product_name, manufacturing_date, manufacturing_time, due_date) VALUES ('Biscoito', '15-10-2021', '15-10-2021', '15-10-2021'),
+INSERT INTO PRODUTO (productname, manufacturingdate, manufacturingtime, duedate) VALUES ('Biscoito', '15-10-2021', '15-10-2021', '15-10-2021'),
                                                                                             ('Nescau', '15-10-2021', '15-10-2021', '15-10-2021'),
-                                                                                            ('Carne', '15-10-2021', '15-10-2021', '15-10-2021');
+                                                                                            ('Macarrao', '15-10-2021', '15-10-2021', '15-10-2021');
 
