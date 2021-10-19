@@ -31,18 +31,11 @@ public class SellerController {
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
-    public ResponseEntity<List<Seller>> getSellerList(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<Seller>> getSellerList() {
         try {
             List<Seller> sellers = new ArrayList<Seller>();
 
-            if (name == null)
-                sellerRepository.findAll().forEach(sellers::add);
-            else
-                sellerRepository.findByNameContaining(name).forEach(sellers::add);
-
-            if (sellers.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            sellerRepository.findAll().forEach(sellers::add);
 
             return new ResponseEntity<>(sellers, HttpStatus.OK);
         } catch (Exception e) {
