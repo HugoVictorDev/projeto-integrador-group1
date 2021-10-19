@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/seller")
@@ -28,9 +29,9 @@ public class SellerController {
         }
     }
 
-    //Consultar vendedor
+    //Consultar lista de  vendedores
     @GetMapping("/getlist")
-    public ResponseEntity<List<Seller>> getAllTutorials(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<Seller>> getSellerList(@RequestParam(required = false) String name) {
         try {
             List<Seller> sellers = new ArrayList<Seller>();
 
@@ -48,6 +49,36 @@ public class SellerController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //busca vendedor pelo id
+    @GetMapping("/{id}")
+    public ResponseEntity<Seller> getSellerById(@PathVariable("id") Long id) {
+        Optional<Seller> sellerFind = sellerRepository.findById(id);
+
+        if (sellerFind.isPresent()) {
+            return new ResponseEntity<>(sellerFind.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PutMapping("/post/{id}")
+    public ResponseEntity<Seller> updateSeller(@PathVariable("id") Long id, @RequestBody Seller seller) {
+        Optional<Seller> sellerFind = sellerRepository.findById(id);
+
+        if (sellerFind.isPresent()) {
+            Seller _seller = sellerFind.get();
+            _seller.setName(seller.getName());
+            _seller.setCpf(seller.getCpf());
+            _seller.setProductList(seller.getProductList());
+            return new ResponseEntity<>(sellerRepository.save(_seller), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 
 }
