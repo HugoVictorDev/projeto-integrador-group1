@@ -2,14 +2,11 @@ package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
-@Table
+@Table(name = "PRODUCT")
 public class Product {
 
     @Id
@@ -28,4 +25,15 @@ public class Product {
     private String dueDate;
 
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "batchstockitem_id")
+    private BatchStockItem batchstockitem;
+
+    public BatchStockItem getBatchstockitem() {
+        return batchstockitem;
+    }
+
+    public void setBatchstockitem(BatchStockItem batchstockitem) {
+        this.batchstockitem = batchstockitem;
+    }
 }
