@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
-
-
+import java.util.List;
 
 
 @Table
@@ -24,7 +23,8 @@ public class Product {
     @ManyToOne
     private Seller seller;
 
-
+    @ManyToOne
+    private BatchStockItem batchstockitem;
 
 
 }

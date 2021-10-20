@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 //item do lote // mini lote de apenas um produto
 @NoArgsConstructor
@@ -17,7 +18,9 @@ public class BatchStockItem {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Product product;
+    @Column(name = "productlist")
+    @OneToMany(mappedBy = "batchstockitem", cascade = CascadeType.ALL)
+    private List<Product> productlist;
 
     private int quantity;
 

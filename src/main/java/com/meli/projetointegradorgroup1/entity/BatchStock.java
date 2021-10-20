@@ -1,15 +1,20 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
-
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "batchstock")
 //conjunto de lote
 public class BatchStock {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     //numero do lote
     private String batchNumber;
@@ -25,5 +30,7 @@ public class BatchStock {
 //    @Column(name = "batchStockItems")
     @OneToMany(mappedBy = "batchstock", cascade = CascadeType.ALL)
     private List<BatchStockItem> batchStockItems;
+
+
 
 }
