@@ -21,9 +21,14 @@ public class InbounderOrder {
 
     @Column(name = "ORDER_DATE")
     private String orderDate;
-//    private Section section;
-    //lista de lote de estoque
-//    private List<BatchStock> batchStock;
+
+  //  @Column(name = "SECTION")
+  //  private Section section;
+
+    //   lista de lote de estoque
+
+    @OneToMany
+    private List<BatchStock> batchStock;
 
     public InbounderOrder() {
     }

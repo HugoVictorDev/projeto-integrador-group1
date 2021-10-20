@@ -1,10 +1,17 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 //item do lote
 public class BatchStockItem {
 
-    public Product product;
+
+    private Product product;
     private int quantity;
-    public BatchStock batchStock;
+    private BatchStock batchStock;
 
 }

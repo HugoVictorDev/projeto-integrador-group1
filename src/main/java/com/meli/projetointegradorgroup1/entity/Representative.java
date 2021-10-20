@@ -18,10 +18,12 @@ public class Representative {
     @Column(name = "CPF")
     private String cpf;
 
-    @OneToOne(mappedBy = "representative")
-    private InbounderOrder inbounderOrder;
 
     public Representative() {
     }
 
+    public Representative(String name, String cpf) {
+        this.name = name;
+        this.cpf = cpf;
+    }
 }
