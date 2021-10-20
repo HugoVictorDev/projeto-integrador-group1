@@ -1,20 +1,23 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import lombok.NoArgsConstructor;
 
-@Data
-@Entity
 @Table(name = "inbounderorder")
+@NoArgsConstructor
+@Entity
+@Data
 //ordem de entrada
 public class InbounderOrder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderNumber", nullable = false)
-    private String orderNumber;
+    private Long orderNumber;
 
     @OneToOne
     @JoinColumn(name = "representative")
@@ -29,7 +32,23 @@ public class InbounderOrder {
 
 //    private List<BatchStock> batchStock;
 
-    public InbounderOrder() {
+
+    public InbounderOrder(Long orderNumber, Representative representative, String orderDate) {
+        this.orderNumber = orderNumber;
+        this.representative = representative;
+        this.orderDate = orderDate;
+    }
+
+    public Long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public Representative getRepresentative() {
+        return representative;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
     }
 
 
