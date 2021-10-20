@@ -22,7 +22,7 @@ VALUES ('SILAS', '789.456.789.45'),
 --------------------------------------------------------------------------------
 
 INSERT INTO inbounderorder (ORDER_NUMBER, ORDER_DATE)
-VALUES ('jkjkhjk', '8978989');
+VALUES (1, '8978989');
 --------------------------------------------------------------------------------
 --INSERT INTO batchstock (batchNumber, CURRENTTEMPERATURE, MINIMUMTEMPERATURE, CURRENTQUALITY)
 --VALUES ('asdsad', 'CURRENTTEMPERATURE', 'MINIMUMTEMPERATURE', 'CURRENTQUALITY');

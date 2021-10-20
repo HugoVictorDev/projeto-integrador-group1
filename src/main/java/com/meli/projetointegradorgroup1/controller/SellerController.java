@@ -29,7 +29,7 @@ public class SellerController {
         }
     }
 
-    //Consultar lista de  vendedores
+    //Consultar lista de  vendeokdores
     @GetMapping("/list")
     public ResponseEntity<List<Seller>> getSellerList() {
         try {

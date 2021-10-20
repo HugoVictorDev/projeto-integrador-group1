@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class Representative {
     @OneToOne(mappedBy = "representative")
     private InbounderOrder inbounderOrder;
 
-    public Representative() {
+    public Representative(Optional<Representative> byId) {
     }
 
 }
