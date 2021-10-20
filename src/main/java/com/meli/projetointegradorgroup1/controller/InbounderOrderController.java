@@ -23,10 +23,10 @@ public class InbounderOrderController {
     public Iterable<InbounderOrder> list(){ return inbounderOrderRepository.findAll(); }
 
     //Cadastro do Inbound
-    @PostMapping("/create")
+    @PostMapping("/create/{representativeID}")
     public ResponseEntity<InbounderOrder> createInbound (@RequestBody InbounderOrder inbounderOrder){
         try {
-            InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder(inbounderOrder.getOrderNumber() , inbounderOrder.getRepresentative(), inbounderOrder.getOrderDate()));
+            InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder(inbounderOrder.getOrderNumber() , r.getRepresentative(), inbounderOrder.getOrderDate()));
             return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
