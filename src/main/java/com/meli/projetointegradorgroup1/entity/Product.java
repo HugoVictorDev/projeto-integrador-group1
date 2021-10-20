@@ -20,6 +20,7 @@ public class Product {
 
     private String productName;
 
+
     @ManyToOne
     private Seller seller;
 
