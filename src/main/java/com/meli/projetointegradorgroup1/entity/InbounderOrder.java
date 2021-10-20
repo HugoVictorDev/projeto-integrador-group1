@@ -7,22 +7,26 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "INBOUNDER")
+@Table(name = "inbounderorder")
 //ordem de entrada
 public class InbounderOrder {
 
     @Id
-    @Column(name = "ORDER_NUMBER")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "orderNumber", nullable = false)
     private String orderNumber;
 
     @OneToOne
-    @JoinColumn(name = "REPRESENTATIVE_ID")
+    @JoinColumn(name = "representative")
     private Representative representative;
 
-    @Column(name = "ORDER_DATE")
+    @Column(name = "orderDate")
     private String orderDate;
 //    private Section section;
+
     //lista de lote de estoque
+    //@OneToMany(mappedBy = "InbounderOrder", cascade = CascadeType.ALL)
+
 //    private List<BatchStock> batchStock;
 
     public InbounderOrder() {

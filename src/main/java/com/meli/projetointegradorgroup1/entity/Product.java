@@ -13,8 +13,8 @@ import java.util.List;
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String productId;
 
@@ -25,6 +25,12 @@ public class Product {
 
     @ManyToOne
     private BatchStockItem batchstockitem;
+
+    private String manufacturingDate;
+
+    private String manufacturingTime;
+
+    private String due_Date;
 
 
 }
