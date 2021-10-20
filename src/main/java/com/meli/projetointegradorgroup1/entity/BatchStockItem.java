@@ -1,36 +1,30 @@
 package com.meli.projetointegradorgroup1.entity;
 
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
+//item do lote // mini lote de apenas um produto
+@NoArgsConstructor
 @Data
 @Entity
-@Table(name = "BATCHSTOCKITEM")
-//item do lote
+@Table(name = "batchstockitem")
 public class BatchStockItem {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "productlist")
+    @OneToMany(mappedBy = "batchstockitem", cascade = CascadeType.ALL)
+    private List<Product> productlist;
 
-    @OneToOne(mappedBy = "batchstockitem")
-    public Product product;
-    @Column(name = "QUANTITY")
     private int quantity;
 
-    @OneToOne(mappedBy = "batchstockitem")
-    public BatchStock batchStock;
+    @ManyToOne
+    private BatchStock batchstock;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BatchStockItem() {
-    }
 }
