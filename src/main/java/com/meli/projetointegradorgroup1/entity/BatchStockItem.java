@@ -1,10 +1,27 @@
 package com.meli.projetointegradorgroup1.entity;
 
-//item do lote
-public class BatchStockItem {
 
-    public Product product;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+//item do lote // mini lote de apenas um produto
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "batchstockitem")
+public class BatchStockItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    private Product product;
+
     private int quantity;
-    public BatchStock batchStock;
+
+    @ManyToOne
+    private BatchStock batchstock;
 
 }
