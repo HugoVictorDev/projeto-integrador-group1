@@ -6,27 +6,26 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "produto")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productid")
+    @Column(name = "PRODUCT_ID")
     private Long productId;
 
-    @Column(name = "productname")
+    @Column(name = "PRODUCT_NAME")
     private String productName;
 
     //data de producao
-    @Column(name = "manufacturingdate")
+    @Column(name = "MANUFACTURING_DATE")
     private String manufacturingDate;
 
     //horario da producao
-    @Column(name = "manufacturingtime")
+    @Column(name = "MANUFACTURING_TIME")
     private String manufacturingTime;
 
     //data de vencimento
-    @Column(name = "duedate")
+    @Column(name = "DUE_DATE")
     private String dueDate;
 
     @ManyToOne
