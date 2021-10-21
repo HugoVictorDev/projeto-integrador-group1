@@ -10,7 +10,6 @@ import java.util.List;
 
 //item do lote // mini lote de apenas um produto
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "batchstockitem")
@@ -20,15 +19,11 @@ public class BatchStockItem {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
     private int quantity;
 
-
-//    @Column(name = "productlist")
+    //    @Column(name = "productlist")
     @OneToMany(mappedBy = "batchstockitem", cascade = CascadeType.ALL)
     private List<Product> productlist;
-
-
 
     @ManyToOne
     private BatchStock batchstock;
@@ -37,5 +32,6 @@ public class BatchStockItem {
         this.quantity = quantity;
         this.productlist = productlist;
         this.batchstock = batchstock;
+
     }
 }

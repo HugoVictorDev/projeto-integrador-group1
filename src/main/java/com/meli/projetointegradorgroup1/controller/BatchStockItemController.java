@@ -19,11 +19,17 @@ public class BatchStockItemController {
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
 
+    @Autowired
+    SellerRepository sellerRepository;
+
     //Cadastrar vendedor
     @PostMapping("/create")
     public ResponseEntity<BatchStockItem> createBatchStockItem (@RequestBody BatchStockItem batchStockItem){
+//        List<Seller> seller = sellerRepository.findAll();
+
         try {
-            BatchStockItem _BatchStockItem = batchStockItemRepository.save(new BatchStockItem(batchStockItem.getQuantity(), batchStockItem.getProductlist(), batchStockItem.getBatchstock()));
+            BatchStockItem _BatchStockItem = batchStockItemRepository.save(new BatchStockItem(batchStockItem.getQuantity(),
+                    batchStockItem.getProductlist(), batchStockItem.getBatchstock()));
             return new ResponseEntity<>(_BatchStockItem, HttpStatus.CREATED);
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
