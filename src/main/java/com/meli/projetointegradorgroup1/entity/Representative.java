@@ -2,11 +2,14 @@ package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
 
+
 import javax.persistence.*;
 
 @Data
 @Entity
 public class Representative {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +21,25 @@ public class Representative {
     @Column(name = "CPF")
     private String cpf;
 
+    @OneToOne
+    @JoinColumn(name = "WAREHOUSE_ID")
+    private Warehouse warehouse = new Warehouse();
 
     public Representative() {
     }
 
-    public Representative(String name, String cpf) {
+    public Representative Name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Representative Cpf(String cpf) {
         this.cpf = cpf;
+        return this;
+    }
+
+    public Representative WarehouseID(Long warehouseID) {
+        this.warehouse.setWarehouseId(warehouseID);
+        return this;
     }
 }

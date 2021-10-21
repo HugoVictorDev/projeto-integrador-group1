@@ -21,13 +21,6 @@ public class BatchStock {
     private String initialQuality;
     // estado atual da qualidade do produto
     private String currentQuality;
-
-
-    //private List<BatchStockItem> batchStockItems;
-
-    @ManyToOne
-    @JoinColumn(name = "INBOUNDER_ORDER")
-    private InbounderOrder inbounderOrder;
-
+ //   private List<BatchStockItem> batchStockItems;
 
 }

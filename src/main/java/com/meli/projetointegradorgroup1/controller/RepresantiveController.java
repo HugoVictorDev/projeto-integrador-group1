@@ -1,7 +1,10 @@
 package com.meli.projetointegradorgroup1.controller;
 
+import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
 import com.meli.projetointegradorgroup1.entity.Representative;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
+import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +18,25 @@ import java.util.Optional;
 @RequestMapping("/representative")
 public class RepresantiveController {
 
+
     @Autowired
     RepresentativeRepository representativeRepository;
+    @Autowired
+    WarehouseRepository warehouseRepository;
+
 
     //Cadastrar representante
     @PostMapping("/post")
-    public ResponseEntity<Representative> createRepresentative (@RequestBody Representative representative){
+    public ResponseEntity<RepresentativeDTO> createRepresentative (@RequestBody RepresentativeDTO representativedto){
         try {
-             Representative _representative = representativeRepository.save(new Representative(representative.getName(), representative.getCpf()));
-             return new ResponseEntity<>(_representative, HttpStatus.CREATED);
+            warehouseRepository.findById(representativedto.getWarehouseID());
+            Representative representative = RepresentativeDTO.converte(representativedto);
+            representativeRepository.save(representative);
+            return new ResponseEntity<>(representativedto, HttpStatus.CREATED);
         } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     //Consultar lista de  representantes
@@ -37,7 +47,7 @@ public class RepresantiveController {
             representativeRepository.findAll().forEach(representative::add);
             return new ResponseEntity<>(representative, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

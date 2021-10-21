@@ -25,7 +25,7 @@ public class InbounderOrder {
   //  @Column(name = "SECTION")
   //  private Section section;
 
-    //   lista de lote de estoque
+    //lista de lote de estoque
 
     @OneToMany
     private List<BatchStock> batchStock;
