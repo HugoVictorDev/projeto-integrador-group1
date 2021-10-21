@@ -27,4 +27,10 @@ public class BatchStockItem {
     @ManyToOne
     private BatchStock batchstock;
 
+    public BatchStockItem(int quantity, List<Product> productlist, BatchStock batchstock) {
+        this.quantity = quantity;
+        this.productlist = productlist;
+        this.batchstock = batchstock;
+
+    }
 }
