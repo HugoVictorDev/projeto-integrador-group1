@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
 
     // cadastrar novo produto

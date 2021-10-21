@@ -44,4 +44,14 @@ public class Product {
         this.manufacturingTime = manufacturingTime;
         this.dueDate = dueDate;
     }
+
+    public Product(Long productId, String productName, String manufacturingDate, String manufacturingTime, String dueDate, Seller seller, BatchStockItem batchstockitem) {
+        this.productId = productId;
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+        this.seller = seller;
+        this.batchstockitem = batchstockitem;
+    }
 }
