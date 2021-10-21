@@ -35,7 +35,7 @@ public class InbounderOrderController {
             InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder( inbounderOrder.getOrderNumber() , representative, inbounderOrder.getOrderDate()));
             return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
         } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -44,11 +44,9 @@ public class InbounderOrderController {
     public ResponseEntity<HttpStatus> deleteRepresentativeById(@PathVariable("id") Long id) {
         try {
             inbounderOrderRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
 }
