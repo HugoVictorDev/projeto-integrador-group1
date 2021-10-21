@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,11 +18,11 @@ public class BatchStockItem {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private int quantity;
-
-    //    @Column(name = "productlist")
+    @Column(name = "productlist")
     @OneToMany(mappedBy = "batchstockitem", cascade = CascadeType.ALL)
     private List<Product> productlist;
+
+    private int quantity;
 
     @ManyToOne
     private BatchStock batchstock;

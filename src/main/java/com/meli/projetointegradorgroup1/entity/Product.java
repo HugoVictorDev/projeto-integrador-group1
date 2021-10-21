@@ -2,30 +2,56 @@ package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Data
 @Entity
-@Table
+@Data
+@Table(name = "produto")
 public class Product {
 
     @Id
-    @Column(name = "PRODUCT_ID")
-    private String productId;
-    @Column(name = "PRODUCT_NAME")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "productid")
+    private Long productId;
+
+    @Column(name = "productname")
     private String productName;
+
     //data de producao
-    @Column(name = "MANUFACTURING_DATE")
+    @Column(name = "manufacturingdate")
     private String manufacturingDate;
+
     //horario da producao
-    @Column(name = "MANUFACTURING_TIME")
+    @Column(name = "manufacturingtime")
     private String manufacturingTime;
+
     //data de vencimento
-    @Column(name = "DUE_DATE")
+    @Column(name = "duedate")
     private String dueDate;
 
+    @ManyToOne
+    private Seller seller;
 
+    @ManyToOne
+    private BatchStockItem batchstockitem;
+
+    public Product() {
+    }
+
+    public Product(String productName, String manufacturingDate, String manufacturingTime, String dueDate) {
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+    }
+
+    public Product(Long productId, String productName, String manufacturingDate, String manufacturingTime, String dueDate, Seller seller, BatchStockItem batchstockitem) {
+        this.productId = productId;
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+        this.seller = seller;
+        this.batchstockitem = batchstockitem;
+    }
 }

@@ -27,9 +27,8 @@ public class Seller {
         this.productList = productList;
     }
 
-//    @Column(name = "productList")
+    @Column(name = "productList")
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> productList;
-
 
 }

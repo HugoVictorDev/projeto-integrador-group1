@@ -1,3 +1,4 @@
+
 package com.meli.projetointegradorgroup1.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,18 +17,24 @@ public class BatchStock {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
     //numero do lote
+    @Column(name = "batchNumber")
     private String batchNumber;
     // temperatura atual
+    @Column(name = "currentTemprature")
     private String currentTemprature;
     //temperatura minima
+    @Column(name = "minimumTemprature")
     private String minimumTemprature;
     //estado inicial da qualidade do produto
+    @Column(name = "initialQuality")
     private String initialQuality;
     // estado atual da qualidade do produto
+    @Column(name = "currentQuality")
     private String currentQuality;
 
-//    @Column(name = "batchStockItems")
+    //    @Column(name = "batchStockItems")
     @OneToMany(mappedBy = "batchstock", cascade = CascadeType.ALL)
     private List<BatchStockItem> batchStockItems;
 
