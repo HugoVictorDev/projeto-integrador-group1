@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "PRODUTO")
+@Table(name = "produto")
 public class Product {
 
     @Id
@@ -21,16 +21,19 @@ public class Product {
     @Column(name = "manufacturingdate")
     private String manufacturingDate;
 
-    @Column(name = "manufacturingtime")
     //horario da producao
+    @Column(name = "manufacturingtime")
     private String manufacturingTime;
 
-    @Column(name = "duedate")
     //data de vencimento
+    @Column(name = "duedate")
     private String dueDate;
 
     @ManyToOne
     private Seller seller;
+
+    @ManyToOne
+    private BatchStockItem batchstockitem;
 
     public Product() {
     }
