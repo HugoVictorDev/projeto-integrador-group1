@@ -1,23 +1,33 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 import javax.persistence.*;
-import java.util.List;
 
-
-@Table
-@NoArgsConstructor
 @Entity
+@Data
+@Table(name = "produto")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "productid")
+    private Long productId;
 
+    @Column(name = "productname")
     private String productName;
 
+    //data de producao
+    @Column(name = "manufacturingdate")
+    private String manufacturingDate;
+
+    //horario da producao
+    @Column(name = "manufacturingtime")
+    private String manufacturingTime;
+
+    //data de vencimento
+    @Column(name = "duedate")
+    private String dueDate;
 
     @ManyToOne
     private Seller seller;
@@ -25,11 +35,23 @@ public class Product {
     @ManyToOne
     private BatchStockItem batchstockitem;
 
-    private String manufacturingDate;
+    public Product() {
+    }
 
-    private String manufacturingTime;
+    public Product(String productName, String manufacturingDate, String manufacturingTime, String dueDate) {
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+    }
 
-    private String due_Date;
-
-
+    public Product(Long productId, String productName, String manufacturingDate, String manufacturingTime, String dueDate, Seller seller, BatchStockItem batchstockitem) {
+        this.productId = productId;
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+        this.seller = seller;
+        this.batchstockitem = batchstockitem;
+    }
 }

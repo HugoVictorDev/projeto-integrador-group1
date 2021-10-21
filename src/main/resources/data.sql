@@ -1,16 +1,7 @@
-INSERT INTO Product (product_Id, product_Name, manufacturing_Date, manufacturing_Time, due_Date)
-VALUES ('lali', 'lela', 'lala', 'lala', 'lala');
-INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE)
-VALUES ('lali', 'lela', 'lala', 'lala', 'lala'),
-       ('DSFH', 'LJH', 'UKHF', 'JGFF', 'JFGFJ'),
-       ('luli', 'l9la', 'l0la', 'lal3', 'lal8');
+create table produto (productid long primary key auto_increment , productname varchar(250), manufacturingdate varchar (max ), manufacturingtime varchar (max), duedate varchar (max));
 
---------------------------------------------------------------------------------
-INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE)
-VALUES ('lali', 'lela', 'lala', 'lala', 'lala'),
-       ('DSFH', 'LJH', 'UKHF', 'JGFF', 'JFGFJ'),
-       ('luli', 'l9la', 'l0la', 'lal3', 'lal8');
-
+INSERT INTO PRODUTO (productname, manufacturingdate, manufacturingtime, duedate) VALUES ('Biscoito', '15-10-2021', '15-10-2021', '15-10-2021'),
+                                                                                            ('Nescau', '15-10-2021', '15-10-2021', '15-10-2021'),
 --------------------------------------------------------------------------------
 
 INSERT INTO REPRESENTATIVE (NAME, CPF)
