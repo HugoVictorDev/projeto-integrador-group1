@@ -9,8 +9,6 @@ import javax.persistence.*;
 @Entity
 public class Representative {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REPRESENTATIVE_ID")

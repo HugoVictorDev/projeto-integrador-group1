@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +29,13 @@ public class RepresantiveController {
 
     //Cadastrar representante
     @PostMapping("/post")
-    public ResponseEntity<RepresentativeDTO> createRepresentative (@RequestBody RepresentativeDTO representativedto){
+    public ResponseEntity<RepresentativeDTO> createRepresentative (@Valid @RequestBody RepresentativeDTO representativedto){
         try {
             warehouseRepository.findById(representativedto.getWarehouseID());
             Representative representative = RepresentativeDTO.converte(representativedto);
-            representativeRepository.save(representative);
-            return new ResponseEntity<>(representativedto, HttpStatus.CREATED);
+            return new ResponseEntity<>(RepresentativeDTO.converte(representativeRepository.save(representative)), HttpStatus.CREATED);
         } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
