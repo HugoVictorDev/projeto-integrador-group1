@@ -1,11 +1,12 @@
-INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE)
-VALUES ('lali', 'lela', 'lala', 'lala', 'lala'),
-       ('DSFH', 'LJH', 'UKHF', 'JGFF', 'JFGFJ'),
-       ('luli', 'l9la', 'l0la', 'lal3', 'lal8');
+INSERT INTO PRODUCT (PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE)
+VALUES ('lela', 'lala', 'lala', 'lala'),
+       ( 'LJH', 'UKHF', 'JGFF', 'JFGFJ'),
+       ('luli', 'l9la', 'l0la', 'lal3');
 
 --------------------------------------------------------------------------------
 INSERT INTO WAREHOUSE ( NAME, ADDRESS, SIZE)
 VALUES ('MELI', 'RUA HUM', '2'),
+       ('CITY', 'RUA DOIS', '2'),
        ('MERCADO', 'RUA TRES', '7');
 
 --------------------------------------------------------------------------------
@@ -25,3 +26,9 @@ VALUES (1, 1, 1),
        (2, 2, 2);
 
 --------------------------------------------------------------------------------
+INSERT INTO SELLERS (SELLER_ID, CPF, NAME )
+VALUES (1, 'CAIO', '789.456.789.45');
+
+--------------------------------------------------------------------------------
+INSERT INTO PRODUCT (PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE, BATCHSTOCKITEM_ID, SELLER_SELLER_ID )
+VALUES ('lela', 'lala', 'lala', 'lala',1,1 )

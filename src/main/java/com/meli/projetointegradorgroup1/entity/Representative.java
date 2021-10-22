@@ -1,14 +1,17 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 import javax.persistence.*;
 import java.util.Optional;
-
+@Service
 @Data
 @Entity
 public class Representative {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,7 @@ public class Representative {
 
     @OneToOne
     @JoinColumn(name = "WAREHOUSE_ID")
+
     private Warehouse warehouse = new Warehouse();
 
     public Representative() {

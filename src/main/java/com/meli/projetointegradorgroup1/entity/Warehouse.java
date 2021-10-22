@@ -3,8 +3,11 @@ package com.meli.projetointegradorgroup1.entity;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
+
 import javax.persistence.*;
 
+@Service
 @Configuration
 @Entity
 @Data
