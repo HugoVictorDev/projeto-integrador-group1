@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.util.List;
 import lombok.NoArgsConstructor;
 
-@Table(name = "inbounderorder")
 @NoArgsConstructor
 @Entity
 @Data
+@Table(name = "inbounderorder")
 //ordem de entrada
 public class InbounderOrder {
 
@@ -28,9 +28,8 @@ public class InbounderOrder {
 //    private Section section;
 
     //lista de lote de estoque
-    //@OneToMany(mappedBy = "InbounderOrder", cascade = CascadeType.ALL)
-
-//    private List<BatchStock> batchStock;
+    @OneToMany(mappedBy = "inbounderorder", cascade = CascadeType.ALL)
+    private List<BatchStock> batchStock;
 
 
     public InbounderOrder(Long orderNumber, Representative representative, String orderDate) {

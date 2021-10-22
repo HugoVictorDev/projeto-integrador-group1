@@ -39,5 +39,15 @@ public class BatchStock {
     private List<BatchStockItem> batchStockItems;
 
 
+    @ManyToOne
+    @JoinColumn(name = "inbounderorder_order_number")
+    private InbounderOrder inbounderorder;
 
+    public InbounderOrder getInbounderorder() {
+        return inbounderorder;
+    }
+
+    public void setInbounderorder(InbounderOrder inbounderorder) {
+        this.inbounderorder = inbounderorder;
+    }
 }

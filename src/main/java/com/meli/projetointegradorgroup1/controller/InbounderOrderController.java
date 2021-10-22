@@ -31,22 +31,27 @@ public class InbounderOrderController {
     @PostMapping("/create/{representativeId")
     public ResponseEntity<InbounderOrder> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InbounderOrder inbounderOrder){
         Representative representative = new Representative(representativeRepository.findById(representativeId));
-        try {
-            InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder( inbounderOrder.getOrderNumber() , representative, inbounderOrder.getOrderDate()));
-            return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
+        InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder( inbounderOrder.getOrderNumber() , representative, inbounderOrder.getOrderDate()));
+        return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
     }
 
-    //deletar representatnte pelo ID
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteRepresentativeById(@PathVariable("id") Long id) {
-        try {
+    //deletar Inbounder pelo ID
+    @DeleteMapping("/delete/{ordernumber}")
+    public ResponseEntity<HttpStatus> deleteInbounderOrderByOrderNumber(@PathVariable("ordernumber") Long id) {
             inbounderOrderRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //Update Inbounder pelo ID
+    @DeleteMapping("/update/{ordernumber}")
+    public ResponseEntity<InbounderOrder> updateOrderByOrderNumber(@PathVariable("ordernumber") Long representativeId, @RequestBody InbounderOrder inbounderOrder) {
+
+        inbounderOrderRepository.deleteById(representativeId);
+
+        Representative representative = new Representative(representativeRepository.findById(representativeId));
+        InbounderOrder _inboundOrder = inbounderOrderRepository.save(new InbounderOrder( inbounderOrder.getOrderNumber() , representative, inbounderOrder.getOrderDate()));
+
+        return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
     }
 }
