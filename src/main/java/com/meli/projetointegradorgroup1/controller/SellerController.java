@@ -4,6 +4,7 @@ import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/seller")
@@ -21,6 +23,9 @@ public class SellerController {
     @Autowired
     SellerRepository sellerRepository;
 
+    @Autowired
+    SellerService sellerService;
+
     //Cadastrar vendedor
     @PostMapping("/create")
     public SellerRequestDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
@@ -28,12 +33,14 @@ public class SellerController {
         return sellerRequestDTO;
     }
 
-//    //Consultar lista de  vendedores
-//    @GetMapping("/list")
-//    public List<SellerResponseDTO> getSellerList() {
-//
-//
-//    }
+    //Consultar lista de  vendedores
+    @GetMapping("/list")
+     List<SellerResponseDTO> getSellerList() {
+        return sellerService.getSellers().stream()
+        .map(SellerResponseDTO::new)
+        .collect(Collectors.toList());
+
+    }
 
     //busca vendedor pelo id
     @GetMapping("{id}")

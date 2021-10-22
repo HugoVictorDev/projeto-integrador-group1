@@ -27,11 +27,15 @@ public class SellerResponseDTO {
     private String cpf;
 
 
-    private List<Product> productList;
+//    private List<Product> productList;
 
-public  SellerResponseDTO(Seller seller){
+public SellerResponseDTO(Seller seller){
+
+
     this.name = seller.getName();
     this.cpf = seller.getCpf();
+//    this.productList = seller.getProductList();
 }
+
 
 }
