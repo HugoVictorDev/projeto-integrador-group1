@@ -5,6 +5,7 @@ import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.SellerService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,22 +37,20 @@ public class SellerController {
     //Consultar lista de  vendedores
     @GetMapping("/list")
      List<SellerResponseDTO> getSellerList() {
-        return sellerService.getSellers().stream()
-        .map(SellerResponseDTO::new)
-        .collect(Collectors.toList());
-
+        return sellerService.getSellers();
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
-    public ResponseEntity<Seller> getSellerById(@PathVariable("id") Long id) {
+    public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
         Optional<Seller> sellerFind = sellerRepository.findById(id);
 
         if (sellerFind.isPresent()) {
-            return new ResponseEntity<>(sellerFind.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
+            BeanUtils.copyProperties(sellerFind, sellerResponseDTO);
+            return sellerResponseDTO;
         }
+        return null;
     }
 
     // atualizando vendedor pelo ID
