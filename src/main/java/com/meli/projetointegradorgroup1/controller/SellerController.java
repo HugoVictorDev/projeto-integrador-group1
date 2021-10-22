@@ -1,5 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
 
+import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -20,28 +23,17 @@ public class SellerController {
 
     //Cadastrar vendedor
     @PostMapping("/create")
-    public ResponseEntity<Seller> createSeller (@RequestBody Seller seller){
-        try {
-            Seller _seller = sellerRepository.save(new Seller(seller.getName(), seller.getCpf(), null));
-           return new ResponseEntity<>(_seller, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public SellerRequestDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
+        this.sellerRepository.save(sellerRequestDTO.build());
+        return sellerRequestDTO;
     }
 
-    //Consultar lista de  vendedores
-    @GetMapping("/list")
-    public ResponseEntity<List<Seller>> getSellerList() {
-        try {
-            List<Seller> sellers = new ArrayList<Seller>();
-
-            sellerRepository.findAll().forEach(sellers::add);
-
-            return new ResponseEntity<>(sellers, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    //Consultar lista de  vendedores
+//    @GetMapping("/list")
+//    public List<SellerResponseDTO> getSellerList() {
+//
+//
+//    }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
@@ -105,7 +97,10 @@ public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) 
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
-        });
+        }
+        );
         return errors;
     }
+
+
 }

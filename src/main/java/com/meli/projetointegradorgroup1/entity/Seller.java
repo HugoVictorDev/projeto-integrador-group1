@@ -4,9 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
+
+@Accessors(chain = true) //true todo o set retorna o proprio objeto
 @NoArgsConstructor
 @Data
 @Entity
@@ -16,6 +21,9 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long sellerId;
+
+    @NotBlank
+    @Size(min = 3, message = "minimo 3 letras")
     @Column(name = "name")
     private String name;
     @Column(name = "cpf")
