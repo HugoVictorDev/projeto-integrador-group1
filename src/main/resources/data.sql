@@ -15,6 +15,13 @@ VALUES ('SILAS', '789.456.789.45', 1),
        ('IVO', '321.456.789.45', 2);
 
 --------------------------------------------------------------------------------
+INSERT INTO BATCHSTOCK(ID, BATCH_NUMBER, CURRENT_QUALITY,  CURRENT_TEMPRATURE,  INITIAL_QUALITY,  MINIMUM_TEMPRATURE)
+VALUES (1, '23', '56', '88', '99', '98'),
+       (2, '23', '56', '88', '99', '98');
 
-INSERT INTO INBOUNDER (ORDER_NUMBER, ORDER_DATE)
-VALUES ('jkjkhjk', '8978989');
+--------------------------------------------------------------------------------
+INSERT INTO BATCHSTOCKITEM (ID, QUANTITY, BATCHSTOCK_ID)
+VALUES (1, 1, 1),
+       (2, 2, 2);
+
+--------------------------------------------------------------------------------
