@@ -24,7 +24,9 @@ public class SellerService {
                 .collect(Collectors.toList());
     }
 
-    private SellerResponseDTO convertEntityToDTO(Seller seller){
+
+
+    public SellerResponseDTO convertEntityToDTO(Seller seller){
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
         sellerResponseDTO.setName(seller.getName());
         sellerResponseDTO.setCpf(seller.getCpf());

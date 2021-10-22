@@ -5,7 +5,6 @@ import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.SellerService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/seller")
@@ -43,19 +41,21 @@ public class SellerController {
     //busca vendedor pelo id
     @GetMapping("{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        Optional<Seller> sellerFind = sellerRepository.findById(id);
-
-        if (sellerFind.isPresent()) {
-            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
-            BeanUtils.copyProperties(sellerFind, sellerResponseDTO);
-            return sellerResponseDTO;
-        }
-        return null;
+        return sellerService.convertEntityToDTO(sellerRepository.getById(id));
+//        Optional<Seller> sellerFind = sellerRepository.findById(id);
+//
+//        if (sellerFind.isPresent()) {
+//            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
+//            BeanUtils.copyProperties(sellerFind, sellerResponseDTO);
+//            return sellerResponseDTO;
+//        }
+//        return null;
     }
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<Seller> updateSeller(@PathVariable("id") Long id, @RequestBody Seller seller) {
+    public Seller updateSeller(@PathVariable("id") Long id, @RequestBody Seller seller) {
+
         Optional<Seller> sellerFind = sellerRepository.findById(id);
 
         if (sellerFind.isPresent()) {
@@ -63,21 +63,17 @@ public class SellerController {
             _seller.setName(seller.getName());
             _seller.setCpf(seller.getCpf());
             _seller.setProductList(seller.getProductList()); // tem que ver como fazer a tratativa de edicao da lista.
-            return new ResponseEntity<>(sellerRepository.save(_seller), HttpStatus.OK);
+            return sellerRepository.save(_seller);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
 //delete todos vendedores
 @DeleteMapping("/deleteall")
-public ResponseEntity<HttpStatus> deleteAllSellers() {
-    try {
+public Seller deleteAllSellers() {
         sellerRepository.deleteAll();
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+        return null;
 
 }
 
