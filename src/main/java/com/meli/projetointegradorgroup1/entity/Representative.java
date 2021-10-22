@@ -4,6 +4,7 @@ import lombok.Data;
 
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -24,6 +25,9 @@ public class Representative {
     private Warehouse warehouse = new Warehouse();
 
     public Representative() {
+    }
+
+    public Representative(Optional representative_Id) {
     }
 
     public Representative Name(String name) {
