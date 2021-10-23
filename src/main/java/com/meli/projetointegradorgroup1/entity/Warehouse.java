@@ -1,17 +1,20 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import javax.persistence.*;
 
+@Configuration
 @Entity
 @Data
 @Table(name = "warehouse")
 public class Warehouse {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "warehouseid")
+    @Column(name = "WAREHOUSE_ID")
     private Long warehouseId;
 
     @Column(name = "name")
@@ -30,5 +33,9 @@ public class Warehouse {
         this.name = name;
         this.address = address;
         this.size = size;
+    }
+
+    public Warehouse(Long warehouseId) {
+        this.warehouseId = warehouseId;
     }
 }

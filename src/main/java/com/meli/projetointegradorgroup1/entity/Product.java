@@ -9,26 +9,27 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "product")
+
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productid")
+    @Column(name = "PRODUCT_ID")
     private Long productId;
 
-    @Column(name = "productname")
+    @Column(name = "PRODUCT_NAME")
     private String productName;
 
     //data de producao
-    @Column(name = "manufacturingdate")
+    @Column(name = "MANUFACTURING_DATE")
     private String manufacturingDate;
 
     //horario da producao
-    @Column(name = "manufacturingtime")
+    @Column(name = "MANUFACTURING_TIME")
     private String manufacturingTime;
 
     //data de vencimento
-    @Column(name = "duedate")
+    @Column(name = "DUE_DATE")
     private String dueDate;
 
     @ManyToOne
@@ -71,5 +72,15 @@ public class Product {
     public Product BatchStockItemId(Long batchstockitemId){
         this.batchstockitem.setId(batchstockitemId);
         return this;
+    }
+
+    public Product(Long productId, String productName, String manufacturingDate, String manufacturingTime, String dueDate, Seller seller, BatchStockItem batchstockitem) {
+        this.productId = productId;
+        this.productName = productName;
+        this.manufacturingDate = manufacturingDate;
+        this.manufacturingTime = manufacturingTime;
+        this.dueDate = dueDate;
+        this.seller = seller;
+        this.batchstockitem = batchstockitem;
     }
 }
