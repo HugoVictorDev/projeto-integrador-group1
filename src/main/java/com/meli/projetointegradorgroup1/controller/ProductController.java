@@ -1,12 +1,17 @@
 package com.meli.projetointegradorgroup1.controller;
 
+import com.meli.projetointegradorgroup1.dto.ProductDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
+import com.meli.projetointegradorgroup1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,24 +20,26 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
+
+    @Autowired
+    ProductService productService;
 
 
     // cadastrar novo produto
     @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product){
-        try {
-                Product newProduct = productRepository.save(new Product(product.getProductName(), product.getManufacturingDate(), product.getManufacturingTime(), product.getDueDate()));
-                return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ProductDTO createProduct(@Valid @RequestBody ProductDTO productDTO){
+        productService.validaProduct(productDTO);
+        Product product = ProductDTO.converte(productDTO);
+        return ProductDTO.converte(productRepository.save(product));
     }
 
     // listar todos os produtos
     @GetMapping("/list")
-    public Iterable<Product> list(){
-        return productRepository.findAll();
+    public List<Product> getProductList(){
+        List<Product> productList = new ArrayList<>();
+        productRepository.findAll().forEach(productList::add);
+        return productList;
     }
 
     // buscar produto por id
