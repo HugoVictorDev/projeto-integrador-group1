@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "inbounderorder")
+@Table(name = "inboundorder")
 //ordem de entrada
-public class InbounderOrder {
+public class InboundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +28,11 @@ public class InbounderOrder {
 //    private Section section;
 
     //lista de lote de estoque
-    @OneToMany(mappedBy = "inbounderorder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inboundorder", cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 
 
-    public InbounderOrder(Long orderNumber, Representative representative, String orderDate) {
+    public InboundOrder(Long orderNumber, Representative representative, String orderDate) {
         this.orderNumber = orderNumber;
         this.representative = representative;
         this.orderDate = orderDate;

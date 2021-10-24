@@ -40,14 +40,14 @@ public class BatchStock {
 
 
     @ManyToOne
-    @JoinColumn(name = "inbounderorder_order_number")
-    private InbounderOrder inbounderorder;
+    @JoinColumn(name = "inboundorder_order_number")
+    private InboundOrder inboundorder;
 
-    public InbounderOrder getInbounderorder() {
-        return inbounderorder;
+    public InboundOrder getInboundorder() {
+        return inboundorder;
     }
 
-    public void setInbounderorder(InbounderOrder inbounderorder) {
-        this.inbounderorder = inbounderorder;
+    public void setInboundorder(InboundOrder inboundorder) {
+        this.inboundorder = inboundorder;
     }
 }

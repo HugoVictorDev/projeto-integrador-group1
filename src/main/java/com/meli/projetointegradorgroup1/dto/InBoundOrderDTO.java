@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.dto;
 
-import com.meli.projetointegradorgroup1.entity.InbounderOrder;
+import com.meli.projetointegradorgroup1.entity.InboundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import lombok.Data;
 
@@ -31,8 +31,8 @@ public class InBoundOrderDTO {
         this.orderDate = orderDate;
     }
 
-    public static InbounderOrder converte(InBoundOrderDTO dto){
-        return new  InbounderOrder(dto.getOrderNumber(), dto.getRepresentative(), dto.getOrderDate());
+    public static InboundOrder converte(InBoundOrderDTO dto){
+        return new  InboundOrder(dto.getOrderNumber(), dto.getRepresentative(), dto.getOrderDate());
     }
 
     public static RepresentativeDTO converte(Representative representative){
