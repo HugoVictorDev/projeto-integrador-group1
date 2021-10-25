@@ -12,7 +12,6 @@ import java.util.Optional;
 @Entity
 public class Representative {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "REPRESENTATIVE_ID")
@@ -25,7 +24,6 @@ public class Representative {
 
     @OneToOne
     @JoinColumn(name = "WAREHOUSE_ID")
-
     private Warehouse warehouse = new Warehouse();
 
     public Representative() {
@@ -47,5 +45,9 @@ public class Representative {
     public Representative WarehouseID(Long warehouseID) {
         this.warehouse.setWarehouseId(warehouseID);
         return this;
+    }
+
+    public void setWarehouseID(long warehouseID) {
+        this.warehouse.setWarehouseId(warehouseID);
     }
 }

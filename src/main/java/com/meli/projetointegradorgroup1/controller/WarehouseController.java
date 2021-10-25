@@ -1,7 +1,9 @@
 package com.meli.projetointegradorgroup1.controller;
 
+import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
+import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +18,17 @@ public class WarehouseController {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
+    @Autowired
+    private WarehouseServices warehouseServices;
+
     // criar warehouse
     @PostMapping("/create")
-    public ResponseEntity<Warehouse> createWarehouse(@RequestBody Warehouse warehouse){
-        try {
-            Warehouse newWarehouse = warehouseRepository.save(new Warehouse(/*warehouse.getName(), warehouse.getAddress(), warehouse.getSize()*/));
-            return new ResponseEntity<>(newWarehouse, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    public Warehouse createWarehouse(@RequestBody Warehouse warehouse){
+           warehouseServices.valida(warehouse);
+           Warehouse _wareHouse = warehouseRepository.save(warehouse);
+           return _wareHouse;
         }
-    }
+
 
     // listar warehouses
     @GetMapping("/list")

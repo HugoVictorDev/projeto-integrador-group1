@@ -6,28 +6,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Service
-@Configuration
 @Entity
 @Data
-@Table(name = "warehouse")
 public class Warehouse {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WAREHOUSE_ID")
     private Long warehouseId;
 
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String name;
 
-    @Column(name = "address")
+    @Column(name = "ADDRESS")
     private String address;
 
-    @Column(name = "size")
+    @Column(name = "SIZE")
     private String size;
+
+
 
     public Warehouse() {
     }

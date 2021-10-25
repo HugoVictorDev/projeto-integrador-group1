@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.dto;
 
 import com.meli.projetointegradorgroup1.entity.Representative;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.MaskFormatter;
 import javax.validation.constraints.*;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Data
@@ -38,14 +41,15 @@ public class RepresentativeDTO {
         this.warehouseID = warehouseID;
     }
 
+
     public static Representative converte(RepresentativeDTO dto){
         return new  Representative().Name(dto.getName())
                                     .Cpf(RepresentativeServices.maskCpf(dto.getCpf()))
                                     .WarehouseID(Long.parseLong(dto.getWarehouseID()));
     }
 
-    public static RepresentativeDTO converte(Representative representative){
+    public static RepresentativeDTO converte(Representative representative) {
         return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId()));
-    }
 
+    }
 }

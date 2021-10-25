@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepresentativeRepository extends JpaRepository<Representative, Long>{
-    Representative findByCpf(String cpf);
     Representative findAllByCpfAndWarehouse_WarehouseId(String cpf, Long warehouseID);
 }
