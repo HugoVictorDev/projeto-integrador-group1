@@ -4,8 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Entity
@@ -24,19 +23,24 @@ public class InboundOrder {
     private Representative representative;
 
     @Column(name = "orderDate")
-    private String orderDate;
+    private LocalDate orderDate;
 //    private Section section;
 
     //lista de lote de estoque
-    @OneToMany(mappedBy = "inboundorder", cascade = CascadeType.ALL)
-    private List<BatchStock> batchStock;
+    //@OneToMany(mappedBy = "inboundorder", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "inboundorder", cascade = CascadeType.ALL)
+    private BatchStock batchStock;
 
 
-    public InboundOrder(Long orderNumber, Representative representative, String orderDate) {
+
+    public InboundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
         this.orderNumber = orderNumber;
         this.representative = representative;
+        this.batchStock = batchStock;
         this.orderDate = orderDate;
+
     }
+
 
     public Long getOrderNumber() {
         return orderNumber;
@@ -46,7 +50,7 @@ public class InboundOrder {
         return representative;
     }
 
-    public String getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 

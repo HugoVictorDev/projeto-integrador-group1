@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
 
 
+import com.meli.projetointegradorgroup1.dto.InBoundOrderDTO;
 import com.meli.projetointegradorgroup1.entity.InboundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.InboundOrderRepository;
@@ -10,7 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.Date;
 
 
 @RestController
@@ -19,6 +21,7 @@ public class InboundOrderController {
 
     @Autowired
     private InboundOrderRepository inboundOrderRepository;
+    @Autowired
     private RepresentativeRepository representativeRepository;
 
     @GetMapping("/list")
@@ -29,10 +32,10 @@ public class InboundOrderController {
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
     @PostMapping("/create/{representativeId")
-    public ResponseEntity<InboundOrder> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InboundOrder inboundOrder){
+    public ResponseEntity<InboundOrder> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrderDTO inBoundOrderDTO){
         Representative representative = new Representative(representativeRepository.findById(representativeId));
 
-        InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder( inboundOrder.getOrderNumber() , representative, inboundOrder.getOrderDate()));
+        InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder(inBoundOrderDTO.getOrderNumber(), representative , inBoundOrderDTO.getBatchStock(), LocalDate.now()));
         return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
     }
 
@@ -50,7 +53,7 @@ public class InboundOrderController {
         inboundOrderRepository.deleteById(representativeId);
 
         Representative representative = new Representative(representativeRepository.findById(representativeId));
-        InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder( inboundOrder.getOrderNumber() , representative, inboundOrder.getOrderDate()));
+        InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder( inboundOrder.getOrderNumber() , representative,inboundOrder.getBatchStock(), inboundOrder.getOrderDate()));
 
         return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
     }
