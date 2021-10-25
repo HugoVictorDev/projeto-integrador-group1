@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Entity
@@ -42,6 +43,7 @@ public class InboundOrder {
     }
 
 
+
     public Long getOrderNumber() {
         return orderNumber;
     }
@@ -53,6 +55,5 @@ public class InboundOrder {
     public LocalDate getOrderDate() {
         return orderDate;
     }
-
 
 }

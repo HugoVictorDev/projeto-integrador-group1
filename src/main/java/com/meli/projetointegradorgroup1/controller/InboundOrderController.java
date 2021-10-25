@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 
 
 @RestController
@@ -32,11 +33,12 @@ public class InboundOrderController {
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
     @PostMapping("/create/{representativeId")
-    public ResponseEntity<InboundOrder> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrderDTO inBoundOrderDTO){
+    public ResponseEntity<InBoundOrderDTO> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrderDTO inBoundOrderDTO){
         Representative representative = new Representative(representativeRepository.findById(representativeId));
 
         InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder(inBoundOrderDTO.getOrderNumber(), representative , inBoundOrderDTO.getBatchStock(), LocalDate.now()));
-        return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
+        InBoundOrderDTO _inboundOrderDTO = inBoundOrderDTO.converte(_inboundOrder);
+        return new ResponseEntity<>(_inboundOrderDTO, HttpStatus.CREATED);
     }
 
     //deletar Inbound pelo ID
@@ -46,15 +48,36 @@ public class InboundOrderController {
             return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //pelo id
+    @GetMapping("{id}")
+    public ResponseEntity<InBoundOrderDTO> getInBoundOrderItemById(@PathVariable("id") Long id) {
+
+        Optional<InboundOrder> _inboundOrder = inboundOrderRepository.findById(id);
+        if (_inboundOrder.isPresent()) {
+            InboundOrder inBoundOrder = _inboundOrder.get();
+            InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(inBoundOrder);
+            return new ResponseEntity<>(_inboundOrderDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+    }
+
+
     //Update Inbound pelo ID
-    @DeleteMapping("/update/{ordernumber}")
-    public ResponseEntity<InboundOrder> updateOrderByOrderNumber(@PathVariable("ordernumber") Long representativeId, @RequestBody InboundOrder inboundOrder) {
+    @DeleteMapping("/update/")
+    public ResponseEntity<HttpStatus> updateOrderByOrderNumber(@RequestBody InboundOrder inboundOrder) {
 
-        inboundOrderRepository.deleteById(representativeId);
+        Optional<InboundOrder> _inboundOrder = inboundOrderRepository.findById(inboundOrder.getOrderNumber());
+        if (_inboundOrder.isPresent()) {
+            InboundOrder inBoundOrder = _inboundOrder.get();
+            inboundOrderRepository.deleteById(inboundOrder.getOrderNumber());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        Representative representative = new Representative(representativeRepository.findById(representativeId));
-        InboundOrder _inboundOrder = inboundOrderRepository.save(new InboundOrder( inboundOrder.getOrderNumber() , representative,inboundOrder.getBatchStock(), inboundOrder.getOrderDate()));
 
-        return new ResponseEntity<>(_inboundOrder, HttpStatus.CREATED);
     }
 }

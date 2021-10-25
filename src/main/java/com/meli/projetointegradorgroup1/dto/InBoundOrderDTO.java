@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 public class InBoundOrderDTO {
@@ -40,6 +41,7 @@ public class InBoundOrderDTO {
     }
 
 
+
     public Long getOrderNumber() {
         return orderNumber;
     }
@@ -49,16 +51,16 @@ public class InBoundOrderDTO {
     }
 
 
-
-
-    public BatchStock getBatchStock() {
-        return batchStock;
-    }
     public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public static InboundOrder converte(InBoundOrderDTO dto){
+    public BatchStock getBatchStock() {
+        return batchStock;
+    }
+
+
+    public InboundOrder converte(InBoundOrderDTO dto){
         return new  InboundOrder(dto.getOrderNumber(), dto.getRepresentative(), dto.getBatchStock() , dto.getOrderDate()) ;
     }
 
@@ -67,4 +69,6 @@ public class InBoundOrderDTO {
     public static InBoundOrderDTO converte(InboundOrder inboundOrder){
         return new InBoundOrderDTO(inboundOrder.getOrderNumber(),inboundOrder.getRepresentative(),inboundOrder.getBatchStock(),inboundOrder.getOrderDate());
     }
+
+
 }
