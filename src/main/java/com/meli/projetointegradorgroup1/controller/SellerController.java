@@ -54,19 +54,12 @@ public class SellerController {
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public Seller updateSeller(@PathVariable("id") Long id, @RequestBody Seller seller) {
+    public SellerRequestDTO updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
 
         Optional<Seller> sellerFind = sellerRepository.findById(id);
+        Seller _seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
+        return sellerService.convertEntityToDTORequest(sellerRepository.save(_seller));
 
-        if (sellerFind.isPresent()) {
-            Seller _seller = sellerFind.get();
-            _seller.setName(seller.getName());
-            _seller.setCpf(seller.getCpf());
-            _seller.setProductList(seller.getProductList()); // tem que ver como fazer a tratativa de edicao da lista.
-            return sellerRepository.save(_seller);
-        } else {
-            return null;
-        }
     }
 
 //delete todos vendedores

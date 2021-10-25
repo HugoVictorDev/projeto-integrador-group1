@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    @Query("Select u from Seller u")
-    List<Seller> getAllSelers();
+
+
 }

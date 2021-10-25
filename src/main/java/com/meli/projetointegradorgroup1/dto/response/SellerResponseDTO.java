@@ -19,21 +19,18 @@ import java.util.List;
 @AllArgsConstructor
 public class SellerResponseDTO {
 
-    @NotBlank
-    @Size(min = 3, message = "minimo 3 letras")
-    @Column(name = "name")
+
     private String name;
-    @Column(name = "cpf")
     private String cpf;
+    private String email;
 
 
 //    private List<Product> productList;
 
 public SellerResponseDTO(Seller seller){
-
-
     this.name = seller.getName();
     this.cpf = seller.getCpf();
+    this.email = seller.getEmail();
 //    this.productList = seller.getProductList();
 }
 

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,17 +22,17 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long sellerId;
-
-    @NotBlank
-    @Size(min = 3, message = "minimo 3 letras")
     @Column(name = "name")
     private String name;
     @Column(name = "cpf")
     private String cpf;
+    @Column(name = "email")
+    private String email;
 
-    public Seller(String name, String cpf, List<Product> productList) {
+    public Seller(String name, String cpf, String email, List<Product> productList) {
         this.name = name;
         this.cpf = cpf;
+        this.email = email;
         this.productList = productList;
     }
 

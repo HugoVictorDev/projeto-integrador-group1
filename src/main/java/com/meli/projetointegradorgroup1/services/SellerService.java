@@ -1,13 +1,14 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,30 @@ public class SellerService {
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
         sellerResponseDTO.setName(seller.getName());
         sellerResponseDTO.setCpf(seller.getCpf());
+        sellerResponseDTO.setEmail(seller.getEmail());
         return sellerResponseDTO;
     }
 
+
+    public Seller validaUpdate(Optional<Seller> sellerFind, SellerRequestDTO sellerRequestDTO) {
+        if (sellerFind.isPresent()) {
+            Seller _seller = sellerFind.get();
+            _seller.setName(sellerRequestDTO.getName());
+            _seller.setCpf(sellerRequestDTO.getCpf());
+            _seller.setEmail(sellerRequestDTO.getEmail());
+
+            return _seller;
+        }else{
+            throw new RuntimeException("Seller não encontrado");
+        }
+    }
+
+
+    public SellerRequestDTO convertEntityToDTORequest(Seller seller){
+        SellerRequestDTO sellerRequestDTO = new SellerRequestDTO();
+        sellerRequestDTO.setName(seller.getName());
+        sellerRequestDTO.setCpf(seller.getCpf());
+        sellerRequestDTO.setEmail(seller.getEmail());
+        return sellerRequestDTO;
+    }
 }
