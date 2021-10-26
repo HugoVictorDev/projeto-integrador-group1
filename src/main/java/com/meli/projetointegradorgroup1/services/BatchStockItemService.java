@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,11 +30,26 @@ public class BatchStockItemService {
 
 
     public BatchstockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
-        BatchstockItemResponseDTO sellerResponseDTO = new BatchstockItemResponseDTO();
-        sellerResponseDTO.setQuantity(sellerResponseDTO.getQuantity());
-        sellerResponseDTO.setProductlist(sellerResponseDTO.getProductlist());
-        sellerResponseDTO.setBatchstock(sellerResponseDTO.getBatchstock());
-        return sellerResponseDTO;
+        BatchstockItemResponseDTO batchstockItemResponseDTO = new BatchstockItemResponseDTO();
+        batchstockItemResponseDTO.setQuantity(batchStockItem.getQuantity());
+        batchstockItemResponseDTO.setProductlist(batchStockItem.getProductlist());
+        batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
+        return batchstockItemResponseDTO;
+    }
+
+    //validacao update por ID
+    public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
+        if (batchStockItemFind.isPresent()) {
+            BatchStockItem _batchStockItem = batchStockItemFind.get();
+            _batchStockItem.setQuantity(batchStockItem.getQuantity());
+            _batchStockItem.setProductlist(batchStockItem.getProductlist());
+            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
+
+
+            return _batchStockItem;
+        }else{
+            throw new RuntimeException("BatchStockItem não encontrado");
+        }
     }
 
 }

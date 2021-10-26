@@ -32,7 +32,7 @@ public class BatchStockItemController {
 
     //Cadastrar BatchStockItem
     @PostMapping("/create")
-    public BatchStockItem createSeller(@Valid @RequestBody BatchStockItem batchStockItem){
+    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem){
        return this.batchStockItemRepository.save(batchStockItem);
 
     }
@@ -52,21 +52,12 @@ public class BatchStockItemController {
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public BatchStockItem updateSeller(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
+    public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
 
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
+        BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
+        return batchStockItemRepository.save(_bat);
 
-
-        if (batchStockItemFind.isPresent()) {
-            BatchStockItem _batchStockItem = batchStockItemFind.get();
-            _batchStockItem.setQuantity(batchStockItem.getQuantity());
-            _batchStockItem.setProductlist(batchStockItem.getProductlist());
-            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
-            return this.batchStockItemRepository.save(_batchStockItem);
-
-        } else {
-            return null;
-        }
     }
 
 //delete todos vendedores

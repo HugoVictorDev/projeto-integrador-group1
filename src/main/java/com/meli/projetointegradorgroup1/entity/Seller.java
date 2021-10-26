@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -22,10 +23,15 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long sellerId;
+
+    @NotBlank
+    @Size(min = 3, message = "minimo 3 letras")
     @Column(name = "name")
     private String name;
+    @CPF
     @Column(name = "cpf")
     private String cpf;
+    @Email
     @Column(name = "email")
     private String email;
 

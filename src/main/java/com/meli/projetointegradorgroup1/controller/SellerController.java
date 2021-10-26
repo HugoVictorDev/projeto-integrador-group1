@@ -42,14 +42,7 @@ public class SellerController {
     @GetMapping("{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
         return sellerService.convertEntityToDTO(sellerRepository.getById(id));
-//        Optional<Seller> sellerFind = sellerRepository.findById(id);
-//
-//        if (sellerFind.isPresent()) {
-//            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
-//            BeanUtils.copyProperties(sellerFind, sellerResponseDTO);
-//            return sellerResponseDTO;
-//        }
-//        return null;
+
     }
 
     // atualizando vendedor pelo ID

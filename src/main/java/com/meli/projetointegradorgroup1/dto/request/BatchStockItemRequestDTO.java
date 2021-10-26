@@ -3,15 +3,11 @@ package com.meli.projetointegradorgroup1.dto.request;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.Seller;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -22,17 +18,19 @@ import java.util.List;
 @AllArgsConstructor
 public class BatchStockItemRequestDTO {
 
-
+    @NotBlank
+    @Size(min = 3, message = "minimo 3 letras")
     private int quantity;
     private List<Product> productlist;
     private BatchStock batchstock;
 
 
-//     public BatchStockItem build(){
-//         BatchStockItem batchStockItem = new BatchStockItem().setQuantity(this.quantity);
-
-
-//        return batchStockItem;
-//    }
+     public BatchStockItem build(){
+         BatchStockItem batchStockItem = new BatchStockItem()
+                 .setBatchstock(this.batchstock)
+                 .setQuantity(this.quantity)
+                 .setProductlist(this.productlist);
+        return batchStockItem;
+    }
 
 }
