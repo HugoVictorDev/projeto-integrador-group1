@@ -1,15 +1,23 @@
 package com.meli.projetointegradorgroup1.controller;
+
+
+import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
+import com.meli.projetointegradorgroup1.services.BatchStockItemService;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +28,12 @@ public class BatchStockItemController {
     BatchStockItemRepository batchStockItemRepository;
 
     @Autowired
+    BatchStockItemService batchStockItemService;
+
+    //Cadastrar BatchStockItem
+    @PostMapping("/create")
+    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem){
+       return this.batchStockItemRepository.save(batchStockItem);
     SellerRepository sellerRepository;
 
     //Cadastrar vendedor
@@ -34,73 +48,66 @@ public class BatchStockItemController {
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
-    public ResponseEntity<List<BatchStockItem>> getBatchStockItemList() {
-        try {
-            List<BatchStockItem> batchStockItem = new ArrayList<BatchStockItem>();
-
-            batchStockItemRepository.findAll().forEach(batchStockItem::add);
-
-            return new ResponseEntity<>(batchStockItem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    List<BatchstockItemResponseDTO> getBatchStockItemList() {
+        return batchStockItemService.getBatchStockItemsList();
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
-    public ResponseEntity<BatchStockItem> getBatchStockItemById(@PathVariable("id") Long id) {
-        Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
-
-        if (batchStockItemFind.isPresent()) {
-            return new ResponseEntity<>(batchStockItemFind.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public BatchstockItemResponseDTO getSellerById(@PathVariable("id") Long id) {
+        return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
+//
     }
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<BatchStockItem> updateBatchStockItem(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
+    public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
+
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
-
-        if (batchStockItemFind.isPresent()) {
-            BatchStockItem _batchStockItemFind = batchStockItemFind.get();
-            _batchStockItemFind.setQuantity(batchStockItem.getQuantity());
-            _batchStockItemFind.setProductlist(batchStockItem.getProductlist());
-            _batchStockItemFind.setBatchstock(batchStockItem.getBatchstock()); // tem que ver como fazer a tratativa de edicao da lista.
-            return new ResponseEntity<>(batchStockItemRepository.save(_batchStockItemFind), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    //delete todos vendedores
-    @DeleteMapping("/deleteall")
-    public ResponseEntity<HttpStatus> deleteAllBatchStockItem() {
-        try {
-            batchStockItemRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
+        return batchStockItemRepository.save(_bat);
 
     }
 
-    //deletar vendedor pelo ID
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
-        try {
-            batchStockItemRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//delete todos vendedores
+@DeleteMapping("/deleteall")
+public BatchStockItem deleteAllBatchStockItems() {
+    batchStockItemRepository.deleteAll();
+        return null;
+
+}
+
+//deletar vendedor pelo ID
+@DeleteMapping("/delete/{id}")
+public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
+    try {
+        batchStockItemRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
+    //tratamento de mensagens de erro do bad request seguindo as regras do VALID
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
         }
+        );
+        return errors;
     }
 
 
 }
-
