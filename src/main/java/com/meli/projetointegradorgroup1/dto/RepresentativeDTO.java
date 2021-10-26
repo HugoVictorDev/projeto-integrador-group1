@@ -27,7 +27,7 @@ public class RepresentativeDTO {
     @Pattern(regexp="^[0-9]{11}",message = "Deve conter exatamente 11 digitos e apenas numeros, ")
     private String cpf;
 
-    @NotBlank @NotNull @NotEmpty(message = "warehouseID é obrigatorio")
+    @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")
     @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros,")
     private String warehouseID;
 

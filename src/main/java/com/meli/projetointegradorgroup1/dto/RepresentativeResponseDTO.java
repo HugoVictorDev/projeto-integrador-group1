@@ -35,6 +35,7 @@ public class RepresentativeResponseDTO {
         this.warehouse = warehouse;
     }
 
+
     public static List<RepresentativeResponseDTO>converte(List<Representative> representatives){
         List<RepresentativeResponseDTO> listRepresentant = new ArrayList<>();
         for (Representative representative: representatives) {

@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 @Service
 @Data
 @Entity
+@Table(name = "representative")
 public class Representative {
 
     @Id
@@ -17,9 +19,9 @@ public class Representative {
     @Column(name = "REPRESENTATIVE_ID")
     private Long representative_Id;
 
-    @Column(name = "NAME")
+    @NotNull @Column(name = "NAME")
     private String name;
-    @Column(name = "CPF")
+    @NotNull @Column(name = "CPF")
     private String cpf;
 
     @OneToOne

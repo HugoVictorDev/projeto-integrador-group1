@@ -37,12 +37,10 @@ public class RepresantiveController {
     //Consultar lista de  representantes
     @GetMapping("/list")
     public List<RepresentativeResponseDTO> getRepresentativeList() {
-           List<Representative> representative = new ArrayList<>();
-           representativeRepository.findAll().forEach(representative::add);
-           return RepresentativeResponseDTO.converte(representative);
+           return RepresentativeResponseDTO.converte(representativeServices.listaRepresentative());
     }
 
-
+    //Atualizar por id
     @PutMapping("/update/{id}")
     public RepresentativeDTO updateRepresentative(@PathVariable("id") Long id,@Valid @RequestBody RepresentativeDTO representativedto) {
            Optional<Representative> representativeFind = representativeRepository.findById(id);

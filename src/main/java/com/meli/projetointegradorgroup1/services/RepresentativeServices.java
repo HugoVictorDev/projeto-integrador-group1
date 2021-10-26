@@ -7,18 +7,19 @@ import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RepresentativeServices{
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
 
     @Autowired
     private RepresentativeRepository representativeRepository;
 
-
+    @Autowired
+    WarehouseServices warehouseServices;
 
     public void valida(RepresentativeDTO representativedto)  {
         validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
@@ -26,17 +27,11 @@ public class RepresentativeServices{
     }
 
     private void validarWarehouse(Long warehouseID){
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
-           throw new RuntimeException("Warehouse não cadastrada");
-           }
+        warehouseServices.valida(warehouseID);
     }
 
-    private Warehouse ObterWarehouse(Long warehouseID){
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
-            throw new RuntimeException("Warehouse não cadastrada");
-        }return warehouse;
+    private Warehouse obterWarehouse(Long warehouseID){
+        return warehouseServices.obterWarehouse(warehouseID);
     }
 
     private void validarCpf(String cpf, Long warehouseID)  {
@@ -45,7 +40,6 @@ public class RepresentativeServices{
             throw new RuntimeException("CPF já cadstrado para essa Warehouse");
         }
     }
-
 
     public static String maskCpf(String cpf) {
        return (cpf.substring(0, 3) + "." +cpf.substring(3, 6) + "." +cpf.substring(6, 9) + "-" +cpf.substring(9, 11));
@@ -56,8 +50,8 @@ public class RepresentativeServices{
             Representative representative = representativeFind.get();
             representative.setName(representativedto.getName());
             representative.setCpf(maskCpf(representativedto.getCpf()));
-            representative.setWarehouse(ObterWarehouse(Long.parseLong(representativedto.getWarehouseID())));
-        return representative;
+            representative.setWarehouse(obterWarehouse(Long.parseLong(representativedto.getWarehouseID())));
+            return representative;
         }else{
             throw new RuntimeException("Representante não encontrado");
         }
@@ -70,5 +64,12 @@ public class RepresentativeServices{
     }else{
         throw new RuntimeException("Representante não encontrado");
         }
+    }
+
+    public List<Representative> listaRepresentative() {
+        List<Representative> representativeList = representativeRepository.findAll();
+        if(representativeList.size() == 0){
+            throw new RuntimeException("Não existem Representantes cadastradas");
+        }return representativeList;
     }
 }
