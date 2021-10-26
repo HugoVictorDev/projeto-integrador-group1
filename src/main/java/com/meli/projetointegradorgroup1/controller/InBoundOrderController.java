@@ -25,10 +25,10 @@ public class InBoundOrderController {
     private InBoundOrderRepository inboundOrderRepository;
     @Autowired
     RepresentativeRepository representativeRepository;
-    @Autowired
-    private InBoundOrderDTO inBoundOrderDTO;
-    @Autowired
-    private InboundOrderService inBOService;
+    //@Autowired
+    //private InBoundOrderDTO inBoundOrderDTO;
+    //@Autowired
+    private InboundOrderService inboundOrderService;
 
 
     @GetMapping("/list")
@@ -42,9 +42,9 @@ public class InBoundOrderController {
 
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
-    @PostMapping("/create/{representativeId")
+    @PostMapping("/inboundorder/{representativeId")
     public ResponseEntity<InBoundOrderDTO> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrder inBoundOrder){
-        InBoundOrder _inBoundOrder  = inBOService.saveIBO(inBoundOrder,representativeId);
+        InBoundOrder _inBoundOrder  = inboundOrderService.saveIBO(inBoundOrder,representativeId);
         InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(_inBoundOrder);
         return new ResponseEntity<>(_inboundOrderDTO, HttpStatus.CREATED);
     }
@@ -52,41 +52,23 @@ public class InBoundOrderController {
 
     //deletar Inbound pelo ID
     @DeleteMapping("/delete/{ordernumber}")
-    public ResponseEntity<HttpStatus> deleteInboundOrderByOrderNumber(@PathVariable("ordernumber") Long id) {
-            inboundOrderRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<HttpStatus> deleteInboundOrderByOrderNumber(@PathVariable("ordernumber") Long ordernumber) {
+        inboundOrderService.deleteIBO(ordernumber);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    //pelo id
-    @GetMapping("{id}")
-    public ResponseEntity<InBoundOrderDTO> getInBoundOrderItemById(@PathVariable("id") Long id) {
-
-        Optional<InBoundOrder> _inboundOrder = inboundOrderRepository.findById(id);
-        if (_inboundOrder.isPresent()) {
-
-            InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(inBoundOrder);
-            return new ResponseEntity<>(_inboundOrderDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-
-    }
-
 
     //Update Inbound pelo ID
-    @DeleteMapping("/update/")
-    public ResponseEntity<HttpStatus> updateOrderByOrderNumber(@RequestBody InBoundOrder inboundOrder) {
+    @PutMapping("/inboundorder/")
+    public ResponseEntity<HttpStatus> updateOrderByOrderNumber(@RequestBody InBoundOrder inBoundOrder) {
 
-        Optional<InBoundOrder> _inboundOrder = inboundOrderRepository.findById(inboundOrder.getOrderNumber());
+        //InBoundOrder inBoundOrder = new InBoundOrder();
+        inBoundOrder = inboundOrderService.saveIBO(inBoundOrder,inBoundOrder.getRepresentative().getRepresentative_Id());
+
+        Optional<InBoundOrder> _inboundOrder = inboundOrderRepository.findById(inBoundOrder.getOrderNumber());
         if (_inboundOrder.isPresent()) {
-            InBoundOrder inBoundOrder = _inboundOrder.get();
-            inboundOrderRepository.deleteById(inboundOrder.getOrderNumber());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-
     }
 }

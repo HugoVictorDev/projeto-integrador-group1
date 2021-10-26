@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface InBoundOrderRepository extends JpaRepository<InBoundOrder, Long> {
-
-    void deleteById(Long Id);
+    //@Modifying
+    //@Query("delete from InBoundOrdem ibo where ibo.OrderNumber = ?1")
+    Optional<InBoundOrder> deleteByOrderNumber(Long OrderNumber);
     Optional<InBoundOrder> findById(Long Id);
+
+
+    //void deleteInboundOrderByOrderNumber(Long OrderNumber);
 }
