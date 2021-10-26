@@ -19,10 +19,14 @@ VALUES (1, '23', '56', '88', '99', '98'),
        (2, '23', '56', '88', '99', '98');
 
 --------------------------------------------------------------------------------
-INSERT INTO BATCHSTOCKITEM (ID, QUANTITY, BATCHSTOCK_ID)
+INSERT INTO BATCHSTOCKITEMS (ID, QUANTITY, BATCHSTOCK_ID)
 VALUES (1, 1, 1),
        (2, 2, 2);
 
 --------------------------------------------------------------------------------
 
+INSERT INTO INBOUNDORDER ( ORDER_DATE, REPRESENTATIVE)
+VALUES ( CURRENT_DATE, 1),
+       ( CURRENT_DATE, 1);
 
+--------------------------------------------------------------------------------

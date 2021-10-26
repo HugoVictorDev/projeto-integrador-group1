@@ -9,6 +9,8 @@ import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ProductService {
 
@@ -27,14 +29,14 @@ public class ProductService {
     }
 
     public void validaSellerId(Long sellerId){
-        Seller seller = sellerRepository.findBySellerId(sellerId);
+        Optional<Seller> seller = sellerRepository.findById(sellerId);
         if (seller == null){
             throw new RuntimeException("Vendedor nao cadastrado");
         }
     }
 
     public void validaBatchStockItem(Long batchStockItemId){
-        BatchStockItem batchStockItem = batchStockItemRepository.findBatchStockItemById(batchStockItemId);
+        Optional<BatchStockItem> batchStockItem = batchStockItemRepository.findById(batchStockItemId);
         if (batchStockItem == null){
             throw new RuntimeException("Estoque de Item nao cadastrado");
         }
