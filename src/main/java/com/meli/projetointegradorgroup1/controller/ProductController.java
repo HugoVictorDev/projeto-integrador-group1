@@ -1,16 +1,14 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.ProductDTO;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
-import com.meli.projetointegradorgroup1.service.ProductService;
+import com.meli.projetointegradorgroup1.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,58 +26,42 @@ public class ProductController {
 
     // cadastrar novo produto
     @PostMapping("/create")
-    public ProductDTO createProduct(@Valid @RequestBody ProductDTO productDTO){
-        productService.validaProduct(productDTO);
-        Product product = ProductDTO.converte(productDTO);
-        return ProductDTO.converte(productRepository.save(product));
+    public ProductRequestDto createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
+        this.productRepository.save(productRequestDto.build());
+        return productRequestDto;
     }
 
     // listar todos os produtos
     @GetMapping("/list")
-    public List<Product> getProductList(){
-        List<Product> productList = new ArrayList<>();
-        productRepository.findAll().forEach(productList::add);
-        return productList;
+    public List<ProductResponseDto> responseDtoList(){
+        return productService.listProductDto();
     }
 
     // buscar produto por id
-    @GetMapping("/list/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id){
-        Optional<Product> productFind = productRepository.findById(id);
+    @GetMapping("/id/{id}")
+    public ProductResponseDto getById(@PathVariable("id") Long id){
+        return productService.productDtoById(productRepository.getById(id));
+    }
 
-        if (productFind.isPresent()){
-            return new ResponseEntity<>(productFind.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    // buscar produto por nome
+    @GetMapping("/list/{productName}")
+    public Iterable<Product> getByName(@PathVariable String productName){
+        return productRepository.findByProductNameContaining(productName);
     }
 
     // atualizar produto por id
     @PutMapping("/update/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id, @RequestBody Product product){
-        Optional<Product> productFind = productRepository.findById(id);
+    public ProductRequestDto updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
 
-        if (productFind.isPresent()){
-            Product newProduct = productFind.get();
-            newProduct.setProductName(product.getProductName());
-            newProduct.setManufacturingDate(product.getManufacturingDate());
-            newProduct.setManufacturingTime(product.getManufacturingTime());
-            newProduct.setDueDate(product.getDueDate());
-            return new ResponseEntity<>(productRepository.save(newProduct), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Optional<Product> productFind = productRepository.findById(id);
+        Product newProduct = productService.validaUpdate(productFind, productRequestDto);
+        return productService.convertEntityToDtoRequest(productRepository.save(newProduct));
     }
 
     // deletar produto por id
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id){
-        try {
-            productRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public void deleteProduct(@PathVariable Long id){
+        productRepository.deleteById(id);
     }
 
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Product findByProductId(Long productId);
+    public Iterable<Product> findByProductNameContaining(String productName);
 
 }
