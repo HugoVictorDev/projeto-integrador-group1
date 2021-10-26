@@ -1,26 +1,47 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 
+import javax.persistence.*;
+import java.util.Optional;
 
-
-
+@Data
+@Entity
 public class Representative {
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "REPRESENTATIVE_ID")
+    private Long representative_Id;
 
-    private Long representativeId;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "CPF")
     private String cpf;
 
+    @OneToOne
+    @JoinColumn(name = "WAREHOUSE_ID")
+    private Warehouse warehouse = new Warehouse();
 
+    public Representative() {
+    }
 
+    public Representative(Optional representative_Id) {
+    }
 
+    public Representative Name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Representative Cpf(String cpf) {
+        this.cpf = cpf;
+        return this;
+    }
+
+    public Representative WarehouseID(Long warehouseID) {
+        this.warehouse.setWarehouseId(warehouseID);
+        return this;
+    }
 }

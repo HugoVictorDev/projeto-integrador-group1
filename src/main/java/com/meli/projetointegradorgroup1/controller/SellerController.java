@@ -32,7 +32,7 @@ public class SellerController {
         return sellerRequestDTO;
     }
 
-    //Consultar lista de  vendedores
+    //Consultar lista de  vendeokdores
     @GetMapping("/list")
      List<SellerResponseDTO> getSellerList() {
         return sellerService.getSellers();
