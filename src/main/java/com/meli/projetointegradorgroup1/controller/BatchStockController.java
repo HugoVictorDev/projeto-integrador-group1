@@ -1,7 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
 
-
 import com.meli.projetointegradorgroup1.dto.InBoundOrderDTO;
+import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-
-@RestController
-@RequestMapping(path = "/inbound")
-public class InBoundOrderController {
+public class BatchStockController {
 
     @Autowired
     private InBoundOrderRepository inboundOrderRepository;
@@ -30,7 +27,7 @@ public class InBoundOrderController {
 
 
     @GetMapping("/list")
-    public Iterable<InBoundOrder> listInbound(){
+    public Iterable<BatchStock> listInbound(){
         return inboundOrderRepository.findAll();
     }
 

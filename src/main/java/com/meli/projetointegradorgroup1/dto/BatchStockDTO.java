@@ -1,17 +1,20 @@
 
-package com.meli.projetointegradorgroup1.entity;
+package com.meli.projetointegradorgroup1.dto;
 
+import com.meli.projetointegradorgroup1.entity.BatchStockItem;
+import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "batchstock")
 //conjunto de lote
-public class BatchStock {
+public class BatchStockDTO {
 
     //numero do lote
     @Id

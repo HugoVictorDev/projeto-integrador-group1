@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-public class InboundOrderService {
+public class BatchStockServices {
     @Autowired
     private RepresentativeRepository representativeRepository;
     @Autowired
