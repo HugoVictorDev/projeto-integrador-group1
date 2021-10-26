@@ -1,7 +1,6 @@
 
 package com.meli.projetointegradorgroup1.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,5 +38,15 @@ public class BatchStock {
     private List<BatchStockItem> batchStockItems;
 
 
+    @ManyToOne
+    @JoinColumn(name = "inboundorder_order_number")
+    private InBoundOrder inboundorder;
 
+    public InBoundOrder getInboundorder() {
+        return inboundorder;
+    }
+
+    public void setInboundorder(InBoundOrder inboundorder) {
+        this.inboundorder = inboundorder;
+    }
 }
