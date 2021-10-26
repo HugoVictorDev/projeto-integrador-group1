@@ -27,7 +27,7 @@ VALUES (1, '23', '56', '88', '99', '98'),
        (2, '23', '56', '88', '99', '98');
 
 --------------------------------------------------------------------------------
-INSERT INTO BATCHSTOCKITEM (ID, QUANTITY, BATCHSTOCK_ID)
+INSERT INTO BATCHSTOCKITEMS (ID, QUANTITY, BATCHSTOCK_ID)
 VALUES (1, 1, 1),
        (2, 2, 2);
 
@@ -38,5 +38,6 @@ VALUES (1, 'CAIO', '789.456.789.45');
 --------------------------------------------------------------------------------
 INSERT INTO PRODUCT (PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE, BATCHSTOCKITEM_ID, SELLER_SELLER_ID )
 VALUES ('lela', 'lala', 'lala', 'lala',1,1 )
+
 
 --------------------------------------------------------------------------------
