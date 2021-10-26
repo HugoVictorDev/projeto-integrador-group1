@@ -1,18 +1,13 @@
 package com.meli.projetointegradorgroup1.dto;
 
 import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.InboundOrder;
+import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
-import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 
 public class InBoundOrderDTO {
@@ -60,13 +55,13 @@ public class InBoundOrderDTO {
     }
 
 
-    public InboundOrder converte(InBoundOrderDTO dto){
-        return new  InboundOrder(dto.getOrderNumber(), dto.getRepresentative(), dto.getBatchStock() , dto.getOrderDate()) ;
+    public InBoundOrder converte(InBoundOrderDTO dto){
+        return new InBoundOrder(dto.getOrderNumber(), dto.getRepresentative(), dto.getBatchStock() , dto.getOrderDate()) ;
     }
 
 
 
-    public static InBoundOrderDTO converte(InboundOrder inboundOrder){
+    public static InBoundOrderDTO converte(InBoundOrder inboundOrder){
         return new InBoundOrderDTO(inboundOrder.getOrderNumber(),inboundOrder.getRepresentative(),inboundOrder.getBatchStock(),inboundOrder.getOrderDate());
     }
 

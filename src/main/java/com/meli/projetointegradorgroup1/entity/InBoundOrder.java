@@ -12,7 +12,7 @@ import java.util.Optional;
 @Data
 @Table(name = "inboundorder")
 //ordem de entrada
-public class InboundOrder {
+public class InBoundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class InboundOrder {
 
 
 
-    public InboundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
+    public InBoundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
         this.orderNumber = orderNumber;
         this.representative = representative;
         this.batchStock = batchStock;

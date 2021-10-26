@@ -1,7 +1,6 @@
 
 package com.meli.projetointegradorgroup1.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,13 +40,13 @@ public class BatchStock {
 
     @ManyToOne
     @JoinColumn(name = "inboundorder_order_number")
-    private InboundOrder inboundorder;
+    private InBoundOrder inboundorder;
 
-    public InboundOrder getInboundorder() {
+    public InBoundOrder getInboundorder() {
         return inboundorder;
     }
 
-    public void setInboundorder(InboundOrder inboundorder) {
+    public void setInboundorder(InBoundOrder inboundorder) {
         this.inboundorder = inboundorder;
     }
 }
