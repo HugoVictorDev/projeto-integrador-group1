@@ -28,7 +28,7 @@ public class RepresentativeDTO {
     private String cpf;
 
     @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")
-    @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros,")
+    @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros,")
     private String warehouseID;
 
     public RepresentativeDTO() {
@@ -50,6 +50,13 @@ public class RepresentativeDTO {
 
     public static RepresentativeDTO converte(Representative representative) {
         return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId()));
+    }
 
+    public static List<RepresentativeDTO>converte(List<Representative> representatives){
+        List<RepresentativeDTO> listRepresentant = new ArrayList<>();
+        for (Representative representative: representatives) {
+            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
+        }
+        return listRepresentant;
     }
 }

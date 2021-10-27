@@ -35,7 +35,6 @@ public class Representative {
     }
 
 
-
     public Representative Name(String name) {
         this.name = name;
         return this;
@@ -51,7 +50,5 @@ public class Representative {
         return this;
     }
 
-    public void setWarehouseID(long warehouseID) {
-        this.warehouse.setWarehouseId(warehouseID);
-    }
+
 }

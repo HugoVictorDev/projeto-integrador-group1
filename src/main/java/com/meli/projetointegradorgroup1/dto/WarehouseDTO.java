@@ -19,7 +19,6 @@ public class WarehouseDTO {
     private String name;
 
     @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
-    @Min(value = 5, message = "campo deve te no minimo 5 caracteres")
     private String address;
 
     @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")

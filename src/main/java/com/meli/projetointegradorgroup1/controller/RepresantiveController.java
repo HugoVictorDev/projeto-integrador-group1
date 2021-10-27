@@ -36,8 +36,8 @@ public class RepresantiveController {
 
     //Consultar lista de  representantes
     @GetMapping("/list")
-    public List<RepresentativeResponseDTO> getRepresentativeList() {
-           return RepresentativeResponseDTO.converte(representativeServices.listaRepresentative());
+    public List<RepresentativeDTO> getRepresentativeList() {
+           return RepresentativeDTO.converte(representativeServices.listaRepresentative());
     }
 
     //Atualizar por id

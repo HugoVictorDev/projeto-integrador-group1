@@ -21,8 +21,6 @@ public class RepresentativeResponseDTO {
     private Long representative_Id;
     private String name;
     private String cpf;
-
-    @Autowired
     private Warehouse warehouse;
 
     public RepresentativeResponseDTO() {
