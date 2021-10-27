@@ -14,14 +14,14 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Accessors(chain = true) //true todo o set retorna o proprio objeto
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "sellers")
 public class Seller {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sellerId;
 
     @NotBlank
@@ -35,12 +35,6 @@ public class Seller {
     @Column(name = "email")
     private String email;
 
-    public Seller(String name, String cpf, String email, List<Product> productList) {
-        this.name = name;
-        this.cpf = cpf;
-        this.email = email;
-        this.productList = productList;
-    }
 
 //    @Column(name = "productList")
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)

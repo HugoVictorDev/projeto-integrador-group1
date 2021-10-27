@@ -1,6 +1,7 @@
 
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -9,9 +10,9 @@ import javax.persistence.*;
 import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name = "batchstock")
 //conjunto de lote
 public class BatchStock {
 
@@ -40,18 +41,9 @@ public class BatchStock {
 
 
     @ManyToOne
-    @JoinColumn(name = "inboundorder_order_number")
+//    @JoinColumn(name = "inboundorder_id")
     private InBoundOrder inboundorder;
 
-    public BatchStock(Long batchStockNumber, Long currentTemprature, Long minimumTemprature, String initialQuality, String currentQuality, List<BatchStockItem> batchStockItem, InBoundOrder inboundorder) {
-        this.batchStockNumber = batchStockNumber;
-        this.currentTemprature = currentTemprature;
-        this.minimumTemprature = minimumTemprature;
-        this.initialQuality = initialQuality;
-        this.currentQuality = currentQuality;
-        this.batchStockItem = batchStockItem;
-        this.inboundorder = inboundorder;
-    }
 
     public InBoundOrder getInboundorder() {
         return inboundorder;

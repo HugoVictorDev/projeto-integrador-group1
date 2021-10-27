@@ -1,16 +1,18 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
-@Table(name = "inboundorder")
 //ordem de entrada
 public class InBoundOrder {
 
@@ -19,28 +21,20 @@ public class InBoundOrder {
     @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
-    @OneToOne
-    @JoinColumn(name = "representative")
+    @ManyToOne
     private Representative representative;
 
     @Column(name = "orderDate")
     private LocalDate orderDate;
-//    private Section section;
 
-    //lista de lote de estoque
-    //@OneToMany(mappedBy = "inboundorder", cascade = CascadeType.ALL)
-    @OneToOne(mappedBy = "inboundorder", cascade = CascadeType.ALL)
-    private BatchStock batchStock;
+    @ManyToOne
+    @JoinColumn(name = "section_code")
+    private Section section;
 
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<BatchStock> batchStock;
 
-    public InBoundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
-        this.orderNumber = orderNumber;
-        this.representative = representative;
-        this.batchStock = batchStock;
-        this.orderDate = orderDate;
-
-    }
 
 
 

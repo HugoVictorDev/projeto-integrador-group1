@@ -5,29 +5,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Service
+
 @Entity
 @Data
-@Table(name = "section")
 public class Section {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SECTION_ID")
+    @Column(name = "section_id")
     private Long sectionId;
 
-    @Column(name = "MINIMUM_TEMPRATURE")
+    @Column(name = "minimum_temprature")
     private String minimumTemprature;
-    @Column(name = "STOCK")
+    @Column(name = "stock")
     private String stock;
-    @Column(name = "STOCK_TYPE")
+    @Column(name = "stock_type")
     private String stockType;
-    @Column(name = "BATCH_STOCK")
+    @Column(name = "batch_stock")
     private String batchStock;
 
+
+
     @ManyToOne
-    @JoinColumn(name = "WAREHOUSE_ID")
+    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();
 
     public Section() {

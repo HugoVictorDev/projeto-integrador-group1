@@ -17,10 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "batchstockitems")
 public class BatchStockItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
