@@ -20,29 +20,25 @@ public class BatchStockDTO {
 
     //numero do lote
     private Long batchStockNumber;
-    // temperatura atual
-    @NotBlank
-    @NotNull
-    @NotEmpty(message = "currentTemprature é obrigatorio")
+    @NotBlank(message = "currentTemprature é obrigatorio")
     private Long currentTemprature;
 
     //temperatura minima
-    @NotBlank @NotNull @NotEmpty(message = "minimumTemprature é obrigatorio")
+    @NotBlank(message = "minimumTemprature é obrigatorio")
     private Long minimumTemprature;
 
     //estado inicial da qualidade do produto
-    @NotBlank @NotNull @NotEmpty(message = "initialQuality é obrigatorio")
+    @NotBlank(message = "initialQuality é obrigatorio")
     private String initialQuality;
 
     // estado atual da qualidade do produto
-    @NotBlank @NotNull @NotEmpty(message = "currentQuality é obrigatorio")
+    @NotBlank(message = "currentQuality é obrigatorio")
     private String currentQuality;
 
     //    Itens de um Lote
     private List<BatchStockItem> batchStockItem;
 
-    // estado atual da qualidade do produto
-    //@NotBlank @NotNull @NotEmpty(message = "currentQuality é obrigatorio")
+
     private InBoundOrder inboundorder;
 
     public BatchStockDTO(Long batchStockNumber, Long currentTemprature, Long minimumTemprature, String initialQuality, String currentQuality, List<BatchStockItem> batchStockItem, InBoundOrder inboundorder) {

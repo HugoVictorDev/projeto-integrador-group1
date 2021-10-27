@@ -75,20 +75,4 @@ public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) 
 }
 
 
-
-    //tratamento de mensagens de erro do bad request seguindo as regras do VALID
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        }
-        );
-        return errors;
-    }
-
-
 }

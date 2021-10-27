@@ -5,7 +5,7 @@ import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
-import com.meli.projetointegradorgroup1.service.BatchStockItemService;
+import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,25 +30,11 @@ public class BatchStockItemController {
     BatchStockItemService batchStockItemService;
 
     //Cadastrar BatchStockItem
-  /*  @PostMapping("/create")
-    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem){
-       return this.batchStockItemRepository.save(batchStockItem);*/
-    SellerRepository sellerRepository;
+  @PostMapping("/create")
+    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem) {
+      return this.batchStockItemRepository.save(batchStockItem);
+  }
 
-    //Cadastrar BatchStockItem
-    @PostMapping("/create")
-    public ResponseEntity<BatchStockItem> createBatchStockItem (@RequestBody BatchStockItem batchStockItem){
-//        List<Seller> seller = sellerRepository.findAll();
-
-        try {
-            BatchStockItem _BatchStockItem = batchStockItemRepository.save(new BatchStockItem(batchStockItem.getQuantity(),
-                    batchStockItem.getProductlist(), batchStockItem.getBatchstock()));
-            return new ResponseEntity<>(_BatchStockItem, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
@@ -57,7 +44,7 @@ public class BatchStockItemController {
 
     //busca vendedor pelo id
     @GetMapping("{id}")
-    public BatchstockItemResponseDTO getSellerById(@PathVariable("id") Long id) {
+    public BatchstockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
         return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
 //
     }
@@ -65,7 +52,6 @@ public class BatchStockItemController {
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
     public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
-
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
         BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
         return batchStockItemRepository.save(_bat);
@@ -90,22 +76,5 @@ public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") L
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
-
-
-    //tratamento de mensagens de erro do bad request seguindo as regras do VALID
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        }
-        );
-        return errors;
-    }
-
 
 }

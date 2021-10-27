@@ -17,13 +17,13 @@ public class InBoundOrderDTO {
 
     private Long orderNumber;
 
-    @NotBlank @NotNull @NotEmpty(message = "representative é obrigatorio")
+    @NotBlank(message = "representative é obrigatorio")
     private Representative representative;
 
-    @NotBlank @NotNull @NotEmpty(message = "warehouseID é obrigatorio")
+    @NotBlank(message = "warehouseID é obrigatorio")
     private BatchStock batchStock;
 
-    @NotBlank @NotNull @NotEmpty(message = "campo orderDate é obrigatorio")
+    @NotBlank(message = "campo orderDate é obrigatorio")
     private LocalDate orderDate;
 
 

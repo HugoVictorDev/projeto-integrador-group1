@@ -34,13 +34,10 @@ public class InBoundOrderController {
         return inboundOrderRepository.findAll();
     }
 
-    public Iterable<Representative> listRepresentative(){
-        return representativeRepository.findAll();
-    }
 
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
-    @PostMapping("/inboundorder/{representativeId")
+    @PostMapping("/inboundorder/{representativeId}")
     public ResponseEntity<InBoundOrderDTO> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrder inBoundOrder){
         InBoundOrder _inBoundOrder  = inboundOrderService.saveIBO(inBoundOrder,representativeId);
         InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(_inBoundOrder);

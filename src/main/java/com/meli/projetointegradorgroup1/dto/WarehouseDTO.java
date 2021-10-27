@@ -14,16 +14,15 @@ public class WarehouseDTO {
 
     private Long warehouseId;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
+    @NotBlank(message = "Campo é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
     private String name;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
-    @Min(value = 5, message = "campo deve te no minimo 5 caracteres")
+    @NotBlank(message = "Campo é obrigatorio")
     private String address;
 
-    @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")
-    @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros,")
+    @NotBlank(message = "campo é obrigatorio")
+    @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros")
     private String size;
 
 

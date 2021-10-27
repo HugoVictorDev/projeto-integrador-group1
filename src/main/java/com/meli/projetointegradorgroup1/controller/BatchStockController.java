@@ -29,7 +29,7 @@ public class BatchStockController {
     private BatchStockRepository batchStockRepository ;
 
     @GetMapping("/batchstock/list")
-    public Iterable<BatchStock> listInbound(){
+    public Iterable<BatchStock> listBastchStock(){
         return batchStockRepository.findAll();
     }
 
@@ -37,7 +37,7 @@ public class BatchStockController {
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
     @PostMapping("/batchstock/")
-    public ResponseEntity<BatchStockDTO> createInbound (@RequestBody BatchStock batchStock){
+    public ResponseEntity<BatchStockDTO> createBatchStock (@RequestBody BatchStock batchStock){
         BatchStock _batchStock  = batchStockService.saveBS(batchStock);
         BatchStockDTO _batchStockDTO = BatchStockDTO.converte(_batchStock);
         return new ResponseEntity<>(_batchStockDTO, HttpStatus.CREATED);
@@ -46,20 +46,20 @@ public class BatchStockController {
 
     //deletar Inbound pelo ID
     @DeleteMapping("/delete/{ordernumber}")
-    public ResponseEntity<HttpStatus> deleteInboundOrderByOrderNumber(@PathVariable("ordernumber") Long ordernumber) {
-        inboundOrderService.deleteIBO(ordernumber);
+    public ResponseEntity<HttpStatus> deleteBatchStockNumber(@PathVariable("ordernumber") Long ordernumber) {
+        batchStockService.deleteBS(ordernumber);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //Update Inbound pelo ID
-    @PutMapping("/inboundorder/")
-    public ResponseEntity<HttpStatus> updateOrderByOrderNumber(@RequestBody InBoundOrder inBoundOrder) {
+    @PutMapping("/batchstock/")
+    public ResponseEntity<HttpStatus> updateBatchStockNumber(@RequestBody BatchStock batchStock) {
 
         //InBoundOrder inBoundOrder = new InBoundOrder();
-        inBoundOrder = inboundOrderService.saveIBO(inBoundOrder,inBoundOrder.getRepresentative().getRepresentative_Id());
+        batchStock = batchStockService.saveBS(batchStock);
 
-        Optional<InBoundOrder> _inboundOrder = inboundOrderRepository.findById(inBoundOrder.getOrderNumber());
-        if (_inboundOrder.isPresent()) {
+        Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
+        if (_batchStock.isPresent()) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

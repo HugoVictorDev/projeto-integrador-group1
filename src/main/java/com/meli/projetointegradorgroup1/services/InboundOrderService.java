@@ -22,7 +22,8 @@ public class InboundOrderService {
 
         if (_representative.isPresent()) {
             Representative representative = _representative.get();
-            InBoundOrder _inBoundOrder = inboundOrderRepository.save(new InBoundOrder(inBoundOrder.getOrderNumber(), representative, inBoundOrder.getBatchStock(), LocalDate.now()));
+            InBoundOrder _inBoundOrder = inboundOrderRepository.save(new InBoundOrder(inBoundOrder.getOrderNumber(), representative,
+                    inBoundOrder.getBatchStock(), LocalDate.now()));
             return _inBoundOrder;
         }
         return null;
