@@ -27,10 +27,11 @@ public class BatchStockItem {
     private Double volume;
     private Double maximumTemperature;
     private Double minimumTemperature;
+    private String sellerIds;
 
 
     @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "sellerId")
+    @JoinColumn(name = "sellerid")
     private Seller seller;
 
     @ManyToOne(cascade=CascadeType.PERSIST)

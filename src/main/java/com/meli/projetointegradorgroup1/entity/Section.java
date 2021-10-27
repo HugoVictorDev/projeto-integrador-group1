@@ -28,6 +28,7 @@ public class Section {
 
 
 
+
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();

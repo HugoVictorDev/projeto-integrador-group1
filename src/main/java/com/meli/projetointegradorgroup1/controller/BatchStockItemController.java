@@ -32,6 +32,7 @@ public class BatchStockItemController {
     //Cadastrar BatchStockItem
   @PostMapping("/create")
     public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem) {
+      batchStockItemService.validSellerExist(batchStockItem);
       return this.batchStockItemRepository.save(batchStockItem);
   }
 
