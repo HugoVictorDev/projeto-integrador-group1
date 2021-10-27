@@ -32,7 +32,6 @@ public class BatchStockItemService {
     public BatchstockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
         BatchstockItemResponseDTO batchstockItemResponseDTO = new BatchstockItemResponseDTO();
         batchstockItemResponseDTO.setQuantity(batchStockItem.getQuantity());
-        batchstockItemResponseDTO.setProductlist(batchStockItem.getProductlist());
         batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
         return batchstockItemResponseDTO;
     }
@@ -42,7 +41,6 @@ public class BatchStockItemService {
         if (batchStockItemFind.isPresent()) {
             BatchStockItem _batchStockItem = batchStockItemFind.get();
             _batchStockItem.setQuantity(batchStockItem.getQuantity());
-            _batchStockItem.setProductlist(batchStockItem.getProductlist());
             _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
 
 

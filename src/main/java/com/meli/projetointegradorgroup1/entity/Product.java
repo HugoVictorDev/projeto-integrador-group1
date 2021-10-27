@@ -28,17 +28,5 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    public Product(String productName, String description) {
-        this.productName = productName;
-        this.description = description;
-    }
-
-
-    @ManyToOne
-    private Seller seller;
-
-
-    @ManyToOne
-    private BatchStockItem batchstockitem;
 
 }

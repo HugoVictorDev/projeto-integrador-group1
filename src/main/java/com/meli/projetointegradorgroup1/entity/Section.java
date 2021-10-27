@@ -55,6 +55,11 @@ public class Section {
         return this;
     }
 
+    public Section(Long sectionId, Warehouse warehouse) {
+        this.sectionId = sectionId;
+        this.warehouse = warehouse;
+    }
+
     public Section WarehouseID(Long warehouseID){
        this.warehouse.setWarehouseId(warehouseID);
        return this;

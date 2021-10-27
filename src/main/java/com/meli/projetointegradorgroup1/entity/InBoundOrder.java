@@ -27,8 +27,8 @@ public class InBoundOrder {
     @Column(name = "orderDate")
     private LocalDate orderDate;
 
-    @ManyToOne
-    @JoinColumn(name = "section_code")
+    @ManyToOne // varias inbourderorder pode ter uma section
+    @JoinColumn(name = "section_id") //referenciando a coluna dection_id
     private Section section;
 
 
@@ -36,18 +36,9 @@ public class InBoundOrder {
     private List<BatchStock> batchStock;
 
 
+    public InBoundOrder(Representative representative,
 
 
-    public Long getOrderNumber() {
-        return orderNumber;
+                        LocalDate now, Section section) {
     }
-
-    public Representative getRepresentative() {
-        return representative;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
 }

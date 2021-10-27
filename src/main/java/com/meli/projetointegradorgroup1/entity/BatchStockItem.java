@@ -20,25 +20,27 @@ import java.util.List;
 public class BatchStockItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
     private int quantity;
+    private Double volume;
+    private Double maximumTemperature;
+    private Double minimumTemperature;
 
 
-    @OneToMany(mappedBy = "batchstockitem", cascade = CascadeType.ALL)
-    private List<Product> productlist;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "sellerId")
+    private Seller seller;
+
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "productid")
+    private Product product;
 
 
     @ManyToOne
+    @JoinColumn(name = "batchstock_batchNumber")
     private BatchStock batchstock;
 
-    public BatchStockItem(int quantity, List<Product> productlist, BatchStock batchstock) {
-        this.quantity = quantity;
-        this.productlist = productlist;
-        this.batchstock = batchstock;
-
-    }
 
 }

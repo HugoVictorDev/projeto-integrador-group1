@@ -35,10 +35,4 @@ public class Seller {
     @Column(name = "email")
     private String email;
 
-
-//    @Column(name = "productList")
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
-    private List<Product> productList;
-
-
 }

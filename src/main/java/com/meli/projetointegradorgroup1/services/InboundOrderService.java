@@ -1,12 +1,12 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.entity.Representative;
+import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class InboundOrderService {
@@ -22,8 +22,9 @@ public class InboundOrderService {
 
         if (_representative.isPresent()) {
             Representative representative = _representative.get();
-            InBoundOrder _inBoundOrder = inboundOrderRepository.save(new InBoundOrder(inBoundOrder.getOrderNumber(), representative,
-                    inBoundOrder.getBatchStock(), LocalDate.now()));
+            InBoundOrder _inBoundOrder = inboundOrderRepository.save
+                    (new InBoundOrder(representative, LocalDate.now(),
+                            new Section(1L, new Warehouse(1L))));
             return _inBoundOrder;
         }
         return null;
