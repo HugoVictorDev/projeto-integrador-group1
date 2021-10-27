@@ -27,36 +27,27 @@ public class ProductService {
     }
 
     public ProductResponseDto productDtoById(Product product){
-
         ProductResponseDto productResponseDto = new ProductResponseDto();
-
         productResponseDto.setProductName(product.getProductName());
         productResponseDto.setDescription(product.getDescription());
-
         return productResponseDto;
     }
-
 
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
             newProduct.setProductName(productRequestDto.getProductName());
             newProduct.setDescription(productRequestDto.getDescription());
-
             return newProduct;
         } else {
             throw new RuntimeException("Produto nao encontrado");
         }
     }
 
-
     public ProductRequestDto convertEntityToDtoRequest(Product product){
-
         ProductRequestDto productRequestDto = new ProductRequestDto();
-
         productRequestDto.setProductName(product.getProductName());
         productRequestDto.setDescription(product.getDescription());
-
         return productRequestDto;
     }
 }

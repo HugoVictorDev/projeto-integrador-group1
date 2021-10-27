@@ -1,21 +1,20 @@
-package com.meli.projetointegradorgroup1.service;
+package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.persistence.InBoundOrderPersistence;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class InboundOrderService {
     @Autowired
     private RepresentativeRepository representativeRepository;
+
     @Autowired
-    private InBoundOrderPersistence inBOPersistence;
-    @Autowired
-    private InBoundOrderRepository inBORepository;
+    private InBoundOrderRepository inboundOrderRepository;
 
 
     public InBoundOrder saveIBO(InBoundOrder inBoundOrder, Long representativeId ){
@@ -23,25 +22,27 @@ public class InboundOrderService {
 
         if (_representative.isPresent()) {
             Representative representative = _representative.get();
-            return inBOPersistence.saveInbound(inBoundOrder, representative);
+            InBoundOrder _inBoundOrder = inboundOrderRepository.save(new InBoundOrder(inBoundOrder.getOrderNumber(), representative,
+                    inBoundOrder.getBatchStock(), LocalDate.now()));
+            return _inBoundOrder;
         }
         return null;
     }
 
     public void deleteIBO(Long inBoundNumber){
 
-        inBORepository.deleteByOrderNumber(inBoundNumber);
+        inboundOrderRepository.deleteByOrderNumber(inBoundNumber);
 
     }
     public void updateIBO(InBoundOrder inBoundOrder){
 
-        inBORepository.save(inBoundOrder);
+        inboundOrderRepository.save(inBoundOrder);
 
     }
 
     public void ListIBO(InBoundOrder inBoundOrder){
 
-        inBORepository.save(inBoundOrder);
+        inboundOrderRepository.save(inBoundOrder);
 
     }
 }

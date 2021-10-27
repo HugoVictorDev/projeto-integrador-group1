@@ -3,24 +3,19 @@ import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
-import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RepresentativeServices{
 
-
     @Autowired
     private RepresentativeRepository representativeRepository;
 
     @Autowired
     WarehouseServices warehouseServices;
-
     public void valida(RepresentativeDTO representativedto)  {
         validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
         validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));

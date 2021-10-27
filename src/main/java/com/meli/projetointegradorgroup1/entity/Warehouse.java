@@ -11,21 +11,21 @@ import java.util.List;
 @Service
 @Entity
 @Data
-@Table(name = "warehouse")
+
 public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "WAREHOUSE_ID")
+    @Column(name = "warehouse_id")
     private Long warehouseId;
 
-    @NotNull @Column(name = "NAME")
+    @NotNull @Column(name = "name")
     private String name;
 
-    @NotNull @Column(name = "ADDRESS")
+    @NotNull @Column(name = "address")
     private String address;
 
-    @NotNull @Column(name = "SIZE")
+    @NotNull @Column(name = "size")
     private String size;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)

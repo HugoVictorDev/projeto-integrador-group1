@@ -1,31 +1,33 @@
 
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.List;
+@Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name = "batchstock")
 //conjunto de lote
 public class BatchStock {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
 
 
     //numero do lote
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "batchNumber")
-    private String batchNumber;
+    private Long batchStockNumber;
     // temperatura atual
     @Column(name = "currentTemprature")
-    private String currentTemprature;
+    private Long currentTemprature;
     //temperatura minima
     @Column(name = "minimumTemprature")
-    private String minimumTemprature;
+    private Long minimumTemprature;
     //estado inicial da qualidade do produto
     @Column(name = "initialQuality")
     private String initialQuality;
@@ -33,14 +35,15 @@ public class BatchStock {
     @Column(name = "currentQuality")
     private String currentQuality;
 
-    //    @Column(name = "batchStockItems")
+    //    @Column(name = "batchStockItem")
     @OneToMany(mappedBy = "batchstock", cascade = CascadeType.ALL)
-    private List<BatchStockItem> batchStockItems;
+    private List<BatchStockItem> batchStockItem;
 
 
     @ManyToOne
-    @JoinColumn(name = "inboundorder_order_number")
+//    @JoinColumn(name = "inboundorder_id")
     private InBoundOrder inboundorder;
+
 
     public InBoundOrder getInboundorder() {
         return inboundorder;

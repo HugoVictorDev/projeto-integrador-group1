@@ -15,19 +15,21 @@ public class SectionDTO {
 
     private Long sectionId;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
+    @NotBlank(message = "Campo é obrigatorio")
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
     private String minimumTemprature;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
+    @NotBlank(message = "Campo é obrigatorio")
     private String stock;
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
+    @NotBlank(message = "Campo é obrigatorio")
+
     private String stockType;
-    @NotBlank @NotNull @NotEmpty(message = "Campo é obrigatorio")
+    @NotBlank(message = "Campo é obrigatorio")
+
     private String batchStock;
 
-    @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")
-    @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros,")
+    @NotBlank(message = "campo é obrigatorio")
+    @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros")
     private String warehouseID;
 
     public SectionDTO() {

@@ -13,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 @Accessors(chain = true) // todo set retorna o próprio objeto
 @Entity
 @Data
-@Table(name = "product")
 public class Product {
 
     @Id
@@ -25,7 +24,7 @@ public class Product {
     @Column(name = "productname")
     private String productName;
 
-    //descricao do produto
+
     @Column(name = "description")
     private String description;
 

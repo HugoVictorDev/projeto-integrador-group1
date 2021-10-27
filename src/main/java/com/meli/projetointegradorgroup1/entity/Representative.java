@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,29 +12,26 @@ import java.util.Optional;
 @Service
 @Data
 @Entity
-@Table(name = "representative")
+@NoArgsConstructor
 public class Representative {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "REPRESENTATIVE_ID")
+    @Column(name = "representative_id")
     private Long representative_Id;
 
-    @NotNull @Column(name = "NAME")
+    @NotNull @Column(name = "name")
     private String name;
-    @NotNull @Column(name = "CPF")
+    @NotNull @Column(name = "cpf")
     private String cpf;
 
     @OneToOne
-    @JoinColumn(name = "WAREHOUSE_ID")
+    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();
 
-    public Representative() {
-    }
 
     public Representative(Optional representative_Id) {
     }
-
 
     public Representative Name(String name) {
         this.name = name;
@@ -49,6 +47,5 @@ public class Representative {
         this.warehouse.setWarehouseId(warehouseID);
         return this;
     }
-
 
 }

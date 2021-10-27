@@ -19,15 +19,15 @@ public class RepresentativeDTO {
 
     private Long representative_Id;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo Name é obrigatorio")
+    @NotBlank(message = "Campo Name é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
     private String name;
 
-    @NotBlank @NotNull @NotEmpty(message = "Campo CPF é obrigatorio")
+    @NotBlank(message = "Campo CPF é obrigatorio")
     @Pattern(regexp="^[0-9]{11}",message = "Deve conter exatamente 11 digitos e apenas numeros, ")
     private String cpf;
 
-    @NotBlank @NotNull @NotEmpty(message = "campo é obrigatorio")
+    @NotBlank(message = "campo é obrigatorio")
     @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros,")
     private String warehouseID;
 
@@ -49,13 +49,15 @@ public class RepresentativeDTO {
     }
 
     public static RepresentativeDTO converte(Representative representative) {
-        return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId()));
+        return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(),
+                Long.toString(representative.getWarehouse().getWarehouseId()));
     }
 
     public static List<RepresentativeDTO>converte(List<Representative> representatives){
         List<RepresentativeDTO> listRepresentant = new ArrayList<>();
         for (Representative representative: representatives) {
-            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
+            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(),
+                    representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
         }
         return listRepresentant;
     }

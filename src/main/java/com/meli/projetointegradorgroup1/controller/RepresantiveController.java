@@ -1,13 +1,11 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
-import com.meli.projetointegradorgroup1.dto.RepresentativeResponseDTO;
+
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 

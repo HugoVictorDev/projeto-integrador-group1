@@ -4,16 +4,14 @@ package com.meli.projetointegradorgroup1.controller;
 import com.meli.projetointegradorgroup1.dto.InBoundOrderDTO;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.persistence.InBoundOrderPersistence;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
-import com.meli.projetointegradorgroup1.service.InboundOrderService;
+import com.meli.projetointegradorgroup1.services.InboundOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 
@@ -36,13 +34,10 @@ public class InBoundOrderController {
         return inboundOrderRepository.findAll();
     }
 
-    public Iterable<Representative> listRepresentative(){
-        return representativeRepository.findAll();
-    }
 
     //Cadastro do Inbound
     //Necessario a criação do Representative antes
-    @PostMapping("/inboundorder/{representativeId")
+    @PostMapping("/inboundorder/{representativeId}")
     public ResponseEntity<InBoundOrderDTO> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrder inBoundOrder){
         InBoundOrder _inBoundOrder  = inboundOrderService.saveIBO(inBoundOrder,representativeId);
         InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(_inBoundOrder);
