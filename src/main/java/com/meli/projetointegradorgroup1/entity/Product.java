@@ -1,86 +1,45 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Service;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
-@Service
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true) // todo set retorna o próprio objeto
 @Entity
 @Data
 @Table(name = "product")
-
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "productid")
     private Long productId;
 
-    @Column(name = "PRODUCT_NAME")
+    @NotBlank(message = "O campo nome nao pode estar vazio")
+    @Column(name = "productname")
     private String productName;
 
-    //data de producao
-    @Column(name = "MANUFACTURING_DATE")
-    private String manufacturingDate;
+    //descricao do produto
+    @Column(name = "description")
+    private String description;
 
-    //horario da producao
-    @Column(name = "MANUFACTURING_TIME")
-    private String manufacturingTime;
+    public Product(String productName, String description) {
+        this.productName = productName;
+        this.description = description;
+    }
 
-    //data de vencimento
-    @Column(name = "DUE_DATE")
-    private String dueDate;
 
     @ManyToOne
-   // @Column(name = "seller_id")
-    private Seller seller = new Seller();
+    private Seller seller;
+
 
     @ManyToOne
-   // @Column(name = "batchstockitem_id")
-    private BatchStockItem batchstockitem = new BatchStockItem();
+    private BatchStockItem batchstockitem;
 
-    public Product() {
-
-    }
-
-    public Product withProductName(String productName){
-        this.productName = productName;
-        return this;
-    }
-
-    public Product withManufacturingDate(String manufacturingDate){
-        this.manufacturingDate = manufacturingDate;
-        return this;
-    }
-
-    public Product withManufacturingTime(String manufacturingTime){
-        this.manufacturingTime = manufacturingTime;
-        return this;
-    }
-
-    public Product withDueDate(String dueDate){
-        this.dueDate = dueDate;
-        return this;
-    }
-
-    public Product SellerId(Long sellerId){
-        this.seller.setSellerId(sellerId);
-        return this;
-    }
-
-    public Product BatchStockItemId(Long batchstockitemId){
-        this.batchstockitem.setId(batchstockitemId);
-        return this;
-    }
-
-    public Product(Long productId, String productName, String manufacturingDate, String manufacturingTime, String dueDate, Seller seller, BatchStockItem batchstockitem) {
-        this.productId = productId;
-        this.productName = productName;
-        this.manufacturingDate = manufacturingDate;
-        this.manufacturingTime = manufacturingTime;
-        this.dueDate = dueDate;
-        this.seller = seller;
-        this.batchstockitem = batchstockitem;
-    }
 }
