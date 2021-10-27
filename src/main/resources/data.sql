@@ -22,9 +22,9 @@ VALUES ('SILAS', '789.456.789.45', 1),
        ('IVO', '321.456.789.45', 2);
 
 --------------------------------------------------------------------------------
-INSERT INTO BATCHSTOCK(ID, BATCH_NUMBER, CURRENT_QUALITY,  CURRENT_TEMPRATURE,  INITIAL_QUALITY,  MINIMUM_TEMPRATURE)
-VALUES (1, '23', '56', '88', '99', '98'),
-       (2, '23', '56', '88', '99', '98');
+--INSERT INTO BATCHSTOCK(ID, BATCH_NUMBER, CURRENT_QUALITY,  CURRENT_TEMPRATURE,  INITIAL_QUALITY,  MINIMUM_TEMPRATURE)
+--VALUES (1, '23', '56', '88', '99', '98'),
+--       (2, '23', '56', '88', '99', '98');
 
 --------------------------------------------------------------------------------
 --INSERT INTO BATCHSTOCKITEM (ID, QUANTITY, BATCHSTOCK_ID)
@@ -32,8 +32,8 @@ VALUES (1, '23', '56', '88', '99', '98'),
 --       (2, 2, 2);
 
 --------------------------------------------------------------------------------
-INSERT INTO SELLERS (SELLER_ID, CPF, NAME )
-VALUES (1, 'CAIO', '789.456.789.45');
+--INSERT INTO SELLERS (SELLER_ID, CPF, NAME )
+--VALUES (1, 'CAIO', '789.456.789.45');
 
 --------------------------------------------------------------------------------
 --INSERT INTO PRODUCT (PRODUCT_NAME, MANUFACTURING_DATE, MANUFACTURING_TIME, DUE_DATE, BATCHSTOCKITEM_ID, SELLER_SELLER_ID )

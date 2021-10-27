@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
@@ -23,7 +24,7 @@ public class InboundOrderService {
         if (_representative.isPresent()) {
             Representative representative = _representative.get();
             InBoundOrder _inBoundOrder = inboundOrderRepository.save(new InBoundOrder(inBoundOrder.getOrderNumber(), representative,
-                    inBoundOrder.getBatchStock(), LocalDate.now()));
+                    (BatchStock) inBoundOrder.getBatchStock(), LocalDate.now()));
             return _inBoundOrder;
         }
         return null;

@@ -60,7 +60,7 @@ public class InBoundOrderDTO {
 
 
     public static InBoundOrderDTO converte(InBoundOrder inboundOrder){
-        return new InBoundOrderDTO(inboundOrder.getOrderNumber(),inboundOrder.getRepresentative(),inboundOrder.getBatchStock(),inboundOrder.getOrderDate());
+        return new InBoundOrderDTO(inboundOrder.getOrderNumber(),inboundOrder.getRepresentative(), (BatchStock) inboundOrder.getBatchStock(),inboundOrder.getOrderDate());
     }
 
 

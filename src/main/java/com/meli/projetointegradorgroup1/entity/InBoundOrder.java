@@ -35,7 +35,8 @@ public class InBoundOrder {
     @OneToMany(cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 
-
+    public InBoundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
+    }
 
 
     public Long getOrderNumber() {
