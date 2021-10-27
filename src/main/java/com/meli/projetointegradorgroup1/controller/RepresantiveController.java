@@ -1,10 +1,10 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
+import com.meli.projetointegradorgroup1.dto.RepresentativeResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
-import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
+import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,73 +20,49 @@ import java.util.Optional;
 @RequestMapping("/representative")
 public class RepresantiveController {
 
-
     @Autowired
     RepresentativeRepository representativeRepository;
     @Autowired
-    WarehouseRepository warehouseRepository;
+    RepresentativeServices representativeServices;
 
 
     //Cadastrar representante
     @PostMapping("/post")
-    public ResponseEntity<RepresentativeDTO> createRepresentative (@Valid @RequestBody RepresentativeDTO representativedto){
-        try {
-            warehouseRepository.findById(representativedto.getWarehouseID());
-            Representative representative = RepresentativeDTO.converte(representativedto);
-            return new ResponseEntity<>(RepresentativeDTO.converte(representativeRepository.save(representative)), HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+    public RepresentativeDTO createRepresentative (@Valid @RequestBody RepresentativeDTO representativedto){
+           representativeServices.valida(representativedto);
+           Representative representative = RepresentativeDTO.converte(representativedto);
+           return RepresentativeDTO.converte(representativeRepository.save(representative));
     }
 
     //Consultar lista de  representantes
     @GetMapping("/list")
-    public ResponseEntity<List<Representative>> getRepresentativeList() {
-        try {
-            List<Representative> representative = new ArrayList<>();
-            representativeRepository.findAll().forEach(representative::add);
-            return new ResponseEntity<>(representative, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public List<RepresentativeResponseDTO> getRepresentativeList() {
+           return RepresentativeResponseDTO.converte(representativeServices.listaRepresentative());
     }
 
-    // atualizando representatnte pelo ID
+    //Atualizar por id
     @PutMapping("/update/{id}")
-    public ResponseEntity<Representative> updateRepresentative(@PathVariable("id") Long id, @RequestBody Representative representative) {
-        Optional<Representative> representativeFind = representativeRepository.findById(id);
-
-        if (representativeFind.isPresent()) {
-            Representative representattive = representativeFind.get();
-            representattive.setName(representative.getName());
-            representattive.setCpf(representative.getCpf());
-            return new ResponseEntity<>(representativeRepository.save(representattive), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public RepresentativeDTO updateRepresentative(@PathVariable("id") Long id,@Valid @RequestBody RepresentativeDTO representativedto) {
+           Optional<Representative> representativeFind = representativeRepository.findById(id);
+           Representative representative = representativeServices.validaUpdate(representativeFind, representativedto);
+           return RepresentativeDTO.converte(representativeRepository.save(representative));
     }
+
 
     //consultar representatnte pelo ID
     @GetMapping("{id}")
-    public ResponseEntity<Representative> getRepresentativeById(@PathVariable("id") Long id) {
-        Optional<Representative> representativeFind = representativeRepository.findById(id);
-
-        if (representativeFind.isPresent()) {
-            return new ResponseEntity<>(representativeFind.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public RepresentativeDTO getRepresentativeById(@PathVariable("id") Long id) {
+           Optional<Representative> representativeFind = representativeRepository.findById(id);
+           return RepresentativeDTO.converte(representativeServices.findRepresentative(representativeFind));
     }
+
 
     //deletar representatnte pelo ID
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteRepresentativeById(@PathVariable("id") Long id) {
-        try {
-            representativeRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public RepresentativeDTO deleteRepresentativeById(@PathVariable("id") Long id) {
+           Representative representative = representativeServices.findRepresentative(representativeRepository.findById(id));
+           representativeRepository.deleteById(id);
+           return RepresentativeDTO.converte(representative);
         }
     }
-}
+
