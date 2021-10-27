@@ -6,7 +6,7 @@ import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
-import com.meli.projetointegradorgroup1.service.InboundOrderServices;
+import com.meli.projetointegradorgroup1.services.InboundOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class InBoundOrderController {
     //@Autowired
     //private InBoundOrderDTO inBoundOrderDTO;
     //@Autowired
-    private InboundOrderServices inboundOrderServices;
+    private InboundOrderService inboundOrderService;
 
 
     @GetMapping("/list")
@@ -42,7 +42,7 @@ public class InBoundOrderController {
     //Necessario a criação do Representative antes
     @PostMapping("/inboundorder/{representativeId")
     public ResponseEntity<InBoundOrderDTO> createInbound (@PathVariable("representativeId") Long representativeId, @RequestBody InBoundOrder inBoundOrder){
-        InBoundOrder _inBoundOrder  = inboundOrderServices.saveIBO(inBoundOrder,representativeId);
+        InBoundOrder _inBoundOrder  = inboundOrderService.saveIBO(inBoundOrder,representativeId);
         InBoundOrderDTO _inboundOrderDTO = InBoundOrderDTO.converte(_inBoundOrder);
         return new ResponseEntity<>(_inboundOrderDTO, HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class InBoundOrderController {
     //deletar Inbound pelo ID
     @DeleteMapping("/delete/{ordernumber}")
     public ResponseEntity<HttpStatus> deleteInboundOrderByOrderNumber(@PathVariable("ordernumber") Long ordernumber) {
-        inboundOrderServices.deleteIBO(ordernumber);
+        inboundOrderService.deleteIBO(ordernumber);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -60,7 +60,7 @@ public class InBoundOrderController {
     public ResponseEntity<HttpStatus> updateOrderByOrderNumber(@RequestBody InBoundOrder inBoundOrder) {
 
         //InBoundOrder inBoundOrder = new InBoundOrder();
-        inBoundOrder = inboundOrderServices.saveIBO(inBoundOrder,inBoundOrder.getRepresentative().getRepresentative_Id());
+        inBoundOrder = inboundOrderService.saveIBO(inBoundOrder,inBoundOrder.getRepresentative().getRepresentative_Id());
 
         Optional<InBoundOrder> _inboundOrder = inboundOrderRepository.findById(inBoundOrder.getOrderNumber());
         if (_inboundOrder.isPresent()) {

@@ -2,20 +2,17 @@ package com.meli.projetointegradorgroup1.controller;
 
 
 import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
-import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
-import com.meli.projetointegradorgroup1.services.BatchStockItemService;
-import com.meli.projetointegradorgroup1.services.SellerService;
+import com.meli.projetointegradorgroup1.service.BatchStockItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
