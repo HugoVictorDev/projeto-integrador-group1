@@ -4,6 +4,7 @@ import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Product;
 
+import com.meli.projetointegradorgroup1.entity.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,15 +22,23 @@ public class BatchStockItemRequestDTO {
     @NotBlank
     @Size(min = 3, message = "minimo 3 letras")
     private int quantity;
-    private List<Product> productlist;
+    private Double volume;
+    private Double maximumTemperature;
+    private Double minimumTemperature;
     private BatchStock batchstock;
+    private Product product;
+    private Seller seller;
 
 
      public BatchStockItem build(){
          BatchStockItem batchStockItem = new BatchStockItem()
-                 .setBatchstock(this.batchstock)
                  .setQuantity(this.quantity)
-                 .setProductlist(this.productlist);
+                 .setMaximumTemperature(this.maximumTemperature)
+                 .setMinimumTemperature(this.minimumTemperature)
+                 .setBatchstock(this.batchstock)
+                 .setProduct(this.product)
+                 .setSeller(this.seller)
+                 ;
         return batchStockItem;
     }
 

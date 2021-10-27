@@ -19,8 +19,7 @@ public class BatchstockItemResponseDTO {
     private BatchStock batchstock;
 
     public BatchstockItemResponseDTO(BatchStockItem batchStockItem){
-        this.quantity = batchStockItem.getQuantity();
-        this.productlist = batchStockItem.getProductlist();
+        this.quantity = batchStockItem.getQuantity();;
         this.batchstock = batchStockItem.getBatchstock();
 
     }

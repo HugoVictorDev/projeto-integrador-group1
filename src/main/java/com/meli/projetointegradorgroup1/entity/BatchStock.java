@@ -36,12 +36,13 @@ public class BatchStock {
     private String currentQuality;
 
     //    @Column(name = "batchStockItem")
-    @OneToMany(mappedBy = "batchstock", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "batchstock")
     private List<BatchStockItem> batchStockItem;
 
 
-    @ManyToOne
-//    @JoinColumn(name = "inboundorder_id")
+    @ManyToOne // varios batchstock p/ um inbourderOrder
+    @JoinColumn(name = "inboundorder_orderNumber")
     private InBoundOrder inboundorder;
 
 
