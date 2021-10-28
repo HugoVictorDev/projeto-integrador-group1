@@ -1,22 +1,17 @@
 package com.meli.projetointegradorgroup1.controller;
 
 
-import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,13 +33,13 @@ public class BatchStockItemController {
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
-    List<BatchstockItemResponseDTO> getBatchStockItemList() {
+    List<BatchStockItemResponseDTO> getBatchStockItemList() {
         return batchStockItemService.getBatchStockItemsList();
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
-    public BatchstockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
+    public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
         return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
 //
     }

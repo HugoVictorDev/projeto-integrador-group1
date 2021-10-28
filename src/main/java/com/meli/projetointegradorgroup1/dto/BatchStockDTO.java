@@ -11,6 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @NoArgsConstructor
@@ -18,46 +21,41 @@ import java.util.List;
 //conjunto de lote
 public class BatchStockDTO {
 
-    //numero do lote
+
     private Long batchStockNumber;
-    @NotBlank(message = "currentTemprature é obrigatorio")
-    private Long currentTemprature;
 
-    //temperatura minima
-    @NotBlank(message = "minimumTemprature é obrigatorio")
-    private Long minimumTemprature;
+    @NotNull(message = "currentTemprature é obrigatorio")
+    private Long currentTemperature;
 
-    //estado inicial da qualidade do produto
+    @NotNull(message = "minimumTemprature é obrigatorio")
+    private Long minimumTemperature;
+
     @NotBlank(message = "initialQuality é obrigatorio")
     private String initialQuality;
 
-    // estado atual da qualidade do produto
+    @NotNull(message = "minimumTemprature é obrigatorio")
+    private Long batchStockItem;
+
     @NotBlank(message = "currentQuality é obrigatorio")
     private String currentQuality;
 
-    //    Itens de um Lote
-    private List<BatchStockItem> batchStockItem;
+    private String manufacturingTime;
+    private String dueDate;
+    private Long productID;
 
 
-    private InBoundOrder inboundorder;
-
-    public BatchStockDTO(Long batchStockNumber, Long currentTemprature, Long minimumTemprature, String initialQuality, String currentQuality, List<BatchStockItem> batchStockItem, InBoundOrder inboundorder) {
-        this.batchStockNumber = batchStockNumber;
+    public static BatchStock converte(BatchStockDTO batchStockdto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return new BatchStock().CurrentTemperature(batchStockdto.getCurrentTemperature())
+                                .MinimumTemperature(batchStockdto.getMinimumTemperature())
+                                .InitialQuality(batchStockdto.getInitialQuality())
+                                .CurrentQuality(batchStockdto.getCurrentQuality())
+                                .ManufacturingTime(LocalDateTime.parse(batchStockdto.getManufacturingTime(),formatter))
+                                .DueDate(LocalDate.parse(batchStockdto.getDueDate()))
+                                .ProductID(batchStockdto.getBatchStockItem());
     }
 
-
-    public InBoundOrder getInboundorder() {
-        return inboundorder;
-    }
-
-    public void setInboundorder(InBoundOrder inboundorder) {
-        this.inboundorder = inboundorder;
-    }
-
-    public BatchStock converte(BatchStockDTO dto){
-        return new BatchStock(dto.getBatchStockNumber(), dto.getCurrentTemprature(), dto.getMinimumTemprature() , dto.getInitialQuality(), dto.getCurrentQuality(), dto.getBatchStockItem(), dto.getInboundorder()) ;
-    }
-    public static BatchStockDTO converte(BatchStock batchStock){
-        return new BatchStockDTO(batchStock.getBatchStockNumber(), batchStock.getCurrentTemprature(), batchStock.getMinimumTemprature() , batchStock.getInitialQuality(), batchStock.getCurrentQuality(), batchStock.getBatchStockItem(), batchStock.getInboundorder()) ;
-    }
 }
+
+
+

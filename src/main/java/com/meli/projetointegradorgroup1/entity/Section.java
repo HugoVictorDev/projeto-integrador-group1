@@ -17,8 +17,8 @@ public class Section {
     @Column(name = "section_id")
     private Long sectionId;
 
-    @Column(name = "minimum_temprature")
-    private String minimumTemprature;
+    @Column(name = "minimum_temperature")
+    private String minimumTemperature;
     @Column(name = "stock")
     private String stock;
     @Column(name = "stock_type")
@@ -35,8 +35,8 @@ public class Section {
     public Section() {
     }
 
-    public Section MinimumTemprature(String minimumTemprature){
-        this.minimumTemprature = minimumTemprature;
+    public Section MinimumTemprature(String minimumTemperature){
+        this.minimumTemperature = minimumTemperature;
         return this;
     }
 

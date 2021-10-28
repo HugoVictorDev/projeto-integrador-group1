@@ -41,7 +41,7 @@ public class SectionServices {
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
-            section.setMinimumTemprature(sectionDTO.getMinimumTemprature());
+            section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
             section.setStock(sectionDTO.getStock());
             section.setStockType(sectionDTO.getStockType());
             section.setBatchStock(sectionDTO.getBatchStock());

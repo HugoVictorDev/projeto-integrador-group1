@@ -53,7 +53,12 @@ public class WarehouseController {
     @DeleteMapping("/delete/{id}")
     public WarehouseDTO  deleteWarehouseById(@PathVariable("id") Long id){
            Warehouse warehouse = warehouseServices.obterWarehouse(id);
-           warehouseRepository.deleteById(id);
+           warehouseServices.deleta(id);
+       //    warehouseRepository.deleteById(id);
            return WarehouseDTO.converte(warehouse);
     }
+      @GetMapping(value="/handler")
+       public void handler() {
+           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
+       }
 }

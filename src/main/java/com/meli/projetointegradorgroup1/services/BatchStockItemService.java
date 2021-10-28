@@ -1,12 +1,10 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
-import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
+import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.Seller;
+import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +18,15 @@ public class BatchStockItemService {
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
 
-    public List<BatchstockItemResponseDTO> getBatchStockItemsList(){
+    public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
-                .map(BatchstockItemResponseDTO::new)
+                .map(BatchStockItemResponseDTO::new)
                 .collect(Collectors.toList());
     }
 
-
-
-    public BatchstockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
-        BatchstockItemResponseDTO batchstockItemResponseDTO = new BatchstockItemResponseDTO();
+    public BatchStockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
+        BatchStockItemResponseDTO batchstockItemResponseDTO = new BatchStockItemResponseDTO();
         batchstockItemResponseDTO.setQuantity(batchStockItem.getQuantity());
         batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
         return batchstockItemResponseDTO;
@@ -49,5 +45,13 @@ public class BatchStockItemService {
             throw new RuntimeException("BatchStockItem não encontrado");
         }
     }
+
+    public void validaBatchStockItem(Long productID) {
+        Optional<BatchStockItem> batchStockItem = batchStockItemRepository.findById(productID);
+            if (batchStockItem == null || batchStockItem.equals(Optional.empty())){
+                throw new RuntimeException("BatchStokItem não encotrada");
+           }
+    }
+
 
 }
