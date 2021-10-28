@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
@@ -31,15 +32,15 @@ public class BatchStockItemService {
                 .collect(Collectors.toList());
     }
 
-    //valida selller
-    public void validSellerExist(BatchStockItem batchStockItem) {
-        sellerService.valida(Long.parseLong(batchStockItem.getSellerIds()));
+//    valida selller
+    public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        sellerService.valida(Long.parseLong(batchStockItemRequestDTO.getSeller_id()));
+
     }
 
     public BatchstockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
         BatchstockItemResponseDTO batchstockItemResponseDTO = new BatchstockItemResponseDTO();
         batchstockItemResponseDTO.setQuantity(batchStockItem.getQuantity());
-        batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
         return batchstockItemResponseDTO;
     }
 

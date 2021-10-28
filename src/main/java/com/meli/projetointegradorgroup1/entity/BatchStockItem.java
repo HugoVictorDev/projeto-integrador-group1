@@ -1,8 +1,11 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.meli.projetointegradorgroup1.dto.SectionDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -27,8 +30,6 @@ public class BatchStockItem {
     private Double volume;
     private Double maximumTemperature;
     private Double minimumTemperature;
-    private String sellerIds;
-
 
     @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name = "sellerid")
@@ -38,6 +39,7 @@ public class BatchStockItem {
     @JoinColumn(name = "productid")
     private Product product;
 
+    private String sellerIdNum;
 
     @ManyToOne
     @JoinColumn(name = "batchstock_batchNumber")

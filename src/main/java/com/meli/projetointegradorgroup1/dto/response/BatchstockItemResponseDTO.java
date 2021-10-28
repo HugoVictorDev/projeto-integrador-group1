@@ -15,12 +15,18 @@ import java.util.List;
 public class BatchstockItemResponseDTO {
 
     private int quantity;
-    private List<Product> productlist;
-    private BatchStock batchstock;
+    private Double volume;
+    private Double maximumTemperature;
+    private Double minimumTemperature;
+    private Product product;
+    private String seller_id;
 
     public BatchstockItemResponseDTO(BatchStockItem batchStockItem){
         this.quantity = batchStockItem.getQuantity();;
-        this.batchstock = batchStockItem.getBatchstock();
+        this.volume =batchStockItem.getVolume();
+        this.maximumTemperature = batchStockItem.getMaximumTemperature();
+        this.minimumTemperature = batchStockItem.getMinimumTemperature();
+        this.product = batchStockItem.getProduct();
 
     }
 

@@ -53,7 +53,9 @@ public class SectionDTO {
     }
 
     public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getSectionId(), section.getMinimumTemprature(), section.getStock(), section.getStockType() ,section.getBatchStock(), Long.toString(section.getWarehouse().getWarehouseId()));
+        return new SectionDTO(section.getSectionId(), section.getMinimumTemprature(),
+                section.getStock(), section.getStockType() ,section.getBatchStock(),
+                Long.toString(section.getWarehouse().getWarehouseId()));
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {

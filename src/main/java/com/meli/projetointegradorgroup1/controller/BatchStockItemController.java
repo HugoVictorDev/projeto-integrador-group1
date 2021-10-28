@@ -1,8 +1,11 @@
 package com.meli.projetointegradorgroup1.controller;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchstockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
+import com.meli.projetointegradorgroup1.entity.View;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
@@ -30,11 +33,13 @@ public class BatchStockItemController {
     BatchStockItemService batchStockItemService;
 
     //Cadastrar BatchStockItem
+
   @PostMapping("/create")
-    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem) {
-      batchStockItemService.validSellerExist(batchStockItem);
-      return this.batchStockItemRepository.save(batchStockItem);
-  }
+    public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
+      batchStockItemService.validSellerExist(batchStockItemRequestDTO);
+        this.batchStockItemRepository.save(batchStockItemRequestDTO.build());
+        return batchStockItemRequestDTO;
+    }
 
 
     //Consultar lista de  vendedores
