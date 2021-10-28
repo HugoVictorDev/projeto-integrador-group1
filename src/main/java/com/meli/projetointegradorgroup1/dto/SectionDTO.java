@@ -15,9 +15,9 @@ public class SectionDTO {
 
     private Long sectionId;
 
-    @NotBlank(message = "Campo é obrigatorio")
+  //  @NotNull(message = "Campo é obrigatorio")
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
-    private String minimumTemprature;
+    private String minimumTemperature;
 
     @NotBlank(message = "Campo é obrigatorio")
     private String stock;
@@ -37,7 +37,7 @@ public class SectionDTO {
 
     public SectionDTO(Long sectionId, String minimumTemprature, String stock, String stockType, String batchStock, String warehouseID) {
         this.sectionId = sectionId;
-        this.minimumTemprature = minimumTemprature;
+        this.minimumTemperature = minimumTemprature;
         this.stock = stock;
         this.stockType = stockType;
         this.batchStock = batchStock;
@@ -45,7 +45,7 @@ public class SectionDTO {
     }
 
     public static Section converte(SectionDTO sectiodto) {
-        return new Section().MinimumTemprature(sectiodto.getMinimumTemprature())
+        return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
                             .Stock(sectiodto.getStock())
                             .StockType(sectiodto.getStockType())
                             .BatchStock(sectiodto.getBatchStock())
@@ -53,13 +53,13 @@ public class SectionDTO {
     }
 
     public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getSectionId(), section.getMinimumTemprature(), section.getStock(), section.getStockType() ,section.getBatchStock(), Long.toString(section.getWarehouse().getWarehouseId()));
+        return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType() ,section.getBatchStock(), Long.toString(section.getWarehouse().getWarehouseId()));
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
         for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemprature(), section.getStock(), section.getStockType(), section.getBatchStock(), Long.toString(section.getWarehouse().getWarehouseId())));
+            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(), section.getBatchStock(), Long.toString(section.getWarehouse().getWarehouseId())));
         }
         return listaSection;
     }

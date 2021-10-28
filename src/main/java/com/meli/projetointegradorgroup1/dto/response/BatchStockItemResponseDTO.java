@@ -12,21 +12,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BatchstockItemResponseDTO {
+public class BatchStockItemResponseDTO {
 
     private int quantity;
     private List<Product> productlist;
     private BatchStock batchstock;
 
-    public BatchstockItemResponseDTO(BatchStockItem batchStockItem){
+    public BatchStockItemResponseDTO(BatchStockItem batchStockItem){
         this.quantity = batchStockItem.getQuantity();;
         this.batchstock = batchStockItem.getBatchstock();
 
     }
-
-
-
-
-
 
 }

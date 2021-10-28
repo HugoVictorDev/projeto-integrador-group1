@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -16,41 +19,79 @@ import java.util.List;
 //conjunto de lote
 public class BatchStock {
 
-
-    //numero do lote
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "batchNumber")
     private Long batchStockNumber;
-    // temperatura atual
-    @Column(name = "currentTemprature")
-    private Long currentTemprature;
-    //temperatura minima
-    @Column(name = "minimumTemprature")
-    private Long minimumTemprature;
-    //estado inicial da qualidade do produto
+
+    @Column(name = "currentTemperature")
+    private Long currentTemperature;
+
+    @Column(name = "minimumTemeprature")
+    private Long minimumTemperature;
+
     @Column(name = "initialQuality")
     private String initialQuality;
-    // estado atual da qualidade do produto
+
     @Column(name = "currentQuality")
     private String currentQuality;
 
-    //    @Column(name = "batchStockItem")
+    @Column(name = "manufacturingTime")
+    private LocalDateTime manufacturingTime;
+
+    @Column(name = "dueDate")
+    private LocalDate dueDate;
+
+    private Long productID;
 
     @OneToMany(mappedBy = "batchstock")
     private List<BatchStockItem> batchStockItem;
 
-
-    @ManyToOne // varios batchstock p/ um inbourderOrder
+    @ManyToOne
     @JoinColumn(name = "inboundorder_orderNumber")
     private InBoundOrder inboundorder;
 
 
-    public InBoundOrder getInboundorder() {
-        return inboundorder;
+    public BatchStock(Long currentTemperature, Long minimumTemperature, String initialQuality, String currentQuality, String manufacturingDate, String manufacturingTime, String due_date, Long product_ID) {
     }
 
     public void setInboundorder(InBoundOrder inboundorder) {
         this.inboundorder = inboundorder;
     }
+
+    public BatchStock CurrentTemperature(Long currentTemperature) {
+        this.currentTemperature = currentTemperature;
+        return this;
+    }
+
+    public BatchStock MinimumTemperature(Long minimumTemperature) {
+        this.minimumTemperature = minimumTemperature;
+        return this;
+    }
+
+    public BatchStock InitialQuality(String initialQuality) {
+        this.initialQuality = initialQuality;
+        return this;
+    }
+
+    public BatchStock CurrentQuality(String currentQuality) {
+        this.currentQuality = currentQuality;
+        return this;
+    }
+
+    public BatchStock ManufacturingTime(LocalDateTime manufacturingTime) {
+        this.manufacturingTime = manufacturingTime;
+        return this;
+    }
+
+    public BatchStock DueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+        return this;
+    }
+
+    public BatchStock ProductID(Long productID) {
+        this.productID = productID;
+        return this;
+    }
+
 }

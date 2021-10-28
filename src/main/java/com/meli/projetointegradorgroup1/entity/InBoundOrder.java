@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,9 +37,6 @@ public class InBoundOrder {
     private List<BatchStock> batchStock;
 
 
-    public InBoundOrder(Representative representative,
-
-
-                        LocalDate now, Section section) {
+    public InBoundOrder(Representative representative, LocalDate now, Section section) {
     }
 }

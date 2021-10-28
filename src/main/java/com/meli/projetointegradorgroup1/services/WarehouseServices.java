@@ -66,7 +66,7 @@ public class WarehouseServices {
             warehouseRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
+  //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
              throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
         }
     }
