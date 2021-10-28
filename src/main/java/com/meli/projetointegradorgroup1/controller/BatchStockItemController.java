@@ -1,17 +1,24 @@
 package com.meli.projetointegradorgroup1.controller;
 
 
+
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
+
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,10 +32,14 @@ public class BatchStockItemController {
     BatchStockItemService batchStockItemService;
 
     //Cadastrar BatchStockItem
-  @PostMapping("/create")
-    public BatchStockItem createBatchStockItem(@Valid @RequestBody BatchStockItem batchStockItem) {
-      return this.batchStockItemRepository.save(batchStockItem);
-  }
+
+    @PostMapping("/create")
+    public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        batchStockItemService.validSellerExist(batchStockItemRequestDTO);
+        batchStockItemService.validProductExist(batchStockItemRequestDTO);
+        this.batchStockItemRepository.save(batchStockItemRequestDTO.build());
+        return batchStockItemRequestDTO;
+    }
 
 
     //Consultar lista de  vendedores
@@ -53,23 +64,23 @@ public class BatchStockItemController {
 
     }
 
-//delete todos vendedores
-@DeleteMapping("/deleteall")
-public BatchStockItem deleteAllBatchStockItems() {
-    batchStockItemRepository.deleteAll();
+    //delete todos vendedores
+    @DeleteMapping("/deleteall")
+    public BatchStockItem deleteAllBatchStockItems() {
+        batchStockItemRepository.deleteAll();
         return null;
 
-}
-
-//deletar vendedor pelo ID
-@DeleteMapping("/delete/{id}")
-public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
-    try {
-        batchStockItemRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
+
+    //deletar vendedor pelo ID
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
+        try {
+            batchStockItemRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

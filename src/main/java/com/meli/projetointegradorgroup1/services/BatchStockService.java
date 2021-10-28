@@ -39,7 +39,7 @@ public class BatchStockService {
     }
 
     public void valida(Long productID) {
-         batchStockItemService.validaBatchStockItem(productID);
+        batchStockItemService.validaBatchStockItem(productID);
     }
 
     public BatchStock save(BatchStock batchStock) {
@@ -48,9 +48,9 @@ public class BatchStockService {
     }
 
     public List<BatchStockResponseDTO> findBatchSotck() {
-     return batchStockRepository.findAll()
-             .stream()
-             .map(BatchStockResponseDTO::new)
-             .collect(Collectors.toList());
+        return batchStockRepository.findAll()
+                .stream()
+                .map(BatchStockResponseDTO::new)
+                .collect(Collectors.toList());
     }
 }

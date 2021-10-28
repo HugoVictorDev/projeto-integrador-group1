@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ public class SellerService {
                 .collect(Collectors.toList());
     }
 
+    public void valida(Long sellerId) {
+        Seller seller =  sellerRepository.findBySellerId(sellerId);
+        if (seller == null){
+            throw new RuntimeException("Seller não cadastrado");
+        }
+    }
 
 
     public SellerResponseDTO convertEntityToDTO(Seller seller){

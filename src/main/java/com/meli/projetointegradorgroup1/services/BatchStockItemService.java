@@ -1,9 +1,10 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
+
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
+import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,12 @@ public class BatchStockItemService {
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
 
+    @Autowired
+    SellerService sellerService;
+
+    @Autowired
+    ProductService productService;
+
     public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
@@ -31,6 +38,20 @@ public class BatchStockItemService {
         batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
         return batchstockItemResponseDTO;
     }
+
+    //    valida selller
+    public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        sellerService.valida(Long.parseLong(batchStockItemRequestDTO.getSeller_id()));
+
+    }
+
+    //    valida product
+    public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        productService.valida(Long.parseLong(batchStockItemRequestDTO.getProduct_id()));
+
+    }
+
+
 
     //validacao update por ID
     public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
@@ -48,9 +69,9 @@ public class BatchStockItemService {
 
     public void validaBatchStockItem(Long productID) {
         Optional<BatchStockItem> batchStockItem = batchStockItemRepository.findById(productID);
-            if (batchStockItem == null || batchStockItem.equals(Optional.empty())){
-                throw new RuntimeException("BatchStokItem não encotrada");
-           }
+        if (batchStockItem == null || batchStockItem.equals(Optional.empty())){
+            throw new RuntimeException("BatchStokItem não encotrada");
+        }
     }
 
 

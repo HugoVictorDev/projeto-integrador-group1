@@ -9,4 +9,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     public Iterable<Product> findByProductNameContaining(String productName);
 
+    Product findByProductId(Long productId);
 }

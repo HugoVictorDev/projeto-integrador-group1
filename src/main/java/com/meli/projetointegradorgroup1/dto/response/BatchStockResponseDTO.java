@@ -1,11 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
-import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
+
 import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.entity.Representative;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;

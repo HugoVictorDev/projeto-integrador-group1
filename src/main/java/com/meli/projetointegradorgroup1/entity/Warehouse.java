@@ -19,6 +19,8 @@ public class Warehouse {
     @Column(name = "warehouse_id")
     private Long warehouseId;
 
+    private Representative representative;
+
     @NotNull @Column(name = "name")
     private String name;
 

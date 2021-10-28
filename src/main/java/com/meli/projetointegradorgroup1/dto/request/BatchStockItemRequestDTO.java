@@ -19,26 +19,23 @@ import java.util.List;
 @AllArgsConstructor
 public class BatchStockItemRequestDTO {
 
-    @NotBlank
-    @Size(min = 3, message = "minimo 3 letras")
+
     private int quantity;
     private Double volume;
     private Double maximumTemperature;
     private Double minimumTemperature;
-    private BatchStock batchstock;
-    private Product product;
-    private Seller seller;
+    private String seller_id;
+    private String product_id;
 
 
-     public BatchStockItem build(){
-         BatchStockItem batchStockItem = new BatchStockItem()
-                 .setQuantity(this.quantity)
-                 .setMaximumTemperature(this.maximumTemperature)
-                 .setMinimumTemperature(this.minimumTemperature)
-                 .setBatchstock(this.batchstock)
-                 .setProduct(this.product)
-                 .setSeller(this.seller)
-                 ;
+    public BatchStockItem build(){
+        BatchStockItem batchStockItem = new BatchStockItem()
+                .setQuantity(this.quantity)
+                .setMaximumTemperature(this.maximumTemperature)
+                .setMinimumTemperature(this.minimumTemperature)
+                .setId(Long.parseLong(seller_id))
+                .setId(Long.parseLong(product_id))
+                ;
         return batchStockItem;
     }
 
