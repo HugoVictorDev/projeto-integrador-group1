@@ -27,6 +27,13 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductResponseDto> listProductDto(String nameId){
+        return productRepository.findByProductNameContaining(nameId)
+                .stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
     public void valida(Long productId) {

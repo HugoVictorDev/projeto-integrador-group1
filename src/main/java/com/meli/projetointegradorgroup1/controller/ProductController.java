@@ -45,8 +45,8 @@ public class ProductController {
 
     // buscar produto por nome
     @GetMapping("/list/{productName}")
-    public Iterable<Product> getByName(@PathVariable String productName){
-        return productRepository.findByProductNameContaining(productName);
+    public List<ProductResponseDto> getByName(@PathVariable String productName){
+        return productService.listProductDto(productName);
     }
 
     // atualizar produto por id
