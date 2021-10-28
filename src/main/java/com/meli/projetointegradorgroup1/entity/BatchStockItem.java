@@ -1,12 +1,10 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.meli.projetointegradorgroup1.dto.SectionDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -20,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Service
 public class BatchStockItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,19 +30,18 @@ public class BatchStockItem {
     private Double maximumTemperature;
     private Double minimumTemperature;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "sellerid")
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "sellerId")
     private Seller seller;
 
-    @ManyToOne(cascade=CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "productid")
     private Product product;
-
-    private String sellerIdNum;
 
     @ManyToOne
     @JoinColumn(name = "batchstock_batchNumber")
     private BatchStock batchstock;
-
-
 }
+
+

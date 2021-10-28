@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class ProductResponseDto {
 
     private String productName;
-
     private String description;
 
     public ProductResponseDto(Product product) {

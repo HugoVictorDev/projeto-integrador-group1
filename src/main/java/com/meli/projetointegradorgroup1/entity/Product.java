@@ -23,7 +23,6 @@ public class Product {
     @Column(name = "productname")
     private String productName;
 
-
     @Column(name = "description")
     private String description;
 

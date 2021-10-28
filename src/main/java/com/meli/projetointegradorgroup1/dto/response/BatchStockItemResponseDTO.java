@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BatchstockItemResponseDTO {
+public class BatchStockItemResponseDTO {
 
     private int quantity;
     private Double volume;
@@ -21,7 +21,7 @@ public class BatchstockItemResponseDTO {
     private Product product;
     private String seller_id;
 
-    public BatchstockItemResponseDTO(BatchStockItem batchStockItem){
+    public BatchStockItemResponseDTO(BatchStockItem batchStockItem){
         this.quantity = batchStockItem.getQuantity();;
         this.volume =batchStockItem.getVolume();
         this.maximumTemperature = batchStockItem.getMaximumTemperature();
@@ -29,10 +29,5 @@ public class BatchstockItemResponseDTO {
         this.product = batchStockItem.getProduct();
 
     }
-
-
-
-
-
 
 }

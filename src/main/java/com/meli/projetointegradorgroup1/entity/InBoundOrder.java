@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -27,28 +28,15 @@ public class InBoundOrder {
     @Column(name = "orderDate")
     private LocalDate orderDate;
 
-    @ManyToOne
-    @JoinColumn(name = "section_code")
+    @ManyToOne // varias inbourderorder pode ter uma section
+    @JoinColumn(name = "section_id") //referenciando a coluna dection_id
     private Section section;
 
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 
-    public InBoundOrder(Long orderNumber, Representative representative, BatchStock batchStock, LocalDate orderDate) {
+
+    public InBoundOrder(Representative representative, LocalDate now, Section section) {
     }
-
-
-    public Long getOrderNumber() {
-        return orderNumber;
-    }
-
-    public Representative getRepresentative() {
-        return representative;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
 }

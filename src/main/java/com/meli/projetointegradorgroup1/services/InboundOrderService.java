@@ -6,10 +6,11 @@ import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
+@Service
 public class InboundOrderService {
     @Autowired
     private RepresentativeRepository representativeRepository;
@@ -31,19 +32,17 @@ public class InboundOrderService {
     }
 
     public void deleteIBO(Long inBoundNumber){
-
         inboundOrderRepository.deleteByOrderNumber(inBoundNumber);
 
     }
     public void updateIBO(InBoundOrder inBoundOrder){
-
         inboundOrderRepository.save(inBoundOrder);
 
     }
 
     public void ListIBO(InBoundOrder inBoundOrder){
-
         inboundOrderRepository.save(inBoundOrder);
 
     }
+
 }
