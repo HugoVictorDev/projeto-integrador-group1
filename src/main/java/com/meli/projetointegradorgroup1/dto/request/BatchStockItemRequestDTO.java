@@ -24,9 +24,8 @@ public class BatchStockItemRequestDTO {
     private Double volume;
     private Double maximumTemperature;
     private Double minimumTemperature;
-
-    private Product product;
     private String seller_id;
+    private String product_id;
 
 
      public BatchStockItem build(){
@@ -34,8 +33,8 @@ public class BatchStockItemRequestDTO {
                  .setQuantity(this.quantity)
                  .setMaximumTemperature(this.maximumTemperature)
                  .setMinimumTemperature(this.minimumTemperature)
-                 .setProduct(this.product)
                  .setId(Long.parseLong(seller_id))
+                 .setId(Long.parseLong(product_id))
                  ;
         return batchStockItem;
     }

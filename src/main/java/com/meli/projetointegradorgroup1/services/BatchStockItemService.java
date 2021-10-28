@@ -25,6 +25,9 @@ public class BatchStockItemService {
     @Autowired
     SellerService sellerService;
 
+    @Autowired
+    ProductService productService;
+
     public List<BatchstockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
@@ -35,6 +38,12 @@ public class BatchStockItemService {
 //    valida selller
     public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
         sellerService.valida(Long.parseLong(batchStockItemRequestDTO.getSeller_id()));
+
+    }
+
+    //    valida product
+    public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        productService.valida(Long.parseLong(batchStockItemRequestDTO.getProduct_id()));
 
     }
 

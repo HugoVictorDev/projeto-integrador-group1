@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,16 @@ public class ProductService {
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
+
+    public void valida(Long productId) {
+        Product product =  productRepository.findByProductId(productId);
+        if (product == null){
+            throw new RuntimeException("Producot não cadastrado");
+        }
+    }
+
 
     public ProductResponseDto productDtoById(Product product){
         ProductResponseDto productResponseDto = new ProductResponseDto();
