@@ -23,9 +23,6 @@ public class Section {
     private String stock;
     @Column(name = "stock_type")
     private String stockType;
-    @Column(name = "batch_stock")
-    private String batchStock;
-
 
 
     @ManyToOne
@@ -50,10 +47,6 @@ public class Section {
         return this;
     }
 
-    public Section BatchStock(String batchStock){
-        this.batchStock = batchStock;
-        return this;
-    }
 
     public Section(Long sectionId, Warehouse warehouse) {
         this.sectionId = sectionId;

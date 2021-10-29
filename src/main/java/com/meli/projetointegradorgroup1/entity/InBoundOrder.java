@@ -37,6 +37,4 @@ public class InBoundOrder {
     private List<BatchStock> batchStock;
 
 
-    public InBoundOrder(Representative representative, LocalDate now, Section section) {
-    }
 }
