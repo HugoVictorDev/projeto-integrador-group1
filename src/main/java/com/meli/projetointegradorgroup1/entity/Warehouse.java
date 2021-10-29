@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Service
 @Entity
 @Data
-
+@Accessors(chain = true)
 public class Warehouse {
 
     @Id
