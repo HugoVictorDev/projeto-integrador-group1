@@ -47,7 +47,7 @@ public class SectionServices {
             section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
             return section;
         }else{
-            throw new RuntimeException("Warehouse não encontrada");
+            throw new RuntimeException("Sessão não encontrada");
         }
 }
 

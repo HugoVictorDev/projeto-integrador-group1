@@ -52,7 +52,8 @@ public class BatchStockDTO {
                                 .CurrentQuality(batchStockdto.getCurrentQuality())
                                 .ManufacturingTime(LocalDateTime.parse(batchStockdto.getManufacturingTime(),formatter))
                                 .DueDate(LocalDate.parse(batchStockdto.getDueDate()))
-                                .ProductID(batchStockdto.getBatchStockItem());
+                                .ProductID(batchStockdto.getBatchStockItem())
+                                .BatchStockNumber(batchStockdto.getBatchStockNumber());
     }
 
 }

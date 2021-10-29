@@ -59,8 +59,6 @@ public class BatchStockItemService {
             BatchStockItem _batchStockItem = batchStockItemFind.get();
             _batchStockItem.setQuantity(batchStockItem.getQuantity());
             _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
-
-
             return _batchStockItem;
         }else{
             throw new RuntimeException("BatchStockItem não encontrado");

@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BatchStockRepository  extends JpaRepository<BatchStock, Long> {
-    Optional<BatchStock> deleteBybatchStockNumber(Long OrderNumber);
-    Optional<BatchStock> findById(Long Id);
+public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
     List<BatchStock> findAll();
-
-
 }

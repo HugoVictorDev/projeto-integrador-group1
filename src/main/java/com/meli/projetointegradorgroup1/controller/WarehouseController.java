@@ -42,9 +42,9 @@ public class WarehouseController {
     }
 
     //atualizar por id
-    @PutMapping("/update/{id}")
-    public WarehouseDTO updateWarehouse(@PathVariable("id") Long id,@Valid @RequestBody WarehouseDTO warehouseDTO){
-           Optional<Warehouse> warehouseFind = warehouseRepository.findById(id);
+    @PutMapping("/update")
+    public WarehouseDTO updateWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
+           Optional<Warehouse> warehouseFind = warehouseRepository.findById(warehouseDTO.getWarehouseId());
            Warehouse warehouse = warehouseServices.validaUpdate(warehouseFind, warehouseDTO);
            return WarehouseDTO.converte(warehouseRepository.save(warehouse));
     }

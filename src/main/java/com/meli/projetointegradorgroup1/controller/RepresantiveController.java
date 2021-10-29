@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +38,9 @@ public class RepresantiveController {
     }
 
     //Atualizar por id
-    @PutMapping("/update/{id}")
-    public RepresentativeDTO updateRepresentative(@PathVariable("id") Long id,@Valid @RequestBody RepresentativeDTO representativedto) {
-           Optional<Representative> representativeFind = representativeRepository.findById(id);
+    @PutMapping("/update")
+    public RepresentativeDTO updateRepresentative(@Valid @RequestBody RepresentativeDTO representativedto) {
+           Optional<Representative> representativeFind = representativeRepository.findById(representativedto.getRepresentative_Id());
            Representative representative = representativeServices.validaUpdate(representativeFind, representativedto);
            return RepresentativeDTO.converte(representativeRepository.save(representative));
     }
