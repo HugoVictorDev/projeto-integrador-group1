@@ -17,7 +17,6 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productid")
     private Long productId;
 
     @NotBlank(message = "O campo nome nao pode estar vazio")

@@ -25,6 +25,7 @@ public class Section {
     private String stockType;
 
 
+
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();
