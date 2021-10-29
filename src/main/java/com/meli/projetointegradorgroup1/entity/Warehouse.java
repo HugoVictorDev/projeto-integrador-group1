@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 @Entity
 @Data
-
+@AllArgsConstructor
 public class Warehouse {
 
     @Id

@@ -16,20 +16,31 @@ public class RepresentativeServices{
 
     @Autowired
     WarehouseServices warehouseServices;
+
+
+    public RepresentativeServices(WarehouseServices warehouseServices) {
+        this.warehouseServices = warehouseServices;
+    }
+    public RepresentativeServices(WarehouseServices warehouseServices, RepresentativeRepository representativeRepository) {
+        this.warehouseServices = warehouseServices;
+        this.representativeRepository = representativeRepository;
+    }
+
+
     public void valida(RepresentativeDTO representativedto)  {
         validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
         validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
     }
 
-    private void validarWarehouse(Long warehouseID){
+    public void validarWarehouse(Long warehouseID){
         warehouseServices.valida(warehouseID);
     }
 
-    private Warehouse obterWarehouse(Long warehouseID){
+    public Warehouse obterWarehouse(Long warehouseID){
         return warehouseServices.obterWarehouse(warehouseID);
     }
 
-    private void validarCpf(String cpf, Long warehouseID)  {
+    public void validarCpf(String cpf, Long warehouseID)  {
         Representative representative = representativeRepository.findAllByCpfAndWarehouse_WarehouseId(maskCpf(cpf), warehouseID);
         if (representative != null && representative.getWarehouse().getWarehouseId() == warehouseID){
             throw new RuntimeException("CPF já cadstrado para essa Warehouse");
@@ -67,4 +78,5 @@ public class RepresentativeServices{
             throw new RuntimeException("Não existem Representantes cadastradas");
         }return representativeList;
     }
+
 }
