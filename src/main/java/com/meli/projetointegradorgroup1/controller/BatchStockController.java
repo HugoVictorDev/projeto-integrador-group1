@@ -21,14 +21,12 @@ import java.util.Optional;
 @RequestMapping(path = "/batchstock")
 public class BatchStockController {
 
-    @Autowired
-    private InBoundOrderRepository inboundOrderRepository;
+
     @Autowired
     RepresentativeRepository representativeRepository;
     @Autowired
     private BatchStockService batchStockService;
 
-    private BatchStockRepository batchStockRepository;
 
 
     @PostMapping("/create")
