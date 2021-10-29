@@ -24,7 +24,7 @@ public class BatchStockService {
     public void update(BatchStock batchStock){
         Optional<BatchStock> _batchStock = batchStockRepository.findById(batchStock.getBatchStockNumber());
         if (_batchStock.isPresent()) {
-            productService.validaProduct(batchStock.getProductID());
+            batchStockItemService.validaBatchStockItem(batchStock.getProductID());
             batchStockRepository.save(batchStock);
         }else{
             throw new RuntimeException("BatchStok não encotrada");

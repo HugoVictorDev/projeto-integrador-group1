@@ -28,7 +28,6 @@ public class BatchStockController {
     private BatchStockService batchStockService;
 
 
-
     @PostMapping("/create")
     public BatchStockResponseDTO createBatchStock (@Valid @RequestBody BatchStockDTO batchStockDTO){
            batchStockService.valida(batchStockDTO.getBatchStockItem());

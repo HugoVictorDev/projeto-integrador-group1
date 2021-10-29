@@ -29,6 +29,12 @@ public class Representative {
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();
 
+    public Representative(Long representative_Id, String name, String cpf, Warehouse warehouse ) {
+        this.representative_Id = representative_Id;
+        this.name = name;
+        this.cpf = cpf;
+        this.warehouse = warehouse;
+    }
 
     public Representative(Optional representative_Id) {
     }
