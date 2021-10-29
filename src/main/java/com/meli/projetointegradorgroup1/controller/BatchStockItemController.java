@@ -44,7 +44,7 @@ public class BatchStockItemController {
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
-    List<BatchStockItemResponseDTO> getBatchStockItemList() {
+    List<BatchStockItemResponseDTO> getList() {
         return batchStockItemService.getBatchStockItemsList();
     }
 

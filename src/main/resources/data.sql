@@ -37,11 +37,11 @@
 -- VALUES(1, 1, '23', '67', 1);
 
 --------------------------------------------------------------------------------
--- INSERT INTO PRODUCT (PRODUCTID)
--- VALUES(1);
+INSERT INTO PRODUCT (PRODUCT_ID)
+VALUES(1);
 -- --
 INSERT INTO SELLER (SELLER_ID)
 VALUES(1);
 --
--- INSERT INTO BATCH_STOCK_ITEM (ID, QUANTITY, BATCHSTOCK_BATCH_NUMBER, PRODUCTID, SELLER_ID   )
--- VALUES(1, 1, 1, 1, 1);
+-- INSERT INTO BATCH_STOCK_ITEM (ID, QUANTITY, sellerIdConvert, productIdConvert)
+-- VALUES(1, 1, 1, 1);

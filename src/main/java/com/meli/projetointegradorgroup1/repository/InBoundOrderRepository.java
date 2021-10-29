@@ -8,11 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface InBoundOrderRepository extends JpaRepository<InBoundOrder, Long> {
-    //@Modifying
-    //@Query("delete from InBoundOrdem ibo where ibo.OrderNumber = ?1")
-    Optional<InBoundOrder> deleteByOrderNumber(Long OrderNumber);
-    Optional<InBoundOrder> findById(Long Id);
 
-
-    //void deleteInboundOrderByOrderNumber(Long OrderNumber);
 }

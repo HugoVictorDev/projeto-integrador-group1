@@ -35,19 +35,24 @@ public class BatchStockItemService {
     public BatchStockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
         BatchStockItemResponseDTO batchstockItemResponseDTO = new BatchStockItemResponseDTO();
         batchstockItemResponseDTO.setQuantity(batchStockItem.getQuantity());
-        batchstockItemResponseDTO.setBatchstock(batchStockItem.getBatchstock());
+        batchstockItemResponseDTO.setVolume(batchStockItem.getVolume());
+        batchstockItemResponseDTO.setMaximumTemperature(batchStockItem.getMaximumTemperature());
+        batchstockItemResponseDTO.setMinimumTemperature(batchStockItem.getMinimumTemperature());
+
+        batchstockItemResponseDTO.setSeller_id(batchStockItem.getSellerIdConvert());
+        batchstockItemResponseDTO.setProduct_id(batchStockItem.getProductIdConvert());
         return batchstockItemResponseDTO;
     }
 
     //    valida selller
     public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        sellerService.valida(Long.parseLong(batchStockItemRequestDTO.getSeller_id()));
+        sellerService.valida(batchStockItemRequestDTO.getSeller_id());
 
     }
 
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        productService.valida(Long.parseLong(batchStockItemRequestDTO.getProduct_id()));
+        productService.valida(batchStockItemRequestDTO.getProduct_id());
 
     }
 
