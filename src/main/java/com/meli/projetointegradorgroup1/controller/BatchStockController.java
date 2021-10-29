@@ -8,7 +8,6 @@ import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
-import com.meli.projetointegradorgroup1.services.InboundOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/batchstock")
@@ -29,14 +27,14 @@ public class BatchStockController {
     RepresentativeRepository representativeRepository;
     @Autowired
     private BatchStockService batchStockService;
-    @Autowired
-    private BatchStockRepository batchStockRepository ;
+
+    private BatchStockRepository batchStockRepository;
 
 
     @PostMapping("/create")
     public BatchStockResponseDTO createBatchStock (@Valid @RequestBody BatchStockDTO batchStockDTO){
            batchStockService.valida(batchStockDTO.getBatchStockItem());
-           BatchStock batchStock  = BatchStockDTO.converte(batchStockDTO);
+           BatchStock batchStock = BatchStockDTO.converte(batchStockDTO);
            return BatchStockResponseDTO.converte(batchStockService.save(batchStock));
     }
 
@@ -47,22 +45,15 @@ public class BatchStockController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteBatchStockNumber(@PathVariable("id") Long ordernumber) {
-        batchStockService.deleteBS(ordernumber);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public Optional<BatchStock> deleteBatchStockNumber(@PathVariable("id") Long id) {
+           Optional<BatchStock> batchStock = batchStockService.findBatchSotckById(id);
+           return batchStock;
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<HttpStatus> updateBatchStockNumber(@RequestBody BatchStock batchStock) {
-
-        //InBoundOrder inBoundOrder = new InBoundOrder();
-        batchStock = batchStockService.saveBS(batchStock);
-
-        Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
-        if (_batchStock.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/update")
+    public BatchStockDTO updateBatchStockNumber(@RequestBody BatchStockDTO batchStockDTO) {
+           BatchStock batchStock = BatchStockDTO.converte(batchStockDTO);
+           batchStockService.update(batchStock);
+           return batchStockDTO;
     }
 }

@@ -50,4 +50,11 @@ public class ProductService {
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }
+
+    public void validaProduct(Long productID) {
+        Optional<Product> product = productRepository.findById(productID);
+        if (product.equals(Optional.empty())){
+            throw new RuntimeException("Produto inválido: produto não encontrado");
+        }
+    }
 }

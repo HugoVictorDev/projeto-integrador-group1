@@ -59,6 +59,11 @@ public class BatchStock {
         this.inboundorder = inboundorder;
     }
 
+    public BatchStock BatchStockNumber(Long batchStockNumber) {
+        this.batchStockNumber = batchStockNumber;
+        return this;
+    }
+
     public BatchStock CurrentTemperature(Long currentTemperature) {
         this.currentTemperature = currentTemperature;
         return this;

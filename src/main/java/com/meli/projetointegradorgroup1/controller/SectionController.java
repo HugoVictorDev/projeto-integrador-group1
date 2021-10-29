@@ -41,9 +41,9 @@ public class SectionController {
            return SectionDTO.converte(sectionServices.obterSection(id));
     }
 
-    @PutMapping("/update/{id}")
-    public SectionDTO updateWarehouse(@PathVariable("id") Long id,@Valid @RequestBody SectionDTO sectionDTO){
-        Optional<Section> sectionFind = sectionRepository.findById(id);
+    @PutMapping("/update")
+    public SectionDTO updateWarehouse(@Valid @RequestBody SectionDTO sectionDTO){
+        Optional<Section> sectionFind = sectionRepository.findById(sectionDTO.getSectionId());
         Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
         return SectionDTO.converte(sectionRepository.save(section));
     }

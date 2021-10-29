@@ -1,7 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
-import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
@@ -19,23 +17,22 @@ public class BatchStockService {
     private BatchStockRepository batchStockRepository;
     @Autowired
     private BatchStockItemService batchStockItemService;
+    @Autowired
+    private ProductService productService;
 
-    public BatchStock saveBS(BatchStock batchStock){
-        Optional<BatchStock> _representative = batchStockRepository.findById(batchStock.getBatchStockNumber());
-        if (_representative.isPresent()) {
-            BatchStock representative = _representative.get();
-            BatchStock _batchStock = batchStockRepository.save(batchStock);
-            return _batchStock;
+
+    public void update(BatchStock batchStock){
+        Optional<BatchStock> _batchStock = batchStockRepository.findById(batchStock.getBatchStockNumber());
+        if (_batchStock.isPresent()) {
+            productService.validaProduct(batchStock.getProductID());
+            batchStockRepository.save(batchStock);
+        }else{
+            throw new RuntimeException("BatchStok não encotrada");
         }
-        return null;
     }
 
-    public void deleteBS(Long BatchNumber){
-        batchStockRepository.deleteBybatchStockNumber(BatchNumber);
-    }
-
-    public void updateIBO(BatchStock batchStock){
-        batchStockRepository.save(batchStock);
+    public void deleteById(Long id){
+        batchStockRepository.deleteById(id);
     }
 
     public void valida(Long productID) {
@@ -53,4 +50,15 @@ public class BatchStockService {
              .map(BatchStockResponseDTO::new)
              .collect(Collectors.toList());
     }
+
+    public Optional<BatchStock> findBatchSotckById(Long id) {
+        Optional<BatchStock> batchStock = batchStockRepository.findById(id);
+        if (batchStock.equals(Optional.empty()) || batchStock == null){
+            throw new RuntimeException("BatchStock não cadatsra");
+        }else {
+            deleteById(id);
+            return batchStock;
+        }
+    }
+
 }
