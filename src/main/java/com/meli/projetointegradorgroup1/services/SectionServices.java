@@ -44,7 +44,6 @@ public class SectionServices {
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
             section.setStock(sectionDTO.getStock());
             section.setStockType(sectionDTO.getStockType());
-            section.setBatchStock(sectionDTO.getBatchStock());
             section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
             return section;
         }else{
