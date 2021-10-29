@@ -1,13 +1,15 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import com.meli.projetointegradorgroup1.dto.WarehouseDTOHugo;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.List;
 
-
+@Accessors(chain = true)
 @Entity
 @Data
 public class Section {
@@ -23,7 +25,6 @@ public class Section {
     private String stock;
     @Column(name = "stock_type")
     private String stockType;
-
 
 
     @ManyToOne

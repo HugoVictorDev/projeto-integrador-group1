@@ -2,7 +2,6 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.entity.Section;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,17 +18,21 @@ public class InBoundOrderRequest {
 
         private Long orderNumber;
         private LocalDate orderDate;
-        private Section section;
+        private SectionDTOHugo sectionDTOHugo;
         private List<BatchStock> batchStock;
 
         public InBoundOrder build(){
+
             InBoundOrder inBoundOrder = new InBoundOrder()
                     .setOrderNumber(this.orderNumber)
                     .setOrderDate(this.orderDate)
-                    .setSection(this.section)
+                    .setSection(this.sectionDTOHugo.build())
                     .setBatchStock(this.batchStock);
+
+
             return inBoundOrder;
         }
+
 
     }
 
