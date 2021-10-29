@@ -29,16 +29,13 @@ public class BatchStockItemRequestDTO {
 
 
     public BatchStockItem build(){
-//        Seller seller = new Seller()
-//                .setSellerId(Long.parseLong(seller_id));
         BatchStockItem batchStockItem = new BatchStockItem()
                 .setQuantity(this.quantity)
                 .setVolume(this.volume)
                 .setMaximumTemperature(this.maximumTemperature)
                 .setMinimumTemperature(this.minimumTemperature)
-
-
-                ;
+                .setProductIdConvert(this.product_id)
+                .setSellerIdConvert(this.seller_id);
         return batchStockItem;
     }
 

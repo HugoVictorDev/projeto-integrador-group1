@@ -3,13 +3,14 @@ package com.meli.projetointegradorgroup1.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,8 +23,7 @@ public class InBoundOrder {
     @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
-    @ManyToOne
-    private Representative representative;
+
 
     @Column(name = "orderDate")
     private LocalDate orderDate;
@@ -36,5 +36,6 @@ public class InBoundOrder {
     @OneToMany(cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 
-
+    @ManyToOne
+    private Representative representative;
 }
