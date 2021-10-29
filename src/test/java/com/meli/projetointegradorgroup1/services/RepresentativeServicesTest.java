@@ -19,7 +19,7 @@ public class RepresentativeServicesTest {
     WarehouseServices warehouseServices;
 
     Representative representative = new Representative(1l, "Mario", "78945678945", warehouse);
-    RepresentativeDTO representativedto = new RepresentativeDTO(1l, "Mario", "78945678945", "1");
+    RepresentativeDTO representativedto = new RepresentativeDTO(1l, "Mario", "78945678945", "4");
     RepresentativeServices representativeServices;
     RepresentativeRepository representativeRepository;
 
@@ -46,7 +46,7 @@ public class RepresentativeServicesTest {
 
         Mockito.doNothing().when(representativeServices).valida(Mockito.any());
         Mockito.doNothing().when(representativeServices).validarWarehouse(Mockito.anyLong());
-        Mockito.when(representativeRepository.findAllByCpfAndWarehouse_WarehouseId(Mockito.anyString(),Mockito.anyLong())).thenReturn(representative);
+        Mockito.when(representativeRepository.findAllByCpfAndWarehouse_WarehouseId(Mockito.anyString(),Mockito.anyLong())).thenReturn(null);
 
         representativeServices = new RepresentativeServices(warehouseServices, representativeRepository);
         representativeServices.valida(representativedto);
@@ -62,17 +62,13 @@ public class RepresentativeServicesTest {
 
         Mockito.doNothing().when(representativeServices).valida(Mockito.any());
         Mockito.doNothing().when(representativeServices).validarWarehouse(Mockito.anyLong());
-        Mockito.when(representativeRepository.findAllByCpfAndWarehouse_WarehouseId(Mockito.anyString(),Mockito.anyLong())).thenReturn(null);
+        Mockito.when(representativeRepository.findAllByCpfAndWarehouse_WarehouseId(Mockito.anyString(),Mockito.anyLong())).thenReturn(representative);
 
         representativeServices = new RepresentativeServices(warehouseServices, representativeRepository);
-      //  representativeServices.valida(representativedto);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{ representativeServices.valida(representativedto);;});
-
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{ representativeServices.valida(representativedto);});
         message = "CPF já cadstrado para essa Warehouse";
-        String messageSystem = ;
-
-        assert (mensagem.contains(getMessage()));
+        assert (message.contains(exception.getMessage()));
     }
 
 }
