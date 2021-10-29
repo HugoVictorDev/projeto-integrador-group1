@@ -3,7 +3,6 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,28 +20,37 @@ public class ProductService {
 
     // pegando lista de produtos, iterando e trazendo em formato de dto
     public List<ProductResponseDto> listProductDto(){
-        return productRepository.findAll()
-                .stream()
-                .map(ProductResponseDto::new)
-                .collect(Collectors.toList());
+
+        if (productRepository.findAll().size() == 0){
+            throw new RuntimeException("Nenhum produto cadastrado");
+        } else {
+            return productRepository.findAll()
+                    .stream()
+                    .map(ProductResponseDto::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     public List<ProductResponseDto> listProductDto(String nameId){
-        return productRepository.findByProductNameContaining(nameId)
-                .stream()
-                .map(ProductResponseDto::new)
-                .collect(Collectors.toList());
-    }
 
+        if (productRepository.findByProductNameContaining(nameId).size() == 0){
+            throw new RuntimeException("Nenhum produto com esse nome cadastrado");
+        } else {
+
+            return productRepository.findByProductNameContaining(nameId)
+                    .stream()
+                    .map(ProductResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+    }
 
 
     public void valida(Long productId) {
         Product product =  productRepository.findByProductId(productId);
         if (product == null){
-            throw new RuntimeException("Producot não cadastrado");
+            throw new RuntimeException("Produto não cadastrado");
         }
     }
-
 
     public ProductResponseDto productDtoById(Product product){
         ProductResponseDto productResponseDto = new ProductResponseDto();
