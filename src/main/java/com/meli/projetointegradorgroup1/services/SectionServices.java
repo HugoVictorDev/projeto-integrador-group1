@@ -1,6 +1,8 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionDTOHugo;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
@@ -19,9 +21,28 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
-    public void validarWarehouse(SectionDTO sectionDTO) {
-       warehouseServices.valida(Long.parseLong(sectionDTO.getWarehouseID()));
+
+    SectionDTOHugo sectionDTOHugo;
+
+//    public void validarWarehouse(SectionDTOHugo sectionDTOHugo) {
+////       warehouseServices.valida(Long.parseLong(sectionDTO.getWarehouseID()));
+//    }
+
+    //    valida warhouse
+    public void validWarhouseExist(SectionDTOHugo sectionDTOHugo) {
+        warehouseServices.valida(sectionDTOHugo.getWarehouseDTOHugo().getWarehouseId());
+
     }
+
+    //    valida section
+    public void validSectionExist(SectionDTOHugo sectionDTOHugo) {
+        Section section =  sectionRepository.findBysectionId(sectionDTOHugo.getSectionId());
+        if (section == null){
+            throw new RuntimeException("section não cadastrada");
+        }
+
+    }
+
 
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
@@ -44,7 +65,7 @@ public class SectionServices {
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
             section.setStock(sectionDTO.getStock());
             section.setStockType(sectionDTO.getStockType());
-            section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
+            section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
             return section;
         }else{
             throw new RuntimeException("Warehouse não encontrada");
