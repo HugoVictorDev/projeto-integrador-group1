@@ -2,6 +2,7 @@ package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
 import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionDTOHugo;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
@@ -23,10 +24,11 @@ public class SectionController {
 
     //cadastrar sessões
     @PostMapping("/create")
-    public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
-           sectionServices.validarWarehouse(sectionDTO);
-           Section section = SectionDTO.converte(sectionDTO);
-           return sectionDTO.converte(sectionRepository.save(section));
+    public SectionDTOHugo ceateSection(@Valid @RequestBody SectionDTOHugo sectionDTOHugo){
+           sectionServices.validWarhouseExist(sectionDTOHugo);
+//           sectionServices.validSectionExist(sectionDTOHugo);
+          this.sectionRepository.save(sectionDTOHugo.build());
+          return sectionDTOHugo;
     }
 
     //listar todas as sessões

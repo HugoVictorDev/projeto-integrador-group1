@@ -2,15 +2,19 @@ package com.meli.projetointegradorgroup1.dto;
 
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SectionDTO {
 
     private Long sectionId;
@@ -30,39 +34,19 @@ public class SectionDTO {
 
     @NotBlank(message = "campo é obrigatorio")
     @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros")
-    private String warehouseID;
+    private Long warehouseID;
 
-    public SectionDTO() {
-    }
-
-    public SectionDTO(Long sectionId, String minimumTemprature, String stock, String stockType, String warehouseID) {
-        this.sectionId = sectionId;
-        this.minimumTemperature = minimumTemprature;
-        this.stock = stock;
-        this.stockType = stockType;
-
-        this.warehouseID = warehouseID;
-    }
-
-
-    public static Section converte(SectionDTO sectiodto) {
-        return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
-                            .Stock(sectiodto.getStock())
-                            .StockType(sectiodto.getStockType())
-
-                            .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
-    }
 
     public static SectionDTO converte(Section section) {
         return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
-                , Long.toString(section.getWarehouse().getWarehouseId()));
+                , section.getWarehouse().getWarehouseId());
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
         for (Section section: sections) {
             listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
-                    Long.toString(section.getWarehouse().getWarehouseId())));
+                    section.getWarehouse().getWarehouseId()));
         }
         return listaSection;
     }

@@ -1,7 +1,9 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import com.meli.projetointegradorgroup1.dto.WarehouseDTOHugo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import java.util.List;
 @Accessors(chain = true)
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Section {
 
     @Id
@@ -27,36 +31,10 @@ public class Section {
     private String stockType;
 
 
+
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse = new Warehouse();
-
-    public Section() {
-    }
-
-    public Section MinimumTemprature(String minimumTemperature){
-        this.minimumTemperature = minimumTemperature;
-        return this;
-    }
-
-    public Section Stock(String stock){
-        this.stock = stock;
-        return this;
-    }
-
-    public Section StockType(String stockType){
-        this.stockType = stockType;
-        return this;
-    }
+    private Warehouse warehouse;
 
 
-    public Section(Long sectionId, Warehouse warehouse) {
-        this.sectionId = sectionId;
-        this.warehouse = warehouse;
-    }
-
-    public Section WarehouseID(Long warehouseID){
-       this.warehouse.setWarehouseId(warehouseID);
-       return this;
-    }
 }
