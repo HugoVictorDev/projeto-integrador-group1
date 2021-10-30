@@ -17,12 +17,18 @@ public class RepresentativeServices{
     @Autowired
     WarehouseServices warehouseServices;
 
+    public RepresentativeServices() {
+    }
 
     public RepresentativeServices(WarehouseServices warehouseServices) {
         this.warehouseServices = warehouseServices;
     }
     public RepresentativeServices(WarehouseServices warehouseServices, RepresentativeRepository representativeRepository) {
         this.warehouseServices = warehouseServices;
+        this.representativeRepository = representativeRepository;
+    }
+
+    public RepresentativeServices(RepresentativeRepository representativeRepository) {
         this.representativeRepository = representativeRepository;
     }
 
@@ -52,23 +58,23 @@ public class RepresentativeServices{
     }
 
     public Representative validaUpdate(Optional<Representative> representativeFind, RepresentativeDTO representativedto) {
-        if (representativeFind.isPresent()) {
+        if (representativeFind.get().getRepresentative_Id() == null){
+            throw new RuntimeException("Representante não encontrado");
+        }else{
             Representative representative = representativeFind.get();
             representative.setName(representativedto.getName());
             representative.setCpf(maskCpf(representativedto.getCpf()));
             representative.setWarehouse(obterWarehouse(Long.parseLong(representativedto.getWarehouseID())));
             return representative;
-        }else{
-            throw new RuntimeException("Representante não encontrado");
         }
     }
 
     public Representative findRepresentative(Optional<Representative> representativeFind) {
-        if (representativeFind.isPresent()) {
+        if (representativeFind.get().getRepresentative_Id() == null){
+            throw new RuntimeException("Representante não encontrado");
+    }else{
             Representative representative = representativeFind.get();
             return representative;
-    }else{
-        throw new RuntimeException("Representante não encontrado");
         }
     }
 

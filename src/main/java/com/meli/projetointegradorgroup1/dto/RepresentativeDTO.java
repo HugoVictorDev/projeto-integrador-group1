@@ -48,7 +48,7 @@ public class RepresentativeDTO {
                                     .WarehouseID(Long.parseLong(dto.getWarehouseID()));
     }
 
-    public static RepresentativeDTO converte(Representative representative) {
+    public static RepresentativeDTO converteDto(Representative representative) {
         return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(),
                 Long.toString(representative.getWarehouse().getWarehouseId()));
     }
@@ -61,4 +61,6 @@ public class RepresentativeDTO {
         }
         return listRepresentant;
     }
+
+
 }

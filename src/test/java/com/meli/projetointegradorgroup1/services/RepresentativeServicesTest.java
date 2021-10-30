@@ -11,17 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RepresentativeServicesTest {
-    WarehouseDTO warehousedto = new WarehouseDTO(4l, "Marco", "Rua: Hum", "3");
-    Warehouse warehouse = new Warehouse(4l, "Marco", "Rua: Hum", "3",null);
+    Warehouse warehouse = new Warehouse(4l, "Miguel", "Rua: Hum", "3",null);
     WarehouseServices warehouseServices;
 
-    Representative representative = new Representative(1l, "Mario", "78945678945", warehouse);
-    RepresentativeDTO representativedto = new RepresentativeDTO(1l, "Mario", "78945678945", "4");
+    Representative representative = new Representative(1l, "Joao", "98765432178", warehouse);
+    RepresentativeDTO representativedto = new RepresentativeDTO(1l, "Cassio", "98765432178", "4");
     RepresentativeServices representativeServices;
     RepresentativeRepository representativeRepository;
+    Representative representativeNull = new Representative();
+    List<Representative> representativeList = new ArrayList();
 
     String message = "null";
 
@@ -68,6 +71,91 @@ public class RepresentativeServicesTest {
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{ representativeServices.valida(representativedto);});
         message = "CPF já cadstrado para essa Warehouse";
+        assert (message.contains(exception.getMessage()));
+    }
+    @Test
+    public void validaUpdateOK(){
+        warehouseServices = Mockito.mock(WarehouseServices.class);
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.obterWarehouse(Mockito.anyLong())).thenReturn(warehouse);
+        Mockito.when(representativeServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(representative);
+
+        representativeServices = new RepresentativeServices(warehouseServices);
+
+        representativeServices.validaUpdate(java.util.Optional.ofNullable(representative),representativedto);
+        assert (representative.getName().equals(representativedto.getName()));
+    }
+
+    @Test
+    public void validaUpdateNOK(){
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(null);
+
+        representativeServices = new RepresentativeServices();
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+        representativeServices.validaUpdate(java.util.Optional.ofNullable(representativeNull),representativedto);});
+        message = "Representante não encontrado";
+        assert (message.contains(exception.getMessage()));
+    }
+
+    @Test
+    public void findRepresentativeOK(){
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.findRepresentative(Mockito.any())).thenReturn(representative);
+
+        representativeServices = new RepresentativeServices();
+
+        representativeServices.findRepresentative(java.util.Optional.ofNullable(representative));
+        assert (representative.getName().equals(representative.getName()));
+    }
+
+    @Test
+    public void findRepresentativeNOK(){
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.findRepresentative(Mockito.any())).thenReturn(representative);
+
+        representativeServices = new RepresentativeServices();
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+        representativeServices.findRepresentative(java.util.Optional.ofNullable(representativeNull));});
+        message = "Representante não encontrado";
+        assert (message.contains(exception.getMessage()));
+    }
+
+    @Test
+    public void listaRepresentativeOK(){
+        representativeList.add(representative);
+
+        representativeRepository = Mockito.mock(RepresentativeRepository.class);
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.listaRepresentative()).thenReturn(representativeList);
+        Mockito.when(representativeRepository.findAll()).thenReturn(representativeList);
+
+        representativeServices = new RepresentativeServices(representativeRepository);
+
+        assert (representativeList.size() == 1);
+    }
+
+    @Test
+    public void listaRepresentativeNOK(){
+
+        representativeRepository = Mockito.mock(RepresentativeRepository.class);
+        representativeServices = Mockito.mock(RepresentativeServices.class);
+
+        Mockito.when(representativeServices.listaRepresentative()).thenReturn(null);
+        Mockito.when(representativeRepository.findAll()).thenReturn(representativeList);
+
+        representativeServices = new RepresentativeServices(representativeRepository);
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            representativeServices.listaRepresentative();});
+        message = "Não existem Representantes cadastradas";
         assert (message.contains(exception.getMessage()));
     }
 

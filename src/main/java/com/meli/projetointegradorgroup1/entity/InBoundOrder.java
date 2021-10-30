@@ -23,8 +23,6 @@ public class InBoundOrder {
     @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
-
-
     @Column(name = "orderDate")
     private LocalDate orderDate;
 
@@ -32,10 +30,10 @@ public class InBoundOrder {
     @JoinColumn(name = "section_id") //referenciando a coluna dection_id
     private Section section;
 
-
     @OneToMany(cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 
     @ManyToOne
     private Representative representative;
+
 }
