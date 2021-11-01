@@ -8,6 +8,7 @@ import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import java.util.Optional;
@@ -16,14 +17,26 @@ import java.util.stream.Collectors;
 @Service
 public class SellerService {
 
-    @Autowired
-    SellerRepository sellerRepository;
 
-    public List<SellerResponseDTO> getSellers(){
-        return sellerRepository.findAll()
-                .stream()
-                .map(SellerResponseDTO::new)
-                .collect(Collectors.toList());
+    private final SellerRepository sellerRepository;
+
+    //public SellerResponseDTO setSellers(@Valid SellerRequestDTO sellerRequestDTO){
+     //   this.sellerRepository.save(sellerRequestDTO.build());
+     //   return SellerRequestDTO;
+    //}
+
+    public SellerService(SellerRepository sellerRepository) {
+        this.sellerRepository = sellerRepository;
+    }
+
+    public Seller setSeller(Seller seller){
+        this.sellerRepository.save(seller);
+        return seller;
+    }
+
+    //
+    public List<Seller> getSellers(){
+        return sellerRepository.findAll();
     }
 
     public void valida(Long sellerId) {
@@ -33,13 +46,22 @@ public class SellerService {
         }
     }
 
-
-    public SellerResponseDTO convertEntityToDTO(Seller seller){
+    //
+    public SellerResponseDTO convertEntityToResponse(Seller seller){
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
         sellerResponseDTO.setName(seller.getName());
         sellerResponseDTO.setCpf(seller.getCpf());
         sellerResponseDTO.setEmail(seller.getEmail());
         return sellerResponseDTO;
+    }
+
+    //
+    public Seller convertRequestDTOToEntity(SellerRequestDTO sellerRequestDTO){
+        Seller seller = new Seller();
+        seller.setName(sellerRequestDTO.getName());
+        seller.setCpf(sellerRequestDTO.getCpf());
+        seller.setEmail(sellerRequestDTO.getEmail());
+        return seller;
     }
 
 

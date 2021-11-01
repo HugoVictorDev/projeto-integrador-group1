@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class Seller {
 
     @Id

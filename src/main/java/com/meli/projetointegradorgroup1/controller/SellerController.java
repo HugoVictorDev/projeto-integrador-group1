@@ -8,8 +8,6 @@ import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,20 +26,32 @@ public class SellerController {
     //Cadastrar vendedor
     @PostMapping("/create")
     public SellerRequestDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
-        this.sellerRepository.save(sellerRequestDTO.build());
+
+        Seller seller = sellerService.convertRequestDTOToEntity(sellerRequestDTO);
+        sellerService.setSeller(seller);
+
+        SellerResponseDTO sellerResponseDTO = sellerService.convertEntityToResponse(seller);
+
         return sellerRequestDTO;
     }
 
     //Consultar lista de  vendeokdores
     @GetMapping("/list")
-     List<SellerResponseDTO> getSellerList() {
-        return sellerService.getSellers();
+     public List<SellerResponseDTO> getSellerList() {
+
+        List<Seller> sellerList =  sellerService.getSellers();
+
+        ArrayList<SellerResponseDTO> sellerResponseDTOS = new ArrayList();
+
+        sellerList.stream()
+                .forEach(seller -> sellerResponseDTOS.add(sellerService.convertEntityToResponse(seller)));
+        return sellerResponseDTOS;
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        return sellerService.convertEntityToDTO(sellerRepository.getById(id));
+        return sellerService.convertEntityToResponse(sellerRepository.getById(id));
 
     }
 
@@ -73,6 +83,7 @@ public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
 
 
 }
