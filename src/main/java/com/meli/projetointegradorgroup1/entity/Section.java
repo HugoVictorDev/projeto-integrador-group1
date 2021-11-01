@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.entity;
 
-import com.meli.projetointegradorgroup1.dto.WarehouseDTOHugo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +35,8 @@ public class Section {
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
+
+
 
 
 }

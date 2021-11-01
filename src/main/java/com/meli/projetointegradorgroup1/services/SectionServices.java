@@ -24,19 +24,20 @@ public class SectionServices {
 
     SectionDTOHugo sectionDTOHugo;
 
-//    public void validarWarehouse(SectionDTOHugo sectionDTOHugo) {
-////       warehouseServices.valida(Long.parseLong(sectionDTO.getWarehouseID()));
-//    }
 
-    //    valida warhouse
+    public void validarWarehouse(SectionDTO sectionDTO) {
+       warehouseServices.valida(sectionDTO.getWarehouseID());
+    }
+
+//        valida warhouse
     public void validWarhouseExist(SectionDTOHugo sectionDTOHugo) {
-        warehouseServices.valida(sectionDTOHugo.getWarehouseDTOHugo().getWarehouseId());
+        warehouseServices.valida(sectionDTOHugo.getWarehouseCode());
 
     }
 
     //    valida section
     public void validSectionExist(SectionDTOHugo sectionDTOHugo) {
-        Section section =  sectionRepository.findBysectionId(sectionDTOHugo.getSectionId());
+        Section section =  sectionRepository.findBysectionId(sectionDTOHugo.getSectionCode());
         if (section == null){
             throw new RuntimeException("section não cadastrada");
         }
