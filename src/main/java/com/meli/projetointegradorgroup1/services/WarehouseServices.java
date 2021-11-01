@@ -22,6 +22,10 @@ public class WarehouseServices {
     @Autowired
     SectionRepository sectionRepository;
 
+    public WarehouseServices(WarehouseRepository warehouseRepository) {
+        this.warehouseRepository = warehouseRepository;
+    }
+
 
     public void valida(long warehouseID) {
         Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);

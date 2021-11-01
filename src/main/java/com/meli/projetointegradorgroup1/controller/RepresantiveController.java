@@ -17,13 +17,16 @@ import java.util.Optional;
 @RequestMapping("/representative")
 public class RepresantiveController {
 
+
     @Autowired
     RepresentativeRepository representativeRepository;
     @Autowired
     RepresentativeServices representativeServices;
 
-    public RepresantiveController(RepresentativeServices representativeServices) {
+
+    public RepresantiveController(RepresentativeServices representativeServices, RepresentativeRepository representativeRepository) {
         this.representativeServices = representativeServices;
+        this.representativeRepository = representativeRepository;
     }
 
 
@@ -38,7 +41,7 @@ public class RepresantiveController {
     //Consultar lista de  representantes
     @GetMapping("/list")
     public List<RepresentativeDTO> getRepresentativeList() {
-           return RepresentativeDTO.converte(representativeServices.listaRepresentative());
+           return RepresentativeDTO.converteList(representativeServices.listaRepresentative());
     }
 
     //Atualizar por id

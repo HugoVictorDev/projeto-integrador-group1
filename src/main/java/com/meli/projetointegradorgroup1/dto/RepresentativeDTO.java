@@ -53,7 +53,7 @@ public class RepresentativeDTO {
                 Long.toString(representative.getWarehouse().getWarehouseId()));
     }
 
-    public static List<RepresentativeDTO>converte(List<Representative> representatives){
+    public static List<RepresentativeDTO>converteList(List<Representative> representatives){
         List<RepresentativeDTO> listRepresentant = new ArrayList<>();
         for (Representative representative: representatives) {
             listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(),
