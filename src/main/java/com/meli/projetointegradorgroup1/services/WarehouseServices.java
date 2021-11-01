@@ -23,7 +23,7 @@ public class WarehouseServices {
     SectionRepository sectionRepository;
 
 
-    public void valida(long warehouseID) {
+    public void valida(Long warehouseID) {
         Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
         if (warehouse == null){
             throw new RuntimeException("Warehouse não cadastrada");
@@ -48,6 +48,12 @@ public class WarehouseServices {
     }else{
         throw new RuntimeException("Warehouse não encontrada");
          }
+    }
+
+    public Warehouse obterWarehouse2(Long warehouseID) {
+        return warehouseRepository.findBywarehouseId(warehouseID);
+
+
     }
 
     public Warehouse obterWarehouse(Long warehouseID) {

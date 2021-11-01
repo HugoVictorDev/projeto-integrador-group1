@@ -22,14 +22,13 @@ public class SectionController {
     @Autowired
     private SectionServices sectionServices;
 
-    //cadastrar sessões
     @PostMapping("/create")
-    public SectionDTOHugo ceateSection(@Valid @RequestBody SectionDTOHugo sectionDTOHugo){
-           sectionServices.validWarhouseExist(sectionDTOHugo);
-//           sectionServices.validSectionExist(sectionDTOHugo);
-          this.sectionRepository.save(sectionDTOHugo.build());
-          return sectionDTOHugo;
+    public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
+        sectionServices.validarWarehouse(sectionDTO);
+        Section section = SectionDTO.converte(sectionDTO);
+        return sectionDTO.converte(sectionRepository.save(section));
     }
+
 
     //listar todas as sessões
     @GetMapping("/list")

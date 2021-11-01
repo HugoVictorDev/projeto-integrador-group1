@@ -42,9 +42,9 @@ public class InBoundOrderController {
 
     @PostMapping("/create")
     public InBoundOrderRequest create(@Valid @RequestBody InBoundOrderRequest inBoundOrderRequest) {
-         sectionServices.validSectionExist(inBoundOrderRequest.getSectionDTOHugo());
-         sectionServices.validWarhouseExist(inBoundOrderRequest.getSectionDTOHugo());
-        this.inBoundOrderRepository.save(inBoundOrderRequest.build());
+        sectionServices.validSectionExist(inBoundOrderRequest.getSectionDTOHugo());
+        sectionServices.validWarhouseExist(inBoundOrderRequest.getSectionDTOHugo());
+        this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto());
         return inBoundOrderRequest;
     }
 
