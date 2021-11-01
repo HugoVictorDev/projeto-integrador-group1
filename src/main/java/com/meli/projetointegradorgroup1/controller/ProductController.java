@@ -27,7 +27,7 @@ public class ProductController {
     // cadastrar novo produto
     @PostMapping("/create")
     public ProductRequestDto createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
-        this.productRepository.save(productRequestDto.build());
+        this.productRepository.save(productRequestDto.convert());
         return productRequestDto;
     }
 
@@ -38,9 +38,16 @@ public class ProductController {
     }
 
     // buscar produto por id
-    @GetMapping("/id/{id}")
-    public ProductResponseDto getById(@PathVariable("id") Long id){
-        return productService.productDtoById(productRepository.getById(id));
+//    @GetMapping("/id/{id}")
+//    public ProductResponseDto getById(@PathVariable("id") Long id){
+//        return productService.productDtoById(productRepository.getById(id));
+//    }
+
+
+    @GetMapping("{id}")
+    public ProductResponseDto getById(@PathVariable("id") Long id) {
+        Optional<Product> productFind = productRepository.findById(id);
+        return ProductResponseDto.convertDto(productService.findProduct(productFind));
     }
 
     // buscar produto por nome
@@ -51,7 +58,7 @@ public class ProductController {
 
     // atualizar produto por id
     @PutMapping("/update/{id}")
-    public ProductRequestDto updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
+    public ProductRequestDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
 
         Optional<Product> productFind = productRepository.findById(id);
         Product newProduct = productService.validaUpdate(productFind, productRequestDto);
@@ -60,8 +67,9 @@ public class ProductController {
 
     // deletar produto por id
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
+        return "Produto de id " + id + " excluído com sucesso!";
     }
 
 }

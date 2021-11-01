@@ -18,11 +18,11 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    // pegando lista de produtos, iterando e trazendo em formato de dto
+    // pegando lista de todos os produtos, iterando e trazendo em formato de dto
     public List<ProductResponseDto> listProductDto(){
 
         if (productRepository.findAll().size() == 0){
-            throw new RuntimeException("Nenhum produto cadastrado");
+            throw new RuntimeException("Não encontramos produtos cadastrados.");
         } else {
             return productRepository.findAll()
                     .stream()
@@ -31,10 +31,11 @@ public class ProductService {
         }
     }
 
+    // lista de produtos por nome
     public List<ProductResponseDto> listProductDto(String nameId){
 
         if (productRepository.findByProductNameContaining(nameId).size() == 0){
-            throw new RuntimeException("Nenhum produto com esse nome cadastrado");
+            throw new RuntimeException("Não localizamos produto cadastrado com esse nome.");
         } else {
 
             return productRepository.findByProductNameContaining(nameId)
@@ -48,25 +49,40 @@ public class ProductService {
     public void valida(Long productId) {
         Product product =  productRepository.findByProductId(productId);
         if (product == null){
-            throw new RuntimeException("Produto não cadastrado");
+            throw new RuntimeException("Produto não cadastrado.");
         }
     }
 
-    public ProductResponseDto productDtoById(Product product){
-        ProductResponseDto productResponseDto = new ProductResponseDto();
-        productResponseDto.setProductName(product.getProductName());
-        productResponseDto.setDescription(product.getDescription());
-        return productResponseDto;
+    // localizando produto por id
+//    public ProductResponseDto productDtoById(Product product){
+//
+//        ProductResponseDto productResponseDto = new ProductResponseDto();
+//        productResponseDto.setProductName(product.getProductName());
+//        productResponseDto.setDescription(product.getDescription());
+//        return productResponseDto;
+//
+//    }
+
+    // teste
+    public Product findProduct(Optional<Product> productFind) {
+        if (productFind.get().getProductId() == null){
+            throw new RuntimeException("Não localizamos produto com esse Id.");
+        }else{
+            Product product = productFind.get();
+            return product;
+        }
     }
 
+    // validando atualizaçao de produto por id
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
             newProduct.setProductName(productRequestDto.getProductName());
             newProduct.setDescription(productRequestDto.getDescription());
+
             return newProduct;
         } else {
-            throw new RuntimeException("Produto nao encontrado");
+            throw new RuntimeException("Não localizamos produto com esse Id para ser atualizado.");
         }
     }
 
@@ -76,4 +92,5 @@ public class ProductService {
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }
+
 }
