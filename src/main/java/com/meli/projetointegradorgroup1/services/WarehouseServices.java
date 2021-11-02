@@ -65,13 +65,14 @@ public class WarehouseServices {
  //   public void handler() {
  //       throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
  //   }
-    public ResponseEntity<Object> deleta(Long id) {
-        try {
+   // public ResponseEntity<Object> deleta(Long id) {
+        public void deleta(Long id) {
+    //    try {
             warehouseRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
+   //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+   //     } catch (Exception e) {
   //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
-             throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
-        }
+  //           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
+   //     }
     }
 }

@@ -22,6 +22,11 @@ public class WarehouseController {
     @Autowired
     private WarehouseServices warehouseServices;
 
+    public WarehouseController(WarehouseRepository warehouseRepository, WarehouseServices warehouseServices) {
+        this.warehouseRepository = warehouseRepository;
+        this.warehouseServices = warehouseServices;
+    }
+
     //criar warehouse
     @PostMapping("/create")
     public WarehouseDTO createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
@@ -54,7 +59,6 @@ public class WarehouseController {
     public WarehouseDTO  deleteWarehouseById(@PathVariable("id") Long id){
            Warehouse warehouse = warehouseServices.obterWarehouse(id);
            warehouseServices.deleta(id);
-       //    warehouseRepository.deleteById(id);
            return WarehouseDTO.converte(warehouse);
     }
       @GetMapping(value="/handler")
