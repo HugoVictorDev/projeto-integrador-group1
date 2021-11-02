@@ -43,14 +43,14 @@ public class WarehouseServices {
 
 
     public Warehouse validaUpdate(Optional<Warehouse> warehouseFind, WarehouseDTO warehouseDTO) {
-    if(warehouseFind.isPresent()){
+    if(warehouseFind == null  || warehouseFind.equals(Optional.empty())){
+        throw new RuntimeException("Warehouse não encontrada");
+    }else{
         Warehouse warehouse = warehouseFind.get();
         warehouse.setName(warehouseDTO.getName());
         warehouse.setAddress(warehouseDTO.getAddress());
         warehouse.setSize(warehouseDTO.getSize());
         return warehouse;
-    }else{
-        throw new RuntimeException("Warehouse não encontrada");
          }
     }
 
