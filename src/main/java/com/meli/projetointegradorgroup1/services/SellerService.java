@@ -39,11 +39,12 @@ public class SellerService {
         return sellerRepository.findAll();
     }
 
-    public void valida(Long sellerId) {
+    public boolean valida(Long sellerId) {
         Seller seller =  sellerRepository.findBySellerId(sellerId);
         if (seller == null){
             throw new RuntimeException("Seller não cadastrado");
         }
+        return true;
     }
 
     //
