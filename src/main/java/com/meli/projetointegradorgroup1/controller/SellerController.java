@@ -23,16 +23,22 @@ public class SellerController {
     @Autowired
     SellerService sellerService;
 
+    public SellerController(SellerRepository sellerRepository, SellerService sellerService) {
+        this.sellerRepository = sellerRepository;
+        this.sellerService = sellerService;
+    }
+
+
     //Cadastrar vendedor
     @PostMapping("/create")
-    public SellerRequestDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
+    public SellerResponseDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
 
         Seller seller = sellerService.convertRequestDTOToEntity(sellerRequestDTO);
-        sellerService.setSeller(seller);
+        seller = sellerService.setSeller(seller);
 
         SellerResponseDTO sellerResponseDTO = sellerService.convertEntityToResponse(seller);
 
-        return sellerRequestDTO;
+        return sellerResponseDTO;
     }
 
     //Consultar lista de  vendeokdores

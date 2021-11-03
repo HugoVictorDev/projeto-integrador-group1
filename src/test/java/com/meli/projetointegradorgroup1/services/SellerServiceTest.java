@@ -40,6 +40,7 @@ class SellerServiceTest {
 
     @Test
     void setSeller() { // - CADASTRO DE SELLER
+
         Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
