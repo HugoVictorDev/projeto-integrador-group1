@@ -4,7 +4,10 @@ import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BatchStockItemRepository extends JpaRepository<BatchStockItem, Long> {
   //  BatchStockItem findById();
+    List<BatchStockItem> findBySeller_sellerId(Long id);
 }

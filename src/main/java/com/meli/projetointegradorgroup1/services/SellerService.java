@@ -64,4 +64,9 @@ public class SellerService {
         sellerRequestDTO.setEmail(seller.getEmail());
         return sellerRequestDTO;
     }
+
+    public Seller obter(Long id){
+        Optional<Seller> byId = this.sellerRepository.findById(id);
+        return byId.get();
+    }
 }

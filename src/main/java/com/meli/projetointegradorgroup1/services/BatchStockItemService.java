@@ -39,8 +39,9 @@ public class BatchStockItemService {
         batchstockItemResponseDTO.setMaximumTemperature(batchStockItem.getMaximumTemperature());
         batchstockItemResponseDTO.setMinimumTemperature(batchStockItem.getMinimumTemperature());
 
-        batchstockItemResponseDTO.setSeller_id(batchStockItem.getSellerIdConvert());
-        batchstockItemResponseDTO.setProduct_id(batchStockItem.getProductIdConvert());
+//        batchstockItemResponseDTO.setSeller_id(batchStockItem.getSellerIdConvert());
+//        batchstockItemResponseDTO.setProduct_id(batchStockItem.getProductIdConvert());
+        //TODO: revisar
         return batchstockItemResponseDTO;
     }
 
@@ -63,7 +64,7 @@ public class BatchStockItemService {
         if (batchStockItemFind.isPresent()) {
             BatchStockItem _batchStockItem = batchStockItemFind.get();
             _batchStockItem.setQuantity(batchStockItem.getQuantity());
-            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
+//            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
 
 
             return _batchStockItem;

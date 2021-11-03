@@ -48,9 +48,11 @@ public class BatchStockService {
     }
 
     public List<BatchStockResponseDTO> findBatchSotck() {
-        return batchStockRepository.findAll()
-                .stream()
-                .map(BatchStockResponseDTO::new)
-                .collect(Collectors.toList());
+//        return batchStockRepository.findAll()
+//                .stream()
+//                .map(BatchStockResponseDTO::new)
+//                .collect(Collectors.toList());
+        //TODO: revisar
+        return null;
     }
 }
