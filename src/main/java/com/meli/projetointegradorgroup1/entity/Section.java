@@ -1,6 +1,9 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import com.meli.projetointegradorgroup1.services.WarehouseServices;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,6 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "section_id")
     private Long sectionId;
-
     @Column(name = "minimum_temperature")
     private String minimumTemperature;
     @Column(name = "stock")
@@ -24,13 +26,19 @@ public class Section {
     @Column(name = "stock_type")
     private String stockType;
 
-
-
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse = new Warehouse();
 
     public Section() {
+    }
+
+    public Section(Long sectionId, String minimumTemperature, String stock, String stockType, Warehouse warehouse) {
+        this.sectionId = sectionId;
+        this.minimumTemperature = minimumTemperature;
+        this.stock = stock;
+        this.stockType = stockType;
+        this.warehouse = warehouse;
     }
 
     public Section MinimumTemprature(String minimumTemperature){

@@ -19,6 +19,11 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
+    public SectionServices(WarehouseServices warehouseServices, SectionRepository sectionRepository) {
+        this.warehouseServices = warehouseServices;
+        this.sectionRepository = sectionRepository;
+    }
+
     public void validarWarehouse(SectionDTO sectionDTO) {
        warehouseServices.valida(Long.parseLong(sectionDTO.getWarehouseID()));
     }
@@ -39,16 +44,16 @@ public class SectionServices {
     }
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
-        if(sectionFind.isPresent()){
-            Section section = sectionFind.get();
-            section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-            section.setStock(sectionDTO.getStock());
-            section.setStockType(sectionDTO.getStockType());
-            section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
-            return section;
+         if(sectionFind == null  || sectionFind.equals(Optional.empty())){
+             throw new RuntimeException("Sessão não encontrada");
         }else{
-            throw new RuntimeException("Sessão não encontrada");
-        }
+             Section section = sectionFind.get();
+             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
+             section.setStock(sectionDTO.getStock());
+             section.setStockType(sectionDTO.getStockType());
+             section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
+             return section;
+            }
 }
 
     private Warehouse obterWarehouse(long warehouseID) {
