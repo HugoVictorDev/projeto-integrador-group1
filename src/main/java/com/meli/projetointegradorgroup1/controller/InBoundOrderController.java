@@ -2,16 +2,16 @@ package com.meli.projetointegradorgroup1.controller;
 
 
 
+import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequest;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
+import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
-import com.meli.projetointegradorgroup1.services.BatchStockItemService;
-import com.meli.projetointegradorgroup1.services.InBoundOrderService;
-import com.meli.projetointegradorgroup1.services.SectionServices;
+import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +38,18 @@ public class InBoundOrderController {
     SectionServices sectionServices;
     //Cadastrar BatchStockItem
 
+    @Autowired
+    BatchStockService batchStockService;
+
+    @Autowired
+    StockService stockService;
 
 
     @PostMapping("/create")
     public InBoundOrderRequest create(@Valid @RequestBody InBoundOrderRequest inBoundOrderRequest) {
         sectionServices.validSectionExist(inBoundOrderRequest.getSectionDTOHugo());
         sectionServices.validWarhouseExist(inBoundOrderRequest.getSectionDTOHugo());
-        this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto());
+        this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto(stockService));
         return inBoundOrderRequest;
     }
 

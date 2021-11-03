@@ -43,6 +43,10 @@ public class ProductService {
         }
     }
 
+    public Product obtem(Long id){
+        Optional<Product> byId = this.productRepository.findById(id);
+        return byId.get();
+    }
 
     public ProductResponseDto productDtoById(Product product){
         ProductResponseDto productResponseDto = new ProductResponseDto();

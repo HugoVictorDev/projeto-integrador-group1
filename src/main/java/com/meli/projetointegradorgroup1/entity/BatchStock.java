@@ -2,6 +2,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -11,11 +12,12 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-@Accessors(chain = true)
+@Accessors(chain = true) //true todo o set retorna o proprio objeto
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
+@Builder
 //conjunto de lote
 public class BatchStock {
 
@@ -25,10 +27,10 @@ public class BatchStock {
     private Long batchStockNumber;
 
     @Column(name = "currentTemperature")
-    private Long currentTemperature;
+    private double currentTemperature;
 
     @Column(name = "minimumTemeprature")
-    private Long minimumTemperature;
+    private double minimumTemperature;
 
     @Column(name = "initialQuality")
     private String initialQuality;
@@ -44,54 +46,14 @@ public class BatchStock {
 
     private Long productID;
 
-    @OneToMany(mappedBy = "batchstock")
-    private List<BatchStockItem> batchStockItem;
+    @ManyToOne
+    private BatchStockItem batchStockItem;
+
+//    @OneToMany(mappedBy = "batchstock")
+//    private List<BatchStockItem> batchStockItem;
 
     @ManyToOne
     @JoinColumn(name = "inboundorder_orderNumber")
     private InBoundOrder inboundorder;
-
-
-    public BatchStock(Long currentTemperature, Long minimumTemperature, String initialQuality, String currentQuality, String manufacturingDate, String manufacturingTime, String due_date, Long product_ID) {
-    }
-
-    public void setInboundorder(InBoundOrder inboundorder) {
-        this.inboundorder = inboundorder;
-    }
-
-    public BatchStock CurrentTemperature(Long currentTemperature) {
-        this.currentTemperature = currentTemperature;
-        return this;
-    }
-
-    public BatchStock MinimumTemperature(Long minimumTemperature) {
-        this.minimumTemperature = minimumTemperature;
-        return this;
-    }
-
-    public BatchStock InitialQuality(String initialQuality) {
-        this.initialQuality = initialQuality;
-        return this;
-    }
-
-    public BatchStock CurrentQuality(String currentQuality) {
-        this.currentQuality = currentQuality;
-        return this;
-    }
-
-    public BatchStock ManufacturingTime(LocalDateTime manufacturingTime) {
-        this.manufacturingTime = manufacturingTime;
-        return this;
-    }
-
-    public BatchStock DueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-        return this;
-    }
-
-    public BatchStock ProductID(Long productID) {
-        this.productID = productID;
-        return this;
-    }
 
 }

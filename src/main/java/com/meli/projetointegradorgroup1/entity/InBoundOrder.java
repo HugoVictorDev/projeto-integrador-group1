@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import com.meli.projetointegradorgroup1.dto.request.BatchStockDTOhugo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,4 +39,6 @@ public class InBoundOrder {
 
     @ManyToOne
     private Representative representative;
+
+
 }

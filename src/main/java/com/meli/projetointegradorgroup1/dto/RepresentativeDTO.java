@@ -56,7 +56,8 @@ public class RepresentativeDTO {
     public static List<RepresentativeDTO>converte(List<Representative> representatives){
         List<RepresentativeDTO> listRepresentant = new ArrayList<>();
         for (Representative representative: representatives) {
-            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(),
+            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(),
+                    representative.getName(),
                     representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
         }
         return listRepresentant;
