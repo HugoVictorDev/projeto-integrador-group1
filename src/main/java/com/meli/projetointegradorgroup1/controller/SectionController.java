@@ -21,6 +21,11 @@ public class SectionController {
     @Autowired
     private SectionServices sectionServices;
 
+    public SectionController(SectionRepository sectionRepository, SectionServices sectionServices) {
+        this.sectionRepository = sectionRepository;
+        this.sectionServices = sectionServices;
+    }
+
     //cadastrar sessões
     @PostMapping("/create")
     public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
@@ -42,7 +47,7 @@ public class SectionController {
     }
 
     @PutMapping("/update")
-    public SectionDTO updateWarehouse(@Valid @RequestBody SectionDTO sectionDTO){
+    public SectionDTO updateSection(@Valid @RequestBody SectionDTO sectionDTO){
         Optional<Section> sectionFind = sectionRepository.findById(sectionDTO.getSectionId());
         Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
         return SectionDTO.converte(sectionRepository.save(section));

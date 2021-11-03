@@ -33,12 +33,12 @@ public class Section {
     public Section() {
     }
 
-    public Section(Long sectionId, String minimumTemperature, String stock, String stockType, Warehouse warehouse) {
+    public Section(Long sectionId, String minimumTemperature, String stock, String stockType, Long warehouse) {
         this.sectionId = sectionId;
         this.minimumTemperature = minimumTemperature;
         this.stock = stock;
         this.stockType = stockType;
-        this.warehouse = warehouse;
+        this.warehouse.setWarehouseId(getSectionId());
     }
 
     public Section MinimumTemprature(String minimumTemperature){

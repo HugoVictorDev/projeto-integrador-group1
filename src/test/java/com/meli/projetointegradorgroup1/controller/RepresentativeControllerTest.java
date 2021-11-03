@@ -15,17 +15,13 @@ import java.util.List;
 
 public class RepresentativeControllerTest {
     Warehouse warehouse = new Warehouse(4l, "Miguel", "Rua: Hum", "3",null);
-    WarehouseServices warehouseServices;
 
     Representative representative = new Representative(1l, "Joao", "98765432178", warehouse);
     Representative representativeUpdate = new Representative(1l, "Cassio", "98765432178", warehouse);
     RepresentativeDTO representativedto = new RepresentativeDTO(null, "Cassio", "98765432178", "4");
     RepresentativeServices representativeServices;
     RepresentativeRepository representativeRepository;
-    Representative representativeNull = new Representative();
     List<Representative> representativeList = new ArrayList();
-
-    RepresentativeDTO representativedtoMoc;
 
     @Test
     public void createRepresentative(){
@@ -34,10 +30,6 @@ public class RepresentativeControllerTest {
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
 
         Mockito.doNothing().when(representativeServices).valida(Mockito.any());
-        //Mockito.when(RepresentativeDTO.converte(representativedto)).thenReturn(null);
-        //Mockito.when(RepresentativeDTO.converteDto(representative)).thenReturn(null);
-        //Mockito.when(RepresentativeDTO.converte(Mockito.any(RepresentativeDTO.class)).thenReturn(representative);
-        //Mockito.when(RepresentativeDTO.converteDto(Mockito.any(Representative.class))).thenReturn(representativedto);
         Mockito.when(representativeRepository.save(Mockito.any())).thenReturn(representative);
 
         RepresantiveController represantiveController = new RepresantiveController(representativeServices, representativeRepository);
@@ -98,5 +90,6 @@ public class RepresentativeControllerTest {
         represantiveController.deleteRepresentativeById(1l);
 
         assert (representative.getName()!=null);
+        assert (representative.getRepresentative_Id() == 1l);
     }
 }
