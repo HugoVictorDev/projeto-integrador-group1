@@ -37,7 +37,9 @@ public class BatchStockItemRequestDTO {
                 .quantity(this.quantity)
                 .volume(this.volume)
                 .maximumTemperature(this.maximumTemperature)
-                .minimumTemperature(this.minimumTemperature).build();
+                .minimumTemperature(this.minimumTemperature)
+
+                .build();
         //TODO: revisar
                 //.setProductIdConvert(this.product_id)
                // .setSellerIdConvert(this.seller_id);

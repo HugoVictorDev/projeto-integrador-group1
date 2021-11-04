@@ -1,8 +1,11 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
+
+import com.meli.projetointegradorgroup1.dto.request.BatchStockDTOhugo;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
+import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
@@ -31,12 +34,16 @@ public class BatchStockController {
     @Autowired
     private BatchStockRepository batchStockRepository ;
 
+    private BatchStockItem batchStockItem;
+
+    private BatchStockDTOhugo batchStockDTOhugo;
+
 
     @PostMapping("/create")
-    public BatchStockResponseDTO createBatchStock (@Valid @RequestBody BatchStockDTO batchStockDTO){
-           batchStockService.valida(batchStockDTO.getBatchStockItem());
-           BatchStock batchStock  = BatchStockDTO.converte(batchStockDTO);
-           return BatchStockResponseDTO.converte(batchStockService.save(batchStock));
+    public BatchStockDTOhugo createBatchStock ( @RequestBody BatchStockDTOhugo batchStockDTOhugo){
+           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
+            this.batchStockRepository.save(BatchStockDTOhugo.convertedto(batchStockDTOhugo, batchStockItem));
+            return batchStockDTOhugo;
     }
 
     @GetMapping("/list")

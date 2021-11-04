@@ -1,17 +1,14 @@
 package com.meli.projetointegradorgroup1.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +19,8 @@ import java.util.stream.Collectors;
 public class BatchStockDTOhugo {
 
     private Long batchStockNumber;
-    private Long productID;
+    @JsonProperty(namespace = "productId")
+    private Long batchStockItem;
     private double currentTemperature;
     private double minimumTemperature;
     private String initialQuality;
@@ -32,43 +30,20 @@ public class BatchStockDTOhugo {
 
 
 
-    public BatchStock convertDTo () {
-        return null;
-        //TODO: Me dah medo
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        BatchStockItem batchStockItem = new BatchStockItem().setId(this.productID);
-//        BatchStock batchStock = new BatchStock()
-//                .setBatchStockNumber(this.batchStockNumber)
-//                .setBatchStockItem(batchStockItem)
-//                .setCurrentTemperature(this.currentTemperature)
-//                .setMinimumTemperature(this.minimumTemperature)
-//                .setInitialQuality(this.initialQuality)
-//                .setCurrentQuality(this.currentQuality)
-//                .setManufacturingTime(LocalDateTime.parse(this.manufacturingTime, formatter))
-//                .setDueDate(this.dueDate);
-//        return batchStock;
+
+
+    public static BatchStock convertedto( BatchStockDTOhugo dto, BatchStockItem batchStockItem){
+        return BatchStock.builder()
+                .batchStockNumber(dto.getBatchStockNumber())
+                .batchStockItem(BatchStockItem.builder().id(dto.batchStockItem).build())
+                .currentTemperature(dto.getCurrentTemperature())
+                .minimumTemperature(dto.getMinimumTemperature())
+                .initialQuality(dto.getInitialQuality())
+                .currentQuality(dto.getCurrentQuality())
+                .manufacturingTime(null)
+                .dueDate(dto.getDueDate()).build();
 
     }
-
-    public static List<BatchStockDTOhugo> converterLista(List<BatchStock> loteList) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        BatchStockItem batchStockItem = new BatchStockItem().setId(productID);
-
-        List<BatchStockDTOhugo> loteDTOList = new ArrayList<>();
-        for (BatchStock batchStock : loteList) {
-            loteDTOList.add(BatchStockDTOhugo.builder()
-                    .batchStockNumber(batchStock.getBatchStockNumber())
-                            .currentQuality(batchStock.getCurrentQuality())
-                            .currentTemperature(batchStock.getCurrentTemperature())
-                            .minimumTemperature(batchStock.getMinimumTemperature())
-                            .initialQuality(batchStock.getInitialQuality())
-//                            .manufacturingTime(LocalDateTime.parse(batchStock.getManufacturingTime(), formatter))
-
-                    .build());
-        }
-        return loteDTOList;
-    }
-
 
     public static List<BatchStock> converte(List<BatchStockDTOhugo> dtos, List<BatchStockItem> listaDeStockItemsDoSellerDaInboundOrder){
 
@@ -81,7 +56,7 @@ public class BatchStockDTOhugo {
                 .map(dto -> BatchStock.builder()
                         .batchStockItem(
                                 listaDeStockItemsDoSellerDaInboundOrder.stream()
-                                        .filter(item -> item.getProduct().getProductId().equals(dto.getProductID()))
+                                        .filter(item -> item.getId().equals(dto.getBatchStockItem()))
 
                                         .map(i -> BatchStockItem.builder()
                                                 .seller(i.getSeller())
