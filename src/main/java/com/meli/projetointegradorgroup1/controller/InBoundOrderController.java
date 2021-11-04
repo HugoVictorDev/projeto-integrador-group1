@@ -11,6 +11,7 @@ import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.InBoundOrderService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class InBoundOrderController {
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
+    @ApiOperation(value = "Cadastrar novo inboundorder")
     public InBoundOrderRequest createBatchStockItem(@Valid @RequestBody InBoundOrderRequest inBoundOrderRequest) {
 //        batchStockItemService.validSellerExist(batchStockItemRequestDTO);
 //        batchStockItemService.validProductExist(batchStockItemRequestDTO);
