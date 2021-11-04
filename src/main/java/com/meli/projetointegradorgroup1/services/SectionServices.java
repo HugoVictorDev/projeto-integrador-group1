@@ -37,8 +37,8 @@ public class SectionServices {
 
     //    valida section
     public void validSectionExist(SectionDTOHugo sectionDTOHugo) {
-        Section section =  sectionRepository.findBysectionId(sectionDTOHugo.getSectionCode());
-        if (section == null){
+        Optional<Section> section = sectionRepository.findById(sectionDTOHugo.getSectionCode());
+        if (!section.isPresent()){
             throw new RuntimeException("section não cadastrada");
         }
 
@@ -54,10 +54,11 @@ public class SectionServices {
 
 
     public Section obterSection(Long sectionID) {
-        Section section = sectionRepository.findBysectionId(sectionID);
-        if (section == null){
+        Optional<Section> section = sectionRepository.findById(sectionID);
+        if (!section.isPresent()){
             throw new RuntimeException("Sessão não encontrada");
-        }return section;
+        }
+        return section.get();
     }
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {

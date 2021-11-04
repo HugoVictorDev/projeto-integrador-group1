@@ -1,15 +1,19 @@
 package com.meli.projetointegradorgroup1.dto;
 
-import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class WarehouseDTO {
 
     private Long warehouseId;
@@ -26,28 +30,24 @@ public class WarehouseDTO {
     private String size;
 
 
-    public WarehouseDTO(Long warehouseId, String name, String address, String size) {
-        this.warehouseId = warehouseId;
-        this.name = name;
-        this.address = address;
-        this.size = size;
-
-    }
-
-    public static Warehouse converte(WarehouseDTO warehouseDTO) {
-        return new Warehouse().Name(warehouseDTO.getName())
-                              .Address(warehouseDTO.getAddress())
-                              .Size(warehouseDTO.getSize());
+    public static Warehouse converte(WarehouseDTO dto) {
+        return Warehouse.builder().name(dto.getName()).address(dto.getAddress()).size(dto.getSize()).build();
     }
 
     public static WarehouseDTO converte(Warehouse wareHouse) {
-        return new WarehouseDTO(wareHouse.getWarehouseId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
+        return WarehouseDTO.builder().name(wareHouse.getName()).address(wareHouse.getAddress()).size(wareHouse.getSize()).warehouseId(wareHouse.getId()).build();
     }
 
     public Iterable<WarehouseDTO> converte(List<Warehouse> warehouses) {
         List<WarehouseDTO> listWarehouse = new ArrayList<>();
-        for (Warehouse warehouse: warehouses) {
-            listWarehouse.add(new WarehouseDTO(warehouse.getWarehouseId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
+        for (Warehouse w: warehouses) {
+            listWarehouse.add(
+                    WarehouseDTO.builder().name(w.getName())
+                            .address(w.getAddress())
+                            .warehouseId(w.getId())
+                            .build()
+
+            );
         }
         return listWarehouse;
     }

@@ -15,7 +15,7 @@ public class ProductResponseDto {
     private String description;
 
     public ProductResponseDto(Product product) {
-        this.productName = product.getProductName();
+        this.productName = product.getName();
         this.description = product.getDescription();
     }
 }

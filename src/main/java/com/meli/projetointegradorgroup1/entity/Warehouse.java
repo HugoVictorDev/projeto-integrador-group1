@@ -1,6 +1,9 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,47 +15,30 @@ import java.util.List;
 @Entity
 @Data
 @Accessors(chain = true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "warehouse_id")
-    private Long warehouseId;
+    private Long id;
 
 //    private Representative representative;
 
-    @NotNull @Column(name = "name")
+    @NotNull
     private String name;
 
-    @NotNull @Column(name = "address")
+    @NotNull
     private String address;
 
-    @NotNull @Column(name = "size")
+    @NotNull
     private String size;
 
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
     private List<Section> section;
 
-    public Warehouse() {
-    }
+    @OneToOne
+    private Representante representante;
 
-
-
-    public Warehouse(Long warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-
-
-    public Warehouse Name(String name) {
-        this.name = name;
-        return this;
-    }
-    public Warehouse Address(String address) {
-        this.address = address;
-        return this;
-    }
-    public Warehouse Size(String size) {
-        this.size = size;
-        return this;
-    }
 }

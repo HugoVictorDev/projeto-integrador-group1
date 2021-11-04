@@ -24,28 +24,16 @@ public class BatchStockItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
     private int quantity;
     private double volume;
     private double maximumTemperature;
     private double minimumTemperature;
 
-   @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "sellerId")
-  private Seller seller;
-
-//   private Long sellerIdConvert;
-//   private Long productIdConvert;
-    //TODO: revisar
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "productid")
+    @ManyToOne
     private Product product;
 
-//    @ManyToOne
-//    @JoinColumn(name = "batchstock_batchNumber")
-//    private BatchStock batchstock;
+    @OneToOne
+    private BatchStock batchStock;
 }
 
 

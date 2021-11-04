@@ -23,37 +23,24 @@ public class BatchStock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "batchNumber")
+    private Long id;
+
     private Long batchStockNumber;
-
-    @Column(name = "currentTemperature")
     private double currentTemperature;
-
-    @Column(name = "minimumTemeprature")
     private double minimumTemperature;
-
-    @Column(name = "initialQuality")
     private String initialQuality;
-
-    @Column(name = "currentQuality")
     private String currentQuality;
-
-    @Column(name = "manufacturingTime")
     private LocalDateTime manufacturingTime;
-
-    @Column(name = "dueDate")
     private LocalDate dueDate;
 
-    private Long productID;
-
-    @ManyToOne
+    @OneToOne(mappedBy =  "batchStock", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BatchStockItem batchStockItem;
 
-//    @OneToMany(mappedBy = "batchstock")
-//    private List<BatchStockItem> batchStockItem;
+    @OneToOne
+    private Seller seller;
 
     @ManyToOne
-    @JoinColumn(name = "inboundorder_orderNumber")
-    private InBoundOrder inboundorder;
+    private InBoundOrder inboundOrder;
+
 
 }

@@ -19,11 +19,10 @@ public class SectionDTOHugo {
 
 
     public Section convertedto(){
-        Warehouse warehouse = new Warehouse().setWarehouseId(warehouseCode);
+        Warehouse warehouse = new Warehouse().setId(warehouseCode);
         Section section = new Section()
-                .setSectionId(this.sectionCode)
-                .setWarehouse(warehouse)
-                ;
+                .setId(this.sectionCode)
+                .setWarehouse(warehouse);
 
         return section;
     }

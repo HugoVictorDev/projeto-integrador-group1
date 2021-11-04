@@ -4,27 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import org.springframework.stereotype.Service;
+
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true) // todo set retorna o próprio objeto
-@Entity
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 @Data
 @Builder
-public class Product {
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Representante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O campo nome nao pode estar vazio")
+    @NotNull
     private String name;
-
-    private String description;
+    @NotNull
+    private String cpf;
 
 
 }

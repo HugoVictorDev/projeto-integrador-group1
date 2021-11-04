@@ -19,7 +19,7 @@ public class ProductRequestDto {
 
     public Product build(){
         Product product = new Product()
-                .setProductName(this.productName)
+                .setName(this.productName)
                 .setDescription(this.description);
 
         return product;
