@@ -26,11 +26,13 @@ public class InBoundOrderRequest {
 
         private Long orderNumber;
         private LocalDate orderDate;
+      @JsonProperty(value =  "seller_id")
+        private Long sellerId;
         private SectionDTOHugo sectionDTOHugo;
         @JsonProperty(value= "batchStockList")
         private List<BatchStockDTOhugo> batchStockDTOList;
-        @JsonProperty(value =  "seller_id")
-        private Long sellerId;
+
+
 
 
         public InBoundOrder convertedto(StockService stockService){
@@ -52,7 +54,7 @@ public class InBoundOrderRequest {
                     .setOrderNumber(this.orderNumber)
                     .setOrderDate(this.orderDate)
                     .setSection(this.sectionDTOHugo.convertedto())
-                    .setBatchStock(listaDeBatchStocksConvertidaParaEntity); // preciso arrumar essa lista
+                    .setBatchStock(listaDeBatchStocksConvertidaParaEntity);
             return inBoundOrder;
         }
 

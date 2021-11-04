@@ -45,8 +45,10 @@ public class InBoundOrderController {
     StockService stockService;
 
 
+
+
     @PostMapping("/create")
-    public InBoundOrderRequest create(@Valid @RequestBody InBoundOrderRequest inBoundOrderRequest) {
+    public InBoundOrderRequest create( @RequestBody InBoundOrderRequest inBoundOrderRequest) {
         sectionServices.validSectionExist(inBoundOrderRequest.getSectionDTOHugo());
         sectionServices.validWarhouseExist(inBoundOrderRequest.getSectionDTOHugo());
         this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto(stockService));
@@ -54,45 +56,5 @@ public class InBoundOrderController {
     }
 
 
-//    //Consultar lista de  vendedores
-//    @GetMapping("/list")
-//    List<BatchStockItemResponseDTO> getList() {
-//        return batchStockItemService.getBatchStockItemsList();
-//    }
-//
-//    //busca vendedor pelo id
-//    @GetMapping("{id}")
-//    public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
-//        return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
-////
-//    }
-//
-//    // atualizando vendedor pelo ID
-//    @PutMapping("/update/{id}")
-//    public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
-//        Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
-//        BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
-//        return batchStockItemRepository.save(_bat);
-//
-//    }
-//
-//    //delete todos vendedores
-//    @DeleteMapping("/deleteall")
-//    public BatchStockItem deleteAllBatchStockItems() {
-//        batchStockItemRepository.deleteAll();
-//        return null;
-//
-//    }
-//
-//    //deletar vendedor pelo ID
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
-//        try {
-//            batchStockItemRepository.deleteById(id);
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
 }
