@@ -7,6 +7,8 @@ import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,9 +29,9 @@ public class ProductController {
 
     @PostMapping("/create")
     @ApiOperation(value = "Cadastrar novo produto")
-    public ProductRequestDto createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
+    public ResponseEntity<ProductRequestDto> createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
         this.productRepository.save(productRequestDto.convert());
-        return productRequestDto;
+        return new ResponseEntity<ProductRequestDto>(productRequestDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/list")

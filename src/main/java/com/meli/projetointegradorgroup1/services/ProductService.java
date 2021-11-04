@@ -5,8 +5,6 @@ import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,16 +54,6 @@ public class ProductService {
     }
 
     // localizando produto por id
-//    public ProductResponseDto productDtoById(Product product){
-//
-//        ProductResponseDto productResponseDto = new ProductResponseDto();
-//        productResponseDto.setProductName(product.getProductName());
-//        productResponseDto.setDescription(product.getDescription());
-//        return productResponseDto;
-//
-//    }
-
-    // teste
     public Product findProduct(Optional<Product> productFind) {
         if (productFind.get().getProductId() == null){
             throw new RuntimeException("Não localizamos produto com esse Id.");
