@@ -8,12 +8,14 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 
 class SellerServiceTest {
 
@@ -45,13 +47,47 @@ class SellerServiceTest {
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
 
-        Mockito.when(repositoryMock.save(seller1)).thenReturn(seller1);
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         SellerService sellerService = new SellerService(repositoryMock);
 
         sellerReturn = sellerService.setSeller(seller1);
         Assert.assertEquals(seller1,sellerReturn);
     }
+    @Test
+    void deleteSeller() { // - delete DE SELLER
 
+        Seller sellerReturn = new Seller();
+        List<Seller> sellerArrayList = new ArrayList();
+        sellerArrayList.add(seller1);
+        Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
+        doNothing().when(repositoryMock).deleteById(Mockito.any());
+        SellerService sellerService = new SellerService(repositoryMock);
+
+        boolean deleteReturn = sellerService.deleteSeller(sellerId);
+        Assert.assertEquals(true, deleteReturn);
+    }
+    @Test
+    void notdeleteSeller() { // - CADASTRO DE SELLER
+
+
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
+        doNothing().when(repositoryMock).deleteById(Mockito.any());
+        SellerService sellerService = new SellerService(repositoryMock);
+
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            sellerService.deleteSeller(sellerIdNok);;
+
+        });
+        String expectedMessage = "Seller não encontrado";
+        String actualMessage = exception.getMessage();
+
+
+        assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
     @Test
     void getSellers() { // - CONSULTA TODOS SELLERS
         List<Seller> sellerArrayList = new ArrayList();
@@ -73,10 +109,22 @@ class SellerServiceTest {
 
     @Test
     void valida() { // - VALIDA SE O SELLER EXISTE
+        List<Seller> sellerArrayList = new ArrayList();
 
-        Mockito.when(repositoryMock.findBySellerId(sellerId)).thenReturn(seller1);
+        sellerArrayList.add(seller1);
+        sellerArrayList.add(seller2);
+        sellerArrayList.add(seller3);
+        sellerArrayList.add(seller4);
+
+
+        Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
+
+        Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
+
+
 
         SellerService sellerService = new SellerService(repositoryMock);
+        Seller sellerReturn =  sellerService.setSeller(seller1);
         boolean findSellerResult = sellerService.valida(sellerId);
         Assert.assertTrue(findSellerResult);
     }
@@ -84,8 +132,7 @@ class SellerServiceTest {
     @Test
     void notValida() { // - TESTE DE NAO OK
 
-        Mockito.when(repositoryMock.findBySellerId(sellerIdNok)).thenReturn(seller1);
-
+        Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(null);
         SellerService sellerService = new SellerService(repositoryMock);
 
 
@@ -119,7 +166,11 @@ class SellerServiceTest {
 
     @Test
     void validaUpdate() { // - METODO QUE EFETUA A VALIDACAO DO UPDATE FEITO
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
+        Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
+
         SellerService sellerService = new SellerService(repositoryMock);
+
         SellerResponseDTO findSellerResult = sellerService.validaUpdate(1L, seller1);
         Assert.assertEquals(seller1ResponseDTO, findSellerResult);
     }
@@ -151,4 +202,5 @@ class SellerServiceTest {
         Assert.assertEquals(seller1RequestDTO, sellerRequestDTO);
 
     }
+
 }

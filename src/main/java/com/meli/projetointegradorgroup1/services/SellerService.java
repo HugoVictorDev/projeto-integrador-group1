@@ -41,7 +41,7 @@ public class SellerService {
     }
 
     public boolean valida(Long sellerId) {
-        Seller seller =  sellerRepository.findBySellerId(sellerId);
+        Optional<Seller> seller =  sellerRepository.findBySellerId(sellerId);
         if (seller == null){
             throw new RuntimeException("Seller não cadastrado");
         }
@@ -68,8 +68,8 @@ public class SellerService {
 
 
     public SellerResponseDTO validaUpdate(Long id, Seller seller) {
-        Optional<SellerResponseDTO> _sellerFind = Optional.ofNullable(getSellerById(id));
-        if (_sellerFind.isPresent()) {
+        SellerResponseDTO _sellerFind = getSellerById(id);
+        if (_sellerFind != null) {
             //Seller _seller = sellerFind.get();
             deleteSeller(id);
             Seller newSeller = sellerRepository.save(seller);
@@ -84,9 +84,13 @@ public class SellerService {
     }
 
     public boolean deleteSeller(Long id){
-
-        sellerRepository.deleteById(id);
-        return true;
+        SellerResponseDTO sellerFind = getSellerById(id);
+        if (sellerFind != null) {
+            sellerRepository.deleteById(id);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public boolean deleteAllSellers(){
@@ -105,9 +109,9 @@ public class SellerService {
     }
 
     public SellerResponseDTO getSellerById(Long id){
-        Optional<Seller> _seller  = Optional.ofNullable(sellerRepository.findBySellerId(id));
+        Optional<Seller> _seller  = sellerRepository.findBySellerId(id);
         if (_seller.isPresent()){
-            return this.getSellerById(id);
+            return this.convertEntityToResponse(_seller.get());
         }else {
             throw new RuntimeException("Seller não encontrado!");
         }

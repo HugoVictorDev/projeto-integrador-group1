@@ -136,6 +136,37 @@ class SellerControllerTest {
     }
 
     @Test
+    void notdeleteAllSellers() {
+
+        sellerService = Mockito.mock(SellerService.class);
+        sellerRepository = Mockito.mock(SellerRepository.class);
+        sellerArrayList.add(seller1ResponseDTO);
+
+        Mockito.when(sellerService.getSellers()).thenReturn(sellerArrayList);
+        Mockito.when(sellerService.convertRequestDTOToEntity(Mockito.any())).thenReturn(seller1);
+        Mockito.when(sellerService.convertEntityToResponse(Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1);
+        Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
+        Mockito.when(sellerService.deleteAllSellers()).thenReturn(true);;
+
+        SellerController sellerController = new SellerController(sellerRepository, sellerService);
+        SellerResponseDTO sellerResponseDTO = sellerController.createSeller(seller1RequestDTO);
+
+        List<SellerResponseDTO> sellerReturn = sellerController.getSellerList();
+        //  System.out.printf(sellerReturn.toString());
+
+        sellerService.deleteAllSellers();
+
+        Mockito.when(sellerService.getSellers()).thenReturn(null);
+
+        List<SellerResponseDTO> sellerReturn2 = sellerService.getSellers();
+        Assert.assertEquals( null, sellerReturn2);
+
+
+
+
+    }
+    @Test
     void deleteSellerById() {
 
         sellerService = Mockito.mock(SellerService.class);

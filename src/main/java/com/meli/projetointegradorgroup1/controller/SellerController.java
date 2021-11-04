@@ -79,10 +79,11 @@ public class SellerController {
 //deletar vendedor pelo ID
 @DeleteMapping("/delete/{id}")
 public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) {
-    try {
-        sellerRepository.deleteById(id);
+    if(sellerService.deleteSeller(id)){
+        //sellerRepository.deleteById(id);
+        sellerService.deleteSeller(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } catch (Exception e) {
+    } else {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
