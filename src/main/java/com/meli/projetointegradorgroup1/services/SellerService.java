@@ -3,16 +3,13 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SellerService {
@@ -35,8 +32,12 @@ public class SellerService {
     }
 
     //
-    public List<Seller> getSellers(){
-        return sellerRepository.findAll();
+    public List<SellerResponseDTO> getSellers(){
+        List<Seller> sellers = sellerRepository.findAll();
+        List<SellerResponseDTO> sellerResponseDTOS = new ArrayList<>();
+        sellers.stream().forEach((seller) -> sellerResponseDTOS.add(this.convertEntityToResponse(seller)));
+
+        return  sellerResponseDTOS;
     }
 
     public boolean valida(Long sellerId) {
@@ -66,17 +67,32 @@ public class SellerService {
     }
 
 
-    public Seller validaUpdate(Optional<Seller> sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (sellerFind.isPresent()) {
-            Seller _seller = sellerFind.get();
-            _seller.setName(sellerRequestDTO.getName());
-            _seller.setCpf(sellerRequestDTO.getCpf());
-            _seller.setEmail(sellerRequestDTO.getEmail());
+    public SellerResponseDTO validaUpdate(Long id, Seller seller) {
+        Optional<SellerResponseDTO> _sellerFind = Optional.ofNullable(getSellerById(id));
+        if (_sellerFind.isPresent()) {
+            //Seller _seller = sellerFind.get();
+            deleteSeller(id);
+            Seller newSeller = sellerRepository.save(seller);
+            SellerResponseDTO sellerResponseDTO = convertEntityToResponse(seller);
 
-            return _seller;
+            return sellerResponseDTO;
+
+
         }else{
             throw new RuntimeException("Seller não encontrado");
         }
+    }
+
+    public boolean deleteSeller(Long id){
+
+        sellerRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean deleteAllSellers(){
+
+        sellerRepository.deleteAll();
+        return true;
     }
 
 
@@ -86,5 +102,14 @@ public class SellerService {
         sellerRequestDTO.setCpf(seller.getCpf());
         sellerRequestDTO.setEmail(seller.getEmail());
         return sellerRequestDTO;
+    }
+
+    public SellerResponseDTO getSellerById(Long id){
+        Optional<Seller> _seller  = Optional.ofNullable(sellerRepository.findBySellerId(id));
+        if (_seller.isPresent()){
+            return this.getSellerById(id);
+        }else {
+            throw new RuntimeException("Seller não encontrado!");
+        }
     }
 }

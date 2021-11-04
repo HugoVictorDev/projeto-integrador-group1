@@ -45,39 +45,36 @@ public class SellerController {
     @GetMapping("/list")
      public List<SellerResponseDTO> getSellerList() {
 
-        List<Seller> sellerList =  sellerService.getSellers();
+        List<SellerResponseDTO> sellerList =  sellerService.getSellers();
 
-        ArrayList<SellerResponseDTO> sellerResponseDTOS = new ArrayList();
+        //ArrayList<SellerResponseDTO> sellerResponseDTOS = new ArrayList();
 
-        sellerList.stream()
-                .forEach(seller -> sellerResponseDTOS.add(sellerService.convertEntityToResponse(seller)));
-        return sellerResponseDTOS;
+        //sellerList.stream()
+        //        .forEach(seller -> sellerResponseDTOS.add(sellerService.convertEntityToResponse(seller)));
+        return sellerList;
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        return sellerService.convertEntityToResponse(sellerRepository.getById(id));
-
+        // colocar mensagem de nao encontrado
+        return sellerService.getSellerById(id);
     }
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public SellerRequestDTO updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
+    public SellerResponseDTO updateSeller(@PathVariable("id") Long id, @Valid @RequestBody Seller seller) { // Alterado para se adequar ao padrão solicitado
 
-        Optional<Seller> sellerFind = sellerRepository.findById(id);
-        Seller _seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
-        return sellerService.convertEntityToDTORequest(sellerRepository.save(_seller));
-
+        return sellerService.validaUpdate(id, seller);
     }
 
-//delete todos vendedores
-@DeleteMapping("/deleteall")
-public Seller deleteAllSellers() {
-        sellerRepository.deleteAll();
-        return null;
+    //delete todos vendedores
+    @DeleteMapping("/deleteall")
+    public boolean deleteAllSellers() {
+        ///sellerRepository.deleteAll();
+        return sellerService.deleteAllSellers();
 
-}
+    }
 
 //deletar vendedor pelo ID
 @DeleteMapping("/delete/{id}")

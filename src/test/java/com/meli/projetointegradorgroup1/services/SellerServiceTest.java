@@ -66,7 +66,7 @@ class SellerServiceTest {
 
         SellerService sellerService = new SellerService(repositoryMock);
 
-        List<Seller> listaResult = sellerService.getSellers();
+        List<SellerResponseDTO> listaResult = sellerService.getSellers();
 
         Assert.assertEquals(4, listaResult.size());
     }
@@ -120,8 +120,8 @@ class SellerServiceTest {
     @Test
     void validaUpdate() { // - METODO QUE EFETUA A VALIDACAO DO UPDATE FEITO
         SellerService sellerService = new SellerService(repositoryMock);
-        Seller findSellerResult = sellerService.validaUpdate(java.util.Optional.ofNullable(seller1),seller1RequestDTO);
-        Assert.assertEquals(seller1, findSellerResult);
+        SellerResponseDTO findSellerResult = sellerService.validaUpdate(1L, seller1);
+        Assert.assertEquals(seller1ResponseDTO, findSellerResult);
     }
 
     @Test
@@ -130,7 +130,7 @@ class SellerServiceTest {
 
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            sellerService.validaUpdate(java.util.Optional.ofNullable(null),seller1RequestDTO);;
+            sellerService.validaUpdate(2L,seller1);;
 
         });
         String expectedMessage = "Seller não encontrado";
