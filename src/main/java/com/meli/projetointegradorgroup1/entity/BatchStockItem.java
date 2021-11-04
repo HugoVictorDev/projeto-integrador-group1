@@ -13,10 +13,27 @@ import javax.validation.constraints.NotNull;
 
 //item do lote // mini lote de apenas um produto
 @Accessors(chain = true) //true todo o set retorna o proprio objeto
-@NoArgsConstructor
+// @NoArgsConstructor
 @Data
 @Entity
 public class BatchStockItem {
+
+    public BatchStockItem(){
+
+    }
+
+    public BatchStockItem(
+            Long id,
+            int quantity,
+            Double volume,
+            Double maximumTemperature,
+            Double minimumTemperature,
+            Seller seller,
+            Product product,
+            BatchStock batchstock){
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,12 +44,12 @@ public class BatchStockItem {
     private Double maximumTemperature;
     private Double minimumTemperature;
 
-   @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sellerId")
-  private Seller seller;
+    private Seller seller;
 
-   private Long sellerIdConvert;
-   private Long productIdConvert;
+    private Long sellerIdConvert;
+    private Long productIdConvert;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "productid")
@@ -42,5 +59,4 @@ public class BatchStockItem {
     @JoinColumn(name = "batchstock_batchNumber")
     private BatchStock batchstock;
 }
-
 

@@ -25,6 +25,19 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
+    public BatchStockItemService(){
+
+    }
+
+    public BatchStockItemService
+            (BatchStockItemRepository batchStockItemRepository, SellerService sellerService, ProductService productService)
+    {
+        this.batchStockItemRepository = batchStockItemRepository;
+        this.sellerService = sellerService;
+        this.productService = productService;
+    }
+
+
     public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
@@ -47,7 +60,6 @@ public class BatchStockItemService {
     //    valida selller
     public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
         sellerService.valida(batchStockItemRequestDTO.getSeller_id());
-
     }
 
     //    valida product
@@ -55,8 +67,6 @@ public class BatchStockItemService {
         productService.valida(batchStockItemRequestDTO.getProduct_id());
 
     }
-
-
 
     //validacao update por ID
     public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
@@ -78,6 +88,4 @@ public class BatchStockItemService {
             throw new RuntimeException("BatchStokItem não encotrada");
         }
     }
-
-
 }

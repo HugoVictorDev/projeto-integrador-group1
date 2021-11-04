@@ -31,6 +31,11 @@ public class BatchStockItemController {
     @Autowired
     BatchStockItemService batchStockItemService;
 
+    public BatchStockItemController(BatchStockItemService batchStockItemService, BatchStockItemRepository batchStockItemRepository) {
+        this.batchStockItemService = batchStockItemService;
+        this.batchStockItemRepository = batchStockItemRepository;
+    }
+
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
@@ -60,6 +65,8 @@ public class BatchStockItemController {
     public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
         BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
+
+
         return batchStockItemRepository.save(_bat);
 
     }
