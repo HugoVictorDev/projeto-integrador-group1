@@ -8,6 +8,7 @@ import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class BatchStockController {
 
 
     @PostMapping("/create")
+    @ApiOperation(value = "Cadastrar novo batchstock")
     public BatchStockResponseDTO createBatchStock (@Valid @RequestBody BatchStockDTO batchStockDTO){
            batchStockService.valida(batchStockDTO.getBatchStockItem());
            BatchStock batchStock  = BatchStockDTO.converte(batchStockDTO);
@@ -40,18 +42,21 @@ public class BatchStockController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "Retornar lista de batchstock")
     public List<BatchStockResponseDTO> listBastchStock(){
            return batchStockService.findBatchSotck();
     }
 
 
     @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "Deletar batchstock a partir do id")
     public ResponseEntity<HttpStatus> deleteBatchStockNumber(@PathVariable("id") Long ordernumber) {
         batchStockService.deleteBS(ordernumber);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/id")
+    @ApiOperation(value = "Retornar batchstock único a partir do id")
     public ResponseEntity<HttpStatus> updateBatchStockNumber(@RequestBody BatchStock batchStock) {
 
         //InBoundOrder inBoundOrder = new InBoundOrder();
