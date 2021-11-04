@@ -22,8 +22,6 @@ public class WarehouseControllerTest {
     WarehouseServices warehouseServices;
     WarehouseRepository warehouseRepository;
 
-
-
     @Test
     public void createWarehouseOK() {
 

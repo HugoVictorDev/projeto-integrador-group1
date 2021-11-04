@@ -62,6 +62,7 @@ public class SectionServicesTest {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         sectionServices.listaSection();});
         message = "Não existem Sessões cadastradas";
+
         assert (message.contains(exception.getMessage()));
     }
 
@@ -88,6 +89,7 @@ public class SectionServicesTest {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         sectionServices.obterSection(1l);});
         message = "Sessão não encontrada";
+
         assert (message.contains(exception.getMessage()));
     }
 
@@ -98,7 +100,6 @@ public class SectionServicesTest {
 
         Mockito.when(sectionServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(section);
         Mockito.when(warehouseServices.obterWarehouse(Mockito.anyLong())).thenReturn(warehouse);
-
 
         sectionServices = new SectionServices(warehouseServices,null);
         sectionServices.validaUpdate(java.util.Optional.ofNullable(section),sectionDTO);
@@ -114,10 +115,10 @@ public class SectionServicesTest {
 
         sectionServices = new SectionServices(null,null);
 
-
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         sectionServices.validaUpdate(java.util.Optional.ofNullable(null),sectionDTO);});
         message = "Sessão não encontrada";
+
         assert (message.contains(exception.getMessage()));
     }
 

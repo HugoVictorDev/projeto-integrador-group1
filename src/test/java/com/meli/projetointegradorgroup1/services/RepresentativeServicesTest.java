@@ -37,6 +37,7 @@ public class RepresentativeServicesTest {
 
         representativeServices = new RepresentativeServices(warehouseServices);
         representativeServices.obterWarehouse(4l);
+
         assert (warehouse.getWarehouseId().equals(warehouse.getWarehouseId()));
     }
 
@@ -71,6 +72,7 @@ public class RepresentativeServicesTest {
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{ representativeServices.valida(representativedto);});
         message = "CPF já cadstrado para essa Warehouse";
+
         assert (message.contains(exception.getMessage()));
     }
     @Test
@@ -84,6 +86,7 @@ public class RepresentativeServicesTest {
         representativeServices = new RepresentativeServices(warehouseServices);
 
         representativeServices.validaUpdate(java.util.Optional.ofNullable(representative),representativedto);
+
         assert (representative.getName().equals(representativedto.getName()));
     }
 
@@ -98,6 +101,7 @@ public class RepresentativeServicesTest {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         representativeServices.validaUpdate(java.util.Optional.ofNullable(representativeNull),representativedto);});
         message = "Representante não encontrado";
+
         assert (message.contains(exception.getMessage()));
     }
 
@@ -110,6 +114,7 @@ public class RepresentativeServicesTest {
         representativeServices = new RepresentativeServices();
 
         representativeServices.findRepresentative(java.util.Optional.ofNullable(representative));
+
         assert (representative.getName().equals(representative.getName()));
     }
 
@@ -124,6 +129,7 @@ public class RepresentativeServicesTest {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         representativeServices.findRepresentative(java.util.Optional.ofNullable(representativeNull));});
         message = "Representante não encontrado";
+
         assert (message.contains(exception.getMessage()));
     }
 
@@ -156,6 +162,7 @@ public class RepresentativeServicesTest {
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
             representativeServices.listaRepresentative();});
         message = "Não existem Representantes cadastradas";
+
         assert (message.contains(exception.getMessage()));
     }
 

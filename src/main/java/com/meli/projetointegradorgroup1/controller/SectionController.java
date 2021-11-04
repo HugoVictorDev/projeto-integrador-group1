@@ -1,9 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
-import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,8 +5,6 @@ import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import com.meli.projetointegradorgroup1.services.RepresentativeServices;
-import com.meli.projetointegradorgroup1.services.WarehouseServices;
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -45,7 +43,6 @@ public class RepresentativeControllerTest {
         Mockito.when(representativeServices.listaRepresentative()).thenReturn(representativeList);
 
         RepresantiveController represantiveController = new RepresantiveController(representativeServices, representativeRepository);
-
         represantiveController.getRepresentativeList();
 
         assert (representativeServices.listaRepresentative().size() == 1);

@@ -19,12 +19,17 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     // pegando lista de produtos, iterando e trazendo em formato de dto
     public List<ProductResponseDto> listProductDto(){
         return productRepository.findAll()
                 .stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
+
     }
 
     public List<ProductResponseDto> listProductDto(String nameId){
@@ -35,11 +40,10 @@ public class ProductService {
     }
 
 
-
     public void valida(Long productId) {
         Product product =  productRepository.findByProductId(productId);
         if (product == null){
-            throw new RuntimeException("Producot não cadastrado");
+            throw new RuntimeException("Produto não cadastrado");
         }
     }
 
@@ -52,13 +56,13 @@ public class ProductService {
     }
 
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
-        if (productFind.isPresent()){
+        if (productFind == null || productFind.equals(Optional.empty())){
+            throw new RuntimeException("Produto não encontrado");
+        } else {
             Product newProduct = productFind.get();
             newProduct.setProductName(productRequestDto.getProductName());
             newProduct.setDescription(productRequestDto.getDescription());
             return newProduct;
-        } else {
-            throw new RuntimeException("Produto nao encontrado");
         }
     }
 
