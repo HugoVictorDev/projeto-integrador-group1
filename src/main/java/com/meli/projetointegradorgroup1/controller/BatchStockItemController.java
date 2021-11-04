@@ -8,6 +8,7 @@ import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class BatchStockItemController {
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
+    @ApiOperation(value = "Cadastrar novo batchstockitem")
     public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
         batchStockItemService.validSellerExist(batchStockItemRequestDTO);
         batchStockItemService.validProductExist(batchStockItemRequestDTO);
@@ -44,12 +46,14 @@ public class BatchStockItemController {
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
+    @ApiOperation(value = "Retornar lista de batchstockitem")
     List<BatchStockItemResponseDTO> getList() {
         return batchStockItemService.getBatchStockItemsList();
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
+    @ApiOperation(value = "Retornar batchstockitem único a partir do id")
     public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
         return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
 //
@@ -57,6 +61,7 @@ public class BatchStockItemController {
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
+    @ApiOperation(value = "Atualizar batchstockitem a partir do id")
     public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
         BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
@@ -66,6 +71,7 @@ public class BatchStockItemController {
 
     //delete todos vendedores
     @DeleteMapping("/deleteall")
+    @ApiOperation(value = "Deletar todos os batchstockitem")
     public BatchStockItem deleteAllBatchStockItems() {
         batchStockItemRepository.deleteAll();
         return null;
@@ -74,6 +80,7 @@ public class BatchStockItemController {
 
     //deletar vendedor pelo ID
     @DeleteMapping("/delete/{id}")
+    @ApiOperation(value = "Deletar batchstockitem a partir do id")
     public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
         try {
             batchStockItemRepository.deleteById(id);
