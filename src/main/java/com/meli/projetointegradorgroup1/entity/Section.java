@@ -20,8 +20,7 @@ public class Section {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "section_id")
-    private Long sectionId;
+    private Long id;
 
     @Column(name = "minimum_temperature")
     private String minimumTemperature;
@@ -30,10 +29,7 @@ public class Section {
     @Column(name = "stock_type")
     private String stockType;
 
-
-
     @ManyToOne
-    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
 
 

@@ -24,8 +24,8 @@ public class WarehouseServices {
 
 
     public void valida(Long warehouseID) {
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
+        if (!warehouse.isPresent()){
             throw new RuntimeException("Warehouse não cadastrada");
         }
     }
@@ -51,16 +51,17 @@ public class WarehouseServices {
     }
 
     public Warehouse obterWarehouse2(Long warehouseID) {
-        return warehouseRepository.findBywarehouseId(warehouseID);
+        return warehouseRepository.findById(warehouseID).get();
 
 
     }
 
     public Warehouse obterWarehouse(Long warehouseID) {
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
+        if (!warehouse.isPresent()){
             throw new RuntimeException("Warehouse não encontrada");
-        }return warehouse;
+        }
+        return warehouse.get();
     }
 
   //  @GetMapping(value="/handler")

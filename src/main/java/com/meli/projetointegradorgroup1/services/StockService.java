@@ -15,7 +15,7 @@ public class StockService {
     private BatchStockItemRepository repository;
 
     public List<BatchStockItem> list(Seller seller){
-        return this.repository.findBySeller_sellerId(seller.getSellerId());
+        return null;
     }
 }
 

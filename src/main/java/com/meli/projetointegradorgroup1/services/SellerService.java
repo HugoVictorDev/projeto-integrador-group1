@@ -27,8 +27,8 @@ public class SellerService {
     }
 
     public void valida(Long sellerId) {
-        Seller seller =  sellerRepository.findBySellerId(sellerId);
-        if (seller == null){
+        Optional<Seller> seller = sellerRepository.findById(sellerId);
+        if (!seller.isPresent()){
             throw new RuntimeException("Seller não cadastrado");
         }
     }

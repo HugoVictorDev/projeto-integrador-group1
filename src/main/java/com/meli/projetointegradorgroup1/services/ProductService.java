@@ -28,7 +28,7 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> listProductDto(String nameId){
-        return productRepository.findByProductNameContaining(nameId)
+        return productRepository.findByNameContaining(nameId)
                 .stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
@@ -37,9 +37,9 @@ public class ProductService {
 
 
     public void valida(Long productId) {
-        Product product =  productRepository.findByProductId(productId);
-        if (product == null){
-            throw new RuntimeException("Producot não cadastrado");
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if(!optionalProduct.isPresent()){
+            throw new RuntimeException("Produto não cadastrado");
         }
     }
 
@@ -50,7 +50,7 @@ public class ProductService {
 
     public ProductResponseDto productDtoById(Product product){
         ProductResponseDto productResponseDto = new ProductResponseDto();
-        productResponseDto.setProductName(product.getProductName());
+        productResponseDto.setProductName(product.getName());
         productResponseDto.setDescription(product.getDescription());
         return productResponseDto;
     }
@@ -58,7 +58,7 @@ public class ProductService {
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
-            newProduct.setProductName(productRequestDto.getProductName());
+            newProduct.setName(productRequestDto.getProductName());
             newProduct.setDescription(productRequestDto.getDescription());
             return newProduct;
         } else {
@@ -68,7 +68,7 @@ public class ProductService {
 
     public ProductRequestDto convertEntityToDtoRequest(Product product){
         ProductRequestDto productRequestDto = new ProductRequestDto();
-        productRequestDto.setProductName(product.getProductName());
+        productRequestDto.setProductName(product.getName());
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }

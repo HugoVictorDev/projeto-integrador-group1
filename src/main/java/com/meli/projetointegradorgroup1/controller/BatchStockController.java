@@ -1,7 +1,5 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
-
 import com.meli.projetointegradorgroup1.dto.request.BatchStockDTOhugo;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
@@ -9,17 +7,15 @@ import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
-import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
+import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/batchstock")
@@ -28,7 +24,7 @@ public class BatchStockController {
     @Autowired
     private InBoundOrderRepository inboundOrderRepository;
     @Autowired
-    RepresentativeRepository representativeRepository;
+    RepresentanteRepository representanteRepository;
     @Autowired
     private BatchStockService batchStockService;
     @Autowired
@@ -41,7 +37,7 @@ public class BatchStockController {
 
     @PostMapping("/create")
     public BatchStockDTOhugo createBatchStock ( @RequestBody BatchStockDTOhugo batchStockDTOhugo){
-           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
+//           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
             this.batchStockRepository.save(BatchStockDTOhugo.convertedto(batchStockDTOhugo, batchStockItem));
             return batchStockDTOhugo;
     }

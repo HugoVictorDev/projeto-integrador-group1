@@ -6,7 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
-    Warehouse findBywarehouseId(Long warehouseID);
-
 
 }

@@ -43,7 +43,7 @@ public class SectionDTO {
 
 
     public static Section converte(SectionDTO sectiodto) {
-        Warehouse warehouse = new Warehouse().setWarehouseId(sectiodto.getWarehouseID());
+        Warehouse warehouse = new Warehouse().setId(sectiodto.getWarehouseID());
         return new Section().setMinimumTemperature(sectiodto.getMinimumTemperature())
                 .setStock(sectiodto.getStock())
                 .setStockType(sectiodto.getStockType())
@@ -53,15 +53,15 @@ public class SectionDTO {
     }
 
     public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
-                ,section.getWarehouse().getWarehouseId());
+        return new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
+                ,section.getWarehouse().getId());
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
         for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
-                   section.getWarehouse().getWarehouseId()));
+            listaSection.add(new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
+                   section.getWarehouse().getId()));
         }
         return listaSection;
     }

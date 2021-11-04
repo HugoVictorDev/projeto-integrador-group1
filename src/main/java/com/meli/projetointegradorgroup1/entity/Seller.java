@@ -22,7 +22,7 @@ public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sellerId;
+    private Long id;
 
     @NotBlank
     @Size(min = 3, message = "minimo 3 letras")

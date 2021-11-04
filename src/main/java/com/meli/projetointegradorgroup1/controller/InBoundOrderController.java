@@ -44,6 +44,11 @@ public class InBoundOrderController {
     @Autowired
     StockService stockService;
 
+    @Autowired
+    ProductService productService;
+
+    @Autowired
+    RepresentativeServices representativeServices;
 
 
 
@@ -51,7 +56,7 @@ public class InBoundOrderController {
     public InBoundOrderRequest create( @RequestBody InBoundOrderRequest inBoundOrderRequest) {
         sectionServices.validSectionExist(inBoundOrderRequest.getSectionDTOHugo());
         sectionServices.validWarhouseExist(inBoundOrderRequest.getSectionDTOHugo());
-        this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto(stockService));
+        this.inBoundOrderRepository.save(inBoundOrderRequest.convertedto(representativeServices, sectionServices, productService));
         return inBoundOrderRequest;
     }
 

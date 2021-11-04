@@ -55,7 +55,6 @@ public class BatchStockItemRequestDTO {
                 .maximumTemperature(dto.getMaximumTemperature())
                 .product(productService.obtem(dto.product_id))
                 .quantity(dto.getQuantity())
-                .seller(sellerService.obter(dto.getSeller_id()))
                 .build();
 
     }
