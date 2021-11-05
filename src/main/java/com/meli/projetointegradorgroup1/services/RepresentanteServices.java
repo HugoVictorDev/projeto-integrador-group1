@@ -1,5 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
-import com.meli.projetointegradorgroup1.dto.response.RepresentativeDTO;
+import com.meli.projetointegradorgroup1.dto.response.RepresentanteDTO;
 import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RepresentativeServices{
+public class RepresentanteServices {
 
     @Autowired
     private RepresentanteRepository representanteRepository;
 
     @Autowired
     WarehouseServices warehouseServices;
-    public void valida(RepresentativeDTO representativedto)  {
+    public void valida(RepresentanteDTO representativedto)  {
         validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
         validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
     }
@@ -40,7 +40,7 @@ public class RepresentativeServices{
        return (cpf.substring(0, 3) + "." +cpf.substring(3, 6) + "." +cpf.substring(6, 9) + "-" +cpf.substring(9, 11));
     }
 
-    public Representante validaUpdate(Optional<Representante> representativeFind, RepresentativeDTO representativedto) {
+    public Representante validaUpdate(Optional<Representante> representativeFind, RepresentanteDTO representativedto) {
         if (representativeFind.isPresent()) {
             Representante representative = representativeFind.get();
             representative.setName(representativedto.getName());

@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity
 @Data
-@Accessors(chain = true)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,19 +23,11 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    private Representative representative;
-
-    @NotNull
     private String name;
 
-    @NotNull
     private String address;
 
-    @NotNull
     private String size;
-
-    //@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //private List<Section> section;
 
     @OneToOne
     private Representante representante;

@@ -15,9 +15,12 @@ create table batch_stock (
                              due_date date,
                              initial_quality varchar(255),
                              manufacturing_time timestamp,
-                             minimum_temeprature float8,
+                             minimum_temperature float8,
                              inbound_order_id int8,
                              seller_id int8,
+                             volume float8,
+                             maximum_temperature float8,
+                             quantity int not null,
                              primary key (id)
 );
 

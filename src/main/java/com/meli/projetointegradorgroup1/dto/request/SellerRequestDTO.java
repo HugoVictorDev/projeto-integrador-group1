@@ -31,15 +31,15 @@ public class SellerRequestDTO {
     private String email;
 
 
-     public Seller build(){
-         Seller seller = new Seller()
-                 .setName(this.name)
-                 .setCpf(this.cpf)
-                 .setEmail(this.email)
-                 ;
-
-        return seller;
+    public Seller converte(SellerRequestDTO dto){
+        return Seller.builder()
+                .name(dto.getName())
+                .cpf(dto.getCpf())
+                .email(dto.getEmail())
+                .build();
     }
+
+
 
 
 }

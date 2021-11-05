@@ -28,7 +28,7 @@ public class SellerController {
     //Cadastrar vendedor
     @PostMapping("/create")
     public SellerRequestDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
-        this.sellerRepository.save(sellerRequestDTO.build());
+        this.sellerRepository.save(sellerRequestDTO.converte(sellerRequestDTO));
         return sellerRequestDTO;
     }
 

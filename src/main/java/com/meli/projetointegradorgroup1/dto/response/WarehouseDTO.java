@@ -31,18 +31,28 @@ public class WarehouseDTO {
 
 
     public static Warehouse converte(WarehouseDTO dto) {
-        return Warehouse.builder().name(dto.getName()).address(dto.getAddress()).size(dto.getSize()).build();
+        return Warehouse.builder()
+                .name(dto.getName())
+                .address(dto.getAddress())
+                .size(dto.getSize())
+                .build();
     }
 
     public static WarehouseDTO converte(Warehouse wareHouse) {
-        return WarehouseDTO.builder().name(wareHouse.getName()).address(wareHouse.getAddress()).size(wareHouse.getSize()).warehouseId(wareHouse.getId()).build();
+        return WarehouseDTO.builder()
+                .name(wareHouse.getName())
+                .address(wareHouse.getAddress())
+                .size(wareHouse.getSize())
+                .warehouseId(wareHouse.getId())
+                .build();
     }
 
     public Iterable<WarehouseDTO> converte(List<Warehouse> warehouses) {
         List<WarehouseDTO> listWarehouse = new ArrayList<>();
         for (Warehouse w: warehouses) {
             listWarehouse.add(
-                    WarehouseDTO.builder().name(w.getName())
+                    WarehouseDTO.builder()
+                            .name(w.getName())
                             .address(w.getAddress())
                             .warehouseId(w.getId())
                             .build()
