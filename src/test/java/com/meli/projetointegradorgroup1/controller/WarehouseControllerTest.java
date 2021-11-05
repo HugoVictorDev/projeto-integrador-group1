@@ -19,28 +19,32 @@ public class WarehouseControllerTest {
     WarehouseDTO warehouseDTO = new WarehouseDTO(null, "Miguel", "Rua: Hum", "3");
     WarehouseDTO warehouseUpdate = new WarehouseDTO(4l, "Miguel", "Rua: Hum", "3");
     List<Warehouse> listWarehouse = new ArrayList();
+    List<WarehouseDTO> listWarehouseDto = new ArrayList();
     WarehouseServices warehouseServices;
     WarehouseRepository warehouseRepository;
 
     @Test
     public void createWarehouseOK() {
-
         warehouseRepository = Mockito.mock(WarehouseRepository.class);
+        warehouseServices = Mockito.mock(WarehouseServices.class);
 
         Mockito.when(warehouseRepository.save(Mockito.any())).thenReturn(warehouse);
+        Mockito.when(warehouseServices.converte(Mockito.any())).thenReturn(warehouse);
+        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
 
-        WarehouseController warehouseController = new WarehouseController(warehouseRepository, null);
+        WarehouseController warehouseController = new WarehouseController(warehouseRepository, warehouseServices);
         warehouseController.createWarehouse(warehouseDTO);
 
         assert(warehouse.getWarehouseId()!=null);
     }
 
     @Test
-    public void ListaWarehouseOk() {
+    public void listOK() {
         listWarehouse.add(warehouse);
 
         warehouseServices = Mockito.mock(WarehouseServices.class);
 
+        Mockito.when(warehouseServices.converteList(Mockito.anyList())).thenReturn(listWarehouseDto);
         Mockito.when(warehouseServices.listaWarehouse()).thenReturn(listWarehouse);
         WarehouseController warehouseController = new WarehouseController(null,warehouseServices);
         warehouseController.list(warehouseDTO);
@@ -49,10 +53,10 @@ public class WarehouseControllerTest {
     }
 
     @Test
-    public void ListaIdWarehouseOk() {
-
+    public void getWarehouseByIdOK() {
         warehouseServices = Mockito.mock(WarehouseServices.class);
 
+        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseServices.obterWarehouse(Mockito.anyLong())).thenReturn(warehouse);
         WarehouseController warehouseController = new WarehouseController(null,warehouseServices);
         warehouseController.getWarehouseById(1l);
@@ -62,10 +66,10 @@ public class WarehouseControllerTest {
 
     @Test
     public void UpdateWarehouseOk() {
-
         warehouseServices = Mockito.mock(WarehouseServices.class);
         warehouseRepository = Mockito.mock(WarehouseRepository.class);
 
+        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseRepository.findBywarehouseId(Mockito.anyLong())).thenReturn(warehouse);
         Mockito.when(warehouseServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(warehouse);
         Mockito.when(warehouseRepository.save(Mockito.any())).thenReturn(warehouse);
@@ -80,6 +84,7 @@ public class WarehouseControllerTest {
 
         warehouseServices = Mockito.mock(WarehouseServices.class);
 
+        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseServices.obterWarehouse(Mockito.anyLong())).thenReturn(warehouse);
         Mockito.doNothing().when(warehouseServices).deleta(Mockito.anyLong());
         WarehouseController warehouseController = new WarehouseController(null,warehouseServices);

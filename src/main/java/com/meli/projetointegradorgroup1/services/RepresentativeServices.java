@@ -5,6 +5,11 @@ import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,23 +17,14 @@ import java.util.Optional;
 public class RepresentativeServices{
 
     @Autowired
-    private RepresentativeRepository representativeRepository;
+    RepresentativeRepository representativeRepository;
 
     @Autowired
     WarehouseServices warehouseServices;
 
-    public RepresentativeServices() {
-    }
 
-    public RepresentativeServices(WarehouseServices warehouseServices) {
-        this.warehouseServices = warehouseServices;
-    }
     public RepresentativeServices(WarehouseServices warehouseServices, RepresentativeRepository representativeRepository) {
         this.warehouseServices = warehouseServices;
-        this.representativeRepository = representativeRepository;
-    }
-
-    public RepresentativeServices(RepresentativeRepository representativeRepository) {
         this.representativeRepository = representativeRepository;
     }
 
@@ -85,4 +81,35 @@ public class RepresentativeServices{
         }return representativeList;
     }
 
+    public RepresentativeDTO converteToDto(Representative representative) {
+            return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(),
+                    Long.toString(representative.getWarehouse().getWarehouseId()));
+    }
+
+    public Representative converte(RepresentativeDTO dto) {
+            return new  Representative().Name(dto.getName())
+                    .Cpf(RepresentativeServices.maskCpf(dto.getCpf()))
+                    .WarehouseID(Long.parseLong(dto.getWarehouseID()));
+    }
+
+    public List<RepresentativeDTO> converteList(List<Representative> representatives) {
+        List<RepresentativeDTO> listRepresentant = new ArrayList<>();
+            for (Representative representative: representatives) {
+                listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(),
+                        representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
+            }
+            return listRepresentant;
+        }
+
+    public void deletaRepresentative(Long id) {
+        try{
+            representativeRepository.deleteById(id);
+            } catch (RuntimeException e) {
+            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+                throw new RuntimeException("Referential integrity constraint violation");
+            }else {
+                throw e;
+            }
+        }
+    }
 }

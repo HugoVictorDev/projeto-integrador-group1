@@ -7,6 +7,7 @@ import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,4 +61,25 @@ public class SectionServices {
         return warehouseServices.obterWarehouse(warehouseID);
     }
 
+    public SectionDTO convertToDto(Section section) {
+        return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
+                , Long.toString(section.getWarehouse().getWarehouseId()));
+    }
+
+    public Iterable<SectionDTO> convertList(List<Section> sections) {
+        List<SectionDTO> listaSection = new ArrayList<>();
+        for (Section section: sections) {
+            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
+                    Long.toString(section.getWarehouse().getWarehouseId())));
+        }
+        return listaSection;
+    }
+
+    public Section convert(SectionDTO sectiodto) {
+        return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
+                .Stock(sectiodto.getStock())
+                .StockType(sectiodto.getStockType())
+                .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
+
+    }
 }

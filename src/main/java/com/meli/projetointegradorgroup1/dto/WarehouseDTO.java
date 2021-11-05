@@ -33,22 +33,4 @@ public class WarehouseDTO {
         this.size = size;
 
     }
-
-    public static Warehouse converte(WarehouseDTO warehouseDTO) {
-        return new Warehouse().Name(warehouseDTO.getName())
-                              .Address(warehouseDTO.getAddress())
-                              .Size(warehouseDTO.getSize());
-    }
-
-    public static WarehouseDTO converte(Warehouse wareHouse) {
-        return new WarehouseDTO(wareHouse.getWarehouseId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
-    }
-
-    public Iterable<WarehouseDTO> converte(List<Warehouse> warehouses) {
-        List<WarehouseDTO> listWarehouse = new ArrayList<>();
-        for (Warehouse warehouse: warehouses) {
-            listWarehouse.add(new WarehouseDTO(warehouse.getWarehouseId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
-        }
-        return listWarehouse;
-    }
 }

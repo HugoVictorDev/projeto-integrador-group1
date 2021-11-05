@@ -41,26 +41,4 @@ public class RepresentativeDTO {
         this.warehouseID = warehouseID;
     }
 
-
-    public static Representative converte(RepresentativeDTO dto){
-        return new  Representative().Name(dto.getName())
-                                    .Cpf(RepresentativeServices.maskCpf(dto.getCpf()))
-                                    .WarehouseID(Long.parseLong(dto.getWarehouseID()));
-    }
-
-    public static RepresentativeDTO converteDto(Representative representative) {
-        return new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(), representative.getCpf(),
-                Long.toString(representative.getWarehouse().getWarehouseId()));
-    }
-
-    public static List<RepresentativeDTO>converteList(List<Representative> representatives){
-        List<RepresentativeDTO> listRepresentant = new ArrayList<>();
-        for (Representative representative: representatives) {
-            listRepresentant.add(new RepresentativeDTO(representative.getRepresentative_Id(), representative.getName(),
-                    representative.getCpf(), Long.toString(representative.getWarehouse().getWarehouseId())));
-        }
-        return listRepresentant;
-    }
-
-
 }

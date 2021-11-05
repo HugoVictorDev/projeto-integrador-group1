@@ -40,30 +40,7 @@ public class SectionDTO {
         this.minimumTemperature = minimumTemprature;
         this.stock = stock;
         this.stockType = stockType;
-
         this.warehouseID = warehouseID;
     }
 
-
-    public static Section converte(SectionDTO sectiodto) {
-        return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
-                            .Stock(sectiodto.getStock())
-                            .StockType(sectiodto.getStockType())
-
-                            .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
-    }
-
-    public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
-                , Long.toString(section.getWarehouse().getWarehouseId()));
-    }
-
-    public Iterable<SectionDTO> converte(List<Section> sections) {
-        List<SectionDTO> listaSection = new ArrayList<>();
-        for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
-                    Long.toString(section.getWarehouse().getWarehouseId())));
-        }
-        return listaSection;
-    }
 }

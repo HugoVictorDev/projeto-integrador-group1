@@ -30,20 +30,22 @@ public class WarehouseController {
     //criar warehouse
     @PostMapping("/create")
     public WarehouseDTO createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
-           Warehouse warehouse = WarehouseDTO.converte(warehouseDTO);
-           return warehouseDTO.converte(warehouseRepository.save(warehouse));
+       Warehouse warehouse = warehouseServices.converte(warehouseDTO);
+       return warehouseServices.converteToDto(warehouseRepository.save(warehouse));
         }
 
     //listar warehouses
     @GetMapping("/list")
     public Iterable<WarehouseDTO> list(WarehouseDTO warehouseDTO){
-           return warehouseDTO.converte(warehouseServices.listaWarehouse());
+       return warehouseServices.converteList(warehouseServices.listaWarehouse());
+
     }
 
     //buscar warehouse por id
     @GetMapping("/list/{id}")
     public WarehouseDTO getWarehouseById(@PathVariable("id") Long id){
-           return WarehouseDTO.converte(warehouseServices.obterWarehouse(id));
+       return warehouseServices.converteToDto(warehouseServices.obterWarehouse(id));
+
     }
 
     //atualizar por id
@@ -51,7 +53,7 @@ public class WarehouseController {
     public WarehouseDTO updateWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
            Optional<Warehouse> warehouseFind = warehouseRepository.findById(warehouseDTO.getWarehouseId());
            Warehouse warehouse = warehouseServices.validaUpdate(warehouseFind, warehouseDTO);
-           return WarehouseDTO.converte(warehouseRepository.save(warehouse));
+           return warehouseServices.converteToDto(warehouseRepository.save(warehouse));
     }
 
     //deletar por id
@@ -59,10 +61,7 @@ public class WarehouseController {
     public WarehouseDTO  deleteWarehouseById(@PathVariable("id") Long id){
            Warehouse warehouse = warehouseServices.obterWarehouse(id);
            warehouseServices.deleta(id);
-           return WarehouseDTO.converte(warehouse);
+           return warehouseServices.converteToDto(warehouse);
     }
-      @GetMapping(value="/handler")
-       public void handler() {
-           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
-       }
+
 }

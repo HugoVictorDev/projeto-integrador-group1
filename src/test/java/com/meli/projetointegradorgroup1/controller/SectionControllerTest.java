@@ -20,6 +20,7 @@ public class SectionControllerTest {
     SectionServices sectionServices;
     SectionRepository sectionRepository;
     List<Section> listSection = new ArrayList();
+    List<SectionDTO> listSectionDTO = new ArrayList();
 
 
     @Test
@@ -27,6 +28,8 @@ public class SectionControllerTest {
         sectionServices = Mockito.mock(SectionServices.class);
         sectionRepository = Mockito.mock(SectionRepository.class);
 
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
+        Mockito.when(sectionServices.convert(Mockito.any())).thenReturn(section);
         Mockito.doNothing().when(sectionServices).validarWarehouse(Mockito.any());
         Mockito.when(sectionRepository.save(Mockito.any())).thenReturn(section);
 
@@ -41,6 +44,7 @@ public class SectionControllerTest {
 
         sectionServices = Mockito.mock(SectionServices.class);
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
+        Mockito.when(sectionServices.convertList(Mockito.any())).thenReturn(listSectionDTO);
 
         SectionController sectionController = new SectionController(null, sectionServices);
         sectionController.list(sectionDTO);
@@ -51,6 +55,7 @@ public class SectionControllerTest {
     public void getSectionByIDOK(){
         sectionServices = Mockito.mock(SectionServices.class);
         Mockito.when(sectionServices.obterSection(Mockito.anyLong())).thenReturn(section);
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
 
         SectionController sectionController = new SectionController(null, sectionServices);
         sectionController.getSectionByID(1l);
@@ -62,6 +67,7 @@ public class SectionControllerTest {
         sectionServices = Mockito.mock(SectionServices.class);
         sectionRepository = Mockito.mock(SectionRepository.class);
 
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
         Mockito.when(sectionRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(sectionUpdate));
         Mockito.when(sectionServices.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(sectionUpdate);
         Mockito.when(sectionRepository.save(Mockito.any())).thenReturn(sectionUpdate);
@@ -76,6 +82,7 @@ public class SectionControllerTest {
         sectionServices = Mockito.mock(SectionServices.class);
         sectionRepository = Mockito.mock(SectionRepository.class);
 
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
         Mockito.when(sectionServices.obterSection(Mockito.anyLong())).thenReturn(section);
         Mockito.doNothing().when(sectionRepository).deleteById(Mockito.anyLong());
         SectionController sectionController = new SectionController(sectionRepository, sectionServices);

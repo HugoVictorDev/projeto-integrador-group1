@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,6 @@ public class WarehouseServices {
     public WarehouseServices(WarehouseRepository warehouseRepository) {
         this.warehouseRepository = warehouseRepository;
     }
-
 
     public void valida(long warehouseID) {
         Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
@@ -74,5 +74,24 @@ public class WarehouseServices {
   //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
   //           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
    //     }
+    }
+
+
+    public WarehouseDTO converteToDto(Warehouse wareHouse) {
+            return new WarehouseDTO(wareHouse.getWarehouseId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
+    }
+
+    public Iterable<WarehouseDTO> converteList(List<Warehouse> warehouses) {
+            List<WarehouseDTO> listWarehouse = new ArrayList<>();
+            for (Warehouse warehouse: warehouses) {
+                listWarehouse.add(new WarehouseDTO(warehouse.getWarehouseId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
+            }
+            return listWarehouse;
+        }
+
+    public Warehouse converte(WarehouseDTO warehouseDTO) {
+        return new Warehouse().Name(warehouseDTO.getName())
+                .Address(warehouseDTO.getAddress())
+                .Size(warehouseDTO.getSize());
     }
 }

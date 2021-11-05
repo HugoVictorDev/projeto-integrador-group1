@@ -18,7 +18,6 @@ public class ProductServiceTest {
     ProductRequestDto productDtoReq = new ProductRequestDto("teste","cafe");
     Product productUpdate = new Product(null, "teste","cafe");
 
-
     List<Product> listProduct = new ArrayList();
     ProductService productService;
     ProductRepository productRepository;
@@ -73,9 +72,9 @@ public class ProductServiceTest {
     public void productDtoByIdOk(){
         productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.productDtoById(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.converteToResponse(Mockito.any())).thenReturn(productDtoRes);
         ProductService productService = new ProductService(null);
-        productService.productDtoById(product);
+        productService.converteToResponse(product);
 
         assert (product.getProductName().equals(productDtoRes.getProductName()));
     }

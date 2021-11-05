@@ -20,6 +20,7 @@ public class RepresentativeControllerTest {
     RepresentativeServices representativeServices;
     RepresentativeRepository representativeRepository;
     List<Representative> representativeList = new ArrayList();
+    List<RepresentativeDTO> representativeListDto;
 
     @Test
     public void createRepresentative(){
@@ -28,6 +29,8 @@ public class RepresentativeControllerTest {
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
 
         Mockito.doNothing().when(representativeServices).valida(Mockito.any());
+        Mockito.when(representativeServices.converte(Mockito.any())).thenReturn(representative);
+        Mockito.when(representativeServices.converteToDto(Mockito.any())).thenReturn(representativedto);
         Mockito.when(representativeRepository.save(Mockito.any())).thenReturn(representative);
 
         RepresantiveController represantiveController = new RepresantiveController(representativeServices, representativeRepository);
@@ -40,9 +43,10 @@ public class RepresentativeControllerTest {
         representativeList.add(representative);
 
         representativeServices = Mockito.mock(RepresentativeServices.class);
-        Mockito.when(representativeServices.listaRepresentative()).thenReturn(representativeList);
 
-        RepresantiveController represantiveController = new RepresantiveController(representativeServices, representativeRepository);
+        Mockito.when(representativeServices.listaRepresentative()).thenReturn(representativeList);
+        Mockito.when(representativeServices.converteList(Mockito.anyList())).thenReturn(representativeListDto);
+        RepresantiveController represantiveController = new RepresantiveController(representativeServices, null);
         represantiveController.getRepresentativeList();
 
         assert (representativeServices.listaRepresentative().size() == 1);
@@ -52,6 +56,7 @@ public class RepresentativeControllerTest {
         representativeServices = Mockito.mock(RepresentativeServices.class);
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
 
+        Mockito.when(representativeServices.converteToDto(Mockito.any())).thenReturn(representativedto);
         Mockito.when(representativeRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(representativeUpdate));
         Mockito.when(representativeServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(representativeUpdate);
         Mockito.when(representativeRepository.save(Mockito.any())).thenReturn(representativeUpdate);
@@ -66,6 +71,7 @@ public class RepresentativeControllerTest {
         representativeServices = Mockito.mock(RepresentativeServices.class);
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
 
+        Mockito.when(representativeServices.converteToDto(Mockito.any())).thenReturn(representativedto);
         Mockito.when(representativeRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(representative));
         Mockito.when(representativeServices.findRepresentative(Mockito.any())).thenReturn(representative);
 
@@ -79,14 +85,13 @@ public class RepresentativeControllerTest {
         representativeServices = Mockito.mock(RepresentativeServices.class);
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
 
+        Mockito.when(representativeServices.converteToDto(Mockito.any())).thenReturn(representativedto);
         Mockito.when(representativeRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(representative));
-        Mockito.when(representativeServices.findRepresentative(Mockito.any())).thenReturn(representative);
-        Mockito.doNothing().when(representativeRepository).deleteById(Mockito.anyLong());
+        Mockito.doNothing().when(representativeServices).deletaRepresentative(Mockito.anyLong());
 
         RepresantiveController represantiveController = new RepresantiveController(representativeServices, representativeRepository);
         represantiveController.deleteRepresentativeById(1l);
 
-        assert (representative.getName()!=null);
         assert (representative.getRepresentative_Id() == 1l);
     }
 }

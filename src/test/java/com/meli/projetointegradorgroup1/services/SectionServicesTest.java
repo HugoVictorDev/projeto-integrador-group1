@@ -15,9 +15,12 @@ import java.util.List;
 public class SectionServicesTest {
     Section section = new Section(1l,"1","2","3",null);
     SectionDTO sectionDTO = new SectionDTO(null,"5","6","7","4");
+    SectionDTO sectionConvert = new SectionDTO(1l,"1","2","3","4");
+
     SectionServices sectionServices;
     SectionRepository sectionRepository;
     List<Section> listSection = new ArrayList();
+    List<SectionDTO> listSectionDto = new ArrayList();
 
     WarehouseServices warehouseServices;
     Warehouse warehouse = new Warehouse(1l, "Miguel", "Rua: Hum", "3",null);
@@ -122,5 +125,39 @@ public class SectionServicesTest {
         assert (message.contains(exception.getMessage()));
     }
 
+    @Test
+    public void converteOk(){
+        sectionServices = Mockito.mock(SectionServices.class);
+
+        Mockito.when(sectionServices.convert(Mockito.any())).thenReturn(section);
+        SectionServices sectionServices = new SectionServices(null,null);
+        sectionServices.convert(sectionConvert);
+
+        assert (section.getStockType().equals(sectionConvert.getStockType()));
+    }
+
+    @Test
+    public void converteToDtoOk(){
+        sectionServices = Mockito.mock(SectionServices.class);
+
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionConvert);
+        SectionServices sectionServices = new SectionServices(null,null);
+        sectionServices.convertToDto(section);
+
+        assert (section.getStockType().equals(sectionConvert.getStockType()));
+    }
+
+    @Test
+    public void converteListOk(){
+        listSectionDto.add(sectionConvert);
+        listSection.add(section);
+        sectionServices = Mockito.mock(SectionServices.class);
+
+        Mockito.when(sectionServices.convertList(Mockito.any())).thenReturn(listSectionDto);
+        SectionServices sectionServices = new SectionServices(null,null);
+        sectionServices.convertList(listSection);
+
+        assert (section.getStockType().equals(sectionConvert.getStockType()));
+    }
 
 }

@@ -28,27 +28,27 @@ public class SectionController {
     @PostMapping("/create")
     public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
            sectionServices.validarWarehouse(sectionDTO);
-           Section section = SectionDTO.converte(sectionDTO);
-           return sectionDTO.converte(sectionRepository.save(section));
+           Section section = sectionServices.convert(sectionDTO);
+           return sectionServices.convertToDto(sectionRepository.save(section));
     }
 
     //listar todas as sessões
     @GetMapping("/list")
     public Iterable<SectionDTO> list(SectionDTO sectionDTO){
-           return sectionDTO.converte(sectionServices.listaSection());
+           return sectionServices.convertList(sectionServices.listaSection());
     }
 
     //busca sessões por id
     @GetMapping("/list/{id}")
     public SectionDTO getSectionByID(@PathVariable ("id") Long id){
-           return SectionDTO.converte(sectionServices.obterSection(id));
+           return sectionServices.convertToDto(sectionServices.obterSection(id));
     }
 
     @PutMapping("/update")
     public SectionDTO updateSection(@Valid @RequestBody SectionDTO sectionDTO){
         Optional<Section> sectionFind = sectionRepository.findById(sectionDTO.getSectionId());
         Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
-        return SectionDTO.converte(sectionRepository.save(section));
+        return sectionServices.convertToDto(sectionRepository.save(section));
     }
 
     //deletar por id
@@ -56,6 +56,6 @@ public class SectionController {
     public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
            Section section = sectionServices.obterSection(id);
            sectionRepository.deleteById(id);
-           return SectionDTO.converte(section);
+           return sectionServices.convertToDto(section);
     }
 }

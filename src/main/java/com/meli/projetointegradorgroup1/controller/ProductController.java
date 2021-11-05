@@ -23,6 +23,11 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    public ProductController(ProductRepository productRepository, ProductService productService) {
+        this.productRepository = productRepository;
+        this.productService = productService;
+    }
+
 
     // cadastrar novo produto
     @PostMapping("/create")
@@ -40,10 +45,10 @@ public class ProductController {
     // buscar produto por id
     @GetMapping("/id/{id}")
     public ProductResponseDto getById(@PathVariable("id") Long id){
-        return productService.productDtoById(productRepository.getById(id));
+        return productService.converteToResponse(productRepository.getById(id));
     }
 
-    // buscar produto por nome
+    // buscar lista produto por nome
     @GetMapping("/list/{productName}")
     public List<ProductResponseDto> getByName(@PathVariable String productName){
         return productService.listProductDto(productName);
@@ -51,8 +56,7 @@ public class ProductController {
 
     // atualizar produto por id
     @PutMapping("/update/{id}")
-    public ProductRequestDto updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
-
+    public ProductRequestDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
         Optional<Product> productFind = productRepository.findById(id);
         Product newProduct = productService.validaUpdate(productFind, productRequestDto);
         return productService.convertEntityToDtoRequest(productRepository.save(newProduct));
@@ -60,8 +64,9 @@ public class ProductController {
 
     // deletar produto por id
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable Long id){
-        productRepository.deleteById(id);
+    public ProductResponseDto deleteProduct(@PathVariable Long id){
+        Product product = productRepository.getById(id);
+        productRepository.deleteById(product.getProductId());
+        return productService.converteToResponse(product);
     }
-
 }

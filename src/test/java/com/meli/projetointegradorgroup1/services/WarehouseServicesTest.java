@@ -16,9 +16,11 @@ public class WarehouseServicesTest {
 
     Warehouse warehouse = new Warehouse(1l, "Miguel", "Rua: Hum", "3",null);
     WarehouseDTO warehouseDTO = new WarehouseDTO(1l, "Caio", "Rua: Dois", "3");
+    WarehouseDTO warehouseConverte = new WarehouseDTO(1l, "Miguel", "Rua: Hum", "3");
     WarehouseServices warehouseServices;
     WarehouseRepository warehouseRepository;
     List<Warehouse> listWarehouse = new ArrayList();
+    List<WarehouseDTO> listWarehouseDto = new ArrayList();
     String message = "";
 
     @Test
@@ -96,5 +98,50 @@ public class WarehouseServicesTest {
 
         assert (warehouse != null);
     }
+    @Test
+    public void converteOk(){
+        warehouseServices = Mockito.mock(WarehouseServices.class);
+
+        Mockito.when(warehouseServices.converte(Mockito.any())).thenReturn(warehouse);
+        WarehouseServices warehouseServices = new WarehouseServices(null);
+        warehouseServices.converte(warehouseConverte);
+
+        assert (warehouse.getName().equals(warehouseConverte.getName()));
+    }
+
+    @Test
+    public void converteToDtoOk(){
+        warehouseServices = Mockito.mock(WarehouseServices.class);
+
+        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
+        WarehouseServices warehouseServices = new WarehouseServices(null);
+        warehouseServices.converteToDto(warehouse);
+
+        assert (warehouse.getName().equals(warehouseConverte.getName()));
+    }
+
+    @Test
+    public void converteListOk(){
+        listWarehouseDto.add(warehouseConverte);
+        listWarehouse.add(warehouse);
+        warehouseServices = Mockito.mock(WarehouseServices.class);
+
+        Mockito.when(warehouseServices.converteList(Mockito.any())).thenReturn(listWarehouseDto);
+        WarehouseServices warehouseServices = new WarehouseServices(null);
+        warehouseServices.converteList(listWarehouse);
+
+        assert (warehouse.getName().equals(warehouseConverte.getName()));
+    }
+
+/*    @Test
+    public void deletaOK(){
+        warehouseRepository = Mockito.mock(WarehouseRepository.class);
+
+        Mockito.doNothing().when(warehouseServices).deleta(Mockito.anyLong());
+        WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
+        warehouseServices.deleta(1l);
+
+        assert (warehouse.getWarehouseId() == null);
+    }*/
 }
 

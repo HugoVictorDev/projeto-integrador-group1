@@ -47,8 +47,7 @@ public class ProductService {
         }
     }
 
-
-    public ProductResponseDto productDtoById(Product product){
+    public ProductResponseDto converteToResponse(Product product){
         ProductResponseDto productResponseDto = new ProductResponseDto();
         productResponseDto.setProductName(product.getProductName());
         productResponseDto.setDescription(product.getDescription());
