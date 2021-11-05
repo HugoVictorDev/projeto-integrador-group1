@@ -13,8 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
-//item do lote // mini lote de apenas um produto
-//@Accessors(chain = true) //true todo o set retorna o proprio objeto
+@Accessors(chain = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

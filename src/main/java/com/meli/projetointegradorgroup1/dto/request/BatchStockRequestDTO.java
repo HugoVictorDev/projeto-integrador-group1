@@ -1,27 +1,25 @@
 package com.meli.projetointegradorgroup1.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 
-import com.meli.projetointegradorgroup1.services.ProductService;
+import com.meli.projetointegradorgroup1.services.BatchStockItemService;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BatchStockDTOhugo {
+public class BatchStockRequestDTO {
 
     private Long batchStockNumber;
     private Long batchStockItem;
+    private Long sellerId; // eu inseri TODO
     private double currentTemperature;
     private double minimumTemperature;
     private double maximumTemperature;
@@ -32,18 +30,19 @@ public class BatchStockDTOhugo {
     private int quantity; //quantidade de produtos chegando no lote
     private double volume; //volume total ocupado pelo lote de produtos
 
-    public static BatchStock convertedto( BatchStockDTOhugo dto, BatchStockItem batchStockItem){
+    public static BatchStock convertedto(BatchStockRequestDTO dto,
+                                         BatchStockItemService batchStockItemService, SellerService sellerService){
         return BatchStock.builder()
                 .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(BatchStockItem.builder().id(dto.batchStockItem).build())
+                .batchStockItem(batchStockItemService.obtem(dto.batchStockItem))
                 .currentTemperature(dto.getCurrentTemperature())
                 .minimumTemperature(dto.getMinimumTemperature())
                 .initialQuality(dto.getInitialQuality())
                 .currentQuality(dto.getCurrentQuality())
                 .manufacturingTime(null)
-                .dueDate(dto.getDueDate()).build();
-
-
+                .dueDate(dto.getDueDate())
+                .seller(sellerService.obter(dto.getSellerId())) // EU inseri TODO
+                .build();
 
 
     }

@@ -27,24 +27,7 @@ public class BatchStockItemRequestDTO {
     private Double volume;
     private Double maximumTemperature;
     private Double minimumTemperature;
-    private Long seller_id;
     private Long product_id;
-
-
-
-    public BatchStockItem build(){
-        BatchStockItem batchStockItem = new BatchStockItem().builder()
-                .quantity(this.quantity)
-                .volume(this.volume)
-                .maximumTemperature(this.maximumTemperature)
-                .minimumTemperature(this.minimumTemperature)
-
-                .build();
-        //TODO: revisar
-                //.setProductIdConvert(this.product_id)
-               // .setSellerIdConvert(this.seller_id);
-        return batchStockItem;
-    }
 
 
 
@@ -55,6 +38,7 @@ public class BatchStockItemRequestDTO {
                 .maximumTemperature(dto.getMaximumTemperature())
                 .product(productService.obtem(dto.product_id))
                 .quantity(dto.getQuantity())
+//                .batchStock()  faltando buildar o batchstock TODO
                 .build();
 
     }

@@ -1,9 +1,8 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class ProductService {
         return productResponseDto;
     }
 
-    public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
+    public Product validaUpdate(Optional<Product> productFind, ProductRequestDTO productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
             newProduct.setName(productRequestDto.getProductName());
@@ -66,8 +65,8 @@ public class ProductService {
         }
     }
 
-    public ProductRequestDto convertEntityToDtoRequest(Product product){
-        ProductRequestDto productRequestDto = new ProductRequestDto();
+    public ProductRequestDTO convertEntityToDtoRequest(Product product){
+        ProductRequestDTO productRequestDto = new ProductRequestDTO();
         productRequestDto.setProductName(product.getName());
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;

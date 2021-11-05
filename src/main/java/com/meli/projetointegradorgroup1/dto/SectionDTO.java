@@ -2,18 +2,20 @@ package com.meli.projetointegradorgroup1.dto;
 
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
+import com.meli.projetointegradorgroup1.services.WarehouseServices;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class SectionDTO {
-
-    private Long sectionId;
 
     //  @NotNull(message = "Campo é obrigatorio")
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
@@ -29,38 +31,31 @@ public class SectionDTO {
 
     private Long warehouseID;
 
-    public SectionDTO() {
-    }
+public Section converteBuilder(SectionDTO dto, WarehouseServices warehouseServices){
+    return Section.builder()
+            .minimumTemperature(dto.getMinimumTemperature())
+            .stock(dto.getStock())
+            .stockType(dto.getStockType())
+            .warehouse(warehouseServices.obterWarehouse(dto.getWarehouseID()))
+            .build();
+}
 
-    public SectionDTO(Long sectionId, String minimumTemprature, String stock, String stockType, Long warehouseID) {
-        this.sectionId = sectionId;
-        this.minimumTemperature = minimumTemprature;
-        this.stock = stock;
-        this.stockType = stockType;
-
-        this.warehouseID = warehouseID;
-    }
-
-
-    public static Section converte(SectionDTO sectiodto) {
-        Warehouse warehouse = new Warehouse().setId(sectiodto.getWarehouseID());
+    public static Section converte(SectionDTO sectiodto, WarehouseServices warehouseServices) {
         return new Section().setMinimumTemperature(sectiodto.getMinimumTemperature())
                 .setStock(sectiodto.getStock())
                 .setStockType(sectiodto.getStockType())
-                .setWarehouse(warehouse);
-
-
+                .setWarehouse(warehouseServices.obterWarehouse(sectiodto.getWarehouseID()));
     }
 
     public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
+        return new SectionDTO( section.getMinimumTemperature(), section.getStock(), section.getStockType()
                 ,section.getWarehouse().getId());
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
         for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
+            listaSection.add(new SectionDTO( section.getMinimumTemperature(), section.getStock(), section.getStockType(),
                    section.getWarehouse().getId()));
         }
         return listaSection;
