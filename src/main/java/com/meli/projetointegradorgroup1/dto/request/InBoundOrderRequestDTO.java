@@ -6,7 +6,7 @@ import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.services.ProductService;
-import com.meli.projetointegradorgroup1.services.RepresentativeServices;
+import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import com.meli.projetointegradorgroup1.services.SellerService;
 import lombok.AllArgsConstructor;
@@ -42,12 +42,12 @@ public class InBoundOrderRequestDTO {
 
 
 
-        public InBoundOrder convertedto(RepresentativeServices representativeServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
+        public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
             try{
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
-                        .representative(representativeServices.obter(this.representanteId))
+                        .representative(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
                         .section(sectionServices.obterSection(this.sectionForInboundDTO.getSectionId()))
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
@@ -77,7 +77,6 @@ public class InBoundOrderRequestDTO {
                     .minimumTemperature(dto.getMinimumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
                     .seller(sellerService.obter(this.sellerId))
-                    //falta biuldar o seller do batchStock TODO
                     .batchStockItem(
                             BatchStockItem.builder()
                                     .quantity(dto.getQuantity())

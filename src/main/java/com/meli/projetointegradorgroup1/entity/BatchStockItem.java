@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
-import javax.validation.constraints.NotNull;
 
 
-@Accessors(chain = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -4,7 +4,6 @@ package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 
-import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,7 +30,7 @@ public class InBoundOrderController {
     ProductService productService;
 
     @Autowired
-    RepresentativeServices representativeServices;
+    RepresentanteServices representanteServices;
 
     @Autowired
     SellerService sellerService;
@@ -42,10 +41,9 @@ public class InBoundOrderController {
     public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
         //sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
         //sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representativeServices, sectionServices, productService, sellerService));
+        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices, sectionServices, productService, sellerService));
         return inBoundOrderRequestDTO;
     }
-
 
 
 }

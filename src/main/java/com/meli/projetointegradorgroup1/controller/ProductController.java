@@ -27,7 +27,7 @@ public class ProductController {
     // cadastrar novo produto
     @PostMapping("/create")
     public ProductRequestDTO createProductDto(@Valid @RequestBody ProductRequestDTO productRequestDto){
-        this.productRepository.save(productRequestDto.build());
+        this.productRepository.save(productRequestDto.converte(productRequestDto));
         return productRequestDto;
     }
 

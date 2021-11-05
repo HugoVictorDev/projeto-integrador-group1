@@ -44,7 +44,11 @@ public class ProductService {
 
     public Product obtem(Long id){
         Optional<Product> byId = this.productRepository.findById(id);
-        return byId.get();
+        if(byId.isPresent()){
+            return byId.get();
+        }else {
+        throw new RuntimeException("Produto não cadastrado");
+        }
     }
 
     public ProductResponseDto productDtoById(Product product){
@@ -57,7 +61,7 @@ public class ProductService {
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDTO productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
-            newProduct.setName(productRequestDto.getProductName());
+            newProduct.setName(productRequestDto.getName());
             newProduct.setDescription(productRequestDto.getDescription());
             return newProduct;
         } else {
@@ -67,7 +71,7 @@ public class ProductService {
 
     public ProductRequestDTO convertEntityToDtoRequest(Product product){
         ProductRequestDTO productRequestDto = new ProductRequestDTO();
-        productRequestDto.setProductName(product.getName());
+        productRequestDto.setName(product.getName());
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }

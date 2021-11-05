@@ -1,7 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
 import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.services.RepresentativeServices;
+import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RepresentativeDTO {
+public class RepresentanteDTO {
 
     private Long representative_Id;
 
@@ -32,24 +32,26 @@ public class RepresentativeDTO {
     private String warehouseID;
 
 
-    public static Representante converte(RepresentativeDTO dto){
-        return Representante.builder().name(dto.getName()).cpf(RepresentativeServices.maskCpf(dto.getCpf())).build();
+    public static Representante converte(RepresentanteDTO dto){
+        return Representante.builder()
+                .name(dto.getName())
+                .cpf(RepresentanteServices.maskCpf(dto.getCpf())).build();
 
     }
 
-    public static RepresentativeDTO converte(Representante representante) {
-        return RepresentativeDTO.builder()
+    public static RepresentanteDTO converte(Representante representante) {
+        return RepresentanteDTO.builder()
                 .cpf(representante.getCpf())
                 .name(representante.getName())
                 .representative_Id(representante.getId())
                 .build();
     }
 
-    public static List<RepresentativeDTO>converte(List<Representante> representatives){
-        List<RepresentativeDTO> listRepresentant = new ArrayList<>();
+    public static List<RepresentanteDTO>converte(List<Representante> representatives){
+        List<RepresentanteDTO> listRepresentant = new ArrayList<>();
         for (Representante representative: representatives) {
             listRepresentant.add(
-                    RepresentativeDTO.builder()
+                    RepresentanteDTO.builder()
                             .representative_Id(representative.getId())
                             .name(representative.getName())
                             .cpf(representative.getCpf())
