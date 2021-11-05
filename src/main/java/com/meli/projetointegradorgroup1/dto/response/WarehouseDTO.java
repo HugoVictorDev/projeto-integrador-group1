@@ -1,4 +1,4 @@
-package com.meli.projetointegradorgroup1.dto;
+package com.meli.projetointegradorgroup1.dto.response;
 
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
-import com.meli.projetointegradorgroup1.dto.RepresentativeDTO;
+import com.meli.projetointegradorgroup1.dto.response.RepresentativeDTO;
 import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
