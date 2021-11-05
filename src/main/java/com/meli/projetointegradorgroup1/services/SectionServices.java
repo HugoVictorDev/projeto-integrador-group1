@@ -82,4 +82,16 @@ public class SectionServices {
                 .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
 
     }
+
+    public void deletaSection(Long id) {
+        try{
+            sectionRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+                throw new RuntimeException("Referential integrity constraint violation");
+            }else {
+                throw e;
+            }
+        }
+    }
 }

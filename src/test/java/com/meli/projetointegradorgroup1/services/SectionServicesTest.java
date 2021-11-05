@@ -159,5 +159,14 @@ public class SectionServicesTest {
 
         assert (section.getStockType().equals(sectionConvert.getStockType()));
     }
+    @Test
+    public void deletaSectioOk(){
+        sectionRepository = Mockito.mock(SectionRepository.class);
 
+        Mockito.doNothing().when(sectionRepository).deleteById(Mockito.anyLong());
+        SectionServices sectionServices = new SectionServices(null,sectionRepository);
+        sectionServices.deletaSection(1l);
+
+        assert (section.getSectionId() == 1);
+    }
 }

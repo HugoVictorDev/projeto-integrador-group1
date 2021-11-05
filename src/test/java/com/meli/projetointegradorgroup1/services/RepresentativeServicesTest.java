@@ -29,7 +29,7 @@ public class RepresentativeServicesTest {
     List<RepresentativeDTO> representativeListDto = new ArrayList();
 
     String message = "null";
-    RuntimeException runtimeException;
+    RuntimeException runtimeException = new RuntimeException();
 
     @Test
     public void obterWarehouseOK(){
@@ -193,18 +193,14 @@ public class RepresentativeServicesTest {
     }
 
     @Test
-    public void deletaRepresentativeNok(){
+    public void deletaRepresentativeOk(){
         representativeRepository = Mockito.mock(RepresentativeRepository.class);
-        runtimeException = Mockito.mock(RuntimeException.class);
 
-        Mockito.doThrow(new RuntimeException()).when(representativeRepository).deleteById(Mockito.anyLong());
- //       Mockito.when(runtimeException.getCause().getCause().getMessage().contains(Mockito.any())).thenThrow(IOException.class);
+        Mockito.doNothing().when(representativeRepository).deleteById(Mockito.anyLong());
+        RepresentativeServices representativeServices = new RepresentativeServices( null, representativeRepository);
 
-        RepresentativeServices representativeServices = new RepresentativeServices(null, representativeRepository);
+        representativeServices.deletaRepresentative(1l);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        representativeServices.deletaRepresentative(1l);});
-        message = "Referential integrity constraint violation";
-
-        assert (message.contains(exception.getMessage()));}
+        assert (representative.getRepresentative_Id() == 1);
+    }
 }

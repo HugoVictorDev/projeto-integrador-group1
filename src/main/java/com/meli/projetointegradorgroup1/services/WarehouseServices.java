@@ -61,19 +61,17 @@ public class WarehouseServices {
         }return warehouse;
     }
 
-  //  @GetMapping(value="/handler")
- //   public void handler() {
- //       throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
- //   }
-   // public ResponseEntity<Object> deleta(Long id) {
-        public void deleta(Long id) {
-    //    try {
+
+    public void deleta(Long id) {
+        try {
             warehouseRepository.deleteById(id);
-   //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-   //     } catch (Exception e) {
-  //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
-  //           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
-   //     }
+        } catch (RuntimeException e) {
+            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+                throw new RuntimeException("Referential integrity constraint violation");
+            }else {
+                throw e;
+            }
+        }
     }
 
 

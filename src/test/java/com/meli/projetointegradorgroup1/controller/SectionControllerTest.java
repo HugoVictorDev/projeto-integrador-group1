@@ -84,7 +84,7 @@ public class SectionControllerTest {
 
         Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
         Mockito.when(sectionServices.obterSection(Mockito.anyLong())).thenReturn(section);
-        Mockito.doNothing().when(sectionRepository).deleteById(Mockito.anyLong());
+        Mockito.doNothing().when(sectionServices).deletaSection(Mockito.anyLong());
         SectionController sectionController = new SectionController(sectionRepository, sectionServices);
         sectionController.deleteSectionById(1l);
 

@@ -55,7 +55,7 @@ public class SectionController {
     @DeleteMapping("/delete/{id}")
     public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
            Section section = sectionServices.obterSection(id);
-           sectionRepository.deleteById(id);
+           sectionServices.deletaSection(id);
            return sectionServices.convertToDto(section);
     }
 }

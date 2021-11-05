@@ -133,15 +133,15 @@ public class WarehouseServicesTest {
         assert (warehouse.getName().equals(warehouseConverte.getName()));
     }
 
-/*    @Test
+   @Test
     public void deletaOK(){
         warehouseRepository = Mockito.mock(WarehouseRepository.class);
 
-        Mockito.doNothing().when(warehouseServices).deleta(Mockito.anyLong());
+        Mockito.doNothing().when(warehouseRepository).deleteById(Mockito.anyLong());
         WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
         warehouseServices.deleta(1l);
 
-        assert (warehouse.getWarehouseId() == null);
-    }*/
+        assert (warehouse.getWarehouseId() == 1);
+    }
 }
 
