@@ -1,10 +1,9 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

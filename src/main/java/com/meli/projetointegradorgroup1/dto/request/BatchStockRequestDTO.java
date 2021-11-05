@@ -43,7 +43,7 @@ public class BatchStockRequestDTO {
                 .dueDate(dto.getDueDate())
                 .seller(sellerService.obter(dto.getSellerId())) // EU inseri TODO
                 .build();
-
+        
 
     }
 }

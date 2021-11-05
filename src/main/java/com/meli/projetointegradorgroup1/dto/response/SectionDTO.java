@@ -1,12 +1,10 @@
-package com.meli.projetointegradorgroup1.dto;
+package com.meli.projetointegradorgroup1.dto.response;
 
 import com.meli.projetointegradorgroup1.entity.Section;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;

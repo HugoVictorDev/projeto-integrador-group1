@@ -1,7 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
-import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BatchStockService {
