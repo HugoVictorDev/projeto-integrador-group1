@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.BatchStockDTOhugo;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
@@ -8,7 +8,9 @@ import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
+import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +32,18 @@ public class BatchStockController {
     @Autowired
     private BatchStockRepository batchStockRepository ;
 
-    private BatchStockItem batchStockItem;
+    @Autowired
+    private BatchStockItemService batchStockItemService;
 
-    private BatchStockDTOhugo batchStockDTOhugo;
+    @Autowired
+    private SellerService sellerService;
 
 
     @PostMapping("/create")
-    public BatchStockDTOhugo createBatchStock ( @RequestBody BatchStockDTOhugo batchStockDTOhugo){
+    public BatchStockRequestDTO createBatchStock (@RequestBody BatchStockRequestDTO batchStockRequestDTO){
 //           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
-            this.batchStockRepository.save(BatchStockDTOhugo.convertedto(batchStockDTOhugo, batchStockItem));
-            return batchStockDTOhugo;
+            this.batchStockRepository.save(BatchStockRequestDTO.convertedto(batchStockRequestDTO, batchStockItemService, sellerService));
+            return batchStockRequestDTO;
     }
 
     @GetMapping("/list")

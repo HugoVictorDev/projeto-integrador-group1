@@ -1,12 +1,10 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
-import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
-import com.meli.projetointegradorgroup1.dto.request.SectionDTOHugo;
 import com.meli.projetointegradorgroup1.entity.Section;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.services.SectionServices;
+import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +20,14 @@ public class SectionController {
     @Autowired
     private SectionServices sectionServices;
 
+    @Autowired
+    private WarehouseServices warehouseServices;
+
     @PostMapping("/create")
     public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
         sectionServices.validarWarehouse(sectionDTO);
-        Section section = SectionDTO.converte(sectionDTO);
-        return sectionDTO.converte(sectionRepository.save(section));
+         this.sectionRepository.save(sectionDTO.converteBuilder(sectionDTO, warehouseServices)) ;
+         return sectionDTO;
     }
 
 

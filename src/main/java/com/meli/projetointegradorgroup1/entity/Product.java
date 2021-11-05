@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true) // todo set retorna o próprio objeto
+@Accessors(chain = true)
 @Entity
 @Data
 @Builder

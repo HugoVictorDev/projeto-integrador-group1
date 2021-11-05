@@ -40,7 +40,6 @@ public class BatchStockItemController {
 
     @PostMapping("/create")
     public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        batchStockItemService.validSellerExist(batchStockItemRequestDTO);
         batchStockItemService.validProductExist(batchStockItemRequestDTO);
         this.batchStockItemRepository.save(batchStockItemRequestDTO.converte(batchStockItemRequestDTO, productService, sellerService));
         return batchStockItemRequestDTO;

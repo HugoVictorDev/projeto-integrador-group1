@@ -2,6 +2,7 @@ package com.meli.projetointegradorgroup1.entity;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 import javax.persistence.*;
 import java.util.List;
 
-@Accessors(chain = true)
-@Entity
+
 @Data
+@Builder
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Section {
 
     @Id

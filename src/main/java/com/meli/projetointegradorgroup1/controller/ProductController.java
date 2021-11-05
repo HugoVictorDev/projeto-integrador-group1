@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
@@ -26,7 +26,7 @@ public class ProductController {
 
     // cadastrar novo produto
     @PostMapping("/create")
-    public ProductRequestDto createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
+    public ProductRequestDTO createProductDto(@Valid @RequestBody ProductRequestDTO productRequestDto){
         this.productRepository.save(productRequestDto.build());
         return productRequestDto;
     }
@@ -51,7 +51,7 @@ public class ProductController {
 
     // atualizar produto por id
     @PutMapping("/update/{id}")
-    public ProductRequestDto updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
+    public ProductRequestDTO updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
 
         Optional<Product> productFind = productRepository.findById(id);
         Product newProduct = productService.validaUpdate(productFind, productRequestDto);

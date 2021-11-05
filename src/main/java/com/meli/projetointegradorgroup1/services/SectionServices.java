@@ -1,8 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.SectionDTO;
-import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SectionDTOHugo;
+import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
@@ -22,7 +21,7 @@ public class SectionServices {
     SectionRepository sectionRepository;
 
 
-    SectionDTOHugo sectionDTOHugo;
+    SectionForInboundDTO sectionForInboundDTO;
 
 
     public void validarWarehouse(SectionDTO sectionDTO) {
@@ -30,14 +29,14 @@ public class SectionServices {
     }
 
 //        valida warhouse
-    public void validWarhouseExist(SectionDTOHugo sectionDTOHugo) {
-        warehouseServices.valida(sectionDTOHugo.getWarehouseCode());
+    public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
+        warehouseServices.valida(sectionForInboundDTO.getWarehouseId());
 
     }
 
     //    valida section
-    public void validSectionExist(SectionDTOHugo sectionDTOHugo) {
-        Optional<Section> section = sectionRepository.findById(sectionDTOHugo.getSectionCode());
+    public void validSectionExist(SectionForInboundDTO sectionForInboundDTO) {
+        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getSectionId());
         if (!section.isPresent()){
             throw new RuntimeException("section não cadastrada");
         }

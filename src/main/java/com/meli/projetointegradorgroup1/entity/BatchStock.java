@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-@Accessors(chain = true) //true todo o set retorna o proprio objeto
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -28,10 +28,13 @@ public class BatchStock {
     private Long batchStockNumber;
     private double currentTemperature;
     private double minimumTemperature;
+    private double maximumTemperature; //Inseri hoje na entity, pois so tinha no DTO TODO
     private String initialQuality;
     private String currentQuality;
     private LocalDateTime manufacturingTime;
     private LocalDate dueDate;
+    private int quantity; //Inseri hoje na entity, pois so tinha no DTO TODO
+    private double volume; //Inseri hoje na entity, pois so tinha no DTO TODO
 
     @OneToOne(mappedBy =  "batchStock", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BatchStockItem batchStockItem;

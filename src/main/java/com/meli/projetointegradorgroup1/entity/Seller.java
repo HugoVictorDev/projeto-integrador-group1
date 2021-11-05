@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Accessors(chain = true) //true todo o set retorna o proprio objeto
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

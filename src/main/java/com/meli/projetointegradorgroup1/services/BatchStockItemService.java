@@ -25,6 +25,11 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
+    public BatchStockItem obtem(Long id){
+        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
+        return byId.get();
+    }
+
     public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
@@ -39,17 +44,9 @@ public class BatchStockItemService {
         batchstockItemResponseDTO.setMaximumTemperature(batchStockItem.getMaximumTemperature());
         batchstockItemResponseDTO.setMinimumTemperature(batchStockItem.getMinimumTemperature());
 
-//        batchstockItemResponseDTO.setSeller_id(batchStockItem.getSellerIdConvert());
-//        batchstockItemResponseDTO.setProduct_id(batchStockItem.getProductIdConvert());
-        //TODO: revisar
         return batchstockItemResponseDTO;
     }
 
-    //    valida selller
-    public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        sellerService.valida(batchStockItemRequestDTO.getSeller_id());
-
-    }
 
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
