@@ -8,6 +8,7 @@ import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import com.meli.projetointegradorgroup1.services.SectionServices;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class InBoundOrderRequestDTO {
 
 
 
-        public InBoundOrder convertedto(RepresentativeServices representativeServices, SectionServices sectionServices, ProductService productService){
+        public InBoundOrder convertedto(RepresentativeServices representativeServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
             try{
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
@@ -49,7 +50,7 @@ public class InBoundOrderRequestDTO {
                         .representative(representativeServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
                         .section(sectionServices.obterSection(this.sectionForInboundDTO.getSectionId()))
-                        .batchStock(converte(batchStockDTOList, productService)).build();
+                        .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
 
 
                 return inboundOrder;
@@ -62,10 +63,9 @@ public class InBoundOrderRequestDTO {
 
 
 
-    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService){
+    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        //new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss").parse(dto.getManufacturingTime()).getTime()
         for (BatchStockRequestDTO dto: dtos) {
             BatchStock batchStock = null;
             batchStock = BatchStock.builder()
@@ -76,6 +76,7 @@ public class InBoundOrderRequestDTO {
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
+                    .seller(sellerService.obter(this.sellerId))
                     //falta biuldar o seller do batchStock TODO
                     .batchStockItem(
                             BatchStockItem.builder()
@@ -83,7 +84,6 @@ public class InBoundOrderRequestDTO {
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))
                                     .maximumTemperature(dto.getMinimumTemperature())
-                                    .batchStock(batchStock)
                                     .build()
                     )
                     .build();
