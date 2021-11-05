@@ -35,8 +35,8 @@ public class Warehouse {
     @NotNull
     private String size;
 
-    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
-    private List<Section> section;
+    //@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //private List<Section> section;
 
     @OneToOne
     private Representante representante;

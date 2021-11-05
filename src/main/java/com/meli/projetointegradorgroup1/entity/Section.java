@@ -33,6 +33,7 @@ public class Section {
     private String stockType;
 
     @ManyToOne
+    //@Transient
     private Warehouse warehouse;
 
 

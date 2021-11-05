@@ -32,7 +32,7 @@ public class InBoundOrder {
     @OneToOne
     private Section section;
 
-    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BatchStock> batchStock;
 
     @ManyToOne

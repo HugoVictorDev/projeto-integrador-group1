@@ -16,8 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
+
 @Builder
+@Entity
 //conjunto de lote
 public class BatchStock {
 
@@ -25,6 +26,7 @@ public class BatchStock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name =  "batch_number", nullable = false)
     private Long batchStockNumber;
     private double currentTemperature;
     private double minimumTemperature;

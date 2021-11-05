@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class InBoundOrderController {
 
     @Autowired
-    InBoundOrderRepository inBoundOrderRepository;
-
-    @Autowired
     InBoundOrderService inBoundOrderService;
 
     @Autowired
@@ -36,13 +33,16 @@ public class InBoundOrderController {
     @Autowired
     RepresentativeServices representativeServices;
 
+    @Autowired
+    SellerService sellerService;
+
 
 
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
-        sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        this.inBoundOrderRepository.save(inBoundOrderRequestDTO.convertedto(representativeServices, sectionServices, productService));
+        //sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
+        //sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
+        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representativeServices, sectionServices, productService, sellerService));
         return inBoundOrderRequestDTO;
     }
 
