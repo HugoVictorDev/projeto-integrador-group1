@@ -11,11 +11,17 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProductResponseDto {
 
+    private Long productId;
     private String productName;
     private String description;
 
     public ProductResponseDto(Product product) {
-        this.productName = product.getName();
+        this.productId = product.getProductId();
+        this.productName = product.getProductName();
         this.description = product.getDescription();
+    }
+
+    public static ProductResponseDto convertDto(Product product){
+        return new ProductResponseDto(product.getProductId(), product.getProductName(), product.getDescription());
     }
 }

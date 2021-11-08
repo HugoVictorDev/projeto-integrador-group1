@@ -1,11 +1,14 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,44 +27,47 @@ public class ProductController {
     ProductService productService;
 
 
-    // cadastrar novo produto
     @PostMapping("/create")
-    public ProductRequestDTO createProductDto(@Valid @RequestBody ProductRequestDTO productRequestDto){
-        this.productRepository.save(productRequestDto.converte(productRequestDto));
-        return productRequestDto;
+    @ApiOperation(value = "Cadastrar novo produto")
+    public ResponseEntity<ProductRequestDto> createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
+        this.productRepository.save(productRequestDto.convert());
+        return new ResponseEntity<ProductRequestDto>(productRequestDto, HttpStatus.CREATED);
     }
 
-    // listar todos os produtos
     @GetMapping("/list")
+    @ApiOperation(value = "Retornar lista de produtos")
     public List<ProductResponseDto> responseDtoList(){
         return productService.listProductDto();
     }
 
-    // buscar produto por id
-    @GetMapping("/id/{id}")
-    public ProductResponseDto getById(@PathVariable("id") Long id){
-        return productService.productDtoById(productRepository.getById(id));
+
+    @GetMapping("{id}")
+    @ApiOperation(value = "Retornar produto único a partir do id")
+    public ProductResponseDto getById(@PathVariable("id") Long id) {
+        Optional<Product> productFind = productRepository.findById(id);
+        return ProductResponseDto.convertDto(productService.findProduct(productFind));
     }
 
-    // buscar produto por nome
     @GetMapping("/list/{productName}")
+    @ApiOperation(value = "Retornar lista de produtos a partir do nome")
     public List<ProductResponseDto> getByName(@PathVariable String productName){
         return productService.listProductDto(productName);
     }
 
-    // atualizar produto por id
     @PutMapping("/update/{id}")
-    public ProductRequestDTO updateProduct2(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
+    @ApiOperation(value = "Atualizar produto a partir do id")
+    public ProductRequestDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
 
         Optional<Product> productFind = productRepository.findById(id);
         Product newProduct = productService.validaUpdate(productFind, productRequestDto);
         return productService.convertEntityToDtoRequest(productRepository.save(newProduct));
     }
 
-    // deletar produto por id
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    @ApiOperation(value = "Deletar produto a partir do id")
+    public String deleteProduct(@PathVariable Long id){
         productRepository.deleteById(id);
+        return "Produto de id " + id + " excluído com sucesso!";
     }
 
 }
