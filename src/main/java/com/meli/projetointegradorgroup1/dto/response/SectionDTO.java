@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class SectionDTO {
 
+    private Long code;
+
     //  @NotNull(message = "Campo é obrigatorio")
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
     private String minimumTemperature;
@@ -31,6 +33,7 @@ public class SectionDTO {
 
 public Section converteBuilder(SectionDTO dto, WarehouseServices warehouseServices){
     return Section.builder()
+            .code(dto.code)
             .minimumTemperature(dto.getMinimumTemperature())
             .stock(dto.getStock())
             .stockType(dto.getStockType())
@@ -46,14 +49,14 @@ public Section converteBuilder(SectionDTO dto, WarehouseServices warehouseServic
     }
 
     public static SectionDTO converte(Section section) {
-        return new SectionDTO( section.getMinimumTemperature(), section.getStock(), section.getStockType()
+        return new SectionDTO(section.getCode(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
                 ,section.getWarehouse().getId());
     }
 
     public Iterable<SectionDTO> converte(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
         for (Section section: sections) {
-            listaSection.add(new SectionDTO( section.getMinimumTemperature(), section.getStock(), section.getStockType(),
+            listaSection.add(new SectionDTO( section.getCode(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
                    section.getWarehouse().getId()));
         }
         return listaSection;

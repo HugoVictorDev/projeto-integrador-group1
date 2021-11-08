@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
+import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import com.meli.projetointegradorgroup1.services.SectionServices;
@@ -43,13 +44,14 @@ public class InBoundOrderRequestDTO {
 
 
         public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
+            Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
             try{
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
                         .representative(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
-                        .section(sectionServices.obterSection(this.sectionForInboundDTO.getSectionId()))
+                        .section(section)
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
 
 

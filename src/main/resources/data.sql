@@ -63,13 +63,14 @@ insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
 
 create table section (
                          id  bigserial not null,
+                         code bigserial not null,
                          minimum_temperature varchar(255),
                          stock varchar(255),
                          stock_type varchar(255),
                          warehouse_id int8,
                          primary key (id)
 );
-insert into section (minimum_temperature, stock, stock_type, warehouse_id) values ( '12', 'sei la',  'refrigerados', 1);
+insert into section (code, minimum_temperature, stock, stock_type, warehouse_id) values (1,  '12', 'sei la',  'refrigerados', 1);
 
 
 create table seller (
@@ -83,13 +84,14 @@ insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com
 
 create table warehouse (
                            id  bigserial not null,
+                           code bigserial not null,
                            address varchar(255) not null,
                            name varchar(255) not null,
                            size varchar(255) not null,
                            representante_id int8,
                            primary key (id)
 );
-insert into warehouse (address, name, size, representante_id) values( 'endereco do armazem', 'armazem central',  10000, 1);
+insert into warehouse (code, address, name, size, representante_id) values(1, 'endereco do armazem', 'armazem central',  10000, 1);
 
 alter table batch_stock
     add constraint FKk2737y022ijpd4y2w7cixv1ew

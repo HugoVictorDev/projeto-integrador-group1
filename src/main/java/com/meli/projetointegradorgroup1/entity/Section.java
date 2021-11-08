@@ -25,9 +25,11 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long code;
+
     @Column(name = "minimum_temperature")
     private String minimumTemperature;
-    @Column(name = "stock")
+
     private String stock;
     @Column(name = "stock_type")
     private String stockType;
