@@ -26,7 +26,6 @@ public class InBoundOrder {
     @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
-    @Column(name = "orderDate")
     private LocalDate orderDate;
 
     @OneToOne

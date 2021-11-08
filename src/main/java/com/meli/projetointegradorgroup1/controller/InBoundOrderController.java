@@ -4,6 +4,7 @@ package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 
+import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,13 +36,16 @@ public class InBoundOrderController {
     @Autowired
     SellerService sellerService;
 
+    @Autowired
+    WarehouseServices warehouseServices;
 
 
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
-        //sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        //sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices, sectionServices, productService, sellerService));
+//        this.warehouseServices.obterWarhouseByCode(inBoundOrderRequestDTO.getSectionForInboundDTO().getWarehouseCode());
+        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
+        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
+                sectionServices, productService, sellerService));
         return inBoundOrderRequestDTO;
     }
 

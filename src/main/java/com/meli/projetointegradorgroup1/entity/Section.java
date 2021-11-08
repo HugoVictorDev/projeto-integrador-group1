@@ -15,7 +15,7 @@ import java.util.List;
 
 @Data
 @Builder
-@Accessors(chain = true)
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -29,7 +29,6 @@ public class Section {
 
     @Column(name = "minimum_temperature")
     private String minimumTemperature;
-
     private String stock;
     @Column(name = "stock_type")
     private String stockType;

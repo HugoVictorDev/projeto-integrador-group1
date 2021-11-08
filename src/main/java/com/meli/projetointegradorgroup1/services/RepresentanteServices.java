@@ -16,14 +16,13 @@ public class RepresentanteServices {
 
     @Autowired
     WarehouseServices warehouseServices;
-    public void valida(RepresentanteDTO representativedto)  {
-        validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
-        validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
-    }
 
-    private void validarWarehouse(Long warehouseID){
-        warehouseServices.valida(warehouseID);
-    }
+//    public void valida(RepresentanteDTO representativedto)  {
+//        validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
+//        validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
+//    } TODO revisar
+
+
 
     private Warehouse obterWarehouse(Long warehouseID){
         return warehouseServices.obterWarehouse(warehouseID);

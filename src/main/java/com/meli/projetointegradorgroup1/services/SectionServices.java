@@ -5,6 +5,7 @@ import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
+import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +22,20 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
+    @Autowired
+            WarehouseRepository warehouseRepository;
+
 
     SectionForInboundDTO sectionForInboundDTO;
 
 
     public void validarWarehouse(SectionDTO sectionDTO) {
-       warehouseServices.valida(sectionDTO.getWarehouseID());
+       warehouseServices.warehouseExist(sectionDTO.getWarehouseID());
     }
 
 //        valida warhouse
     public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
-        warehouseServices.valida(sectionForInboundDTO.getCode());
+        warehouseServices.warehouseExist(sectionForInboundDTO.getCode());
 
     }
 
@@ -53,8 +57,8 @@ public class SectionServices {
     }
 
 
-    public Section obterSection(Long code) {
-        Optional<Section> section = sectionRepository.findById(code);
+    public Section obterSection(Long id) {
+        Optional<Section> section = sectionRepository.findById(id);
         if (!section.isPresent()){
             throw new RuntimeException("Section não encontrada");
         }
@@ -63,7 +67,7 @@ public class SectionServices {
 
     public Section obterSectionByCode(Long code) {
         Section section = sectionRepository.findByCode(code);
-        if (section != null){
+        if (section != null) {
            return section;
         }else throw new EntityNotFoundException("Section não encontrada");
     }

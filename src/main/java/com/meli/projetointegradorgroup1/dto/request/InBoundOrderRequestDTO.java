@@ -44,14 +44,14 @@ public class InBoundOrderRequestDTO {
 
 
         public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
-            Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
+//            Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
             try{
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
                         .representative(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
-                        .section(section)
+                        .section(this.sectionForInboundDTO.converte()) //TODO ver essa bagaceira
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
 
 

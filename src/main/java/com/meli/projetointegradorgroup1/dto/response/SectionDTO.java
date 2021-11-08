@@ -41,12 +41,7 @@ public Section converteBuilder(SectionDTO dto, WarehouseServices warehouseServic
             .build();
 }
 
-    public static Section converte(SectionDTO sectiodto, WarehouseServices warehouseServices) {
-        return new Section().setMinimumTemperature(sectiodto.getMinimumTemperature())
-                .setStock(sectiodto.getStock())
-                .setStockType(sectiodto.getStockType())
-                .setWarehouse(warehouseServices.obterWarehouse(sectiodto.getWarehouseID()));
-    }
+
 
     public static SectionDTO converte(Section section) {
         return new SectionDTO(section.getCode(), section.getMinimumTemperature(), section.getStock(), section.getStockType()

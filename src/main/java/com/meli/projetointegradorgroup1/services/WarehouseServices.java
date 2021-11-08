@@ -18,17 +18,23 @@ import java.util.Optional;
 public class WarehouseServices {
 
     @Autowired
-    WarehouseRepository warehouseRepository;
+    private WarehouseRepository warehouseRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
+
+    @Autowired
+    private SectionServices sectionServices;
 
 
-    public void valida(Long warehouseID) {
-        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
-        if (!warehouse.isPresent()){
-            throw new RuntimeException("Warehouse não cadastrada");
+    public boolean warehouseExist(Long warehouseCode) {
+        for (Section section : sectionServices.listaSection()) {
+            if (section.getWarehouse().getCode().equals(warehouseCode)){
+                Warehouse warehouse = section.getWarehouse();
+                return warehouse != null;
+            }
         }
+        return false;
     }
 
     public List<Warehouse> listaWarehouse() {

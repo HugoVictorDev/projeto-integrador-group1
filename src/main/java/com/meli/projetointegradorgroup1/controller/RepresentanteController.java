@@ -26,7 +26,7 @@ public class RepresentanteController {
     //Cadastrar representante
     @PostMapping("/post")
     public RepresentanteDTO createRepresentative (@Valid @RequestBody RepresentanteDTO representativedto){
-           representanteServices.valida(representativedto);
+//           representanteServices.valida(representativedto); TODO revisar
            Representante representative = RepresentanteDTO.converte(representativedto);
            return RepresentanteDTO.converte(representanteRepository.save(representative));
     }
