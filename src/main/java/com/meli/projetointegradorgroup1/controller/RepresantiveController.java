@@ -28,7 +28,6 @@ public class RepresantiveController {
         this.representativeRepository = representativeRepository;
     }
 
-
     //Cadastrar representante
     @PostMapping("/post")
     public RepresentativeDTO createRepresentative (@Valid @RequestBody RepresentativeDTO representativedto){

@@ -125,12 +125,10 @@ public class RepresentativeServicesTest {
     public void findRepresentativeNOK(){
         representativeServices = Mockito.mock(RepresentativeServices.class);
 
-        Mockito.when(representativeServices.findRepresentative(Mockito.any())).thenReturn(representative);
-
         representativeServices = new RepresentativeServices(null,null);
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        representativeServices.findRepresentative(java.util.Optional.ofNullable(representativeNull));});
+        representativeServices.findRepresentative(java.util.Optional.ofNullable(null));});
         message = "Representante não encontrado";
 
         assert (message.contains(exception.getMessage()));

@@ -66,8 +66,8 @@ public class RepresentativeServices{
     }
 
     public Representative findRepresentative(Optional<Representative> representativeFind) {
-        if (representativeFind.get().getRepresentative_Id() == null){
-            throw new RuntimeException("Representante não encontrado");
+        if (representativeFind.equals(Optional.empty())){
+        throw new RuntimeException("Representante não encontrado");
     }else{
             Representative representative = representativeFind.get();
             return representative;
