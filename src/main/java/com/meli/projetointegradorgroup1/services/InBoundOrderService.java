@@ -11,12 +11,20 @@ import java.util.List;
 @Service
 public class InBoundOrderService {
 
-    private InBoundOrderRepository repository;
+    @Autowired
+    private InBoundOrderRepository inBoundOrderRepository;
 
     @Autowired
-    public InBoundOrderService(InBoundOrderRepository repository){
-        this.repository = repository;
+    private final WarehouseServices warehouseServices;
+
+
+    @Autowired
+    public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices){
+        this.inBoundOrderRepository = inBoundOrderRepository;
+        this.warehouseServices = warehouseServices;
     }
+
+
     public void registra(InBoundOrder inBoundOrder){
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
@@ -24,10 +32,11 @@ public class InBoundOrderService {
             b.getBatchStockItem().setBatchStock(b);
         });
         try{
-            this.repository.save(inBoundOrder);
+            this.inBoundOrderRepository.save(inBoundOrder);
         }catch(RuntimeException e){
             e.printStackTrace();
             throw new RuntimeException( "deu ruim");
         }
     }
 }
+
