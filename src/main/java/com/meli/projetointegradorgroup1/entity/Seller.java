@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -11,16 +12,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Accessors(chain = true) //true todo o set retorna o proprio objeto
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Entity
 public class Seller {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sellerId;
+    private Long id;
 
     @NotBlank
     @Size(min = 3, message = "minimo 3 letras")

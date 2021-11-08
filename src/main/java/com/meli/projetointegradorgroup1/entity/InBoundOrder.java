@@ -1,39 +1,42 @@
 package com.meli.projetointegradorgroup1.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Builder
 @Data
+@Entity
 //ordem de entrada
 public class InBoundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
     @Column(name = "orderDate")
     private LocalDate orderDate;
 
-    @ManyToOne // varias inbourderorder pode ter uma section
-    @JoinColumn(name = "section_id") //referenciando a coluna dection_id
+    @OneToOne
     private Section section;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BatchStock> batchStock;
 
     @ManyToOne
-    private Representative representative;
+    private Representante representative;
+
 
 }

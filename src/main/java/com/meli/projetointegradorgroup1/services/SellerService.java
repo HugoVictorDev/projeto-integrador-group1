@@ -27,8 +27,8 @@ public class SellerService {
     }
 
     public void valida(Long sellerId) {
-        Seller seller =  sellerRepository.findBySellerId(sellerId);
-        if (seller == null){
+        Optional<Seller> seller = sellerRepository.findById(sellerId);
+        if (!seller.isPresent()){
             throw new RuntimeException("Seller não cadastrado");
         }
     }
@@ -63,5 +63,10 @@ public class SellerService {
         sellerRequestDTO.setCpf(seller.getCpf());
         sellerRequestDTO.setEmail(seller.getEmail());
         return sellerRequestDTO;
+    }
+
+    public Seller obter(Long id){
+        Optional<Seller> byId = this.sellerRepository.findById(id);
+        return byId.get();
     }
 }

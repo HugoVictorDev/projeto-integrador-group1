@@ -8,6 +8,8 @@ import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
+import com.meli.projetointegradorgroup1.services.ProductService;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +29,19 @@ public class BatchStockItemController {
 
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
-
     @Autowired
     BatchStockItemService batchStockItemService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    SellerService sellerService;
 
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
     public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        batchStockItemService.validSellerExist(batchStockItemRequestDTO);
         batchStockItemService.validProductExist(batchStockItemRequestDTO);
-        this.batchStockItemRepository.save(batchStockItemRequestDTO.build());
+        this.batchStockItemRepository.save(batchStockItemRequestDTO.converte(batchStockItemRequestDTO, productService, sellerService));
         return batchStockItemRequestDTO;
     }
 

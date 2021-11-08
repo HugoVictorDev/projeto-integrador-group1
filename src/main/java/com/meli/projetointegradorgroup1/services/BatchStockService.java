@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BatchStockService {
@@ -17,26 +16,27 @@ public class BatchStockService {
     private BatchStockRepository batchStockRepository;
     @Autowired
     private BatchStockItemService batchStockItemService;
-    @Autowired
-    private ProductService productService;
 
-
-    public void update(BatchStock batchStock){
-        Optional<BatchStock> _batchStock = batchStockRepository.findById(batchStock.getBatchStockNumber());
-        if (_batchStock.isPresent()) {
-            batchStockItemService.validaBatchStockItem(batchStock.getProductID());
-            batchStockRepository.save(batchStock);
-        }else{
-            throw new RuntimeException("BatchStok não encotrada");
+    public BatchStock saveBS(BatchStock batchStock){
+        Optional<BatchStock> _representative = batchStockRepository.findById(batchStock.getBatchStockNumber());
+        if (_representative.isPresent()) {
+            BatchStock representative = _representative.get();
+            BatchStock _batchStock = batchStockRepository.save(batchStock);
+            return _batchStock;
         }
+        return null;
     }
 
-    public void deleteById(Long id){
-        batchStockRepository.deleteById(id);
+    public void deleteBS(Long BatchNumber){
+        batchStockRepository.deleteBybatchStockNumber(BatchNumber);
+    }
+
+    public void updateIBO(BatchStock batchStock){
+        batchStockRepository.save(batchStock);
     }
 
     public void valida(Long productID) {
-         batchStockItemService.validaBatchStockItem(productID);
+        batchStockItemService.validaBatchStockItem(productID);
     }
 
     public BatchStock save(BatchStock batchStock) {
@@ -45,20 +45,11 @@ public class BatchStockService {
     }
 
     public List<BatchStockResponseDTO> findBatchSotck() {
-     return batchStockRepository.findAll()
-             .stream()
-             .map(BatchStockResponseDTO::new)
-             .collect(Collectors.toList());
+//        return batchStockRepository.findAll()
+//                .stream()
+//                .map(BatchStockResponseDTO::new)
+//                .collect(Collectors.toList());
+        //TODO: revisar
+        return null;
     }
-
-    public Optional<BatchStock> findBatchSotckById(Long id) {
-        Optional<BatchStock> batchStock = batchStockRepository.findById(id);
-        if (batchStock.equals(Optional.empty()) || batchStock == null){
-            throw new RuntimeException("BatchStock não cadatsra");
-        }else {
-            deleteById(id);
-            return batchStock;
-        }
-    }
-
 }

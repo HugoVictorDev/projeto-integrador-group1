@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
@@ -20,14 +21,34 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
+
+    SectionForInboundDTO sectionForInboundDTO;
+
+
     public SectionServices(WarehouseServices warehouseServices, SectionRepository sectionRepository) {
         this.warehouseServices = warehouseServices;
         this.sectionRepository = sectionRepository;
     }
 
     public void validarWarehouse(SectionDTO sectionDTO) {
-       warehouseServices.valida(Long.parseLong(sectionDTO.getWarehouseID()));
+       warehouseServices.valida(sectionDTO.getWarehouseID());
     }
+
+//        valida warhouse
+    public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
+        warehouseServices.valida(sectionForInboundDTO.getWarehouseId());
+
+    }
+
+    //    valida section
+    public void validSectionExist(SectionForInboundDTO sectionForInboundDTO) {
+        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getSectionId());
+        if (!section.isPresent()){
+            throw new RuntimeException("section não cadastrada");
+        }
+
+    }
+
 
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();

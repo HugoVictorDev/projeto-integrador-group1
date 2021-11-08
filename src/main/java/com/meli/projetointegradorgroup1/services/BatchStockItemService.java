@@ -25,6 +25,11 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
+    public BatchStockItem obtem(Long id){
+        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
+        return byId.get();
+    }
+
     public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
         return batchStockItemRepository.findAll()
                 .stream()
@@ -39,16 +44,9 @@ public class BatchStockItemService {
         batchstockItemResponseDTO.setMaximumTemperature(batchStockItem.getMaximumTemperature());
         batchstockItemResponseDTO.setMinimumTemperature(batchStockItem.getMinimumTemperature());
 
-        batchstockItemResponseDTO.setSeller_id(batchStockItem.getSellerIdConvert());
-        batchstockItemResponseDTO.setProduct_id(batchStockItem.getProductIdConvert());
         return batchstockItemResponseDTO;
     }
 
-    //    valida selller
-    public void validSellerExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        sellerService.valida(batchStockItemRequestDTO.getSeller_id());
-
-    }
 
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
@@ -63,7 +61,9 @@ public class BatchStockItemService {
         if (batchStockItemFind.isPresent()) {
             BatchStockItem _batchStockItem = batchStockItemFind.get();
             _batchStockItem.setQuantity(batchStockItem.getQuantity());
-            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
+//            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
+
+
             return _batchStockItem;
         }else{
             throw new RuntimeException("BatchStockItem não encontrado");
@@ -76,5 +76,6 @@ public class BatchStockItemService {
             throw new RuntimeException("BatchStokItem não encotrada");
         }
     }
+
 
 }

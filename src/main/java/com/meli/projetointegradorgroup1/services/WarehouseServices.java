@@ -1,10 +1,9 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +26,9 @@ public class WarehouseServices {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public void valida(long warehouseID) {
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
+    public void valida(Long warehouseID) {
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
+        if (!warehouse.isPresent()){
             throw new RuntimeException("Warehouse não cadastrada");
         }
     }
@@ -54,11 +53,18 @@ public class WarehouseServices {
          }
     }
 
+    public Warehouse obterWarehouse2(Long warehouseID) {
+        return warehouseRepository.findById(warehouseID).get();
+
+
+    }
+
     public Warehouse obterWarehouse(Long warehouseID) {
-        Warehouse warehouse =  warehouseRepository.findBywarehouseId(warehouseID);
-        if (warehouse == null){
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
+        if (!warehouse.isPresent()){
             throw new RuntimeException("Warehouse não encontrada");
-        }return warehouse;
+        }
+        return warehouse.get();
     }
 
 
