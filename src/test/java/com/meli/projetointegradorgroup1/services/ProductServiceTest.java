@@ -1,10 +1,11 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
+
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
-import org.junit.Assert;
+import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,28 +15,42 @@ import java.util.List;
 
 public class ProductServiceTest {
     Product product = new Product(1l, "teste","cafe");
-    ProductResponseDto productDtoRes = new ProductResponseDto("teste","cafe");
-    ProductRequestDto productDtoReq = new ProductRequestDto("teste","cafe");
+    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
+    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
     Product productUpdate = new Product(null, "teste","cafe");
 
     List<Product> listProduct = new ArrayList();
     ProductService productService;
     ProductRepository productRepository;
 
+    Product productNull = new Product();
+
     String message = null;
 
     @Test
-    public void listProductOK(){
-    listProduct.add(product);
+    public void listProducAllOk(){
+        listProduct.add(product);
+        productRepository = Mockito.mock(ProductRepository.class);
+        Mockito.when(productRepository.findAll()).thenReturn(listProduct);
 
-    productRepository = Mockito.mock(ProductRepository.class);
+        ProductService productService = new ProductService(productRepository);
+        productService.listProductAll();
 
-    Mockito.when(productRepository.findAll()).thenReturn(listProduct);
+        assert (listProduct.size() != 0);
+    }
 
-    ProductService productService = new ProductService(productRepository);
-    productService.listProductDto("teste");
+    @Test
+    public void listProducAllNok(){
+        productRepository = Mockito.mock(ProductRepository.class);
 
-    assert (listProduct.size() != 0);
+        Mockito.when(productRepository.findAll()).thenThrow(RuntimeException.class);
+
+        ProductService productService = new ProductService(productRepository);
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+        productService.listProductAll();});
+        message = "Erro ao buscar Produto";
+
+        assert (exception.getMessage().contains(message));
     }
 
     @Test
@@ -44,49 +59,58 @@ public class ProductServiceTest {
 
         productRepository = Mockito.mock(ProductRepository.class);
 
-        Mockito.when(productRepository.findByProductNameContaining(Mockito.anyString())).thenReturn(listProduct);
+        Mockito.when(productRepository.findByNameContaining(Mockito.anyString())).thenReturn(listProduct);
 
         ProductService productService = new ProductService(productRepository);
-        productService.listProductDto();
+        productService.listProduct("teste");
 
         assert (listProduct.size() != 0);
     }
 
-
     @Test
-    public void validaOk(){
+    public void listProductIdNok(){
+        listProduct.add(product);
+
         productRepository = Mockito.mock(ProductRepository.class);
 
-        Mockito.when(productRepository.findByProductId(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(productRepository.findByNameContaining(Mockito.anyString())).thenThrow(RuntimeException.class);
+
+        ProductService productService = new ProductService(productRepository);
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+        productService.listProduct("null");});
+        message = "Erro ao buscar Produto";
+
+        assert (exception.getMessage().contains(message));
+    }
+
+
+    @Test
+    public void validaNok() {
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(null));
 
         ProductService productService = new ProductService(productRepository);
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        productService.valida(1l);});
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        productService.valida(1l);
+        });
         message = "Produto não cadastrado";
 
         assert (message.contains(exception.getMessage()));
-
     }
-    @Test
-    public void productDtoByIdOk(){
-        productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.converteToResponse(Mockito.any())).thenReturn(productDtoRes);
-        ProductService productService = new ProductService(null);
-        productService.converteToResponse(product);
 
-        assert (product.getProductName().equals(productDtoRes.getProductName()));
-    }
     @Test
     public void validaUpdateOk(){
         productService = Mockito.mock(ProductService.class);
 
         Mockito.when(productService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(productUpdate);
-        ProductService productService = new ProductService(productRepository);
-        productService.validaUpdate(java.util.Optional.ofNullable(product), productDtoReq);
 
-        assert (productUpdate.getProductName().equals(productDtoRes.getProductName()));
+        ProductService productService = new ProductService(productRepository);
+        productService.validaUpdate(product, productDtoReq);
+
+        assert (productUpdate.getName().equals(productDtoRes.getProductName()));
     }
 
     @Test
@@ -96,20 +120,84 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository);
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        productService.validaUpdate(null, productDtoReq);});
+        productService.validaUpdate(productNull, productDtoReq);});
         message = "Produto não encontrado";
 
         assert (message.contains(exception.getMessage()));
     }
+    @Test
+    public void saveOk(){
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
+        ProductService productService = new ProductService(productRepository);
+
+        assert (productService.save(product).getId() == 1);
+    }
 
     @Test
-    public void convertEntityToDtoRequestOk(){
+    public void saveNok(){
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.when(productRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        ProductService productService = new ProductService(productRepository);
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+        productService.save(null);});
+        message = "Erro na gravação do produto:";
+
+        assert (exception.getMessage().contains(message));
+    }
+
+    @Test
+    public void converteOk(){
         productService = Mockito.mock(ProductService.class);
+        ProductService productService = new ProductService(productRepository);
+        productService.converte(productDtoReq);
+        assert (productService.converte(productDtoReq).getName().equals(productDtoReq.getName()));
+    }
 
-        Mockito.when(productService.convertEntityToDtoRequest(Mockito.any())).thenReturn(productDtoReq);
-        ProductService productService = new ProductService(null);
-        productService.convertEntityToDtoRequest(product);
+    @Test
+    public void converteToDto(){
+        productService = Mockito.mock(ProductService.class);
+        ProductService productService = new ProductService( null);
+        assert (productService.converteToDto(product).getProductName().equals(product.getName()));
+    }
 
-        assert (product.getProductName().equals(productDtoReq.getProductName()));
+    @Test
+    public void deletaByid() {
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.doNothing().when(productRepository).deleteById(Mockito.anyLong());
+        ProductService productService = new ProductService(productRepository);
+        productService.deletaProduct(1l);
+
+        assert (product.getId() == 1);
+        }
+
+    @Test
+    public void obtemOk() {
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(product));
+        ProductService productService = new ProductService(productRepository);
+        productService.obtem(1l);
+
+        assert (product.getId() == 1);
+    }
+
+    @Test
+    public void obtemNok() {
+        productRepository = Mockito.mock(ProductRepository.class);
+
+        Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(null);
+        ProductService productService = new ProductService(productRepository);
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            productService.obtem(1l);});
+        message = "Produto não cadastrado";
+
+        assert (exception.getMessage().contains(message));
     }
 }
+
