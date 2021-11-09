@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class RepresentanteDTO {
 
-    private Long representative_Id;
+    private Long representatne_Id;
 
     @NotBlank(message = "Campo Name é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
@@ -43,18 +43,18 @@ public class RepresentanteDTO {
         return RepresentanteDTO.builder()
                 .cpf(representante.getCpf())
                 .name(representante.getName())
-                .representative_Id(representante.getId())
+                .representatne_Id(representante.getId())
                 .build();
     }
 
-    public static List<RepresentanteDTO>converte(List<Representante> representatives){
+    public static List<RepresentanteDTO>converte(List<Representante> representatnes){
         List<RepresentanteDTO> listRepresentant = new ArrayList<>();
-        for (Representante representative: representatives) {
+        for (Representante representatne: representatnes) {
             listRepresentant.add(
                     RepresentanteDTO.builder()
-                            .representative_Id(representative.getId())
-                            .name(representative.getName())
-                            .cpf(representative.getCpf())
+                            .representatne_Id(representatne.getId())
+                            .name(representatne.getName())
+                            .cpf(representatne.getCpf())
                             .build()
             );
         }
