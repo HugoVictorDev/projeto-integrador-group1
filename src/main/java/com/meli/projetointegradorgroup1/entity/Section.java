@@ -27,11 +27,15 @@ public class Section {
 
     private Long code;
 
+    @Enumerated(value = EnumType.STRING)
+    private StockType stockType;
+
     @Column(name = "minimum_temperature")
     private String minimumTemperature;
-    private String stock;
-    @Column(name = "stock_type")
-    private String stockType;
+
+    private Long capacity;
+
+
 
     @ManyToOne
     private Warehouse warehouse;

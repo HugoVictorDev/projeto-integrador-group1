@@ -47,11 +47,12 @@ create table in_bound_order (
 
 create table product (
                          id  bigserial not null,
+                         stock_type varchar(20) not null,
                          description varchar(255),
                          name varchar(255),
                          primary key (id)
 );
-insert into product(description, name) values( 'carne seca',  'descricao da carne seca');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca');
 
 create table representante (
                                id  bigserial not null,
@@ -63,14 +64,14 @@ insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
 
 create table section (
                          id  bigserial not null,
-                         code bigserial not null,
+                         code bigint not null,
+                         stock_type varchar(20) not null,
                          minimum_temperature varchar(255),
-                         stock varchar(255),
-                         stock_type varchar(255),
+                         capacity bigint,
                          warehouse_id int8,
                          primary key (id)
 );
-insert into section (code, minimum_temperature, stock, stock_type, warehouse_id) values (1,  '12', 'sei la',  'refrigerados', 1);
+insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id) values (1, 'FRESH', '12', 150,  1);
 
 
 create table seller (

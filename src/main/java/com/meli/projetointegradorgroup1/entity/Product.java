@@ -26,5 +26,8 @@ public class Product {
 
     private String description;
 
+    @Enumerated(value = EnumType.STRING)
+    private StockType stockType;
+
 
 }

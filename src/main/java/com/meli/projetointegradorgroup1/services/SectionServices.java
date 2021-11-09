@@ -77,7 +77,7 @@ public class SectionServices {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-            section.setStock(sectionDTO.getStock());
+            section.setCapacity(sectionDTO.getCapacity());
             section.setStockType(sectionDTO.getStockType());
             section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
             return section;

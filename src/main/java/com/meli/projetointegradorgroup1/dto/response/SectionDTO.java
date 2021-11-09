@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
 import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,11 +22,9 @@ public class SectionDTO {
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
     private String minimumTemperature;
 
-    @NotBlank(message = "Campo é obrigatorio")
-    private String stock;
+    private StockType stockType;
 
-    @NotBlank(message = "Campo é obrigatorio")
-    private String stockType;
+    private Long capacity;
 
 
 
@@ -34,26 +33,28 @@ public class SectionDTO {
 public Section converteBuilder(SectionDTO dto, WarehouseServices warehouseServices){
     return Section.builder()
             .code(dto.code)
+            .stockType(stockType)
             .minimumTemperature(dto.getMinimumTemperature())
-            .stock(dto.getStock())
+            .capacity(dto.capacity)
             .stockType(dto.getStockType())
             .warehouse(warehouseServices.obterWarehouse(dto.getWarehouseID()))
             .build();
 }
 
 
+//
+//    public static SectionDTO converte(Section section) {
+//        return new SectionDTO(section.getCode(), section.getStockType(),
+//                section.getCapacity(), section.getMinimumTemperature(),
+//                section.getWarehouse().getId());
+//    } TODO REVISAR
 
-    public static SectionDTO converte(Section section) {
-        return new SectionDTO(section.getCode(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
-                ,section.getWarehouse().getId());
-    }
-
-    public Iterable<SectionDTO> converte(List<Section> sections) {
-        List<SectionDTO> listaSection = new ArrayList<>();
-        for (Section section: sections) {
-            listaSection.add(new SectionDTO( section.getCode(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
-                   section.getWarehouse().getId()));
-        }
-        return listaSection;
-    }
+//    public Iterable<SectionDTO> converte(List<Section> sections) {
+//        List<SectionDTO> listaSection = new ArrayList<>();
+//        for (Section section: sections) {
+//            listaSection.add(new SectionDTO( section.getCode(), section.getMinimumTemperature(), section.getCapacity(), section.getStockType(),
+//                   section.getWarehouse().getId()));
+//        }
+//        return listaSection;
+//    } TODO revisar
 }
