@@ -32,32 +32,4 @@ public class RepresentanteDTO {
     private String warehouseID;
 
 
-    public static Representante converte(RepresentanteDTO dto){
-        return Representante.builder()
-                .name(dto.getName())
-                .cpf(RepresentanteServices.maskCpf(dto.getCpf())).build();
-
-    }
-
-    public static RepresentanteDTO converte(Representante representante) {
-        return RepresentanteDTO.builder()
-                .cpf(representante.getCpf())
-                .name(representante.getName())
-                .representatne_Id(representante.getId())
-                .build();
-    }
-
-    public static List<RepresentanteDTO>converte(List<Representante> representatnes){
-        List<RepresentanteDTO> listRepresentant = new ArrayList<>();
-        for (Representante representatne: representatnes) {
-            listRepresentant.add(
-                    RepresentanteDTO.builder()
-                            .representatne_Id(representatne.getId())
-                            .name(representatne.getName())
-                            .cpf(representatne.getCpf())
-                            .build()
-            );
-        }
-        return listRepresentant;
-    }
 }

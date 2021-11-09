@@ -47,8 +47,12 @@ public class RepresentanteServices {
         }
     }
 
-    public RepresentanteDTO converteToDto(Representante representatne) {
-            return new RepresentanteDTO(representatne.getId(), representatne.getName(), representatne.getCpf());
+    public static RepresentanteDTO converte(Representante representante) {
+        return RepresentanteDTO.builder()
+                .cpf(representante.getCpf())
+                .name(representante.getName())
+                .representatne_Id(representante.getId())
+                .build();
     }
 
     public Representante converte(RepresentanteDTO dto) {
@@ -61,8 +65,13 @@ public class RepresentanteServices {
     public List<RepresentanteDTO> converteList(List<Representante> representantes) {
         List<RepresentanteDTO> listRepresentante = new ArrayList<>();
             for (Representante representante: representantes) {
-                listRepresentante.add(new RepresentanteDTO(representante.getId(), representante.getName(),
-                        representante.getCpf()));
+                listRepresentante.add(
+                        RepresentanteDTO.builder()
+                                .representatne_Id(representante.getId())
+                                .name(representante.getName())
+                                .cpf(representante.getCpf())
+                                .build()
+                );
             }
             return listRepresentante;
         }
