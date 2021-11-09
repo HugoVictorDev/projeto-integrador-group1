@@ -19,10 +19,9 @@ public class RepresentanteServices {
     @Autowired
     WarehouseServices warehouseServices;
 
-//    public void valida(RepresentanteDTO representativedto)  {
-//        validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
-//        validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
-//    } TODO revisar
+    public void valida(RepresentanteDTO representativedto)  {
+        validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
+    }
 
 
 
