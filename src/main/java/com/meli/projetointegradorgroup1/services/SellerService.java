@@ -37,10 +37,9 @@ public class SellerService {
     }
 
     public ResponseEntity<HttpStatus> delSeller(Long id){// ok
+
         try {
-            if (findSellerById(id).equals(null) ){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            this.findSellerById(id);
 
             sellerRepository.deleteById(id);
 
@@ -61,11 +60,12 @@ public class SellerService {
         }
     }
 
-    public void valida(Long sellerId) {
+    public ResponseEntity<HttpStatus> valida(Long sellerId) {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
-        if (!seller.isPresent()){
-            throw new RuntimeException("Seller não cadastrado");
+        if (seller == null){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -101,7 +101,8 @@ public class SellerService {
     }
 
     public Seller findSellerById(Long id){
-        Optional<Seller> byId = this.sellerRepository.findById(id);
-        return byId.get();
+        Optional<Seller> _byId = sellerRepository.findById(id);
+
+        return _byId.get();
     }
 }

@@ -10,9 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.devtools.remote.server.HttpStatusHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ class SellerServiceTest {
         Assert.assertEquals(seller1ResponseDTO,sellerReturn);
     }
     @Test
-    void deleteSeller() { // - delete DE SELLER
+    void deleteSeller() { // - delete DE SELLER - OK
 
         Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
@@ -71,28 +73,19 @@ class SellerServiceTest {
         Assert.assertTrue(deleteReturn.getStatusCodeValue() == 200 );
     }
     @Test
-    void notdeleteSeller() { // - CADASTRO DE SELLER
+    void notdeleteSeller() { // - CADASTRO DE SELLER - Ok
 
 
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         doNothing().when(repositoryMock).deleteById(Mockito.any());
         SellerService sellerService = new SellerService(repositoryMock);
 
-
-        //RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        //    sellerService.deleteSeller(sellerIdNok);;
-
-        //});
-        String expectedMessage = "Seller não encontrado";
-        //String actualMessage = exception.getMessage();
-
-
-        //assertTrue(actualMessage.contains(expectedMessage));
-
+        ResponseEntity<HttpStatus> deleteReturn = sellerService.delSeller(sellerIdNok);
+        Assert.assertTrue(deleteReturn.getStatusCodeValue() == 500 );
 
     }
     @Test
-    void getSellers() { // - CONSULTA TODOS SELLERS
+    void getSellers() { // - CONSULTA TODOS SELLERS - OK
         List<Seller> sellerArrayList = new ArrayList();
 
         sellerArrayList.add(seller1);
@@ -111,7 +104,7 @@ class SellerServiceTest {
     }
 
     @Test
-    void valida() { // - VALIDA SE O SELLER EXISTE
+    void valida() { // - VALIDA SE O SELLER EXISTE - ok
         List<Seller> sellerArrayList = new ArrayList();
 
         sellerArrayList.add(seller1);
@@ -122,80 +115,47 @@ class SellerServiceTest {
 
         Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
 
-        //Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
+        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
 
 
 
-        //SellerService sellerService = new SellerService(repositoryMock);
-        //Seller sellerReturn =  sellerService.setSeller(seller1);
-        //boolean findSellerResult = sellerService.valida(sellerId);
-        //Assert.assertTrue(findSellerResult);
+        SellerService sellerService = new SellerService(repositoryMock);
+        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
+
+        //sellerReturn = sellerService.valida(sellerIdNok);
+        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
+
+
+
+
     }
 
     @Test
     void notValida() { // - TESTE DE NAO OK
 
-        //Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(null);
-        SellerService sellerService = new SellerService(repositoryMock);
+        List<Seller> sellerArrayList = new ArrayList();
+
+        sellerArrayList.add(seller1);
 
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            sellerService.valida(sellerId);
 
-        });
-        String expectedMessage = "Seller não cadastrado";
-        String actualMessage = exception.getMessage();
+        Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
+
+        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(null);
 
 
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    void convertEntityToResponse() { // - CONVERSAO DE ENTIDADE PARA RESPONSE
-        SellerService sellerService = new SellerService(repositoryMock);
-        //SellerResponseDTO sellerResponseDTO = sellerService.convertEntityToResponse(seller1); //validaUpdate(java.util.Optional.ofNullable(seller1), sellerRequestDTOSeller1);
-        //Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
-
-    }
-
-    @Test
-    void convertRequestDTOToEntity() { // - CONVERSAO DE ENTIDADE PARA REQUEST
 
         SellerService sellerService = new SellerService(repositoryMock);
-        //Seller seller = sellerService.convertRequestDTOToEntity(seller1RequestDTO); //validaUpdate(java.util.Optional.ofNullable(seller1), sellerRequestDTOSeller1);
-        //Assert.assertEquals(seller1, seller);
+        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
+
+        //sellerReturn = sellerService.valida(sellerIdNok);
+        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 500 );
+
 
     }
 
-    @Test
-    void validaUpdate() { // - METODO QUE EFETUA A VALIDACAO DO UPDATE FEITO
-        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
-        //Mockito.when(repositoryMock.findBySellerId(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
-
-        SellerService sellerService = new SellerService(repositoryMock);
-
-       // SellerResponseDTO findSellerResult = sellerService.validaUpdate(1L, seller1);
-        //Assert.assertEquals(seller1ResponseDTO, findSellerResult);
-    }
-
-    @Test
-    void notvalidaUpdate() { // - METODO QUE EFETUA A VALIDACAO DO UPDATE FEITO
-        SellerService sellerService = new SellerService(repositoryMock);
 
 
-        //RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-       //     sellerService.validaUpdate(2L,seller1);;
-
-        //});
-        String expectedMessage = "Seller não encontrado";
-        //String actualMessage = exception.getMessage();
-
-
-        //assertTrue(actualMessage.contains(expectedMessage));
-
-
-
-    }
 
     @Test
     void convertEntityToDTORequest() {
