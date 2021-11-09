@@ -16,33 +16,23 @@ public class InBoundOrderController {
 
     @Autowired
     InBoundOrderService inBoundOrderService;
-
     @Autowired
     SectionServices sectionServices;
-    //Cadastrar BatchStockItem
-
     @Autowired
     BatchStockService batchStockService;
-
     @Autowired
     StockService stockService;
-
     @Autowired
     ProductService productService;
-
     @Autowired
     RepresentanteServices representanteServices;
-
     @Autowired
     SellerService sellerService;
 
-    @Autowired
-    WarehouseServices warehouseServices;
 
 
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
-//        this.warehouseServices.obterWarhouseByCode(inBoundOrderRequestDTO.getSectionForInboundDTO().getWarehouseCode());
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
                 sectionServices, productService, sellerService));
