@@ -30,6 +30,6 @@ public class Warehouse {
     private String size;
 
     @OneToOne
-    private Representante representante;
+    private Representative Representative;
 
 }

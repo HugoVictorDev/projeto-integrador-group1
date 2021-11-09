@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 @Data
 @Builder
 @Entity
-@Builder
 public class Seller {
 
     @Id

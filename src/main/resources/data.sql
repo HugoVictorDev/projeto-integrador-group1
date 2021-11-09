@@ -2,7 +2,7 @@ drop table if exists batch_stock cascade;
 drop table if exists batch_stock_item cascade;
 drop table if exists in_bound_order cascade;
 drop table if exists product cascade;
-drop table if exists representante cascade;
+drop table if exists Representative cascade;
 drop table if exists section cascade;
 drop table if exists seller cascade;
 drop table if exists warehouse cascade;
@@ -53,13 +53,13 @@ create table product (
 );
 insert into product(description, name) values( 'carne seca',  'descricao da carne seca');
 
-create table representante (
+create table Representative (
                                id  bigserial not null,
                                cpf varchar(255) not null,
                                name varchar(255) not null,
                                primary key (id)
 );
-insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
+insert into Representative(cpf, name) values ( '234.098.109-20',  'Kenyo');
 
 create table section (
                          id  bigserial not null,
@@ -114,7 +114,7 @@ alter table batch_stock_item
 alter table in_bound_order
     add constraint FKisau45ihrn98bmlwfnlo23axk
         foreign key (representative_id)
-            references representante;
+            references Representative;
 
 alter table in_bound_order
     add constraint FKsr5yci0eowgmpim69tgp4g1h
@@ -129,4 +129,4 @@ alter table section
 alter table warehouse
     add constraint FKiabr4g8lokk0f3x2f6sck68rx
         foreign key (representante_id)
-            references representante;
+            references Representative;

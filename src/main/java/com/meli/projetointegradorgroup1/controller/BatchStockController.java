@@ -7,9 +7,10 @@ import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
-import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
+import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
+import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class BatchStockController {
     @Autowired
     private InBoundOrderRepository inboundOrderRepository;
     @Autowired
-    RepresentanteRepository representanteRepository;
+    RepresentativeServices RepresentativeServices;
     @Autowired
     private BatchStockService batchStockService;
     @Autowired

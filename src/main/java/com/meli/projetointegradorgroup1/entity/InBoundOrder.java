@@ -36,7 +36,7 @@ public class InBoundOrder {
     private List<BatchStock> batchStock;
 
     @ManyToOne
-    private Representante representative;
+    private Representative representative;
 
 
 }

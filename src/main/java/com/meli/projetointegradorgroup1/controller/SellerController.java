@@ -8,6 +8,8 @@ import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,71 +25,55 @@ public class SellerController {
     @Autowired
     SellerService sellerService;
 
-    public SellerController(SellerRepository sellerRepository, SellerService sellerService) {
-        this.sellerRepository = sellerRepository;
-        this.sellerService = sellerService;
-    }
 
-
-    //Cadastrar vendedor
+    //Cadastrar vendedor - ok
     @PostMapping("/create")
-    public SellerResponseDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
+    public SellerResponseDTO createSeller(@Valid @RequestBody Seller seller){
 
-        Seller seller = sellerService.convertRequestDTOToEntity(sellerRequestDTO);
-        seller = sellerService.setSeller(seller);
-
-        SellerResponseDTO sellerResponseDTO = sellerService.convertEntityToResponse(seller);
+        SellerResponseDTO sellerResponseDTO = sellerService.setSeller(seller);
 
         return sellerResponseDTO;
     }
 
-    //Consultar lista de  vendeokdores
-    @GetMapping("/list")
-     public List<SellerResponseDTO> getSellerList() {
 
-        List<SellerResponseDTO> sellerList =  sellerService.getSellers();
+    //Consultar lista de  vende
+    // dores
+    @GetMapping("/list") // - ok
+    List<SellerResponseDTO> getSellerList() {
 
-        //ArrayList<SellerResponseDTO> sellerResponseDTOS = new ArrayList();
-
-        //sellerList.stream()
-        //        .forEach(seller -> sellerResponseDTOS.add(sellerService.convertEntityToResponse(seller)));
-        return sellerList;
+        return sellerService.getSellers();
     }
 
     //busca vendedor pelo id
-    @GetMapping("{id}")
+    @GetMapping("{id}") // - ok
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        // colocar mensagem de nao encontrado
-        return sellerService.getSellerById(id);
+        return sellerService.convertEntityToDTO(sellerRepository.getById(id));
+
     }
 
     // atualizando vendedor pelo ID
-    @PutMapping("/update/{id}")
-    public SellerResponseDTO updateSeller(@PathVariable("id") Long id, @Valid @RequestBody Seller seller) { // Alterado para se adequar ao padrão solicitado
+    //@PutMapping("/update/{id}")
+    //public ResponseEntity<HttpStatus> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
 
-        return sellerService.validaUpdate(id, seller);
-    }
+        //Optional<Seller> sellerFind = sellerRepository.findById(id);
+        //Seller _seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
+        //return sellerService.convertEntityToDTORequest(sellerRepository.save(_seller));
 
-    //delete todos vendedores
+//    }
+
+    //delete todos vendedores - ok
     @DeleteMapping("/deleteall")
-    public boolean deleteAllSellers() {
-        ///sellerRepository.deleteAll();
-        return sellerService.deleteAllSellers();
+    public ResponseEntity<HttpStatus> deleteAllSellers() {
+        return sellerService.delAllSellers();
 
     }
 
-//deletar vendedor pelo ID
-@DeleteMapping("/delete/{id}")
-public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) {
-    if(sellerService.deleteSeller(id)){
-        //sellerRepository.deleteById(id);
-        sellerService.deleteSeller(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } else {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    //deletar vendedor pelo ID - ok
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) {
+        //// delete
+        return sellerService.delSeller((id));
     }
-}
-
 
 
 }
