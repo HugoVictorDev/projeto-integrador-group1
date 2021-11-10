@@ -72,6 +72,14 @@ public class SectionServices {
         }else throw new EntityNotFoundException("Section não encontrada");
     }
 
+    public String obtemTypeStockSection(Long code) {
+        Section section = sectionRepository.findByCode(code);
+       String s = section.getStockType().toString();
+
+       return s;
+
+    }
+
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
         if(sectionFind.isPresent()){

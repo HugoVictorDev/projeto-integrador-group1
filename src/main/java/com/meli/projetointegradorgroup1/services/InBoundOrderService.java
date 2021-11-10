@@ -1,16 +1,15 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InBoundOrderService {
@@ -28,10 +27,15 @@ public class InBoundOrderService {
     RepresentanteServices representanteServices;
 
     @Autowired
-    public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices, RepresentanteServices representanteServices){
+    ProductService productService;
+
+    @Autowired
+    public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
+                               RepresentanteServices representanteServices, ProductService productService){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
+        this.productService = productService;
     }
 
 
@@ -52,6 +56,16 @@ public class InBoundOrderService {
         }
     }
 
+    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
+
+        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
+        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
+//        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
+        this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
+        this.sectionIsTheSameProduct(inb);
+        return inb;
+    }
+
     public boolean  representanteIsPresenteWarehouse(Long id){
         for (Section sec : sectionServices.listaSection()){
             if (sec.getWarehouse().getRepresentante().getId() == id){
@@ -62,13 +76,16 @@ public class InBoundOrderService {
         return false;
     }
 
-    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
+    public boolean  sectionIsTheSameProduct(InBoundOrderRequestDTO inb){
 
-        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
-        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
-//        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
-           this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-        return inb;
+        String sectionStockType = this.sectionServices.obtemTypeStockSection(inb.getSectionForInboundDTO().getCode());
+
+        List<Product> products = this.productService.listProduct(sectionStockType);
+
+        List<Long> listaDeProdutosID = products.stream().map(Product::getId).collect(Collectors.toList());
+
+        return false;
+
     }
 
 }

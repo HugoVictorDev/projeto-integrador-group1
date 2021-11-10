@@ -33,6 +33,13 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<Product> listProduct(String type){
+        return productRepository.findAll()
+                .stream().filter(product -> product.getStockType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+
 
 
     public void valida(Long productId) {
@@ -75,4 +82,5 @@ public class ProductService {
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }
+
 }
