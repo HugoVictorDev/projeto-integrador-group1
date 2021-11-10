@@ -1,7 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
-import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.services.RepresentativeServices;
+import com.meli.projetointegradorgroup1.entity.Representante;
+import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -33,24 +32,24 @@ public class RepresentanteDTO {
     private String warehouseID;
 
 
-    public static Representative converte(RepresentanteDTO dto){
-        return Representative.builder()
+    public static Representante converte(RepresentanteDTO dto){
+        return Representante.builder()
                 .name(dto.getName())
-                .cpf(RepresentativeServices.maskCpf(dto.getCpf())).build();
+                .cpf(RepresentanteServices.maskCpf(dto.getCpf())).build();
 
     }
 
-    //public static RepresentanteDTO converte(Optional<Representative> Representative) {
-    //return RepresentanteDTO.builder()
-    //            .cpf(Representative.getCpf())
-    //           .name(Representative.getName())
-    //            .representative_Id(Representative.getId())
-    //            .build();
-    //}
+    public static RepresentanteDTO converte(Representante representante) {
+        return RepresentanteDTO.builder()
+                .cpf(representante.getCpf())
+                .name(representante.getName())
+                .representative_Id(representante.getId())
+                .build();
+    }
 
-    public static List<RepresentanteDTO>converte(List<Representative> representatives){
+    public static List<RepresentanteDTO>converte(List<Representante> representatives){
         List<RepresentanteDTO> listRepresentant = new ArrayList<>();
-        for (Representative representative: representatives) {
+        for (Representante representative: representatives) {
             listRepresentant.add(
                     RepresentanteDTO.builder()
                             .representative_Id(representative.getId())
