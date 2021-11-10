@@ -25,6 +25,11 @@ public class SellerController {
     @Autowired
     SellerService sellerService;
 
+    public SellerController(SellerRepository sellerRepository, SellerService sellerService) {
+        this.sellerService = sellerService;
+        this.sellerRepository = sellerRepository;
+    }
+
 
     //Cadastrar vendedor - ok
     @PostMapping("/create")

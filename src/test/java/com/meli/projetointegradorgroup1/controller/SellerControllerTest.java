@@ -48,14 +48,14 @@ class SellerControllerTest {
 
 
         //Mockito.when(sellerService.convertRequestDTOToEntity(Mockito.any())).thenReturn(seller1);
-        //Mockito.when(sellerService.convertEntityToResponse(Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.convertEntityToDTO(Mockito.any())).thenReturn(seller1ResponseDTO);
         Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1ResponseDTO);
         Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
 
-        //SellerController sellerController = new SellerController(sellerRepository, sellerService);
-        //SellerResponseDTO sellerResponseDTO = sellerController.createSeller(seller1RequestDTO);
+        SellerController sellerController = new SellerController(sellerRepository, sellerService);
+        SellerResponseDTO sellerResponseDTO = sellerController.createSeller(seller1);
 
-        //Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
+        Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
 
 
 
@@ -70,8 +70,8 @@ class SellerControllerTest {
 
         Mockito.when(sellerService.getSellers()).thenReturn(sellerArrayList);
 
-        //SellerController sellerController = new SellerController(sellerRepository, sellerService);
-        //sellerController.getSellerList();
+        SellerController sellerController = new SellerController(sellerRepository, sellerService);
+        sellerController.getSellerList();
 
         assert (sellerService.getSellers().size() >= 1 );
     }
@@ -81,12 +81,12 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 
-//        Mockito.when(sellerService.getSellerById(Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.findSellerById(Mockito.any())).thenReturn(seller1);
 
-//        SellerController sellerController = new SellerController(sellerRepository,sellerService);
-//        SellerResponseDTO sellerReturn =  sellerController.getSellerById(1L);
+        SellerController sellerController = new SellerController(sellerRepository,sellerService);
+        SellerResponseDTO sellerReturn =  sellerController.getSellerById(1L);
 
-//        assertTrue (sellerReturn.equals(seller1ResponseDTO));
+        assertTrue (sellerReturn.equals(seller1ResponseDTO));
     }
 
     @Test

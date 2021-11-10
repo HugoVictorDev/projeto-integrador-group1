@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class SellerService {
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller não valido");
         }
     }
 
@@ -63,7 +64,7 @@ public class SellerService {
     public ResponseEntity<HttpStatus> valida(Long sellerId) {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
         if (seller == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -78,16 +79,16 @@ public class SellerService {
     }
 
 
-    public Seller validaUpdate(Optional<Seller> sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (sellerFind.isPresent()) {
-            Seller _seller = sellerFind.get();
+    public SellerResponseDTO validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
+        if (sellerFind != null) {
+            Seller _seller = sellerFind;
             _seller.setName(sellerRequestDTO.getName());
             _seller.setCpf(sellerRequestDTO.getCpf());
             _seller.setEmail(sellerRequestDTO.getEmail());
 
-            return _seller;
+            return this.convertEntityToDTO(_seller);
         }else{
-            throw new RuntimeException("Seller não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller não valido");
         }
     }
 

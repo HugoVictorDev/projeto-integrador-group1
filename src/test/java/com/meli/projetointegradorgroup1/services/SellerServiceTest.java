@@ -13,10 +13,12 @@ import org.mockito.Mockito;
 import org.springframework.boot.devtools.remote.server.HttpStatusHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
@@ -120,7 +122,7 @@ class SellerServiceTest {
 
 
         SellerService sellerService = new SellerService(repositoryMock);
-        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
+        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerId);
 
         //sellerReturn = sellerService.valida(sellerIdNok);
         Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
@@ -148,14 +150,24 @@ class SellerServiceTest {
         SellerService sellerService = new SellerService(repositoryMock);
         ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
 
-        //sellerReturn = sellerService.valida(sellerIdNok);
-        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 500 );
 
+        RuntimeException exception = Assertions.assertThrows(ResponseStatusException.class, ()->{ sellerService.valida(sellerIdNok);});
+        HttpStatus message = HttpStatus.NOT_FOUND;
+
+
+
+        //sellerReturn = sellerService.valida(sellerIdNok);
+        //Assert.assertTrue(sellerReturn.getStatusCodeValue() == 404 );
+        assert (exception.getMessage().contains(message.toString()));
 
     }
 
-
-
+    @Test
+    void convertEntityToDTO(){
+        SellerService sellerService = new SellerService(repositoryMock);
+        SellerResponseDTO sellerResponseDTO = sellerService.convertEntityToDTO(seller1);
+        Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
+    }
 
     @Test
     void convertEntityToDTORequest() {
@@ -166,4 +178,15 @@ class SellerServiceTest {
 
     }
 
+    @Test
+    void validaUpdate() {
+
+        //Optional<Seller> sellerFind,
+        // SellerRequestDTO sellerRequestDTO
+        SellerService sellerService = new SellerService(repositoryMock);
+        SellerResponseDTO sellerResponseDTO = sellerService.validaUpdate(seller1, seller1RequestDTO); //validaUpdate(java.util.Optional.ofNullable(seller1), sellerRequestDTOSeller1);
+        Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
+
+
+    }
 }
