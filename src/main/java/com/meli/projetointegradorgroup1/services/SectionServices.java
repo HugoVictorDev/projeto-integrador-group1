@@ -31,10 +31,10 @@ public class SectionServices {
     }
 
     public void validarWarehouse(SectionDTO sectionDTO) {
-       warehouseServices.valida(sectionDTO.getWarehouseID());
+        warehouseServices.valida(sectionDTO.getWarehouseID());
     }
 
-//        valida warhouse
+    //        valida warhouse
     public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
         warehouseServices.valida(sectionForInboundDTO.getWarehouseId());
 
@@ -49,7 +49,6 @@ public class SectionServices {
 
     }
 
-
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
         if(sectionList.size() == 0){
@@ -58,50 +57,51 @@ public class SectionServices {
     }
 
 
-    public Section obterSection(Long sectionID) {
-        Section section = sectionRepository.findBysectionId(sectionID);
+    public Optional<Section> obterSection(Long sectionID) {
+        Optional<Section> section = sectionRepository.findById(sectionID);
         if (section == null){
             throw new RuntimeException("Sessão não encontrada");
         }return section;
     }
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
-         if(sectionFind == null  || sectionFind.equals(Optional.empty())){
-             throw new RuntimeException("Sessão não encontrada");
+        if(sectionFind == null  || sectionFind.equals(Optional.empty())){
+            throw new RuntimeException("Sessão não encontrada");
         }else{
-             Section section = sectionFind.get();
-             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-             section.setStock(sectionDTO.getStock());
-             section.setStockType(sectionDTO.getStockType());
-             section.setWarehouse(obterWarehouse(Long.parseLong(sectionDTO.getWarehouseID())));
-             return section;
-            }
-}
+            Section section = sectionFind.get();
+            section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
+            section.setStock(sectionDTO.getStock());
+            section.setStockType(sectionDTO.getStockType());
+            section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
+            return section;
+        }
+    }
 
-    private Warehouse obterWarehouse(long warehouseID) {
+    private Warehouse obterWarehouse(Long warehouseID) {
         return warehouseServices.obterWarehouse(warehouseID);
     }
 
     public SectionDTO convertToDto(Section section) {
-        return new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType()
-                , Long.toString(section.getWarehouse().getWarehouseId()));
+        //    return new SectionDTO(section.getMinimumTemperature(), section.getStock(), section.getStockType()
+        //            , Long.toString(section.getWarehouse().warehouseId()));
+        return null;
     }
 
     public Iterable<SectionDTO> convertList(List<Section> sections) {
         List<SectionDTO> listaSection = new ArrayList<>();
-        for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getSectionId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
+  /*      for (Section section: sections) {
+            listaSection.add(new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
                     Long.toString(section.getWarehouse().getWarehouseId())));
-        }
+        }*/
         return listaSection;
     }
 
     public Section convert(SectionDTO sectiodto) {
-        return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
+  /*      return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
                 .Stock(sectiodto.getStock())
                 .StockType(sectiodto.getStockType())
                 .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
-
+*/ return null;
     }
 
     public void deletaSection(Long id) {

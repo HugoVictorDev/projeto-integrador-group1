@@ -27,35 +27,40 @@ public class SectionController {
     //cadastrar sessões
     @PostMapping("/create")
     public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
-           sectionServices.validarWarehouse(sectionDTO);
-           Section section = sectionServices.convert(sectionDTO);
-           return sectionServices.convertToDto(sectionRepository.save(section));
+        //     sectionServices.validarWarehouse(sectionDTO);
+        //     Section section = sectionServices.convert(sectionDTO);
+        //     return sectionServices.convertToDto(sectionRepository.save(section));
+        return null;
     }
 
     //listar todas as sessões
     @GetMapping("/list")
     public Iterable<SectionDTO> list(SectionDTO sectionDTO){
-           return sectionServices.convertList(sectionServices.listaSection());
+        return null;
+        //      return sectionServices.convertList(sectionServices.listaSection());
     }
 
     //busca sessões por id
     @GetMapping("/list/{id}")
     public SectionDTO getSectionByID(@PathVariable ("id") Long id){
-           return sectionServices.convertToDto(sectionServices.obterSection(id));
+        //return sectionServices.convertToDto(sectionServices.obterSection(id));
+        return null;
     }
 
     @PutMapping("/update")
     public SectionDTO updateSection(@Valid @RequestBody SectionDTO sectionDTO){
-        Optional<Section> sectionFind = sectionRepository.findById(sectionDTO.getSectionId());
-        Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
-        return sectionServices.convertToDto(sectionRepository.save(section));
+        //    Optional<Section> sectionFind = sectionRepository.findById(sectionDTO.getSectionId());
+        //    Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
+        //    return sectionServices.convertToDto(sectionRepository.save(section));
+        return null;
     }
 
     //deletar por id
     @DeleteMapping("/delete/{id}")
     public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
-           Section section = sectionServices.obterSection(id);
-           sectionServices.deletaSection(id);
-           return sectionServices.convertToDto(section);
+        Optional<Section> section = sectionServices.obterSection(id);
+        sectionServices.deletaSection(id);
+        //     return sectionServices.convertToDto(section);
+        return null;
     }
 }

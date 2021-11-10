@@ -82,20 +82,18 @@ public class WarehouseServices {
 
 
     public WarehouseDTO converteToDto(Warehouse wareHouse) {
-            return new WarehouseDTO(wareHouse.getWarehouseId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
+            return new WarehouseDTO(wareHouse.getId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
     }
 
     public Iterable<WarehouseDTO> converteList(List<Warehouse> warehouses) {
             List<WarehouseDTO> listWarehouse = new ArrayList<>();
             for (Warehouse warehouse: warehouses) {
-                listWarehouse.add(new WarehouseDTO(warehouse.getWarehouseId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
+                listWarehouse.add(new WarehouseDTO(warehouse.getId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
             }
             return listWarehouse;
         }
 
     public Warehouse converte(WarehouseDTO warehouseDTO) {
-        return new Warehouse().Name(warehouseDTO.getName())
-                .Address(warehouseDTO.getAddress())
-                .Size(warehouseDTO.getSize());
+        return null;
     }
 }

@@ -39,8 +39,8 @@ public class InBoundOrderController {
 
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
-        //sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
-        //sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
+        sectionServices.validSectionExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
+        sectionServices.validWarhouseExist(inBoundOrderRequestDTO.getSectionForInboundDTO());
         this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices, sectionServices, productService, sellerService));
         return inBoundOrderRequestDTO;
     }

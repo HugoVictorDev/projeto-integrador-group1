@@ -1,13 +1,9 @@
 package com.meli.projetointegradorgroup1.dto;
 
-import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
-import lombok.Data;
 
-import javax.persistence.Column;
+import lombok.Data;
 import javax.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Data
 public class WarehouseDTO {

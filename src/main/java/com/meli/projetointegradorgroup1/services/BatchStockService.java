@@ -28,7 +28,7 @@ public class BatchStockService {
     }
 
     public void deleteBS(Long BatchNumber){
-        batchStockRepository.deleteBybatchStockNumber(BatchNumber);
+     //   batchStockRepository.deleteBybatchStockNumber(BatchNumber);
     }
 
     public void updateIBO(BatchStock batchStock){
