@@ -24,11 +24,8 @@ public class Warehouse {
     private Long id;
 
     private Long code;
-
     private String name;
-
     private String address;
-
     private String size;
 
     @OneToOne

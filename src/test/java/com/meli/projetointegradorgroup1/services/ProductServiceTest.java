@@ -4,6 +4,7 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.junit.jupiter.api.Assertions;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceTest {
-    Product product = new Product(1l, "teste","cafe");
+    Product product = new Product(1l, "teste","cafe", StockType.FRESH);
     ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
     ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
-    Product productUpdate = new Product(null, "teste","cafe");
+    Product productUpdate = new Product(null, "teste","cafe",StockType.FRESH);
 
     List<Product> listProduct = new ArrayList();
     ProductService productService;

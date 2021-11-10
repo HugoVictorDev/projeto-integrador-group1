@@ -1,9 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
-
-import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,28 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WarehouseServicesTest {
-/*
-    Warehouse warehouse = new Warehouse(1l, "Miguel", "Rua: Hum", "3",null);
+
+    Warehouse warehouse = new Warehouse(1l, 44l,"Miguel", "Rua: Hum", "3",null);
     WarehouseDTO warehouseDTO = new WarehouseDTO(1l, "Caio", "Rua: Dois", "3");
     WarehouseDTO warehouseConverte = new WarehouseDTO(1l, "Miguel", "Rua: Hum", "3");
-    WarehouseServices warehouseServices;
-    WarehouseRepository warehouseRepository;
+
     List<Warehouse> listWarehouse = new ArrayList();
     List<WarehouseDTO> listWarehouseDto = new ArrayList();
+
+    WarehouseServices warehouseServices;
+    WarehouseRepository warehouseRepository;
+
     String message = "";
 
-    @Test
-    public void validaWarehouseNok(){
-        warehouseRepository = Mockito.mock(WarehouseRepository.class);
 
-        Mockito.when(warehouseRepository.findBywarehouseId(Mockito.anyLong())).thenReturn(null);
-        WarehouseServices warehouseServices= new WarehouseServices(warehouseRepository);
-
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        warehouseServices.valida(1l);});
-        message = "Warehouse não cadastrada";
-        assert (message.contains(exception.getMessage()));
-}
     @Test
     public void listaWarehouseNok(){
 
@@ -73,30 +63,31 @@ public class WarehouseServicesTest {
     }
 
     @Test
-    public void obterWarehouseNok(){
+    public void obterWarehouseByIdNok(){
         warehouseRepository = Mockito.mock(WarehouseRepository.class);
 
-        Mockito.when(warehouseRepository.findBywarehouseId(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(warehouseRepository.findById(Mockito.anyLong())).thenReturn(null);
 
         WarehouseServices warehouseServices= new WarehouseServices(warehouseRepository);
 
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        warehouseServices.obterWarehouse(1l); });
+        warehouseServices.obterWarehouseById(1l); });
         message = "Warehouse não encontrada";
         assert (message.contains(exception.getMessage()));
     }
 
     @Test
-    public void obterWarehouseOk(){
+    public void obterWarehouseByIdOk(){
         warehouseRepository = Mockito.mock(WarehouseRepository.class);
 
-        Mockito.when(warehouseRepository.findBywarehouseId(Mockito.anyLong())).thenReturn(warehouse);
+        Mockito.when(warehouseRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(warehouse));
 
         WarehouseServices warehouseServices= new WarehouseServices(warehouseRepository);
-        warehouseServices.obterWarehouse(1l);
+        warehouseServices.obterWarehouseById(1l);
 
         assert (warehouse != null);
     }
+
     @Test
     public void converteOk(){
         warehouseServices = Mockito.mock(WarehouseServices.class);
@@ -140,7 +131,58 @@ public class WarehouseServicesTest {
         WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
         warehouseServices.deleta(1l);
 
-        assert (warehouse.getWarehouseId() == 1);
-    }*/
+        assert (warehouse.getId() == 1);
+    }
+
+    @Test
+    public void obterWarehouseByCodeNok(){
+        warehouseRepository = Mockito.mock(WarehouseRepository.class);
+
+        Mockito.when(warehouseRepository.findByCode(Mockito.anyLong())).thenReturn(null);
+
+        WarehouseServices warehouseServices= new WarehouseServices(warehouseRepository);
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            warehouseServices.obterWarhouseByCode(1l); });
+        message = "Warehouse não encontrada";
+        assert (message.contains(exception.getMessage()));
+    }
+
+    @Test
+    public void obterWarehouseByCodeOk(){
+        warehouseRepository = Mockito.mock(WarehouseRepository.class);
+
+        Mockito.when(warehouseRepository.findByCode(Mockito.anyLong())).thenReturn(warehouse);
+
+        WarehouseServices warehouseServices= new WarehouseServices(warehouseRepository);
+        warehouseServices.obterWarhouseByCode(1l);
+
+        assert (warehouse != null);
+    }
+
+
+    @Test
+    public void saveOk(){
+        warehouseRepository = Mockito.mock(WarehouseRepository.class);
+
+        Mockito.when(warehouseRepository.save(Mockito.any())).thenReturn(warehouse);
+        WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
+
+        assert (warehouseServices.save(warehouse).getId() == 1);
+    }
+
+    @Test
+    public void saveNok(){
+        warehouseRepository = Mockito.mock(WarehouseRepository.class);
+
+        Mockito.when(warehouseRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
+        WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            warehouseServices.save(null);});
+        message = "Erro na gravação Warehouse:";
+
+        assert (exception.getMessage().contains(message));
+    }
 }
 

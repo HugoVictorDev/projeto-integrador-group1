@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.advisor;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,13 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class RuntimeHandler {
+
+
+	@ExceptionHandler(value = InvalidFormatException.class)
+	protected ResponseEntity<Object> handleConflict(InvalidFormatException ex, WebRequest request) {
+		String bodyOfResponse = ex.getMessage();
+		return ResponseEntity.badRequest().body(bodyOfResponse);
+	}
 
 	@ExceptionHandler(value = RuntimeException.class)
 	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {

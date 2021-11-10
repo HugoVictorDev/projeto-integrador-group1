@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class WarehouseDTO {
 
+    @NotNull(message = "Campo é obrigatorio")
     private Long code;
 
     @NotBlank(message = "Campo é obrigatorio")
@@ -29,37 +30,4 @@ public class WarehouseDTO {
     @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros")
     private String size;
 
-
-    public static Warehouse converte(WarehouseDTO dto) {
-        return Warehouse.builder()
-                .code(dto.code)
-                .name(dto.getName())
-                .address(dto.getAddress())
-                .size(dto.getSize())
-                .build();
-    }
-
-    public static WarehouseDTO converte(Warehouse wareHouse) {
-        return WarehouseDTO.builder()
-                .name(wareHouse.getName())
-                .address(wareHouse.getAddress())
-                .size(wareHouse.getSize())
-                .code(wareHouse.getCode())
-                .build();
-    }
-
-    public Iterable<WarehouseDTO> converte(List<Warehouse> warehouses) {
-        List<WarehouseDTO> listWarehouse = new ArrayList<>();
-        for (Warehouse w: warehouses) {
-            listWarehouse.add(
-                    WarehouseDTO.builder()
-                            .name(w.getName())
-                            .address(w.getAddress())
-                            .code(w.getCode())
-                            .build()
-
-            );
-        }
-        return listWarehouse;
-    }
 }

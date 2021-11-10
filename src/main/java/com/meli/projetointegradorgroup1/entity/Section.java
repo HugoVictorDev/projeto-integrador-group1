@@ -30,17 +30,10 @@ public class Section {
     @Enumerated(value = EnumType.STRING)
     private StockType stockType;
 
-    @Column(name = "minimum_temperature")
     private String minimumTemperature;
-
     private Long capacity;
-
-
 
     @ManyToOne
     private Warehouse warehouse;
-
-
-
 
 }

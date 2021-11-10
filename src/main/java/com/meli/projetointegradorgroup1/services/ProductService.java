@@ -92,10 +92,10 @@ public class ProductService {
 
     public Product obtem(Long id){
         Optional<Product> byId = productRepository.findById(id);
-        if(byId != null ){
-            return byId.get();
-        }else {
+        if(byId == null || byId.equals(Optional.empty()) ){
             throw new RuntimeException("Produto não cadastrado");
+        }else {
+            return byId.get();
         }
     }
 

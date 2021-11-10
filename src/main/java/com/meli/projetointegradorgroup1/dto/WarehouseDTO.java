@@ -11,6 +11,9 @@ public class WarehouseDTO {
     private Long warehouseId;
 
     @NotBlank(message = "Campo é obrigatorio")
+    private Long code;
+
+    @NotBlank(message = "Campo é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
     private String name;
 

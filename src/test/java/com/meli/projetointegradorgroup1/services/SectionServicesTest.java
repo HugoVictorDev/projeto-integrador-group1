@@ -1,16 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.SectionDTO;
-import com.meli.projetointegradorgroup1.entity.Section;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
-import com.meli.projetointegradorgroup1.repository.SectionRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class SectionServicesTest {
     /*
     Section section = new Section(1l,"1","2","3",null);

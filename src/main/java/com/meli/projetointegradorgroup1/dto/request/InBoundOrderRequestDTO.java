@@ -44,7 +44,7 @@ public class InBoundOrderRequestDTO {
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
-                        .representative(representanteServices.obter(this.representanteId))
+                        .representante(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
                         .section(section)
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
