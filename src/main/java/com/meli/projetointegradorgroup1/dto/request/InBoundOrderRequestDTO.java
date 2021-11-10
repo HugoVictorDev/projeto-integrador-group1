@@ -2,13 +2,8 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.services.ProductService;
-import com.meli.projetointegradorgroup1.services.RepresentanteServices;
-import com.meli.projetointegradorgroup1.services.SectionServices;
-import com.meli.projetointegradorgroup1.services.SellerService;
+import com.meli.projetointegradorgroup1.entity.*;
+import com.meli.projetointegradorgroup1.services.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,35 +24,40 @@ import java.util.List;
 @Builder
 public class InBoundOrderRequestDTO {
 
-    private Long orderNumber;
-    private LocalDate orderDate;
-    @JsonProperty(value =  "seller_id")
-    private Long sellerId; // falta buildar TODO
-    @JsonProperty(value = "section")
-    private SectionForInboundDTO sectionForInboundDTO;
-    @JsonProperty(value= "batchStockList")
-    private List<BatchStockRequestDTO> batchStockDTOList;
+        private Long orderNumber;
+        private LocalDate orderDate;
+        @JsonProperty(value =  "seller_id")
+        private Long sellerId; // falta buildar TODO
+        @JsonProperty(value = "section")
+        private SectionForInboundDTO sectionForInboundDTO;
+        @JsonProperty(value= "batchStockList")
+        private List<BatchStockRequestDTO> batchStockDTOList;
 
-    private Long representanteId;
-
-
-    public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
-        try{
-            InBoundOrder inboundOrder = null;
-            inboundOrder = InBoundOrder.builder()
-                    .orderDate(this.orderDate)
-                    .representante(representanteServices.obter(this.representanteId))
-                    .orderNumber(this.orderNumber)
-                    //            .section(sectionServices.obterSection(this.sectionForInboundDTO.getSectionId()))
-                    .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
+        private Long representanteId;
 
 
-            return inboundOrder;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
+
+        public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
+                                        ProductService productService, SellerService sellerService){
+            Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
+            try{
+                InBoundOrder inboundOrder = null;
+                inboundOrder = InBoundOrder.builder()
+                        .orderDate(this.orderDate)
+                        .representative(representanteServices.obter(this.representanteId))
+                        .orderNumber(this.orderNumber)
+                        .section(section)
+                        .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
+
+
+                return inboundOrder;
+            }catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }
+
         }
-    }
+
 
 
     public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
@@ -88,6 +88,6 @@ public class InBoundOrderRequestDTO {
         return resultList;
     }
 
-}
+    }
 
 

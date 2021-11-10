@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
+import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
@@ -9,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,20 +18,23 @@ import java.util.Optional;
 public class WarehouseServices {
 
     @Autowired
-    WarehouseRepository warehouseRepository;
+    private WarehouseRepository warehouseRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionRepository sectionRepository;
 
-    public WarehouseServices(WarehouseRepository warehouseRepository) {
-        this.warehouseRepository = warehouseRepository;
-    }
+    @Autowired
+    private SectionServices sectionServices;
 
-    public void valida(Long warehouseID) {
-        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
-        if (!warehouse.isPresent()){
-            throw new RuntimeException("Warehouse não cadastrada");
+
+    public boolean warehouseExist(Long warehouseCode) {
+        for (Section section : sectionServices.listaSection()) {
+            if (section.getWarehouse().getCode().equals(warehouseCode)){
+                Warehouse warehouse = section.getWarehouse();
+                return warehouse != null;
+            }
         }
+        return false;
     }
 
     public List<Warehouse> listaWarehouse() {
@@ -42,21 +46,22 @@ public class WarehouseServices {
 
 
     public Warehouse validaUpdate(Optional<Warehouse> warehouseFind, WarehouseDTO warehouseDTO) {
-    if(warehouseFind == null  || warehouseFind.equals(Optional.empty())){
-        throw new RuntimeException("Warehouse não encontrada");
-    }else{
+    if(warehouseFind.isPresent()){
         Warehouse warehouse = warehouseFind.get();
         warehouse.setName(warehouseDTO.getName());
         warehouse.setAddress(warehouseDTO.getAddress());
         warehouse.setSize(warehouseDTO.getSize());
         return warehouse;
+    }else{
+        throw new RuntimeException("Warehouse não encontrada");
          }
     }
 
-    public Warehouse obterWarehouse2(Long warehouseID) {
-        return warehouseRepository.findById(warehouseID).get();
-
-
+    public Warehouse obterWarhouseByCode(Long code) {
+        Warehouse warehouse = warehouseRepository.findByCode(code);
+        if (warehouse != null){
+            return warehouse;
+        }else throw new EntityNotFoundException("warHouse não encontrada");
     }
 
     public Warehouse obterWarehouse(Long warehouseID) {
@@ -67,33 +72,17 @@ public class WarehouseServices {
         return warehouse.get();
     }
 
-
-    public void deleta(Long id) {
+  //  @GetMapping(value="/handler")
+ //   public void handler() {
+ //       throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
+ //   }
+    public ResponseEntity<Object> deleta(Long id) {
         try {
             warehouseRepository.deleteById(id);
-        } catch (RuntimeException e) {
-            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
-                throw new RuntimeException("Referential integrity constraint violation");
-            }else {
-                throw e;
-            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+  //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
+             throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
         }
-    }
-
-
-    public WarehouseDTO converteToDto(Warehouse wareHouse) {
-            return new WarehouseDTO(wareHouse.getId(),wareHouse.getName(),wareHouse.getAddress(),wareHouse.getSize());
-    }
-
-    public Iterable<WarehouseDTO> converteList(List<Warehouse> warehouses) {
-            List<WarehouseDTO> listWarehouse = new ArrayList<>();
-            for (Warehouse warehouse: warehouses) {
-                listWarehouse.add(new WarehouseDTO(warehouse.getId(), warehouse.getName(), warehouse.getAddress(), warehouse.getSize()));
-            }
-            return listWarehouse;
-        }
-
-    public Warehouse converte(WarehouseDTO warehouseDTO) {
-        return null;
     }
 }

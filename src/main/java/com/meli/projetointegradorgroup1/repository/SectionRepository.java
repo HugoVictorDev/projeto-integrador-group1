@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SectionRepository extends JpaRepository<Section,Long> {
 
-    Section findBysectionId(Long sectionID);
+    Section findByCode(Long code);
 }

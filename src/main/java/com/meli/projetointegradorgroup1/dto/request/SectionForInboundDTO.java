@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import lombok.AllArgsConstructor;
@@ -15,15 +16,15 @@ import lombok.NoArgsConstructor;
 @Data
 public class SectionForInboundDTO {
 
-    private Long sectionId;
-    private Long warehouseId;
+    @JsonProperty(value = "sectionCode")
+    private Long code;
+    private Long warehouseCode;
 
-    public Section converte(SectionForInboundDTO dto, SectionServices sectionServices, WarehouseServices warehouseServices){
+    public Section converte(SectionForInboundDTO dto, WarehouseServices warehouseServices){
+        Warehouse warehouse1 = warehouseServices.obterWarhouseByCode(warehouseCode);
         return Section.builder()
-                .id(dto.getSectionId())
-                .warehouse(warehouseServices.obterWarehouse(dto.getWarehouseId()))
+                .code(dto.code)
+                .warehouse(warehouse1)
                 .build();
     }
-
-
 }

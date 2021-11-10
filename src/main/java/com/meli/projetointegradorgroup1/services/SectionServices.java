@@ -5,10 +5,11 @@ import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
+import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,33 +22,32 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
+    @Autowired
+            WarehouseRepository warehouseRepository;
+
 
     SectionForInboundDTO sectionForInboundDTO;
 
 
-    public SectionServices(WarehouseServices warehouseServices, SectionRepository sectionRepository) {
-        this.warehouseServices = warehouseServices;
-        this.sectionRepository = sectionRepository;
-    }
-
     public void validarWarehouse(SectionDTO sectionDTO) {
-        warehouseServices.valida(sectionDTO.getWarehouseID());
+       warehouseServices.warehouseExist(sectionDTO.getWarehouseID());
     }
 
-    //        valida warhouse
+//        valida warhouse
     public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
-        warehouseServices.valida(sectionForInboundDTO.getWarehouseId());
+        warehouseServices.warehouseExist(sectionForInboundDTO.getCode());
 
     }
 
     //    valida section
     public void validSectionExist(SectionForInboundDTO sectionForInboundDTO) {
-        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getSectionId());
+        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getCode());
         if (!section.isPresent()){
             throw new RuntimeException("section não cadastrada");
         }
 
     }
+
 
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
@@ -57,62 +57,37 @@ public class SectionServices {
     }
 
 
-    public Optional<Section> obterSection(Long sectionID) {
-        Optional<Section> section = sectionRepository.findById(sectionID);
-        if (section == null){
-            throw new RuntimeException("Sessão não encontrada");
-        }return section;
+    public Section obterSection(Long id) {
+        Optional<Section> section = sectionRepository.findById(id);
+        if (!section.isPresent()){
+            throw new RuntimeException("Section não encontrada");
+        }
+        return section.get();
     }
 
+    public Section obterSectionByCode(Long code) {
+        Section section = sectionRepository.findByCode(code);
+        if (section != null) {
+           return section;
+        }else throw new EntityNotFoundException("Section não encontrada");
+    }
+
+
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
-        if(sectionFind == null  || sectionFind.equals(Optional.empty())){
-            throw new RuntimeException("Sessão não encontrada");
-        }else{
+        if(sectionFind.isPresent()){
             Section section = sectionFind.get();
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-            section.setStock(sectionDTO.getStock());
+            section.setCapacity(sectionDTO.getCapacity());
             section.setStockType(sectionDTO.getStockType());
             section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
             return section;
+        }else{
+            throw new RuntimeException("Warehouse não encontrada");
         }
-    }
+}
 
-    private Warehouse obterWarehouse(Long warehouseID) {
+    private Warehouse obterWarehouse(long warehouseID) {
         return warehouseServices.obterWarehouse(warehouseID);
     }
 
-    public SectionDTO convertToDto(Section section) {
-        //    return new SectionDTO(section.getMinimumTemperature(), section.getStock(), section.getStockType()
-        //            , Long.toString(section.getWarehouse().warehouseId()));
-        return null;
-    }
-
-    public Iterable<SectionDTO> convertList(List<Section> sections) {
-        List<SectionDTO> listaSection = new ArrayList<>();
-  /*      for (Section section: sections) {
-            listaSection.add(new SectionDTO(section.getId(), section.getMinimumTemperature(), section.getStock(), section.getStockType(),
-                    Long.toString(section.getWarehouse().getWarehouseId())));
-        }*/
-        return listaSection;
-    }
-
-    public Section convert(SectionDTO sectiodto) {
-  /*      return new Section().MinimumTemprature(sectiodto.getMinimumTemperature())
-                .Stock(sectiodto.getStock())
-                .StockType(sectiodto.getStockType())
-                .WarehouseID(Long.parseLong(sectiodto.getWarehouseID()));
-*/ return null;
-    }
-
-    public void deletaSection(Long id) {
-        try{
-            sectionRepository.deleteById(id);
-        } catch (RuntimeException e) {
-            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
-                throw new RuntimeException("Referential integrity constraint violation");
-            }else {
-                throw e;
-            }
-        }
-    }
 }
