@@ -28,7 +28,7 @@ public class SectionController {
     @PostMapping("/create")
     public SectionDTO ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO){
         sectionServices.validarWarehouse(sectionRequestDTO);
-        Section section = sectionServices.converte(sectionRequestDTO, warehouseServices);
+        Section section = sectionServices.convert(sectionRequestDTO, warehouseServices);
         return sectionServices.convertToDto(sectionServices.save(section));
     }
 

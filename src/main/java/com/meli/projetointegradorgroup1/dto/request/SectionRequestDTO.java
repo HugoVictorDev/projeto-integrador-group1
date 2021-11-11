@@ -1,17 +1,13 @@
 package com.meli.projetointegradorgroup1.dto.request;
 
-import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.StockType;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor

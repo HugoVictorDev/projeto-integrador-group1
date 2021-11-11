@@ -23,13 +23,12 @@ public class SectionControllerTest {
     List<Section> listSection = new ArrayList();
     List<SectionDTO> listSectionDTO = new ArrayList();
 
-
     @Test
     public void createSectionOK(){
         sectionServices = Mockito.mock(SectionServices.class);
 
         Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
-        Mockito.when(sectionServices.converte(Mockito.any(), Mockito.any())).thenReturn(section);
+        Mockito.when(sectionServices.convert(Mockito.any(), Mockito.any())).thenReturn(section);
         Mockito.doNothing().when(sectionServices).validarWarehouse(Mockito.any());
 
         SectionController sectionController = new SectionController(sectionServices);

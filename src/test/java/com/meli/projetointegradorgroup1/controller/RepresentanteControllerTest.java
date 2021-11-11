@@ -79,11 +79,12 @@ public class RepresentanteControllerTest {
     }
     @Test
     public void deleteRepresentatneById() {
+
         representanteServices = Mockito.mock(RepresentanteServices.class);
 
-        Mockito.when(representanteServices.converteToDto(Mockito.any())).thenReturn(representanteDTO);
         Mockito.doNothing().when(representanteServices).deletaRepresentante(Mockito.anyLong());
         Mockito.when(representanteServices.obter(Mockito.anyLong())).thenReturn(representante);
+        Mockito.when(representanteServices.converteToDto(Mockito.any())).thenReturn(representanteDTO);
 
 
         RepresentanteController represantanteController = new RepresentanteController(representanteServices);

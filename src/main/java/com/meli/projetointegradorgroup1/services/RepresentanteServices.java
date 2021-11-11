@@ -47,7 +47,7 @@ public class RepresentanteServices {
         }
     }
 
-    public static RepresentanteDTO converteToDto(Representante representante) {
+    public RepresentanteDTO converteToDto(Representante representante) {
         return RepresentanteDTO.builder()
                 .cpf(representante.getCpf())
                 .name(representante.getName())

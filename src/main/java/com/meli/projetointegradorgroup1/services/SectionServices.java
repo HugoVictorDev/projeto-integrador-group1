@@ -31,12 +31,16 @@ public class SectionServices {
 
     SectionForInboundDTO sectionForInboundDTO;
 
+    public SectionServices(SectionRepository sectionRepository, WarehouseServices warehouseServices) {
+        this.sectionRepository = sectionRepository;
+        this.warehouseServices = warehouseServices;
+    }
 
-    public void validarWarehouse(@Valid SectionRequestDTO sectionDTO) {
+    public void validarWarehouse(SectionRequestDTO sectionDTO) {
        warehouseServices.warehouseExist(sectionDTO.getWarehouseID());
     }
 
-//        valida warhouse
+/*        valida warhouse
     public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
         warehouseServices.warehouseExist(sectionForInboundDTO.getCode());
 
@@ -48,9 +52,8 @@ public class SectionServices {
         if (!section.isPresent()){
             throw new RuntimeException("section não cadastrada");
         }
-
     }
-
+*/
 
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
@@ -62,7 +65,7 @@ public class SectionServices {
 
     public Section obterSection(Long id) {
         Optional<Section> section = sectionRepository.findById(id);
-        if (!section.isPresent()){
+        if (section == null || section.equals(Optional.empty())){
             throw new RuntimeException("Section não encontrada");
         }
         return section.get();
@@ -76,7 +79,7 @@ public class SectionServices {
     }
 
 
-    public Section validaUpdate(Optional<Section> sectionFind, @Valid SectionRequestDTO sectionDTO) {
+    public Section validaUpdate(Optional<Section> sectionFind, SectionRequestDTO sectionDTO) {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
@@ -89,11 +92,11 @@ public class SectionServices {
         }
 }
 
-    private Warehouse obterWarehouse(long warehouseID) {
+    public Warehouse obterWarehouse(long warehouseID) {
         return warehouseServices.obterWarehouseById(warehouseID);
     }
 
-    public Section converte(@Valid SectionRequestDTO dto, WarehouseServices warehouseServices) {
+    public Section convert(SectionRequestDTO dto, WarehouseServices warehouseServices) {
         return Section.builder()
                 .code(dto.getCode())
                 .stockType(dto.getStockType())
@@ -101,10 +104,6 @@ public class SectionServices {
                 .capacity(dto.getCapacity())
                 .warehouse(warehouseServices.obterWarehouseById(dto.getWarehouseID()))
                 .build();
-    }
-
-    public Section save(Section section) {
-        return null;
     }
 
     public SectionDTO convertToDto(Section section) {
@@ -132,7 +131,25 @@ public class SectionServices {
         return listaSection;
     }
 
+    public Section save(Section section) {
+        try {
+            sectionRepository.save(section);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Erro na gravação Section:", e );
+        }
+        return section;
+    }
+
     public void deleta(Long id) {
+        try {
+            sectionRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            if (e.getCause().getCause().getMessage().contains("violates foreign key constraint ")) {
+                throw new RuntimeException("violates foreign key constraint");
+            } else {
+                throw e;
+            }
+        }
     }
 
 
