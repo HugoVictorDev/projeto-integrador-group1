@@ -16,12 +16,12 @@ public class ProductResponseDto {
     private String description;
 
     public ProductResponseDto(Product product) {
-        this.productId = product.getProductId();
-        this.productName = product.getProductName();
+        this.productId = product.getId();
+        this.productName = product.getName();
         this.description = product.getDescription();
     }
 
     public static ProductResponseDto convertDto(Product product){
-        return new ProductResponseDto(product.getProductId(), product.getProductName(), product.getDescription());
+        return new ProductResponseDto(product.getId(), product.getName(), product.getDescription());
     }
 }

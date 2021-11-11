@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
@@ -29,9 +29,9 @@ public class ProductController {
 
     @PostMapping("/create")
     @ApiOperation(value = "Cadastrar novo produto")
-    public ResponseEntity<ProductRequestDto> createProductDto(@Valid @RequestBody ProductRequestDto productRequestDto){
-        this.productRepository.save(productRequestDto.convert());
-        return new ResponseEntity<ProductRequestDto>(productRequestDto, HttpStatus.CREATED);
+    public ResponseEntity<ProductRequestDTO> createProductDto(@Valid @RequestBody ProductRequestDTO productRequestDto){
+        this.productRepository.save(productRequestDto.converte(productRequestDto));
+        return new ResponseEntity<ProductRequestDTO>(productRequestDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @ApiOperation(value = "Retornar produto único a partir do id")
     public ProductResponseDto getById(@PathVariable("id") Long id) {
         Optional<Product> productFind = productRepository.findById(id);
@@ -56,7 +56,7 @@ public class ProductController {
 
     @PutMapping("/update/{id}")
     @ApiOperation(value = "Atualizar produto a partir do id")
-    public ProductRequestDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDto productRequestDto){
+    public ProductRequestDTO updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
 
         Optional<Product> productFind = productRepository.findById(id);
         Product newProduct = productService.validaUpdate(productFind, productRequestDto);
