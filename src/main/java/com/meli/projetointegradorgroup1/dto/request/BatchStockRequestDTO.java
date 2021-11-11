@@ -48,7 +48,7 @@ public class BatchStockRequestDTO {
                 .currentQuality(dto.getCurrentQuality())
                 .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
                 .dueDate(dto.getDueDate())
-                .seller(sellerService.obter(dto.getSellerId()))
+                .seller(sellerService.findSellerById(dto.getSellerId()))
                 .build();
         
 

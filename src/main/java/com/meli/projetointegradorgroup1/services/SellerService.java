@@ -33,8 +33,8 @@ public class SellerService {
                 .collect(Collectors.toList());
     }
 
-    public SellerResponseDTO setSeller(Seller seller){
-        return convertEntityToDTO(sellerRepository.save(seller));
+    public Seller setSeller(Seller seller){ // - ok
+        return sellerRepository.save(seller);
     }
 
     public ResponseEntity<HttpStatus> delSeller(Long id){// ok
@@ -47,7 +47,7 @@ public class SellerService {
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller não valido");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -57,18 +57,9 @@ public class SellerService {
             sellerRepository.deleteAll();
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Seller - Erro inesperado");
         }
     }
-
-    public ResponseEntity<HttpStatus> valida(Long sellerId) {
-        Optional<Seller> seller = sellerRepository.findById(sellerId);
-        if (seller == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 
     public SellerResponseDTO convertEntityToDTO(Seller seller){
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
@@ -78,17 +69,12 @@ public class SellerService {
         return sellerResponseDTO;
     }
 
-
-    public SellerResponseDTO validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (sellerFind != null) {
-            Seller _seller = sellerFind;
-            _seller.setName(sellerRequestDTO.getName());
-            _seller.setCpf(sellerRequestDTO.getCpf());
-            _seller.setEmail(sellerRequestDTO.getEmail());
-
-            return this.convertEntityToDTO(_seller);
+    public ResponseEntity<HttpStatus> update(Seller seller, Long id) {
+        if (seller != null) {
+            sellerRepository.setSellerInfoById(seller.getName(), seller.getCpf(), seller.getEmail(), id);
+            return new ResponseEntity<>(HttpStatus.OK);
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller não valido");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -102,8 +88,8 @@ public class SellerService {
     }
 
     public Seller findSellerById(Long id){
-        Optional<Seller> _byId = sellerRepository.findById(id);
+        Seller byId = sellerRepository.findById(id).get();
 
-        return _byId.get();
+        return byId;
     }
 }

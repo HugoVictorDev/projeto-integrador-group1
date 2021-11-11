@@ -50,7 +50,7 @@ class SellerServiceTest {
     @Test
     void setSeller() { // - CADASTRO DE SELLER - OK
 
-        SellerResponseDTO sellerReturn = new SellerResponseDTO();
+        Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
 
@@ -58,20 +58,34 @@ class SellerServiceTest {
         SellerService sellerService = new SellerService(repositoryMock);
 
         sellerReturn = sellerService.setSeller(seller1);
-        Assert.assertEquals(seller1ResponseDTO,sellerReturn);
+        Assert.assertEquals(seller1,sellerReturn);
     }
     @Test
-    void deleteSeller() { // - delete DE SELLER - OK
+    void deleteAllSellers() { // - delete de SELLER - OK
 
         Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
         Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1ResponseDTO);
-        doNothing().when(repositoryMock).deleteById(Mockito.any());
+        Mockito.when(repositoryMock.setSellerInfoById(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong())).thenReturn(1);
         SellerService sellerService = new SellerService(repositoryMock);
 
         ResponseEntity<HttpStatus> deleteReturn = sellerService.delSeller(sellerId);
+        Assert.assertTrue(deleteReturn.getStatusCodeValue() == 200 );
+    }
+    @Test
+    void deleteSeller() { // - delete de SELLER - OK
+
+        Seller sellerReturn = new Seller();
+        List<Seller> sellerArrayList = new ArrayList();
+        sellerArrayList.add(seller1);
+        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1ResponseDTO);
+        doNothing().when(repositoryMock).deleteAll();
+        SellerService sellerService = new SellerService(repositoryMock);
+
+        ResponseEntity<HttpStatus> deleteReturn = sellerService.delAllSellers();
         Assert.assertTrue(deleteReturn.getStatusCodeValue() == 200 );
     }
     @Test
@@ -82,8 +96,14 @@ class SellerServiceTest {
         doNothing().when(repositoryMock).deleteById(Mockito.any());
         SellerService sellerService = new SellerService(repositoryMock);
 
-        ResponseEntity<HttpStatus> deleteReturn = sellerService.delSeller(sellerIdNok);
-        Assert.assertTrue(deleteReturn.getStatusCodeValue() == 500 );
+
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
+            sellerService.delSeller(sellerIdNok); });
+
+        String message = "404 NOT_FOUND";
+        assert (message.contains(exception.getMessage()));
+
 
     }
     @Test
@@ -104,64 +124,6 @@ class SellerServiceTest {
 
         Assert.assertEquals(4, listaResult.size());
     }
-
-    @Test
-    void valida() { // - VALIDA SE O SELLER EXISTE - ok
-        List<Seller> sellerArrayList = new ArrayList();
-
-        sellerArrayList.add(seller1);
-        sellerArrayList.add(seller2);
-        sellerArrayList.add(seller3);
-        sellerArrayList.add(seller4);
-
-
-        Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
-
-        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
-
-
-
-        SellerService sellerService = new SellerService(repositoryMock);
-        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerId);
-
-        //sellerReturn = sellerService.valida(sellerIdNok);
-        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
-
-
-
-
-    }
-
-    @Test
-    void notValida() { // - TESTE DE NAO OK
-
-        List<Seller> sellerArrayList = new ArrayList();
-
-        sellerArrayList.add(seller1);
-
-
-
-        Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
-
-        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(null);
-
-
-
-        SellerService sellerService = new SellerService(repositoryMock);
-        ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
-
-
-        RuntimeException exception = Assertions.assertThrows(ResponseStatusException.class, ()->{ sellerService.valida(sellerIdNok);});
-        HttpStatus message = HttpStatus.NOT_FOUND;
-
-
-
-        //sellerReturn = sellerService.valida(sellerIdNok);
-        //Assert.assertTrue(sellerReturn.getStatusCodeValue() == 404 );
-        assert (exception.getMessage().contains(message.toString()));
-
-    }
-
     @Test
     void convertEntityToDTO(){
         SellerService sellerService = new SellerService(repositoryMock);
@@ -179,14 +141,17 @@ class SellerServiceTest {
     }
 
     @Test
-    void validaUpdate() {
+    void update() { // - CADASTRO DE SELLER - OK
 
-        //Optional<Seller> sellerFind,
-        // SellerRequestDTO sellerRequestDTO
+        Seller sellerReturn = new Seller();
+        List<Seller> sellerArrayList = new ArrayList();
+        sellerArrayList.add(seller1);
+
+        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         SellerService sellerService = new SellerService(repositoryMock);
-        SellerResponseDTO sellerResponseDTO = sellerService.validaUpdate(seller1, seller1RequestDTO); //validaUpdate(java.util.Optional.ofNullable(seller1), sellerRequestDTOSeller1);
-        Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
 
+        ResponseEntity<HttpStatus> Return = sellerService.update(seller1,1L);
 
+        Assert.assertTrue(Return.getStatusCodeValue() == 200 );
     }
 }

@@ -2,9 +2,9 @@ package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.response.RepresentanteDTO;
 
-import com.meli.projetointegradorgroup1.entity.Representative;
-import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
-import com.meli.projetointegradorgroup1.services.RepresentativeServices;
+import com.meli.projetointegradorgroup1.entity.Representante;
+import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
+import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class RepresentativeController {
 
     @Autowired
-    RepresentativeServices RepresentativeServices;
+    RepresentanteServices RepresentativeServices;
 
 
 

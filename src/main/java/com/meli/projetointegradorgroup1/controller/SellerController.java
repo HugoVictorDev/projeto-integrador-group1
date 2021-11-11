@@ -16,55 +16,49 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping("/seller")
+@RequestMapping(value = "/seller")
 public class SellerController {
-
-    @Autowired
-    SellerRepository sellerRepository;
 
     @Autowired
     SellerService sellerService;
 
     public SellerController(SellerRepository sellerRepository, SellerService sellerService) {
         this.sellerService = sellerService;
-        this.sellerRepository = sellerRepository;
     }
 
 
     //Cadastrar vendedor - ok
     @PostMapping("/create")
-    public SellerResponseDTO createSeller(@Valid @RequestBody Seller seller){
+    public Seller createSeller(@RequestBody Seller seller){
 
-        SellerResponseDTO sellerResponseDTO = sellerService.setSeller(seller);
-
-        return sellerResponseDTO;
+        return sellerService.setSeller(seller);
     }
 
 
     //Consultar lista de  vende
     // dores
     @GetMapping("/list") // - ok
-    List<SellerResponseDTO> getSellerList() {
+    public List<SellerResponseDTO> getSellerList() {
 
         return sellerService.getSellers();
     }
 
     //busca vendedor pelo id
-    @GetMapping("{id}") // - ok
-    public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        return sellerService.convertEntityToDTO(sellerRepository.getById(id));
+    @GetMapping("/find/{id}") // - ok
+    public Seller getSellerById(@PathVariable("id") Long id) {
+        return sellerService.findSellerById(id);
 
     }
 
-    // atualizando vendedor pelo ID
-    //@PutMapping("/update/{id}")
-    //public ResponseEntity<HttpStatus> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
+    // atualizando vendedor pelo ID -  ok
+    @PutMapping("/update/{id}")
+    public ResponseEntity<HttpStatus> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody Seller seller) {
 
-        //Optional<Seller> sellerFind = sellerRepository.findById(id);
-        //Seller _seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
-        //return sellerService.convertEntityToDTORequest(sellerRepository.save(_seller));
-
-//    }
+        if(sellerService.findSellerById(id) != null) {
+            return sellerService.update(seller, id);
+        }
+        throw new RuntimeException("Representante não encontrado");
+    }
 
     //delete todos vendedores - ok
     @DeleteMapping("/deleteall")
@@ -79,6 +73,7 @@ public class SellerController {
         //// delete
         return sellerService.delSeller((id));
     }
+
 
 
 }

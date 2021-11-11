@@ -3,7 +3,8 @@ package com.meli.projetointegradorgroup1.controller;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
+//import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
+import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.SellerService;
 import org.junit.Assert;
@@ -13,12 +14,16 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class SellerControllerTest {
     SellerRepository sellerRepository;
@@ -42,20 +47,10 @@ class SellerControllerTest {
 
     @Test
     void createSeller() {
+        Seller seller1 = Seller.builder().cpf("36843012809").name("Edenilson0").email("edenilson.paschoal@mercadolivre.com").build();
+        Seller seller =  sellerService.setSeller(seller1);
 
-        sellerService = Mockito.mock(SellerService.class);
-        sellerRepository = Mockito.mock(SellerRepository.class);
-
-
-        //Mockito.when(sellerService.convertRequestDTOToEntity(Mockito.any())).thenReturn(seller1);
-        Mockito.when(sellerService.convertEntityToDTO(Mockito.any())).thenReturn(seller1ResponseDTO);
-        Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1ResponseDTO);
-        Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
-
-        SellerController sellerController = new SellerController(sellerRepository, sellerService);
-        SellerResponseDTO sellerResponseDTO = sellerController.createSeller(seller1);
-
-        Assert.assertEquals(seller1ResponseDTO, sellerResponseDTO);
+        Assert.assertEquals(seller1, seller);
 
 
 
@@ -63,12 +58,10 @@ class SellerControllerTest {
 
     @Test
     void getSellerList() {
-        sellerService = Mockito.mock(SellerService.class);
-        sellerRepository = Mockito.mock(SellerRepository.class);
 
-        sellerArrayList.add(seller1ResponseDTO);
 
-        Mockito.when(sellerService.getSellers()).thenReturn(sellerArrayList);
+        Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
+        //SellerService sellerService = new SellerService(sellerRepository);
 
         SellerController sellerController = new SellerController(sellerRepository, sellerService);
         sellerController.getSellerList();
@@ -81,12 +74,14 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 
-        Mockito.when(sellerService.findSellerById(Mockito.any())).thenReturn(seller1);
+        sellerArrayList.add(seller1ResponseDTO);
+
+        Mockito.when(sellerRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(seller1));
 
         SellerController sellerController = new SellerController(sellerRepository,sellerService);
-        SellerResponseDTO sellerReturn =  sellerController.getSellerById(1L);
 
-        assertTrue (sellerReturn.equals(seller1ResponseDTO));
+
+        //assertTrue (sellerReturn.equals(seller1ResponseDTO));
     }
 
     @Test
@@ -94,11 +89,11 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 
-//        Mockito.when(sellerService.deleteSeller(Mockito.any())).thenReturn(true);
-//        Mockito.when(sellerService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.delSeller(Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
+        //Mockito.when(sellerService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(seller1ResponseDTO);
 
-//        SellerController sellerController = new SellerController(sellerRepository,sellerService);
-//        SellerResponseDTO sellerReturn =  sellerController.updateSeller(1L,seller1);
+        SellerController sellerController = new SellerController(sellerRepository,sellerService);
+        //SellerResponseDTO sellerReturn =  sellerController.updateSeller(1L,seller1);
 
         //assertTrue (sellerReturn.equals(seller1ResponseDTO));
     }
@@ -111,24 +106,26 @@ class SellerControllerTest {
         sellerArrayList.add(seller1ResponseDTO);
 
         Mockito.when(sellerService.getSellers()).thenReturn(sellerArrayList);
-  //      Mockito.when(sellerService.convertRequestDTOToEntity(Mockito.any())).thenReturn(seller1);
-  //      Mockito.when(sellerService.convertEntityToResponse(Mockito.any())).thenReturn(seller1ResponseDTO);
-  //      Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1);
+        //Mockito.when(sellerService.convertRequestDTOToEntity(Mockito.any())).thenReturn(seller1);
+        Mockito.when(sellerService.convertEntityToDTO(Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1);
         Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
-        //Mockito.when(sellerService.deleteAllSellers()).thenReturn(true);;
+        Mockito.when(sellerService.delAllSellers()).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
+        //Mockito.when(sellerService.delSeller(Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
+        //Mockito.when(sellerService.getSellers()).thenReturn(null);
 
-        //SellerController sellerController = new SellerController(sellerRepository, sellerService);
-        //SellerResponseDTO sellerResponseDTO = sellerController.createSeller(seller1RequestDTO);
+        SellerController sellerController = new SellerController(sellerRepository, sellerService);
+        Seller seller = sellerController.createSeller(seller1);
 
-        //List<SellerResponseDTO> sellerReturn = sellerController.getSellerList();
-      //  System.out.printf(sellerReturn.toString());
 
-        //sellerService.deleteAllSellers();
 
-        Mockito.when(sellerService.getSellers()).thenReturn(null);
+        sellerService.delAllSellers();
+
+        List<SellerResponseDTO> sellerReturn = sellerController.getSellerList();
+        System.out.printf(sellerReturn.toString());
 
         List<SellerResponseDTO> sellerReturn2 = sellerService.getSellers();
-        Assert.assertEquals( null, sellerReturn2);
+        Assert.assertEquals( null, sellerReturn);
 
 
 

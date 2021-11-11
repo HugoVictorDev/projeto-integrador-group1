@@ -76,7 +76,7 @@ public class InBoundOrderRequestDTO {
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.obter(this.sellerId))
+                    .seller(sellerService.findSellerById(this.sellerId))
                     .batchStockItem(
                             BatchStockItem.builder()
                                     .quantity(dto.getQuantity())
