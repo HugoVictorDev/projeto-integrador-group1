@@ -5,6 +5,8 @@ import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +18,12 @@ public class RepresentanteServices {
 
     @Autowired
     WarehouseServices warehouseServices;
+
     public void valida(RepresentanteDTO representativedto)  {
-        validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
         validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
     }
 
-    private void validarWarehouse(Long warehouseID){
-        warehouseServices.valida(warehouseID);
-    }
+
 
     private Warehouse obterWarehouse(Long warehouseID){
         return warehouseServices.obterWarehouse(warehouseID);
@@ -70,5 +70,13 @@ public class RepresentanteServices {
     public Representante obter(Long id){
         Optional<Representante> rep = this.representanteRepository.findById(id);
         return rep.get();
+    }
+
+    public Representante obterRepresentanteById(Long id) {
+        Optional<Representante> representante = representanteRepository.findById(id);
+
+        if (representante.isPresent()){
+            return representante.get();
+        }else throw new EntityNotFoundException("representante não encontrada");
     }
 }

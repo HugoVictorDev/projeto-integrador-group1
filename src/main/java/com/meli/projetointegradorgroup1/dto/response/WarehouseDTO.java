@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class WarehouseDTO {
 
-    private Long warehouseId;
+    private Long code;
 
     @NotBlank(message = "Campo é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
@@ -32,6 +32,7 @@ public class WarehouseDTO {
 
     public static Warehouse converte(WarehouseDTO dto) {
         return Warehouse.builder()
+                .code(dto.code)
                 .name(dto.getName())
                 .address(dto.getAddress())
                 .size(dto.getSize())
@@ -43,7 +44,7 @@ public class WarehouseDTO {
                 .name(wareHouse.getName())
                 .address(wareHouse.getAddress())
                 .size(wareHouse.getSize())
-                .warehouseId(wareHouse.getId())
+                .code(wareHouse.getCode())
                 .build();
     }
 
@@ -54,7 +55,7 @@ public class WarehouseDTO {
                     WarehouseDTO.builder()
                             .name(w.getName())
                             .address(w.getAddress())
-                            .warehouseId(w.getId())
+                            .code(w.getCode())
                             .build()
 
             );

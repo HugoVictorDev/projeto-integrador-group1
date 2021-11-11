@@ -5,9 +5,11 @@ import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
+import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,23 +22,26 @@ public class SectionServices {
     @Autowired
     SectionRepository sectionRepository;
 
+    @Autowired
+            WarehouseRepository warehouseRepository;
+
 
     SectionForInboundDTO sectionForInboundDTO;
 
 
     public void validarWarehouse(SectionDTO sectionDTO) {
-       warehouseServices.valida(sectionDTO.getWarehouseID());
+       warehouseServices.warehouseExist(sectionDTO.getWarehouseID());
     }
 
 //        valida warhouse
     public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
-        warehouseServices.valida(sectionForInboundDTO.getWarehouseId());
+        warehouseServices.warehouseExist(sectionForInboundDTO.getCode());
 
     }
 
     //    valida section
     public void validSectionExist(SectionForInboundDTO sectionForInboundDTO) {
-        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getSectionId());
+        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getCode());
         if (!section.isPresent()){
             throw new RuntimeException("section não cadastrada");
         }
@@ -52,19 +57,27 @@ public class SectionServices {
     }
 
 
-    public Section obterSection(Long sectionID) {
-        Optional<Section> section = sectionRepository.findById(sectionID);
+    public Section obterSection(Long id) {
+        Optional<Section> section = sectionRepository.findById(id);
         if (!section.isPresent()){
-            throw new RuntimeException("Sessão não encontrada");
+            throw new RuntimeException("Section não encontrada");
         }
         return section.get();
     }
+
+    public Section obterSectionByCode(Long code) {
+        Section section = sectionRepository.findByCode(code);
+        if (section != null) {
+           return section;
+        }else throw new EntityNotFoundException("Section não encontrada");
+    }
+
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
             section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-            section.setStock(sectionDTO.getStock());
+            section.setCapacity(sectionDTO.getCapacity());
             section.setStockType(sectionDTO.getStockType());
             section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
             return section;

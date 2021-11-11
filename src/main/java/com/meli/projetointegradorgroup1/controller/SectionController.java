@@ -34,20 +34,23 @@ public class SectionController {
     //listar todas as sessões
     @GetMapping("/list")
     public Iterable<SectionDTO> list(SectionDTO sectionDTO){
-           return sectionDTO.converte(sectionServices.listaSection());
+//           return sectionDTO.converte(sectionServices.listaSection()); TODO REVISAR
+        return null;
     }
 
     //busca sessões por id
     @GetMapping("/list/{id}")
     public SectionDTO getSectionByID(@PathVariable ("id") Long id){
-           return SectionDTO.converte(sectionServices.obterSection(id));
+//           return SectionDTO.converte(sectionServices.obterSection(id)); REVISAR TODO
+        return null;
     }
 
     @PutMapping("/update/{id}")
     public SectionDTO updateWarehouse(@PathVariable("id") Long id,@Valid @RequestBody SectionDTO sectionDTO){
         Optional<Section> sectionFind = sectionRepository.findById(id);
         Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
-        return SectionDTO.converte(sectionRepository.save(section));
+//        return SectionDTO.converte(sectionRepository.save(section)); TODO REVISAR
+        return null;
     }
 
     //deletar por id
@@ -55,6 +58,7 @@ public class SectionController {
     public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
            Section section = sectionServices.obterSection(id);
            sectionRepository.deleteById(id);
-           return SectionDTO.converte(section);
+//           return SectionDTO.converte(section); TODO REVISAR
+        return null;
     }
 }
