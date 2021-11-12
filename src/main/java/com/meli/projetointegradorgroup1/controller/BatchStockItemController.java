@@ -1,15 +1,26 @@
 package com.meli.projetointegradorgroup1.controller;
+
+
+
+import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
+
+import com.meli.projetointegradorgroup1.services.BatchStockItemService;
+import com.meli.projetointegradorgroup1.services.ProductService;
+import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,75 +29,50 @@ public class BatchStockItemController {
 
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
-
     @Autowired
-    SellerRepository sellerRepository;
+    BatchStockItemService batchStockItemService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    SellerService sellerService;
 
-    //Cadastrar vendedor
+    //Cadastrar BatchStockItem
+
     @PostMapping("/create")
-    public ResponseEntity<BatchStockItem> createBatchStockItem (@RequestBody BatchStockItem batchStockItem){
-//        List<Seller> seller = sellerRepository.findAll();
-
-        try {
-            BatchStockItem _BatchStockItem = batchStockItemRepository.save(new BatchStockItem(batchStockItem.getQuantity(),
-                    batchStockItem.getProductlist(), batchStockItem.getBatchstock()));
-            return new ResponseEntity<>(_BatchStockItem, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
+        batchStockItemService.validProductExist(batchStockItemRequestDTO);
+        this.batchStockItemRepository.save(batchStockItemRequestDTO.converte(batchStockItemRequestDTO, productService, sellerService));
+        return batchStockItemRequestDTO;
     }
+
 
     //Consultar lista de  vendedores
     @GetMapping("/list")
-    public ResponseEntity<List<BatchStockItem>> getBatchStockItemList() {
-        try {
-            List<BatchStockItem> batchStockItem = new ArrayList<BatchStockItem>();
-
-            batchStockItemRepository.findAll().forEach(batchStockItem::add);
-
-            return new ResponseEntity<>(batchStockItem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    List<BatchStockItemResponseDTO> getList() {
+        return batchStockItemService.getBatchStockItemsList();
     }
 
     //busca vendedor pelo id
     @GetMapping("{id}")
-    public ResponseEntity<BatchStockItem> getBatchStockItemById(@PathVariable("id") Long id) {
-        Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
-
-        if (batchStockItemFind.isPresent()) {
-            return new ResponseEntity<>(batchStockItemFind.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
+        return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
+//
     }
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<BatchStockItem> updateBatchStockItem(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
+    public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
         Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
+        BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
+        return batchStockItemRepository.save(_bat);
 
-        if (batchStockItemFind.isPresent()) {
-            BatchStockItem _batchStockItemFind = batchStockItemFind.get();
-            _batchStockItemFind.setQuantity(batchStockItem.getQuantity());
-            _batchStockItemFind.setProductlist(batchStockItem.getProductlist());
-            _batchStockItemFind.setBatchstock(batchStockItem.getBatchstock()); // tem que ver como fazer a tratativa de edicao da lista.
-            return new ResponseEntity<>(batchStockItemRepository.save(_batchStockItemFind), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
     //delete todos vendedores
     @DeleteMapping("/deleteall")
-    public ResponseEntity<HttpStatus> deleteAllBatchStockItem() {
-        try {
-            batchStockItemRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public BatchStockItem deleteAllBatchStockItems() {
+        batchStockItemRepository.deleteAll();
+        return null;
 
     }
 
@@ -101,6 +87,4 @@ public class BatchStockItemController {
         }
     }
 
-
 }
-

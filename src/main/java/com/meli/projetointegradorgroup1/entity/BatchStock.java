@@ -1,36 +1,49 @@
 package com.meli.projetointegradorgroup1.entity;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+
+@Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
-@Table(name = "batchstock")
 //conjunto de lote
 public class BatchStock {
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //numero do lote
-    private String batchNumber;
-    // temperatura atual
-    private String currentTemprature;
-    //temperatura minima
-    private String minimumTemprature;
-    //estado inicial da qualidade do produto
+    @Column(name =  "batch_number", nullable = false)
+    private Long batchStockNumber;
+    private Double currentTemperature;
+    private Double minimumTemperature;
+    private Double maximumTemperature;
     private String initialQuality;
-    // estado atual da qualidade do produto
     private String currentQuality;
+    private LocalDateTime manufacturingTime;
+    private LocalDate dueDate;
+    private int quantity;
+    private double volume;
+    private Long productID;
 
-//    @Column(name = "batchStockItems")
-    @OneToMany(mappedBy = "batchstock", cascade = CascadeType.ALL)
-    private List<BatchStockItem> batchStockItems;
+    @OneToOne(mappedBy =  "batchStock", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private BatchStockItem batchStockItem;
 
+    @OneToOne
+    private Seller seller;
+
+    @ManyToOne
+    private InBoundOrder inboundOrder;
 
 
 }

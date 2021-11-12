@@ -1,29 +1,30 @@
 package com.meli.projetointegradorgroup1.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.List;
 
-
-@Table
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
 @Entity
+@Data
+@Builder
 public class Product {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String productName;
+    private String name;
+    private String description;
 
-
-    @ManyToOne
-    private Seller seller;
-
-    @ManyToOne
-    private BatchStockItem batchstockitem;
+    @Enumerated(value = EnumType.STRING)
+    private StockType stockType;
 
 
 }
