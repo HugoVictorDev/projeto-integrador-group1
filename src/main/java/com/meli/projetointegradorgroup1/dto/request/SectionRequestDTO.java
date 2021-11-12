@@ -1,6 +1,8 @@
 package com.meli.projetointegradorgroup1.dto.request;
 
 import com.meli.projetointegradorgroup1.entity.StockType;
+import com.meli.projetointegradorgroup1.services.EnumNamePattern;
+import com.meli.projetointegradorgroup1.services.ValueOfEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +26,8 @@ public class SectionRequestDTO {
     @Pattern(regexp="^[-+]?([0-9][0-9]?|100)$",message = "tempereratura minima inválida")
     private String minimumTemperature;
 
+    //@EnumNamePattern(regexp = "FRESH|FROZEN|NATURAL")
+    //@ValueOfEnum(enumClass = StockType.class)
     @NotNull(message = "Campo StockType é obrigatorio")
     private StockType stockType;
 

@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
 import com.meli.projetointegradorgroup1.entity.StockType;
+import com.meli.projetointegradorgroup1.services.EnumNamePattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
