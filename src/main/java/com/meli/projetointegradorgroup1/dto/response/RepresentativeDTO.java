@@ -1,7 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 
-import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.services.RepresentanteServices;
+import com.meli.projetointegradorgroup1.entity.Representative;
+import com.meli.projetointegradorgroup1.services.RepresentativeServices;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RepresentanteDTO {
+public class RepresentativeDTO {
 
     private Long representative_Id;
 
@@ -32,32 +32,32 @@ public class RepresentanteDTO {
     private String warehouseID;
 
 
-    public static Representante converte(RepresentanteDTO dto){
-        return Representante.builder()
+    public static Representative converte(RepresentativeDTO dto){
+        return Representative.builder()
                 .name(dto.getName())
-                .cpf(RepresentanteServices.maskCpf(dto.getCpf())).build();
+                .cpf(RepresentativeServices.maskCpf(dto.getCpf())).build();
 
     }
 
-    public static RepresentanteDTO converte(Representante representante) {
-        return RepresentanteDTO.builder()
-                .cpf(representante.getCpf())
-                .name(representante.getName())
-                .representative_Id(representante.getId())
+    public static RepresentativeDTO converte(Representative Representative) {
+        return RepresentativeDTO.builder()
+                .cpf(Representative.getCpf())
+                .name(Representative.getName())
+                .representative_Id(Representative.getId())
                 .build();
     }
 
-    public static List<RepresentanteDTO>converte(List<Representante> representatives){
-        List<RepresentanteDTO> listRepresentant = new ArrayList<>();
-        for (Representante representative: representatives) {
-            listRepresentant.add(
-                    RepresentanteDTO.builder()
+    public static List<RepresentativeDTO>converte(List<Representative> representatives){
+        List<RepresentativeDTO> listRepresentative = new ArrayList<>();
+        for (Representative representative: representatives) {
+            listRepresentative.add(
+                    RepresentativeDTO.builder()
                             .representative_Id(representative.getId())
                             .name(representative.getName())
                             .cpf(representative.getCpf())
                             .build()
             );
         }
-        return listRepresentant;
+        return listRepresentative;
     }
 }

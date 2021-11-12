@@ -130,3 +130,15 @@ alter table warehouse
     add constraint FKiabr4g8lokk0f3x2f6sck68rx
         foreign key (representante_id)
             references Representative;
+
+--- Insert de tabelas (nao retirar da sequencia)
+
+INSERT INTO representative (cpf, "name") VALUES('36843012809', 'Edenilson');
+
+INSERT INTO in_bound_order (order_number, order_date, representative_id, section_id) VALUES(0, now(), 1, 1);
+
+INSERT INTO in_bound_order
+(order_number, order_date, representative_id, section_id)
+VALUES(0, now(),1, 1);
+
+INSERT INTO batch_stock (batch_number, current_quality, current_temperature, due_date, initial_quality, manufacturing_time, minimum_temperature, inbound_order_id, seller_id, volume, maximum_temperature, quantity) VALUES(0, '', 0, now(), '', now(), 1, 1, 1, 0, 0, 0);

@@ -22,9 +22,11 @@ public class SellerController {
     @Autowired
     SellerService sellerService;
 
-    public SellerController(SellerRepository sellerRepository, SellerService sellerService) {
+    public SellerController(SellerService sellerService) {
         this.sellerService = sellerService;
     }
+
+
 
 
     //Cadastrar vendedor - ok
@@ -35,8 +37,7 @@ public class SellerController {
     }
 
 
-    //Consultar lista de  vende
-    // dores
+    //Consultar lista de  vendedores
     @GetMapping("/list") // - ok
     public List<SellerResponseDTO> getSellerList() {
 
@@ -57,7 +58,7 @@ public class SellerController {
         if(sellerService.findSellerById(id) != null) {
             return sellerService.update(seller, id);
         }
-        throw new RuntimeException("Representante não encontrado");
+        throw new RuntimeException("Representative não encontrado");
     }
 
     //delete todos vendedores - ok

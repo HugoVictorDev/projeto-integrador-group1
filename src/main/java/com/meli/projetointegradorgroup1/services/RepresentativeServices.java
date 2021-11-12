@@ -1,22 +1,22 @@
 package com.meli.projetointegradorgroup1.services;
-import com.meli.projetointegradorgroup1.dto.response.RepresentanteDTO;
-import com.meli.projetointegradorgroup1.entity.Representante;
+import com.meli.projetointegradorgroup1.dto.response.RepresentativeDTO;
+import com.meli.projetointegradorgroup1.entity.Representative;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
-import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
+import com.meli.projetointegradorgroup1.repository.RepresentativeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RepresentanteServices {
+public class RepresentativeServices {
 
     @Autowired
-    private RepresentanteRepository representanteRepository;
+    private RepresentativeRepository representativeRepository;
 
     @Autowired
     WarehouseServices warehouseServices;
-    public void valida(RepresentanteDTO representativedto)  {
+    public void valida(RepresentativeDTO representativedto)  {
         validarWarehouse(Long.parseLong(representativedto.getWarehouseID()));
         validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
     }
@@ -31,44 +31,44 @@ public class RepresentanteServices {
 
     private void validarCpf(String cpf, Long warehouseID)  {
         Warehouse warehouse = warehouseServices.obterWarehouse(warehouseID);
-        if(warehouse.getRepresentante().getCpf().equals(cpf)){
-            throw new RuntimeException("CPF já cadstrado para essa Warehouse");
-        }
+        //if(warehouse.getRepresentante().getCpf().equals(cpf)){
+        //    throw new RuntimeException("CPF já cadstrado para essa Warehouse");
+        //} TODO
     }
 
     public static String maskCpf(String cpf) {
        return (cpf.substring(0, 3) + "." +cpf.substring(3, 6) + "." +cpf.substring(6, 9) + "-" +cpf.substring(9, 11));
     }
 
-    public Representante validaUpdate(Optional<Representante> representativeFind, RepresentanteDTO representativedto) {
+    public Representative validaUpdate(Optional<Representative> representativeFind, RepresentativeDTO representativedto) {
         if (representativeFind.isPresent()) {
-            Representante representative = representativeFind.get();
+            Representative representative = representativeFind.get();
             representative.setName(representativedto.getName());
             representative.setCpf(maskCpf(representativedto.getCpf()));
             return representative;
         }else{
-            throw new RuntimeException("Representante não encontrado");
+            throw new RuntimeException("Representative não encontrado");
         }
     }
 
-    public Representante findRepresentative(Optional<Representante> representativeFind) {
+    public Representative findRepresentative(Optional<Representative> representativeFind) {
         if (representativeFind.isPresent()) {
-            Representante representative = representativeFind.get();
+            Representative representative = representativeFind.get();
             return representative;
     }else{
-        throw new RuntimeException("Representante não encontrado");
+        throw new RuntimeException("Representative não encontrado");
         }
     }
 
-    public List<Representante> listaRepresentative() {
-        List<Representante> representativeList = representanteRepository.findAll();
+    public List<Representative> listaRepresentative() {
+        List<Representative> representativeList = representativeRepository.findAll();
         if(representativeList.size() == 0){
             throw new RuntimeException("Não existem Representantes cadastradas");
         }return representativeList;
     }
 
-    public Representante obter(Long id){
-        Optional<Representante> rep = this.representanteRepository.findById(id);
+    public Representative obter(Long id){
+        Optional<Representative> rep = this.representativeRepository.findById(id);
         return rep.get();
     }
 }

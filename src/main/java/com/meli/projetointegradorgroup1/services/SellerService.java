@@ -88,8 +88,6 @@ public class SellerService {
     }
 
     public Seller findSellerById(Long id){
-        Seller byId = sellerRepository.findById(id).get();
-
-        return byId;
+        return sellerRepository.findById(id).get();
     }
 }
