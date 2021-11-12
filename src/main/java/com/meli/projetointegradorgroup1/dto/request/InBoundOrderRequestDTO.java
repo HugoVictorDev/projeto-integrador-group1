@@ -2,13 +2,8 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.services.ProductService;
-import com.meli.projetointegradorgroup1.services.RepresentativeServices;
-import com.meli.projetointegradorgroup1.services.SectionServices;
-import com.meli.projetointegradorgroup1.services.SellerService;
+import com.meli.projetointegradorgroup1.entity.*;
+import com.meli.projetointegradorgroup1.services.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,14 +37,16 @@ public class InBoundOrderRequestDTO {
 
 
 
-        public InBoundOrder convertedto(RepresentativeServices representativeServices, SectionServices sectionServices, ProductService productService, SellerService sellerService){
+        public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
+                                        ProductService productService, SellerService sellerService){
+            Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
             try{
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
-                        .representative(representativeServices.obter(this.representanteId))
+                        .representante(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
-                        .section(sectionServices.obterSection(this.sectionForInboundDTO.getSectionId()))
+                        .section(section)
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
 
 
@@ -76,7 +73,7 @@ public class InBoundOrderRequestDTO {
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.findSellerById(this.sellerId))
+                    .seller(sellerService.obter(this.sellerId))
                     .batchStockItem(
                             BatchStockItem.builder()
                                     .quantity(dto.getQuantity())

@@ -1,8 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
-
 import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
-import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,49 +12,47 @@ import java.util.Optional;
 @RequestMapping(path = "/warehouse")
 public class WarehouseController {
 
-    @Autowired
-    private WarehouseRepository warehouseRepository;
 
     @Autowired
     private WarehouseServices warehouseServices;
 
+    public WarehouseController(WarehouseServices warehouseServices) {
+        this.warehouseServices = warehouseServices;
+    }
+
     //criar warehouse
     @PostMapping("/create")
     public WarehouseDTO createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
-           Warehouse warehouse = WarehouseDTO.converte(warehouseDTO);
-           return warehouseDTO.converte(warehouseRepository.save(warehouse));
+       Warehouse warehouse = warehouseServices.converte(warehouseDTO);
+       return warehouseServices.converteToDto(warehouseServices.save(warehouse));
         }
 
     //listar warehouses
     @GetMapping("/list")
-    public Iterable<WarehouseDTO> list(WarehouseDTO warehouseDTO){
-           return warehouseDTO.converte(warehouseServices.listaWarehouse());
+    public Iterable<WarehouseDTO> list(){
+       return warehouseServices.converteList(warehouseServices.listaWarehouse());
     }
 
     //buscar warehouse por id
     @GetMapping("/list/{id}")
     public WarehouseDTO getWarehouseById(@PathVariable("id") Long id){
-           return WarehouseDTO.converte(warehouseServices.obterWarehouse(id));
+       return warehouseServices.converteToDto(warehouseServices.obterWarhouseByCode(id));
     }
 
     //atualizar por id
     @PutMapping("/update/{id}")
-    public WarehouseDTO updateWarehouse(@PathVariable("id") Long id,@Valid @RequestBody WarehouseDTO warehouseDTO){
-           Optional<Warehouse> warehouseFind = warehouseRepository.findById(id);
-           Warehouse warehouse = warehouseServices.validaUpdate(warehouseFind, warehouseDTO);
-           return WarehouseDTO.converte(warehouseRepository.save(warehouse));
+    public WarehouseDTO updateWarehouse(@PathVariable("id") Long id, @Valid @RequestBody WarehouseDTO warehouseDTO){
+           Warehouse warehouseFind = warehouseServices.obterWarehouseById(id);
+           Warehouse warehouse = warehouseServices.validaUpdate(Optional.ofNullable(warehouseFind), warehouseDTO);
+           return warehouseServices.converteToDto(warehouseServices.save(warehouse));
     }
 
     //deletar por id
     @DeleteMapping("/delete/{id}")
     public WarehouseDTO  deleteWarehouseById(@PathVariable("id") Long id){
-           Warehouse warehouse = warehouseServices.obterWarehouse(id);
+           Warehouse warehouse = warehouseServices.obterWarehouseById(id);
            warehouseServices.deleta(id);
-       //    warehouseRepository.deleteById(id);
-           return WarehouseDTO.converte(warehouse);
+           return warehouseServices.converteToDto(warehouse);
     }
-      @GetMapping(value="/handler")
-       public void handler() {
-           throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
-       }
+
 }

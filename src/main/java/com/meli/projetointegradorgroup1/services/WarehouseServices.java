@@ -1,14 +1,13 @@
 package com.meli.projetointegradorgroup1.services;
-
 import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
+import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
-import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +15,25 @@ import java.util.Optional;
 public class WarehouseServices {
 
     @Autowired
-    WarehouseRepository warehouseRepository;
+    private WarehouseRepository warehouseRepository;
 
     @Autowired
-    SectionRepository sectionRepository;
+    private SectionServices sectionServices;
+
+    public WarehouseServices(WarehouseRepository warehouseRepository){
+        this.warehouseRepository = warehouseRepository;
+
+    }
 
 
-    public void valida(Long warehouseID) {
-        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
-        if (!warehouse.isPresent()){
-            throw new RuntimeException("Warehouse não cadastrada");
+    public boolean warehouseExist(Long warehouseCode) {
+        for (Section section : sectionServices.listaSection()) {
+            if (section.getWarehouse().getCode().equals(warehouseCode)){
+                Warehouse warehouse = section.getWarehouse();
+                return warehouse != null;
+            }
         }
+        return false;
     }
 
     public List<Warehouse> listaWarehouse() {
@@ -37,9 +44,10 @@ public class WarehouseServices {
     }
 
 
-    public Warehouse validaUpdate(Optional<Warehouse> warehouseFind, WarehouseDTO warehouseDTO) {
+   public Warehouse validaUpdate(Optional<Warehouse> warehouseFind, WarehouseDTO warehouseDTO) {
     if(warehouseFind.isPresent()){
         Warehouse warehouse = warehouseFind.get();
+        warehouse.setCode(warehouseDTO.getCode());
         warehouse.setName(warehouseDTO.getName());
         warehouse.setAddress(warehouseDTO.getAddress());
         warehouse.setSize(warehouseDTO.getSize());
@@ -49,31 +57,75 @@ public class WarehouseServices {
          }
     }
 
-    public Warehouse obterWarehouse2(Long warehouseID) {
-        return warehouseRepository.findById(warehouseID).get();
-
-
-    }
-
-    public Warehouse obterWarehouse(Long warehouseID) {
-        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
-        if (!warehouse.isPresent()){
+    public Warehouse obterWarhouseByCode(Long code) {
+        Warehouse warehouse = warehouseRepository.findByCode(code);
+        if (warehouse == null){
             throw new RuntimeException("Warehouse não encontrada");
-        }
-        return warehouse.get();
+        }return warehouse;
     }
 
-  //  @GetMapping(value="/handler")
- //   public void handler() {
- //       throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
- //   }
-    public ResponseEntity<Object> deleta(Long id) {
+    public Warehouse obterWarehouseById(Long warehouseID) {
+        Optional<Warehouse> warehouse = warehouseRepository.findById(warehouseID);
+        if (warehouse == null || warehouse.equals(Optional.empty())){
+            throw new RuntimeException("Warehouse não encontrada");
+        }return warehouse.get();
+    }
+
+
+    public Warehouse converte(WarehouseDTO dto) {
+        return Warehouse.builder()
+                .code(dto.getCode())
+                .name(dto.getName())
+                .address(dto.getAddress())
+                .size(dto.getSize())
+                .build();
+    }
+
+    public Warehouse save(Warehouse warehouse) {
+        try {
+            warehouseRepository.save(warehouse);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Erro na gravação Warehouse:", e );
+        }
+        return warehouse;
+    }
+
+    public Iterable<WarehouseDTO> converteList(List<Warehouse> warehouses) {
+        List<WarehouseDTO> listWarehouse = new ArrayList<>();
+        for (Warehouse w: warehouses) {
+            listWarehouse.add(
+                    WarehouseDTO.builder()
+                            .name(w.getName())
+                            .address(w.getAddress())
+                            .code(w.getCode())
+                            .size(w.getSize())
+                            .build()
+            );
+        }
+        return listWarehouse;
+    }
+
+    public WarehouseDTO converteToDto(Warehouse warehouse) {
+        return WarehouseDTO.builder()
+                .name(warehouse.getName())
+                .address(warehouse.getAddress())
+                .size(warehouse.getSize())
+                .code(warehouse.getCode())
+                .build();
+    }
+
+
+    public void deleta(Long id) {
         try {
             warehouseRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-  //          throw new ConstraintViolationException("olha... algo serio aconteceu. fuja para as montanhas"  );
-             throw new ArithmeticException("olha... algo serio aconteceu. fuja para as montanhas");
+        } catch (RuntimeException e) {
+            if (e.getCause().getCause().getMessage().contains("violates foreign key constraint ")) {
+                throw new RuntimeException("violates foreign key constraint");
+            } else {
+                throw e;
+            }
         }
     }
+
+
 }

@@ -19,9 +19,7 @@ import java.util.Optional;
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Repository
-public interface BatchStockRepository  extends JpaRepository<BatchStock, Long> {
-    Optional<BatchStock> deleteBybatchStockNumber(Long OrderNumber);
-    Optional<BatchStock> findById(Long Id);
+public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
     List<BatchStock> findAll();
 
 

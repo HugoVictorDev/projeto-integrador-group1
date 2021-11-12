@@ -1,20 +1,14 @@
-package com.meli.projetointegradorgroup1.dto.response;
+package com.meli.projetointegradorgroup1.dto;
 
-import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.services.RepresentanteServices;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.*;
-import java.util.ArrayList;
-import java.util.List;
-
+@Builder
+@Service
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class RepresentanteDTO {
 
     private Long representatne_Id;
@@ -26,10 +20,5 @@ public class RepresentanteDTO {
     @NotBlank(message = "Campo CPF é obrigatorio")
     @Pattern(regexp="^[0-9]{11}",message = "Deve conter exatamente 11 digitos e apenas numeros, ")
     private String cpf;
-
-    @NotBlank(message = "campo é obrigatorio")
-    @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros,")
-    private String warehouseID;
-
 
 }

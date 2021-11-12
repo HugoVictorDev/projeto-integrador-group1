@@ -21,8 +21,6 @@ public class BatchStockItemRequestDTO {
     private Double minimumTemperature;
     private Long product_id;
 
-
-
     public BatchStockItem converte(BatchStockItemRequestDTO dto, ProductService productService, SellerService sellerService){
         return BatchStockItem.builder()
                 .minimumTemperature(dto.getMinimumTemperature())

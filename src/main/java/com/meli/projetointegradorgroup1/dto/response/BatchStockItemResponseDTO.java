@@ -27,9 +27,7 @@ public class BatchStockItemResponseDTO {
         this.volume = batchStockItem.getVolume();
         this.maximumTemperature = batchStockItem.getMaximumTemperature();
         this.minimumTemperature = batchStockItem.getMinimumTemperature();
-//        this.seller_id = batchStockItem.getSellerIdConvert();
-//        this.product_id = batchStockItem.getProductIdConvert();
-        //TODO: revisar
+
     }
 
 }

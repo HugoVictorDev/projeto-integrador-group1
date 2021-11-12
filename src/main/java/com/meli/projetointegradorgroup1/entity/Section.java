@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
+import com.meli.projetointegradorgroup1.services.EnumNamePattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Data
 @Builder
-@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,17 +25,15 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "minimum_temperature")
+    private Long code;
+
+    @Enumerated(value = EnumType.STRING)
+    private StockType stockType;
+
     private String minimumTemperature;
-    @Column(name = "stock")
-    private String stock;
-    @Column(name = "stock_type")
-    private String stockType;
+    private Long capacity;
 
     @ManyToOne
     private Warehouse warehouse;
-
-
-
 
 }
