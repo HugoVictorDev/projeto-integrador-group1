@@ -58,7 +58,7 @@ public class SellerController {
         if(sellerService.findSellerById(id) != null) {
             return sellerService.update(seller, id);
         }
-        throw new RuntimeException("Representative não encontrado");
+        throw new RuntimeException("Representante não encontrado");
     }
 
     //delete todos vendedores - ok

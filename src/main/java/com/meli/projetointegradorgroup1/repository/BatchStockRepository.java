@@ -51,5 +51,5 @@ public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
 //                          @Param("volume") double volume,
 //                          @Param("maximum_temperature") Double maximumTemperature,
 //                          @Param("quantity") int quatity,
-//                          @Param("id") Long id);
+//                          @Param("id") Long id);  
 }

@@ -27,7 +27,7 @@ public class InBoundOrderRequestDTO {
         private Long orderNumber;
         private LocalDate orderDate;
         @JsonProperty(value =  "seller_id")
-        private Long sellerId; // falta buildar TODO
+        private Long sellerId; //
         @JsonProperty(value = "section")
         private SectionForInboundDTO sectionForInboundDTO;
         @JsonProperty(value= "batchStockList")
@@ -73,7 +73,7 @@ public class InBoundOrderRequestDTO {
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.obter(this.sellerId))
+                    .seller(sellerService.findSellerById(this.sellerId))
                     .batchStockItem(
                             BatchStockItem.builder()
                                     .quantity(dto.getQuantity())

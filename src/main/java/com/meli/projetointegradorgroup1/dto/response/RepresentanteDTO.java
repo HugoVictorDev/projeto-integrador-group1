@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class RepresentanteDTO {
 
-    private Long representatne_Id;
+    private Long representante_Id;
 
     @NotBlank(message = "Campo Name é obrigatorio")
     @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")

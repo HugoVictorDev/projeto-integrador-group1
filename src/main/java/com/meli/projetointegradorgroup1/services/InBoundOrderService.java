@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.entity.Representante;
@@ -62,14 +62,14 @@ public class InBoundOrderService {
         return false;
     }
 
-    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
+//    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
 
-        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
-        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
-//        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
-           this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-        return inb;
-    }
+//        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
+//        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
+////        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
+//           this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
+//        return inb;
+//    }
 
 }
 

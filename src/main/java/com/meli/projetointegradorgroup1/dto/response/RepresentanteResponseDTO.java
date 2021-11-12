@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 
 @Service
 @Data
-public class RepresentativeResponseDTO {
+public class RepresentanteResponseDTO {
 
 
     private Long representative_Id;
@@ -25,10 +25,10 @@ public class RepresentativeResponseDTO {
     @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros,")
     private String warehouseID;
 
-    public RepresentativeResponseDTO() {
+    public RepresentanteResponseDTO() {
     }
 
-    public RepresentativeResponseDTO(Long representative_Id, String name, String cpf, String warehouseID) {
+    public RepresentanteResponseDTO(Long representative_Id, String name, String cpf, String warehouseID) {
         this.representative_Id = representative_Id;
         this.name = name;
         this.cpf = cpf;

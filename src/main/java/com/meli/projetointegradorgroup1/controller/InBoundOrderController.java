@@ -2,7 +2,7 @@ package com.meli.projetointegradorgroup1.controller;
 
 
 
-import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+//import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.services.*;
@@ -30,14 +30,14 @@ public class InBoundOrderController {
     SellerService sellerService;
 
 
-
-    @PostMapping("/create")
-    public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
-        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
-        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
-                sectionServices, productService, sellerService));
-        return inBoundOrderRequestDTO;
-    }
-
+//
+//    @PostMapping("/create")
+//    public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
+//        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
+//        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
+//                sectionServices, productService, sellerService));
+//        return inBoundOrderRequestDTO;
+//    }
+//TODO não encontra o dto
 
 }

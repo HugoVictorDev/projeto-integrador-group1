@@ -15,7 +15,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Representative {
+public class Representante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

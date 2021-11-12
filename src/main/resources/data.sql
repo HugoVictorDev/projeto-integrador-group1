@@ -2,7 +2,7 @@ drop table if exists batch_stock cascade;
 drop table if exists batch_stock_item cascade;
 drop table if exists in_bound_order cascade;
 drop table if exists product cascade;
-drop table if exists Representative cascade;
+drop table if exists Representante cascade;
 drop table if exists section cascade;
 drop table if exists seller cascade;
 drop table if exists warehouse cascade;
@@ -54,13 +54,13 @@ create table product (
 );
 insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca');
 
-create table Representative (
+create table Representante (
                                id  bigserial not null,
                                cpf varchar(255) not null,
                                name varchar(255) not null,
                                primary key (id)
 );
-insert into Representative(cpf, name) values ( '234.098.109-20',  'Kenyo');
+insert into Representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
 
 create table section (
                          id  bigserial not null,
@@ -117,7 +117,7 @@ alter table batch_stock_item
 alter table in_bound_order
     add constraint FKisau45ihrn98bmlwfnlo23axk
         foreign key (representative_id)
-            references Representative;
+            references Representante;
 
 alter table in_bound_order
     add constraint FKsr5yci0eowgmpim69tgp4g1h
@@ -132,11 +132,11 @@ alter table section
 alter table warehouse
     add constraint FKiabr4g8lokk0f3x2f6sck68rx
         foreign key (representante_id)
-            references Representative;
+            references Representante;
 
 --- Insert de tabelas (nao retirar da sequencia)
 
-INSERT INTO representative (cpf, "name") VALUES('36843012809', 'Edenilson');
+INSERT INTO Representante (cpf, "name") VALUES('36843012809', 'Edenilson');
 
 INSERT INTO in_bound_order (order_number, order_date, representative_id, section_id) VALUES(0, now(), 1, 1);
 

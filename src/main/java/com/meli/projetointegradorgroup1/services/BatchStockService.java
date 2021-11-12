@@ -36,7 +36,7 @@ public class BatchStockService {
     }
 
     public ResponseEntity<HttpStatus> deleteBybatchStockNumber (Long BatchNumber){
-        batchStockRepository.deleteBybatchStockNumber(BatchNumber);
+        //batchStockRepository.deleteBybatchStockNumber(BatchNumber); TODO implementar no repository
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
