@@ -26,7 +26,6 @@ public class BatchStockResponseDTO {
 
 
 
-
     public static BatchStockResponseDTO converte(BatchStock batchStock) {
         return null;
         //TODO: revisar

@@ -2,6 +2,7 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.services.*;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class InBoundOrderRequestDTO {
         @JsonProperty(value = "section")
         private SectionForInboundDTO sectionForInboundDTO;
         @JsonProperty(value= "batchStockList")
-        private List<BatchStockRequestDTO> batchStockDTOList;
+        private List<BatchStockDTO> batchStockDTOList;
 
         private Long representanteId;
 
@@ -60,10 +61,10 @@ public class InBoundOrderRequestDTO {
 
 
 
-    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
+    public List<BatchStock> converte(List<BatchStockDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        for (BatchStockRequestDTO dto: dtos) {
+        for (BatchStockDTO dto: dtos) {
             BatchStock batchStock = null;
             batchStock = BatchStock.builder()
                     .batchStockNumber(dto.getBatchStockNumber())

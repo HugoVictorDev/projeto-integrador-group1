@@ -1,13 +1,11 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
-import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,9 +18,10 @@ public class SectionServicesTest {
     Warehouse warehouse = new Warehouse(1l, 44l,"Miguel", "Rua: Hum", "3",null);
 
     Section section = new Section(1l, 2l, StockType.FRESH,"30", 8l, warehouse);
-    SectionRequestDTO sectionRequestDTO = new SectionRequestDTO (null, 1L,"5", StockType.FRESH,7l, 1L);
-    SectionDTO sectionDTO = new SectionDTO(2l,"30",StockType.FRESH, 8l,null);
-    SectionRequestDTO sectionUpdate = new SectionRequestDTO (null,1l,"5", StockType.FRESH,7l,1l);
+    SectionRequestDTO sectionRequestDTO = new SectionRequestDTO(null, 1L,"5", StockType.FRESH,7l, 1L);
+    SectionRequestDTO sectionUpdate = new SectionRequestDTO(null,1l,"5", StockType.FRESH,7l,1l);
+    SectionResponseDTO sectionResponseDTO = new  SectionResponseDTO( 2l, "30", StockType.FRESH, 8l,null);
+
 
     Section sectionNull = new Section();
 
@@ -30,7 +29,7 @@ public class SectionServicesTest {
     SectionRepository sectionRepository;
     SectionServices sectionServices;
     List<Section> listSection = new ArrayList();
-    List<SectionDTO> listSectionDTO = new ArrayList();
+    List<SectionResponseDTO> listSectionRequestDTO = new ArrayList();
 
 
     String message = "";
@@ -103,7 +102,7 @@ public class SectionServicesTest {
         sectionServices = new SectionServices(null,warehouseServices);
         sectionServices.validaUpdate(java.util.Optional.ofNullable(section), sectionUpdate);
 
-        assert (section.getStockType().equals(sectionDTO.getStockType()));
+        assert (section.getStockType().equals(sectionRequestDTO.getStockType()));
     }
 
     @Test
@@ -139,24 +138,24 @@ public class SectionServicesTest {
     public void converteToDtoOk(){
         sectionServices = Mockito.mock(SectionServices.class);
 
-        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionDTO);
+        Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionResponseDTO);
         SectionServices sectionServices = new SectionServices(null,null);
         sectionServices.convertToDto(section);
 
-        assert (section.getStockType().equals(sectionDTO.getStockType()));
+        assert (section.getStockType().equals(sectionRequestDTO.getStockType()));
     }
 
     @Test
     public void converteListOk(){
-        listSectionDTO.add(sectionDTO);
+        listSectionRequestDTO.add(sectionResponseDTO);
         listSection.add(section);
         sectionServices = Mockito.mock(SectionServices.class);
 
-        Mockito.when(sectionServices.convertList(Mockito.any())).thenReturn(listSectionDTO);
+        Mockito.when(sectionServices.convertList(Mockito.any())).thenReturn(listSectionRequestDTO);
         SectionServices sectionServices = new SectionServices(null,null);
         sectionServices.convertList(listSection);
 
-        assert (section.getStockType().equals(sectionDTO.getStockType()));
+        assert (section.getStockType().equals(sectionRequestDTO.getStockType()));
     }
 
     @Test

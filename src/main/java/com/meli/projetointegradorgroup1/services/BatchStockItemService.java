@@ -25,7 +25,7 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
-    public BatchStockItem obtem(Long id){
+    public BatchStockItem obter(Long id){
         Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
         return byId.get();
     }

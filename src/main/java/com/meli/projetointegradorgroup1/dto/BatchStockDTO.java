@@ -1,4 +1,4 @@
-package com.meli.projetointegradorgroup1.dto.request;
+package com.meli.projetointegradorgroup1.dto;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.SellerService;
@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 
 
-public class BatchStockRequestDTO {
+public class BatchStockDTO {
 
     private Long batchStockNumber;
     private Long batchStockItem;
@@ -33,12 +32,12 @@ public class BatchStockRequestDTO {
     private int quantity; //quantidade de produtos chegando no lote
     private double volume; //volume total ocupado pelo lote de produtos
 
-    public static BatchStock convertedto(BatchStockRequestDTO dto,
-                                         BatchStockItemService batchStockItemService, SellerService sellerService){
+    public static BatchStock convert(BatchStockDTO dto,
+                                     BatchStockItemService batchStockItemService, SellerService sellerService){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return BatchStock.builder()
                 .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.obtem(dto.batchStockItem))
+                .batchStockItem(batchStockItemService.obter(dto.batchStockItem))
                 .currentTemperature(dto.getCurrentTemperature())
                 .minimumTemperature(dto.getMinimumTemperature())
                 .maximumTemperature(dto.getMaximumTemperature())

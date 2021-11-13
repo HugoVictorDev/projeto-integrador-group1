@@ -1,19 +1,16 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +35,8 @@ public class SectionServices {
         this.warehouseServices = warehouseServices;
     }
 
-    public void validarWarehouse(SectionRequestDTO sectionDTO) {
-       warehouseServices.warehouseExist(sectionDTO.getWarehouseID());
+    public void validarWarehouse(SectionRequestDTO sectionRequestDTO) {
+       warehouseServices.warehouseExist(sectionRequestDTO.getWarehouseID());
     }
 
 /*        valida warhouse
@@ -81,13 +78,13 @@ public class SectionServices {
     }
 
 
-    public Section validaUpdate(Optional<Section> sectionFind, SectionRequestDTO sectionDTO) {
+    public Section validaUpdate(Optional<Section> sectionFind, SectionRequestDTO sectionRequestDTO) {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
-            section.setMinimumTemperature(sectionDTO.getMinimumTemperature());
-            section.setCapacity(sectionDTO.getCapacity());
-            section.setStockType(sectionDTO.getStockType());
-            section.setWarehouse(obterWarehouse(sectionDTO.getWarehouseID()));
+            section.setMinimumTemperature(sectionRequestDTO.getMinimumTemperature());
+            section.setCapacity(sectionRequestDTO.getCapacity());
+            section.setStockType(sectionRequestDTO.getStockType());
+            section.setWarehouse(obterWarehouse(sectionRequestDTO.getWarehouseID()));
             return section;
         }else{
             throw new RuntimeException("Section não encontrada");
@@ -108,8 +105,8 @@ public class SectionServices {
                 .build();
     }
 
-    public SectionDTO convertToDto(Section section) {
-        return SectionDTO.builder()
+    public SectionResponseDTO convertToDto(Section section) {
+        return SectionResponseDTO.builder()
                 .code(section.getCode())
                 .stockType(section.getStockType())
                 .minimumTemperature(section.getMinimumTemperature())
@@ -119,10 +116,10 @@ public class SectionServices {
     }
 
 
-    public Iterable<SectionDTO> convertList(List<Section> sections) {
-        List<SectionDTO> listaSection = new ArrayList<>();
+    public Iterable<SectionResponseDTO> convertList(List<Section> sections) {
+        List<SectionResponseDTO> listaSection = new ArrayList();
         for (Section section: sections) {
-            listaSection.add( SectionDTO.builder()
+            listaSection.add( SectionResponseDTO.builder()
                     .code(section.getCode())
                     .stockType(section.getStockType())
                     .minimumTemperature(section.getMinimumTemperature())
@@ -154,8 +151,4 @@ public class SectionServices {
         }
     }
 
-
-    public Optional<Section> findById(Long id) {
-        return null;
-    }
 }

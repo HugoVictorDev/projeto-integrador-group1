@@ -1,6 +1,5 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
@@ -8,8 +7,6 @@ import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,9 +26,7 @@ public class SellerController {
     //Cadastrar vendedor - ok
     @PostMapping("/create")
     public SellerResponseDTO createSeller(@Valid @RequestBody Seller seller){
-
         SellerResponseDTO sellerResponseDTO = sellerService.setSeller(seller);
-
         return sellerResponseDTO;
     }
 
@@ -40,7 +35,6 @@ public class SellerController {
     // dores
     @GetMapping("/list") // - ok
     List<SellerResponseDTO> getSellerList() {
-
         return sellerService.getSellers();
     }
 

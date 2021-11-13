@@ -37,21 +37,16 @@ public class SellerService {
     }
 
     public ResponseEntity<HttpStatus> delSeller(Long id){// ok
-
         try {
             this.findSellerById(id);
-
             sellerRepository.deleteById(id);
-
             return new ResponseEntity<>(HttpStatus.OK);
-
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<HttpStatus> delAllSellers(){
-
         try {
             sellerRepository.deleteAll();
             return new ResponseEntity<>(HttpStatus.OK);
@@ -84,7 +79,6 @@ public class SellerService {
             _seller.setName(sellerRequestDTO.getName());
             _seller.setCpf(sellerRequestDTO.getCpf());
             _seller.setEmail(sellerRequestDTO.getEmail());
-
             return _seller;
         }else{
             throw new RuntimeException("Seller não encontrado");
@@ -104,5 +98,9 @@ public class SellerService {
         Optional<Seller> _byId = sellerRepository.findById(id);
 
         return _byId.get();
+    }
+
+    public Seller obter(Long sellerId) {
+        return null;
     }
 }

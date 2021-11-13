@@ -1,5 +1,5 @@
 package com.meli.projetointegradorgroup1.controller;
-import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
