@@ -7,9 +7,7 @@ import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class InBoundOrderService {
@@ -62,7 +60,7 @@ public class InBoundOrderService {
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
 //        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-        this.sectionIsTheSameProduct(inb);
+       this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
         return inb;
     }
 
@@ -70,23 +68,25 @@ public class InBoundOrderService {
         for (Section sec : sectionServices.listaSection()){
             if (sec.getWarehouse().getRepresentante().getId() == id){
                 Representante representante = sec.getWarehouse().getRepresentante();
-                return representante != null;
+                return representante != null; // return true TODO
             }else throw new RuntimeException("representante não pertence ao armazem");
         }
         return false;
     }
 
-    public boolean  sectionIsTheSameProduct(InBoundOrderRequestDTO inb){
-
-        String sectionStockType = this.sectionServices.obtemTypeStockSection(inb.getSectionForInboundDTO().getCode());
-
-        List<Product> products = this.productService.listProduct(sectionStockType);
-
-        List<Long> listaDeProdutosID = products.stream().map(Product::getId).collect(Collectors.toList());
-
+    private boolean sectionMatchStockType(Long code) {
+        StockType stockType = sectionServices.obtemTypeStockSection(code);
+        List<Section> listsec = sectionServices.listsec();
+        for (Section section : listsec ) {
+            if (section.getStockType().equals(stockType)) {
+                return true;
+            }
+        }
         return false;
-
     }
+
+
+
 
 }
 

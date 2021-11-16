@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BatchStockService {
@@ -44,12 +45,12 @@ public class BatchStockService {
         return batchStock;
     }
 
-    public List<BatchStockResponseDTO> findBatchSotck() {
+//    public List<BatchStockResponseDTO> findBatchSotck() {
 //        return batchStockRepository.findAll()
 //                .stream()
 //                .map(BatchStockResponseDTO::new)
 //                .collect(Collectors.toList());
-        //TODO: revisar
-        return null;
-    }
+//        //TODO: revisar
+//        return null;
+//    }
 }

@@ -1,8 +1,10 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SectionServices {
@@ -72,11 +75,11 @@ public class SectionServices {
         }else throw new EntityNotFoundException("Section não encontrada");
     }
 
-    public String obtemTypeStockSection(Long code) {
+    public StockType obtemTypeStockSection(Long code) {
         Section section = sectionRepository.findByCode(code);
-       String s = section.getStockType().toString();
+        StockType stockType = section.getStockType();
 
-       return s;
+        return stockType;
 
     }
 
@@ -98,4 +101,9 @@ public class SectionServices {
         return warehouseServices.obterWarehouse(warehouseID);
     }
 
+
+    public List<Section> listsec(){
+        return sectionRepository.findAll();
+
+    }
 }

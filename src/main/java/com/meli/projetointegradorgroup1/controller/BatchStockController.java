@@ -42,14 +42,15 @@ public class BatchStockController {
     @PostMapping("/create")
     public BatchStockRequestDTO createBatchStock (@RequestBody BatchStockRequestDTO batchStockRequestDTO){
 //           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
-            this.batchStockRepository.save(BatchStockRequestDTO.convertedto(batchStockRequestDTO, batchStockItemService, sellerService));
+            this.batchStockRepository.save(BatchStockRequestDTO.convertedto(batchStockRequestDTO,
+                    batchStockItemService, sellerService));
             return batchStockRequestDTO;
     }
 
-    @GetMapping("/list")
-    public List<BatchStockResponseDTO> listBastchStock(){
-           return batchStockService.findBatchSotck();
-    }
+//    @GetMapping("/list")
+//    public List<BatchStockResponseDTO> listBastchStock(){
+//           return batchStockService.findBatchSotck();
+//    }
 
 
     @DeleteMapping("/delete/{id}")
