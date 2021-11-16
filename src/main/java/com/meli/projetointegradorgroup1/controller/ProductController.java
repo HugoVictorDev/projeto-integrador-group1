@@ -28,6 +28,7 @@ public class ProductController {
 
 
     @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Cadastrar novo produto")
     public ProductRequestDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO){
         return productService.save(productRequestDTO);
@@ -42,9 +43,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Retornar produto único a partir do id")
-    public ProductResponseDto getById(@PathVariable("id") Long id) {
-        Optional<Product> productFind = productRepository.findById(id);
-        return ProductResponseDto.convertDto(productService.findProduct(productFind));
+    public ResponseEntity<ProductResponseDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping("/list/{name}")

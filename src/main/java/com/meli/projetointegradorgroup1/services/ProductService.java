@@ -7,7 +7,7 @@ import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,20 +22,27 @@ public class ProductService {
 
     // pegando lista de produtos, iterando e trazendo em formato de dto
     public List<ProductResponseDto> listProductDto(){
-        return productRepository.findAll()
-                .stream()
-                .map(ProductResponseDto::new)
-                .collect(Collectors.toList());
+        if (productRepository.findAll().size() == 0){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontramos produtos para essa pesquisa.");
+        } else {
+            return productRepository.findAll()
+                    .stream()
+                    .map(ProductResponseDto::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     public List<ProductResponseDto> listProductDto(String nameId){
-        return productRepository.findByNameContaining(nameId)
-                .stream()
-                .map(ProductResponseDto::new)
-                .collect(Collectors.toList());
+        if (productRepository.findByNameContaining(nameId).size() == 0){
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontramos produtos para essa pesquisa.");
+        } else {
+            return productRepository.findByNameContaining(nameId)
+                    .stream()
+                    .map(ProductResponseDto::new)
+                    .collect(Collectors.toList());
+        }
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     public ProductRequestDTO save(ProductRequestDTO productRequestDTO){
         productRepository.save(productRequestDTO.converte(productRequestDTO));
         return productRequestDTO;
@@ -58,20 +65,11 @@ public class ProductService {
         }
     }
 
-    public ProductResponseDto productDtoById(Product product){
-        ProductResponseDto productResponseDto = new ProductResponseDto();
-        productResponseDto.setProductName(product.getName());
-        productResponseDto.setDescription(product.getDescription());
-        return productResponseDto;
-    }
-
-    public Product findProduct(Optional<Product> productFind) {
-        if (productFind.get().getId() == null){
-            throw new RuntimeException("Não localizamos produto com esse Id.");
-        }else{
-            Product product = productFind.get();
-            return product;
-        }
+    public ProductResponseDto findById(Long id){
+        return listProductDto().stream()
+                .filter(productResponseDto -> productResponseDto.getProductId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não encontramos produto com esse Id."));
     }
 
     public Product validaUpdate(Optional<Product> productFind, ProductRequestDTO productRequestDto){
@@ -81,7 +79,7 @@ public class ProductService {
             newProduct.setDescription(productRequestDto.getDescription());
             return newProduct;
         } else {
-            throw new RuntimeException("Produto nao encontrado");
+            throw new ResponseStatusException (HttpStatus.BAD_REQUEST, "Não encontramos produto com esse Id para ser atualizado.");
         }
     }
 
