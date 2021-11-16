@@ -83,6 +83,12 @@ public class SectionServices {
 
     }
 
+    public int obtemQuantidadeDoSection(Long code){
+        Section section = sectionRepository.findByCode(code);
+        Long capacity = section.getCapacity();
+        return capacity.intValue();
+
+    }
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionDTO sectionDTO) {
         if(sectionFind.isPresent()){
@@ -102,8 +108,4 @@ public class SectionServices {
     }
 
 
-    public List<Section> listsec(){
-        return sectionRepository.findAll();
-
-    }
 }

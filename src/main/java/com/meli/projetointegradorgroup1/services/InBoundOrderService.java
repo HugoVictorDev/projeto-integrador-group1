@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class InBoundOrderService {
@@ -61,6 +63,7 @@ public class InBoundOrderService {
 //        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
+       this.sectionHasCapacity(inb);
         return inb;
     }
 
@@ -76,15 +79,29 @@ public class InBoundOrderService {
 
     private boolean sectionMatchStockType(Long code) {
         StockType stockType = sectionServices.obtemTypeStockSection(code);
-        List<Section> listsec = sectionServices.listsec();
+        List<Section> listsec = sectionServices.listaSection();
         for (Section section : listsec ) {
             if (section.getStockType().equals(stockType)) {
                 return true;
             }
         }
-        return false;
+        throw new RuntimeException("section  não corresponde ao tipo de produto");
     }
 
+    private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
+        //capacidade da section by code
+        int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
+
+        //soma de valores da lista de batchstock
+        int sumOfProductQuantity = inb.getBatchStockDTOList()
+                .stream().mapToInt(value -> value.getQuantity()).sum();
+
+        if (capacitySection >= sumOfProductQuantity){
+            return true;
+        }
+        throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
+                " lotes e voce está inserindo: " + sumOfProductQuantity + "  lotes");
+    }
 
 
 
