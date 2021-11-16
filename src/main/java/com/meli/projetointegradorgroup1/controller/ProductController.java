@@ -29,9 +29,8 @@ public class ProductController {
 
     @PostMapping("/create")
     @ApiOperation(value = "Cadastrar novo produto")
-    public ResponseEntity<ProductRequestDTO> createProductDto(@Valid @RequestBody ProductRequestDTO productRequestDto){
-        this.productRepository.save(productRequestDto.converte(productRequestDto));
-        return new ResponseEntity<ProductRequestDTO>(productRequestDto, HttpStatus.CREATED);
+    public ProductRequestDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO){
+        return productService.save(productRequestDTO);
     }
 
     @GetMapping("/list")
@@ -48,10 +47,10 @@ public class ProductController {
         return ProductResponseDto.convertDto(productService.findProduct(productFind));
     }
 
-    @GetMapping("/list/{productName}")
+    @GetMapping("/list/{name}")
     @ApiOperation(value = "Retornar lista de produtos a partir do nome")
-    public List<ProductResponseDto> getByName(@PathVariable String productName){
-        return productService.listProductDto(productName);
+    public List<ProductResponseDto> getByName(@PathVariable String name){
+        return productService.listProductDto(name);
     }
 
     @PutMapping("/update/{id}")

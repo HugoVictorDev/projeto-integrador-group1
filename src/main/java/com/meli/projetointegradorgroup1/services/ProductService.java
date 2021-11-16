@@ -5,7 +5,9 @@ import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +29,17 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> listProductDto(String nameId){
-        return productRepository.findByProductNameContaining(nameId)
+        return productRepository.findByNameContaining(nameId)
                 .stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductRequestDTO save(ProductRequestDTO productRequestDTO){
+        productRepository.save(productRequestDTO.converte(productRequestDTO));
+        return productRequestDTO;
+    }
 
 
     public void valida(Long productId) {

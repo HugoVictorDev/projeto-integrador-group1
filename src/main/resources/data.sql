@@ -48,11 +48,11 @@ create table in_bound_order (
 create table product (
                          id  bigserial not null,
                          stock_type varchar(20) not null,
-                         description varchar(255),
                          name varchar(255),
+                         description varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca');
+insert into product(stock_type ,name, description) values('FRESH', 'carne seca', 'descricao da carne seca');
 
 create table representante (
                                id  bigserial not null,
@@ -85,7 +85,7 @@ insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com
 
 create table warehouse (
                            id  bigserial not null,
-                           code bigserial not null,
+                           code bigint not null,
                            address varchar(255) not null,
                            name varchar(255) not null,
                            size varchar(255) not null,
