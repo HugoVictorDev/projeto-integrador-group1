@@ -1,6 +1,8 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,10 @@ import java.util.List;
 public class BatchStockControllerTest {
 
     BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(),LocalDate.now(), 7, 8.0, null,null,null);
-    BatchStockDTO batchStockDTO = new BatchStockDTO(1l,2l,1l,2.0,3.0,4.0,"5","6", "0000-00-00 00:00:00",LocalDate.now(), 7, 8.0);
     BatchStock batchStockUpdate = new BatchStock(2l, 1l,2.0,3.0,4.0,"5","6", LocalDateTime.now(),LocalDate.now(), 7, 8.0,null,null,null);
+    BatchStockRequestDTO batchStockRequestDTO = new BatchStockRequestDTO(1l,2l,1l,2.0,3.0,4.0,"5","6", "0000-00-00 00:00:00",LocalDate.now(), 7, 8.0);
+    BatchStockResponseDTO batchStockResponseDTO = new BatchStockResponseDTO(1l,1l,2.0,3.0,4.0,"5","6", "0000-00-00 00:00:00",LocalDate.now(), 7, 8.0);
+
 
     BatchStockService batchStockService;
     List<BatchStock> list = new ArrayList();
@@ -29,7 +33,7 @@ public class BatchStockControllerTest {
         Mockito.when(batchStockService.convert(Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(batchStock);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.createBatchStock(batchStockDTO);
+        batchStockController.createBatchStock(batchStockRequestDTO);
 
         assert (batchStock.getId()!= null);
     }
@@ -52,7 +56,7 @@ public class BatchStockControllerTest {
         batchStockService = Mockito.mock(BatchStockService.class);
 
         Mockito.when(batchStockService.findBatchNumber(Mockito.anyLong())).thenReturn(batchStock);
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockDTO);
+        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
         batchStockController.listBastchStockNumber(2l);
@@ -66,7 +70,7 @@ public class BatchStockControllerTest {
 
         Mockito.when(batchStockService.findBatchNumber(Mockito.anyLong())).thenReturn(batchStock);
         Mockito.doNothing().when(batchStockService).deleta(Mockito.anyLong());
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockDTO);
+        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
         batchStockController.deleteBatchStockNumber(2l);
@@ -81,12 +85,12 @@ public class BatchStockControllerTest {
         Mockito.when(batchStockService.findBatchNumber(Mockito.anyLong())).thenReturn(batchStockUpdate);
         Mockito.when(batchStockService.updateBatchStock(Mockito.any(), Mockito.any())).thenReturn(batchStockUpdate);
         Mockito.when(batchStockService.save(Mockito.any())).thenReturn(batchStockUpdate);
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockDTO);
+        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.updateBatchStockNumber(batchStockDTO);
+        batchStockController.updateBatchStockNumber(batchStockRequestDTO);
 
-        assert(batchStockUpdate.getBatchStockNumber().equals(batchStockDTO.getBatchStockNumber()));
+        assert(batchStockUpdate.getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
 
 }

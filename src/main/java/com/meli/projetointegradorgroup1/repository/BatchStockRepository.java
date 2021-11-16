@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
     List<BatchStock> findAll();
+
+    BatchStock findByBatchStockNumber(Long batchNumber);
 }

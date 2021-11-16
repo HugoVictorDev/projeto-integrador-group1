@@ -1,10 +1,12 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BatchStockService {
@@ -21,7 +22,8 @@ public class BatchStockService {
     private BatchStockRepository batchStockRepository;
     @Autowired
     private BatchStockItemService batchStockItemService;
-
+    @Autowired
+    private SellerService sellerService;
 
 
     public void valida(Long productID) {
@@ -32,7 +34,7 @@ public class BatchStockService {
         try {
             batchStockRepository.save(batchStock);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação Section:", e );
+            throw new RuntimeException("Erro na gravação Stock:", e );
         }
         return batchStock;
     }
@@ -40,27 +42,54 @@ public class BatchStockService {
     public List<BatchStock> findBatchSotck() {
         List<BatchStock> batchStockList = batchStockRepository.findAll();
         if(batchStockList.size() == 0){
-            throw new RuntimeException("Não existem Sessões cadastradas");
+            throw new RuntimeException("Não existem Stock cadastradas");
         }return batchStockList;
-    }
-
-    public BatchStockDTO convertToDto(BatchStock batchStock) {
-        return null;
     }
 
 
     public BatchStock findBatchNumber(Long batchNumber) {
-        return  null;
+        BatchStock batchStock = batchStockRepository.findByBatchStockNumber(batchNumber);
+        if(batchStock == null){
+            throw new RuntimeException("BatchStock não cadastrada");
+        }
+        return batchStock;
     }
 
     public void deleta(Long id) {
+        try {
+            batchStockRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            if (e.getCause().getCause().getMessage().contains("violates foreign key constraint ")) {
+                throw new RuntimeException("violates foreign key constraint");
+            } else {
+                throw e;
+            }
+        }
     }
 
-    public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockDTO batchStockDTO) {
-        return null;
+    public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockRequestDTO dto) {
+        if (batchStockFind == null){
+            throw new RuntimeException("Representante não encontrado");
+        }else{
+            BatchStock batchStockUpdate = batchStockFind;
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
+            batchStockUpdate.setBatchStockItem(batchStockItemService.obter(dto.getBatchStockItem()));
+            batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
+            batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
+            batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
+            batchStockUpdate.setQuantity(dto.getQuantity());
+            batchStockUpdate.setVolume(dto.getVolume());
+            batchStockUpdate.setInitialQuality(dto.getInitialQuality());
+            batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
+            batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
+            batchStockUpdate.setDueDate(dto.getDueDate());
+            batchStockUpdate.setSeller(sellerService.findSellerById(dto.getSellerId()));
+            return batchStockUpdate;
+        }
     }
 
-    public BatchStock convert(BatchStockDTO dto,
+    public BatchStock convert(BatchStockRequestDTO dto,
                               BatchStockItemService batchStockItemService, SellerService sellerService){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return BatchStock.builder()
@@ -79,14 +108,13 @@ public class BatchStockService {
                 .build();
     }
 
-    public List<BatchStockDTO> convertList(List<BatchStock> batchSotcks) {
+    public List<BatchStockResponseDTO> convertList(List<BatchStock> batchSotcks) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        List<BatchStockDTO> ListBatchStock = new ArrayList();
+        List<BatchStockResponseDTO> ListBatchStock = new ArrayList();
         for (BatchStock batchStock : batchSotcks) {
             ListBatchStock.add(
-                    BatchStockDTO.builder()
+                    BatchStockResponseDTO.builder()
                             .batchStockNumber(batchStock.getBatchStockNumber())
-                            .batchStockItem(batchStock.getBatchStockItem().getId())//verificar se é o id mesmo
                             .currentTemperature(batchStock.getCurrentTemperature())
                             .minimumTemperature(batchStock.getMinimumTemperature())
                             .maximumTemperature(batchStock.getMaximumTemperature())
@@ -101,4 +129,21 @@ public class BatchStockService {
         }
         return ListBatchStock;
     }
+
+    public BatchStockResponseDTO convertToDto(BatchStock batchStock) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return BatchStockResponseDTO.builder()
+                .batchStockNumber(batchStock.getBatchStockNumber())
+                .sellerId(batchStock.getSeller().getId())
+                .currentTemperature(batchStock.getCurrentTemperature())
+                .minimumTemperature(batchStock.getMinimumTemperature())
+                .maximumTemperature(batchStock.getMaximumTemperature())
+                .initialQuality(batchStock.getInitialQuality())
+                .currentQuality(batchStock.getCurrentQuality())
+                .manufacturingTime(batchStock.getManufacturingTime().format(formatter))
+                .dueDate(batchStock.getDueDate())
+                .sellerId(batchStock.getSeller().getId())
+                .build();
+    }
+
 }

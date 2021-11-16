@@ -15,8 +15,6 @@ import java.time.format.DateTimeFormatter;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class BatchStockDTO {
 
     private Long batchStockNumber;
@@ -32,24 +30,4 @@ public class BatchStockDTO {
     private int quantity; //quantidade de produtos chegando no lote
     private double volume; //volume total ocupado pelo lote de produtos
 
-    public static BatchStock convert(BatchStockDTO dto,
-                                     BatchStockItemService batchStockItemService, SellerService sellerService){
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return BatchStock.builder()
-                .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.obter(dto.batchStockItem))
-                .currentTemperature(dto.getCurrentTemperature())
-                .minimumTemperature(dto.getMinimumTemperature())
-                .maximumTemperature(dto.getMaximumTemperature())
-                .quantity(dto.getQuantity())
-                .volume(dto.getVolume())
-                .initialQuality(dto.getInitialQuality())
-                .currentQuality(dto.getCurrentQuality())
-                .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
-                .dueDate(dto.getDueDate())
-                .seller(sellerService.obter(dto.getSellerId()))
-                .build();
-        
-
-    }
 }

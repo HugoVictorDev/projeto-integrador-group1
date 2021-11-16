@@ -78,4 +78,8 @@ public class BatchStockItemService {
     }
 
 
+    public BatchStockItem obtem(Long id) {
+        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
+        return byId.get();
+    }
 }

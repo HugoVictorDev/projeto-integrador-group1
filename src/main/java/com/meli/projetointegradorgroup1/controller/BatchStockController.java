@@ -1,6 +1,8 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
@@ -8,6 +10,7 @@ import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,31 +32,31 @@ public class BatchStockController {
 
 
     @PostMapping("/create")
-    public BatchStockDTO createBatchStock (@RequestBody BatchStockDTO batchStockDTO){
-           batchStockService.valida(batchStockDTO.getBatchStockItem());
-           batchStockService.save(batchStockService.convert(batchStockDTO, batchStockItemService, sellerService));
-           return batchStockDTO;
+    public BatchStockRequestDTO createBatchStock (@RequestBody @Valid BatchStockRequestDTO batchStockRequestDTO){
+           batchStockService.valida(batchStockRequestDTO.getBatchStockItem());
+           batchStockService.save(batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService));
+           return batchStockRequestDTO;
     }
 
     @GetMapping("/list")
-    public List<BatchStockDTO> listBastchStock(){
+    public List<BatchStockResponseDTO> listBastchStock(){
         return batchStockService.convertList(batchStockService.findBatchSotck());
     }
 
-    @GetMapping("/list/number")
-    public BatchStockDTO listBastchStockNumber(@PathVariable("number") Long BatchNumber) {
+    @GetMapping("/list/{number}")
+    public BatchStockResponseDTO listBastchStockNumber(@PathVariable("number") Long BatchNumber) {
         return batchStockService.convertToDto(batchStockService.findBatchNumber(BatchNumber));
     }
 
     @DeleteMapping("/delete/{number}")
-    public BatchStockDTO deleteBatchStockNumber(@PathVariable("number") Long BatchNumber) {
+    public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("number") Long BatchNumber) {
            BatchStock batchStock = batchStockService.findBatchNumber(BatchNumber);
            batchStockService.deleta(batchStock.getId());
            return batchStockService.convertToDto(batchStock);
     }
 
     @PutMapping("/update")
-    public BatchStockDTO updateBatchStockNumber(@RequestBody BatchStockDTO batchStockDTO) {
+    public BatchStockResponseDTO updateBatchStockNumber(@RequestBody @Valid BatchStockRequestDTO batchStockDTO) {
            BatchStock batchStockFind = batchStockService.findBatchNumber(batchStockDTO.getBatchStockNumber());
            BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
            return batchStockService.convertToDto(batchStockService.save(batchStock));
