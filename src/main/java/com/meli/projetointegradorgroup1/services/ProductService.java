@@ -1,6 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.ProductRequestDto;
+import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
@@ -31,56 +31,66 @@ public class ProductService {
         }
     }
 
-    // lista de produtos por nome
     public List<ProductResponseDto> listProductDto(String nameId){
 
-        if (productRepository.findByProductNameContaining(nameId).size() == 0){
+        if (productRepository.findByNameContaining(nameId).size() == 0){
             throw new RuntimeException("Não localizamos produto cadastrado com esse nome.");
         } else {
 
-            return productRepository.findByProductNameContaining(nameId)
+            return productRepository.findByNameContaining(nameId)
                     .stream()
                     .map(ProductResponseDto::new)
                     .collect(Collectors.toList());
         }
     }
 
+    public List<Product> listProduct(String type){
+        return productRepository.findAll()
+                .stream().filter(product -> product.getStockType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+
+
 
     public void valida(Long productId) {
-        Product product =  productRepository.findByProductId(productId);
-        if (product == null){
-            throw new RuntimeException("Produto não cadastrado.");
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if(!optionalProduct.isPresent()){
+            throw new RuntimeException("Produto não cadastrado");
         }
     }
 
-    // localizando produto por id
-    public Product findProduct(Optional<Product> productFind) {
-        if (productFind.get().getProductId() == null){
-            throw new RuntimeException("Não localizamos produto com esse Id.");
-        }else{
-            Product product = productFind.get();
-            return product;
+    public Product obtem(Long id){
+        Optional<Product> byId = this.productRepository.findById(id);
+        if(byId.isPresent()){
+            return byId.get();
+        }else {
+        throw new RuntimeException("Produto não cadastrado");
         }
     }
 
-    // validando atualizaçao de produto por id
-    public Product validaUpdate(Optional<Product> productFind, ProductRequestDto productRequestDto){
+    public ProductResponseDto productDtoById(Product product){
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setProductName(product.getName());
+        productResponseDto.setDescription(product.getDescription());
+        return productResponseDto;
+    }
+
+    public Product validaUpdate(Optional<Product> productFind, ProductRequestDTO productRequestDto){
         if (productFind.isPresent()){
             Product newProduct = productFind.get();
-            newProduct.setProductName(productRequestDto.getProductName());
+            newProduct.setName(productRequestDto.getName());
             newProduct.setDescription(productRequestDto.getDescription());
-
             return newProduct;
         } else {
-            throw new RuntimeException("Não localizamos produto com esse Id para ser atualizado.");
+            throw new RuntimeException("Produto nao encontrado");
         }
     }
 
-    public ProductRequestDto convertEntityToDtoRequest(Product product){
-        ProductRequestDto productRequestDto = new ProductRequestDto();
-        productRequestDto.setProductName(product.getProductName());
+    public ProductRequestDTO convertEntityToDtoRequest(Product product){
+        ProductRequestDTO productRequestDto = new ProductRequestDTO();
+        productRequestDto.setName(product.getName());
         productRequestDto.setDescription(product.getDescription());
         return productRequestDto;
     }
-
 }

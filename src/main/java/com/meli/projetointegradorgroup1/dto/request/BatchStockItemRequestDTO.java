@@ -22,15 +22,4 @@ public class BatchStockItemRequestDTO {
     private Long product_id;
 
 
-
-    public BatchStockItem converte(BatchStockItemRequestDTO dto, ProductService productService, SellerService sellerService){
-        return BatchStockItem.builder()
-                .minimumTemperature(dto.getMinimumTemperature())
-                .volume(dto.getVolume())
-                .maximumTemperature(dto.getMaximumTemperature())
-                .product(productService.obtem(dto.product_id))
-                .quantity(dto.getQuantity())
-                .build();
-
-    }
 }

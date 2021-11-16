@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/inboundorder")
 public class InBoundOrderController {
@@ -32,7 +34,7 @@ public class InBoundOrderController {
 
 
     @PostMapping("/create")
-    public InBoundOrderRequestDTO create(@RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
+    public InBoundOrderRequestDTO create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
                 sectionServices, productService, sellerService));

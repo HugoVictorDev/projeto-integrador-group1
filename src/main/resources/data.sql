@@ -52,7 +52,7 @@ create table product (
                          name varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc');
 
 create table representante (
                                id  bigserial not null,
@@ -71,7 +71,8 @@ create table section (
                          warehouse_id int8,
                          primary key (id)
 );
-insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id) values (1, 'FRESH', '12', 150,  1);
+insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id)
+values (1, 'FRESH', '12', 150,  1), (2, 'NATURAL', '12', 150,  1), (3, 'FRESH', '12', 150,  1);
 
 
 create table seller (
