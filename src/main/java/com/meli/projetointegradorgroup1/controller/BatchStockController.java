@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,36 +41,37 @@ public class BatchStockController {
 
 
     @PostMapping("/create")
-    public BatchStockRequestDTO createBatchStock (@RequestBody BatchStockRequestDTO batchStockRequestDTO){
+    public BatchStockRequestDTO createBatchStock (@Valid @RequestBody BatchStockRequestDTO batchStockRequestDTO){
 //           batchStockService.valida(batchStockDTOhugo.getBatchStockItem());
-            this.batchStockRepository.save(BatchStockRequestDTO.convertedto(batchStockRequestDTO,
+            this.batchStockRepository.save(batchStockService.convert(batchStockRequestDTO,
                     batchStockItemService, sellerService));
             return batchStockRequestDTO;
     }
 
-//    @GetMapping("/list")
-//    public List<BatchStockResponseDTO> listBastchStock(){
-//           return batchStockService.findBatchSotck();
-//    }
-
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<HttpStatus> deleteBatchStockNumber(@PathVariable("id") Long ordernumber) {
-        batchStockService.deleteBS(ordernumber);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/list/{number}")
+    public BatchStockResponseDTO listBastchStockNumber(@PathVariable("number") Long BatchNumber) {
+        return batchStockService.convertToDto(batchStockService.findBatchNumber(BatchNumber));
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<HttpStatus> updateBatchStockNumber(@RequestBody BatchStock batchStock) {
 
-        //InBoundOrder inBoundOrder = new InBoundOrder();
-        batchStock = batchStockService.saveBS(batchStock);
+    @DeleteMapping("/delete/{number}")
+    public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("number") Long BatchNumber) {
+        BatchStock batchStock = batchStockService.findBatchNumber(BatchNumber);
+        batchStockService.deleta(batchStock.getId());
+        return batchStockService.convertToDto(batchStock);
+    }
 
-        Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
-        if (_batchStock.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/update")
+    public BatchStockResponseDTO updateBatchStockNumber(@RequestBody @Valid BatchStockRequestDTO batchStockDTO) {
+        BatchStock batchStockFind = batchStockService.findBatchNumber(batchStockDTO.getBatchStockNumber());
+        BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
+        return batchStockService.convertToDto(batchStockService.save(batchStock));
+
+        //      Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
+        //      if (_batchStock.isPresent()) {
+        //          return new ResponseEntity<>(HttpStatus.CREATED);
+        //      } else {
+        //          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //      }
     }
 }
