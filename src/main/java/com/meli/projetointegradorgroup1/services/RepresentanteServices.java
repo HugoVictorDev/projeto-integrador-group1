@@ -113,4 +113,11 @@ public class RepresentanteServices {
             }
         }
     }
+
+    public Representante obterRepresentanteById(Long id) {
+        Optional<Representante> representante = representanteRepository.findById(id);
+        if (representante.isPresent()){
+            return representante.get();
+        }else throw new RuntimeException("representante não encontrada");
+    }
 }

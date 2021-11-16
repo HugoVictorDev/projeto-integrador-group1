@@ -1,8 +1,10 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
+import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +39,6 @@ public class SectionServices {
     public void validarWarehouse(SectionRequestDTO sectionRequestDTO) {
        warehouseServices.warehouseExist(sectionRequestDTO.getWarehouseID());
     }
-
 
 
     public List<Section> listaSection() {

@@ -1,17 +1,12 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
-import com.meli.projetointegradorgroup1.services.EnumNamePattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Data
