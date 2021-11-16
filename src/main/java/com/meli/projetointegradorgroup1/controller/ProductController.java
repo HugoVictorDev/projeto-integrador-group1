@@ -49,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/list/{name}")
     @ApiOperation(value = "Retornar lista de produtos a partir do nome")
-    public List<ProductResponseDto> getByName(@PathVariable String name){
+    public List<ProductResponseDto> getByName(@Valid @PathVariable String name){
         return productService.listProductDto(name);
     }
 

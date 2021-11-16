@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,9 +33,10 @@ public class ProductService {
         }
     }
 
+    @Valid
     public List<ProductResponseDto> listProductDto(String nameId){
         if (productRepository.findByNameContaining(nameId).size() == 0){
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Não encontramos produtos para essa pesquisa.");
+            throw new RuntimeException("Não encontramos produtos para essa pesquisa.");
         } else {
             return productRepository.findByNameContaining(nameId)
                     .stream()
