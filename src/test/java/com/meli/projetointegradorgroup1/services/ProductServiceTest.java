@@ -6,7 +6,6 @@ import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
-import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

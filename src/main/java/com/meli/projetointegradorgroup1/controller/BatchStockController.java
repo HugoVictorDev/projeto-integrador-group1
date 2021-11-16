@@ -43,21 +43,21 @@ public class BatchStockController {
         return batchStockService.convertList(batchStockService.findBatchSotck());
     }
 
-    @GetMapping("/list/{number}")
-    public BatchStockResponseDTO listBastchStockNumber(@PathVariable("number") Long BatchNumber) {
-        return batchStockService.convertToDto(batchStockService.findBatchNumber(BatchNumber));
+    @GetMapping("/list/{id}")
+    public BatchStockResponseDTO listBastchStockNumber(@PathVariable("id") Long id) {
+        return batchStockService.convertToDto(batchStockService.findById(id));
     }
 
-    @DeleteMapping("/delete/{number}")
-    public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("number") Long BatchNumber) {
-           BatchStock batchStock = batchStockService.findBatchNumber(BatchNumber);
+    @DeleteMapping("/delete/{id}")
+    public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("id") Long id) {
+           BatchStock batchStock = batchStockService.findById(id);
            batchStockService.deleta(batchStock.getId());
            return batchStockService.convertToDto(batchStock);
     }
 
-    @PutMapping("/update")
-    public BatchStockResponseDTO updateBatchStockNumber(@RequestBody @Valid BatchStockRequestDTO batchStockDTO) {
-           BatchStock batchStockFind = batchStockService.findBatchNumber(batchStockDTO.getBatchStockNumber());
+    @PutMapping("/update/{id}")
+    public BatchStockResponseDTO updateBatchStockNumber(@PathVariable("id") Long id, @RequestBody @Valid BatchStockRequestDTO batchStockDTO) {
+           BatchStock batchStockFind = batchStockService.findById(id);
            BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
            return batchStockService.convertToDto(batchStockService.save(batchStock));
 
