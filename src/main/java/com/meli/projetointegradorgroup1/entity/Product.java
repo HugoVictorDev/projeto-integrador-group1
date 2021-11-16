@@ -27,4 +27,5 @@ public class Product {
     private StockType stockType;
 
 
+
 }

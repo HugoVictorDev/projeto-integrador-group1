@@ -48,6 +48,18 @@ public class BatchStockItemService {
     }
 
 
+    public BatchStockItem converteToDto(BatchStockItemRequestDTO dto, ProductService productService, SellerService sellerService){
+        return BatchStockItem.builder()
+                .minimumTemperature(dto.getMinimumTemperature())
+                .volume(dto.getVolume())
+                .maximumTemperature(dto.getMaximumTemperature())
+                .product(productService.obtem(dto.getProduct_id()))
+                .quantity(dto.getQuantity())
+                .build();
+
+    }
+
+
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
         productService.valida(batchStockItemRequestDTO.getProduct_id());

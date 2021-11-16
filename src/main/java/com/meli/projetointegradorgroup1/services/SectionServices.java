@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,20 +37,7 @@ public class SectionServices {
        warehouseServices.warehouseExist(sectionRequestDTO.getWarehouseID());
     }
 
-/*        valida warhouse
-    public void validWarhouseExist(SectionForInboundDTO sectionForInboundDTO) {
-        warehouseServices.warehouseExist(sectionForInboundDTO.getCode());
 
-    }
-
-    //    valida section
-    public void validSectionExist(SectionForInboundDTO sectionForInboundDTO) {
-        Optional<Section> section = sectionRepository.findById(sectionForInboundDTO.getCode());
-        if (!section.isPresent()){
-            throw new RuntimeException("section não cadastrada");
-        }
-    }
-*/
 
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
@@ -77,6 +62,20 @@ public class SectionServices {
         }else throw new EntityNotFoundException("Section não encontrada");
     }
 
+    public StockType obtemTypeStockSection(Long code) {
+        Section section = sectionRepository.findByCode(code);
+        StockType stockType = section.getStockType();
+
+        return stockType;
+
+    }
+
+    public int obtemQuantidadeDoSection(Long code){
+        Section section = sectionRepository.findByCode(code);
+        Long capacity = section.getCapacity();
+        return capacity.intValue();
+
+    }
 
     public Section validaUpdate(Optional<Section> sectionFind, SectionRequestDTO sectionRequestDTO) {
         if(sectionFind.isPresent()){

@@ -13,14 +13,9 @@ import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -41,7 +36,7 @@ public class BatchStockItemController {
     @PostMapping("/create")
     public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
         batchStockItemService.validProductExist(batchStockItemRequestDTO);
-        this.batchStockItemRepository.save(batchStockItemRequestDTO.converte(batchStockItemRequestDTO, productService, sellerService));
+        this.batchStockItemRepository.save(batchStockItemService.converteToDto(batchStockItemRequestDTO, productService, sellerService));
         return batchStockItemRequestDTO;
     }
 

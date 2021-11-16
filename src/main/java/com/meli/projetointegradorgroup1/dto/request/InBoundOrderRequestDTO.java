@@ -2,7 +2,6 @@ package com.meli.projetointegradorgroup1.dto.request;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.meli.projetointegradorgroup1.dto.BatchStockDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.services.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
@@ -24,16 +25,20 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class InBoundOrderRequestDTO {
-
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private LocalDate orderDate;
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         @JsonProperty(value =  "seller_id")
         private Long sellerId; // falta buildar TODO
         @JsonProperty(value = "section")
         private SectionForInboundDTO sectionForInboundDTO;
         @JsonProperty(value= "batchStockList")
-        private List<BatchStockDTO> batchStockDTOList;
-
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+        @Valid
+        private List<BatchStockRequestDTO> batchStockDTOList;
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long representanteId;
 
 
@@ -45,7 +50,7 @@ public class InBoundOrderRequestDTO {
                 InBoundOrder inboundOrder = null;
                 inboundOrder = InBoundOrder.builder()
                         .orderDate(this.orderDate)
-                        .representante(representanteServices.obter(this.representanteId))
+                        .representative(representanteServices.obter(this.representanteId))
                         .orderNumber(this.orderNumber)
                         .section(section)
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
@@ -61,10 +66,10 @@ public class InBoundOrderRequestDTO {
 
 
 
-    public List<BatchStock> converte(List<BatchStockDTO> dtos, ProductService productService, SellerService sellerService){
+    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        for (BatchStockDTO dto: dtos) {
+        for (BatchStockRequestDTO dto: dtos) {
             BatchStock batchStock = null;
             batchStock = BatchStock.builder()
                     .batchStockNumber(dto.getBatchStockNumber())
@@ -73,10 +78,14 @@ public class InBoundOrderRequestDTO {
                     .currentQuality(dto.getCurrentQuality())
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
+                    .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
                     .seller(sellerService.obter(this.sellerId))
+                    .quantity(dto.getQuantity())
+                    .volume(dto.getVolume())
                     .batchStockItem(
                             BatchStockItem.builder()
+                                    .maximumTemperature(dto.getMaximumTemperature())
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))
