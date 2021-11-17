@@ -5,6 +5,7 @@ import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,14 @@ public class BatchStockItemService {
 
     @Autowired
     ProductService productService;
+
+    public BatchStockItemService(BatchStockItemRepository repositoryMock) {
+        this.batchStockItemRepository = repositoryMock;
+    }
+
+    public BatchStockItem setBatchStockItem(BatchStockItem batchStockItem){ // - ok
+        return batchStockItemRepository.save(batchStockItem);
+    }
 
     public BatchStockItem getBatchStockItem(Long id){
         Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
@@ -61,8 +70,6 @@ public class BatchStockItemService {
         if (batchStockItemFind.isPresent()) {
             BatchStockItem _batchStockItem = batchStockItemFind.get();
             _batchStockItem.setQuantity(batchStockItem.getQuantity());
-//            _batchStockItem.setBatchstock(batchStockItem.getBatchstock());
-
 
             return _batchStockItem;
         }else{
