@@ -90,7 +90,7 @@ public class SectionServices {
         }else{
             throw new RuntimeException("Section não encontrada");
         }
-}
+    }
 
     public Warehouse obterWarehouse(long warehouseID) {
         return warehouseServices.obterWarehouseById(warehouseID);

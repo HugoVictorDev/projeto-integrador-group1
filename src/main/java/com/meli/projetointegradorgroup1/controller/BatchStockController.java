@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
@@ -33,9 +32,9 @@ public class BatchStockController {
 
     @PostMapping("/create")
     public BatchStockRequestDTO createBatchStock (@RequestBody @Valid BatchStockRequestDTO batchStockRequestDTO){
-           batchStockService.valida(batchStockRequestDTO.getBatchStockItem());
-           batchStockService.save(batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService));
-           return batchStockRequestDTO;
+        batchStockService.valida(batchStockRequestDTO.getBatchStockItem());
+        batchStockService.save(batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService));
+        return batchStockRequestDTO;
     }
 
     @GetMapping("/list")
@@ -50,22 +49,22 @@ public class BatchStockController {
 
     @DeleteMapping("/delete/{id}")
     public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("id") Long id) {
-           BatchStock batchStock = batchStockService.findById(id);
-           batchStockService.deleta(batchStock.getId());
-           return batchStockService.convertToDto(batchStock);
+        BatchStock batchStock = batchStockService.findById(id);
+        batchStockService.deleta(batchStock.getId());
+        return batchStockService.convertToDto(batchStock);
     }
 
     @PutMapping("/update/{id}")
     public BatchStockResponseDTO updateBatchStockNumber(@PathVariable("id") Long id, @RequestBody @Valid BatchStockRequestDTO batchStockDTO) {
-           BatchStock batchStockFind = batchStockService.findById(id);
-           BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
-           return batchStockService.convertToDto(batchStockService.save(batchStock));
+        BatchStock batchStockFind = batchStockService.findById(id);
+        BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
+        return batchStockService.convertToDto(batchStockService.save(batchStock));
 
-  //      Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
-  //      if (_batchStock.isPresent()) {
-  //          return new ResponseEntity<>(HttpStatus.CREATED);
-  //      } else {
-  //          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  //      }
+        //      Optional<InBoundOrder> _batchStock = inboundOrderRepository.findById(batchStock.getBatchStockNumber());
+        //      if (_batchStock.isPresent()) {
+        //          return new ResponseEntity<>(HttpStatus.CREATED);
+        //      } else {
+        //          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //      }
     }
 }
