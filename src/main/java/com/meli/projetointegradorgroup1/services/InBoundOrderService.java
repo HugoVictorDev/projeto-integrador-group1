@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class InBoundOrderService {
@@ -35,44 +33,42 @@ public class InBoundOrderService {
     InBoundOrderRequestDTO inb;
     @Autowired
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
-                               RepresentanteServices representanteServices, ProductService productService){
+                               RepresentanteServices representanteServices, ProductService productService, SectionServices sectionServices){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
         this.productService = productService;
+        this.sectionServices = sectionServices;
     }
+
 
 
     public void registra(InBoundOrder inBoundOrder){
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
-
         batchStocks.forEach(b -> {
             b.setInboundOrder(inBoundOrder);
             b.getBatchStockItem().setBatchStock(b);
         });
         try{
-
-                this.inBoundOrderRepository.save(inBoundOrder);
-
+            this.inBoundOrderRepository.save(inBoundOrder);
         }catch(RuntimeException e){
             e.printStackTrace();
-            throw new RuntimeException( "deu ruim");
+            throw new RuntimeException("Erro ao Registrar InboundOrder");
         }
     }
 
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
-
         this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-       this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
-       this.sectionHasCapacity(inb);
+        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
+        this.sectionHasCapacity(inb);
 
         return inb;
     }
 
-    public boolean  representanteIsPresenteWarehouse(Long id){
+    private boolean  representanteIsPresenteWarehouse(Long id){
         for (Section sec : sectionServices.listaSection()){
             if (sec.getWarehouse().getRepresentante().getId() == id){
                 Representante representante = sec.getWarehouse().getRepresentante();
@@ -97,39 +93,33 @@ public class InBoundOrderService {
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
         //capacidade da section by code
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
-
         //soma de valores da lista de batchstock
         int sumOfProductQuantity = inb.getBatchStockDTOList()
                 .stream().mapToInt(value -> value.getQuantity()).sum();
 
         if (capacitySection >= sumOfProductQuantity){
             return true;
-        }
-        throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
+        }       throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
                 " lotes e voce está inserindo: " + sumOfProductQuantity + "  lotes");
     }
 
 
     public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
                                     ProductService productService, SellerService sellerService){
-
         Section section = sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         try{
-            InBoundOrder inboundOrder = null;
-            inboundOrder = InBoundOrder.builder()
+             InBoundOrder inboundOrder = null;
+             inboundOrder = InBoundOrder.builder()
                     .orderDate(inb.getOrderDate())
                     .representante(representanteServices.obter(inb.getRepresentanteId()))
                     .orderNumber(inb.getOrderNumber())
                     .section(section)
                     .batchStock(converte(inb.getBatchStockDTOList(), productService, sellerService)).build();
-
-
-            return inboundOrder;
+           return inboundOrder;
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
-
     }
 
     public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){

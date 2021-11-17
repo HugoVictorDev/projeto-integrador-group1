@@ -1,15 +1,9 @@
 package com.meli.projetointegradorgroup1.controller;
 
-
-
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-
-import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -31,7 +25,9 @@ public class InBoundOrderController {
     @Autowired
     SellerService sellerService;
 
-
+    public InBoundOrderController(InBoundOrderService inBoundOrderService) {
+        this.inBoundOrderService = inBoundOrderService;
+    }
 
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
@@ -40,6 +36,4 @@ public class InBoundOrderController {
                 sectionServices, productService, sellerService));
         return inBoundOrderRequestDTO;
     }
-
-
 }

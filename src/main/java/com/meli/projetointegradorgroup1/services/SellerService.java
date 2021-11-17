@@ -3,7 +3,6 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +37,7 @@ public class SellerService {
 
     public ResponseEntity<HttpStatus> delSeller(Long id){// ok
         try {
-            this.findSellerById(id);
+            this.obter(id);
             sellerRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -72,7 +71,6 @@ public class SellerService {
         return sellerResponseDTO;
     }
 
-
     public Seller validaUpdate(Optional<Seller> sellerFind, SellerRequestDTO sellerRequestDTO) {
         if (sellerFind.isPresent()) {
             Seller _seller = sellerFind.get();
@@ -85,7 +83,6 @@ public class SellerService {
         }
     }
 
-
     public SellerRequestDTO convertEntityToDTORequest(Seller seller){
         SellerRequestDTO sellerRequestDTO = new SellerRequestDTO();
         sellerRequestDTO.setName(seller.getName());
@@ -94,13 +91,13 @@ public class SellerService {
         return sellerRequestDTO;
     }
 
-    public Seller findSellerById(Long id){
+    public Seller obter(Long id){
         Optional<Seller> _byId = sellerRepository.findById(id);
-
-        return _byId.get();
+        if(_byId.equals(Optional.empty()) || _byId == null){
+            throw new RuntimeException("Seller não encontrado");
+        }else {
+            return _byId.get();
+        }
     }
 
-    public Seller obter(Long sellerId) {
-        return null;
-    }
 }

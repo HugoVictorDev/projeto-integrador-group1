@@ -17,5 +17,4 @@ public class BatchStockItemRequestDTO {
     private Double minimumTemperature;
     private Long product_id;
 
-
 }

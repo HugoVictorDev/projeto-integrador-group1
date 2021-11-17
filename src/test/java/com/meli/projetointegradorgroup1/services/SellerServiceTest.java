@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 
 class SellerServiceTest {
-
     // -- MOCK DA REPOSITORY
     SellerRepository repositoryMock = Mockito.mock(SellerRepository.class);
 
@@ -47,7 +46,6 @@ class SellerServiceTest {
 
     @Test
     void setSeller() { // - CADASTRO DE SELLER - OK
-
         SellerResponseDTO sellerReturn = new SellerResponseDTO();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
@@ -60,7 +58,6 @@ class SellerServiceTest {
     }
     @Test
     void deleteSeller() { // - delete DE SELLER - OK
-
         Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
@@ -74,7 +71,6 @@ class SellerServiceTest {
     }
     @Test
     void notdeleteSeller() { // - CADASTRO DE SELLER - Ok
-
 
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         doNothing().when(repositoryMock).deleteById(Mockito.any());
@@ -93,13 +89,9 @@ class SellerServiceTest {
         sellerArrayList.add(seller3);
         sellerArrayList.add(seller4);
 
-
         Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
-
         SellerService sellerService = new SellerService(repositoryMock);
-
         List<SellerResponseDTO> listaResult = sellerService.getSellers();
-
         Assert.assertEquals(4, listaResult.size());
     }
 
@@ -112,12 +104,8 @@ class SellerServiceTest {
         sellerArrayList.add(seller3);
         sellerArrayList.add(seller4);
 
-
         Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
-
         Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
-
-
 
         SellerService sellerService = new SellerService(repositoryMock);
         ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
@@ -125,45 +113,28 @@ class SellerServiceTest {
         //sellerReturn = sellerService.valida(sellerIdNok);
         Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
 
-
-
-
     }
 
     @Test
     void notValida() { // - TESTE DE NAO OK
-
         List<Seller> sellerArrayList = new ArrayList();
-
         sellerArrayList.add(seller1);
 
-
-
         Mockito.when(repositoryMock.findAll()).thenReturn(sellerArrayList);
-
         Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(null);
-
-
 
         SellerService sellerService = new SellerService(repositoryMock);
         ResponseEntity<HttpStatus> sellerReturn = sellerService.valida(sellerIdNok);
-
         //sellerReturn = sellerService.valida(sellerIdNok);
         Assert.assertTrue(sellerReturn.getStatusCodeValue() == 500 );
-
-
     }
-
-
 
 
     @Test
     void convertEntityToDTORequest() {
-
         SellerService sellerService = new SellerService(repositoryMock);
         SellerRequestDTO sellerRequestDTO = sellerService.convertEntityToDTORequest(seller1); //validaUpdate(java.util.Optional.ofNullable(seller1), sellerRequestDTOSeller1);
         Assert.assertEquals(seller1RequestDTO, sellerRequestDTO);
-
     }
 
 }

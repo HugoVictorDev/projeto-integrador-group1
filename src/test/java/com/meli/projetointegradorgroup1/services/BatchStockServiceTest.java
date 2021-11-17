@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
@@ -133,7 +132,7 @@ public class BatchStockServiceTest {
         sellerService = Mockito.mock(SellerService.class);
 
         Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
 
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
 
@@ -157,7 +156,7 @@ public class BatchStockServiceTest {
         sellerService = Mockito.mock(SellerService.class);
 
         Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
 
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
 
