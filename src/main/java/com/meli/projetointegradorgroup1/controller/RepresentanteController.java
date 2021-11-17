@@ -1,9 +1,8 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.response.RepresentanteDTO;
+import com.meli.projetointegradorgroup1.dto.RepresentanteDTO;
 
 import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,55 +10,53 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/representative")
+@RequestMapping("/representante")
 public class RepresentanteController {
 
     @Autowired
-    RepresentanteRepository representanteRepository;
-    @Autowired
     RepresentanteServices representanteServices;
 
+    public RepresentanteController(RepresentanteServices representanteServices) {
+        this.representanteServices = representanteServices;
+    }
 
     //Cadastrar representante
     @PostMapping("/post")
-    public RepresentanteDTO createRepresentative (@Valid @RequestBody RepresentanteDTO representativedto){
-           representanteServices.valida(representativedto);
-           Representante representative = RepresentanteDTO.converte(representativedto);
-           return RepresentanteDTO.converte(representanteRepository.save(representative));
+    public RepresentanteDTO createrepResentante (@Valid @RequestBody RepresentanteDTO representanteDTO){
+           representanteServices.valida(representanteDTO);
+           Representante representante = representanteServices.converte(representanteDTO);
+           return representanteServices.converteToDto(representanteServices.save(representante));
     }
 
     //Consultar lista de  representantes
     @GetMapping("/list")
-    public List<RepresentanteDTO> getRepresentativeList() {
-           return RepresentanteDTO.converte(representanteServices.listaRepresentative());
+    public List<RepresentanteDTO> getRepresentanteList() {
+           return representanteServices.converteList(representanteServices.listaRepresentante());
     }
 
     //Atualizar por id
-    @PutMapping("/update/{id}")
-    public RepresentanteDTO updateRepresentative(@PathVariable("id") Long id, @Valid @RequestBody RepresentanteDTO representativedto) {
-           Optional<Representante> representativeFind = representanteRepository.findById(id);
-           Representante representative = representanteServices.validaUpdate(representativeFind, representativedto);
-           return RepresentanteDTO.converte(representanteRepository.save(representative));
+    @PutMapping("/update")
+    public RepresentanteDTO updateRepresentante(@Valid @RequestBody RepresentanteDTO representanteDTO) {
+           Representante representanteFind = representanteServices.obter(representanteDTO.getRepresentatne_Id());
+           Representante representante = representanteServices.validaUpdate(representanteFind, representanteDTO);
+           return representanteServices.converteToDto(representanteServices.save(representante));
     }
-
 
     //consultar representatnte pelo ID
     @GetMapping("{id}")
-    public RepresentanteDTO getRepresentativeById(@PathVariable("id") Long id) {
-           Optional<Representante> representativeFind = representanteRepository.findById(id);
-           return RepresentanteDTO.converte(representanteServices.findRepresentative(representativeFind));
+    public RepresentanteDTO getRepresentanteById(@PathVariable("id") Long id) {
+           Representante representatne = representanteServices.obter(id);
+           return representanteServices.converteToDto(representatne);
     }
-
 
     //deletar representatnte pelo ID
     @DeleteMapping("/delete/{id}")
-    public RepresentanteDTO deleteRepresentativeById(@PathVariable("id") Long id) {
-           Representante representative = representanteServices.findRepresentative(representanteRepository.findById(id));
-           representanteRepository.deleteById(id);
-           return RepresentanteDTO.converte(representative);
+    public RepresentanteDTO deleteRepresentanteById(@PathVariable("id") Long id){
+           Representante representante  = representanteServices.obter(id);
+           representanteServices.deletaRepresentante(id);
+           return representanteServices.converteToDto(representante);
         }
     }
 

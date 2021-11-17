@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,9 @@ import lombok.NoArgsConstructor;
 public class SectionForInboundDTO {
 
     @JsonProperty(value = "sectionCode")
+
     private Long code;
+
     private Long warehouseCode;
 
     public Section converte(SectionForInboundDTO dto, WarehouseServices warehouseServices){

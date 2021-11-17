@@ -1,19 +1,15 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -21,52 +17,52 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
     ProductService productService;
 
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Cadastrar novo produto")
-    public ProductRequestDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO){
-        return productService.save(productRequestDTO);
+    public ProductResponseDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDto){
+        Product product = productService.save(productService.converte(productRequestDto));
+        return productService.converteToDto(product);
     }
 
     @GetMapping("/list")
     @ApiOperation(value = "Retornar lista de produtos")
-    public List<ProductResponseDto> responseDtoList(){
-        return productService.listProductDto();
+    public List<ProductResponseDTO> listProduct(){
+        return productService.listProductAll();
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     @ApiOperation(value = "Retornar produto único a partir do id")
-    public ResponseEntity<ProductResponseDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.findById(id));
+    public ProductResponseDTO getById(@PathVariable("id") Long id){
+        return productService.converteToDto(productService.obtem(id));
     }
 
-    @GetMapping("/list/{name}")
+    @GetMapping("/list/{productName}")
     @ApiOperation(value = "Retornar lista de produtos a partir do nome")
-    public List<ProductResponseDto> getByName(@Valid @PathVariable String name){
-        return productService.listProductDto(name);
+    public List<ProductResponseDTO> getByName(@PathVariable String productName){
+        return productService.listProduct(productName);
     }
 
     @PutMapping("/update/{id}")
     @ApiOperation(value = "Atualizar produto a partir do id")
-    public ProductRequestDTO updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
-
-        Optional<Product> productFind = productRepository.findById(id);
-        Product newProduct = productService.validaUpdate(productFind, productRequestDto);
-        return productService.convertEntityToDtoRequest(productRepository.save(newProduct));
+    public ProductResponseDTO updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
+        Product productFind = productService.obtem(id);
+        Product product = productService.validaUpdate(productFind, productRequestDto);
+        return productService.converteToDto(productService.save(product));
     }
 
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "Deletar produto a partir do id")
-    public String deleteProduct(@PathVariable Long id){
-        productRepository.deleteById(id);
-        return "Produto de id " + id + " excluído com sucesso!";
+    public ProductResponseDTO deleteProduct(@PathVariable Long id){
+        Product product  = productService.obtem(id);
+        productService.deletaProduct(id);
+        return productService.converteToDto(product);
     }
 
 }

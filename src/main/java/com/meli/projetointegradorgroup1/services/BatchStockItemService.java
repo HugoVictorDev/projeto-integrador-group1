@@ -25,7 +25,7 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
-    public BatchStockItem obtem(Long id){
+    public BatchStockItem obter(Long id){
         Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
         return byId.get();
     }
@@ -45,6 +45,18 @@ public class BatchStockItemService {
         batchstockItemResponseDTO.setMinimumTemperature(batchStockItem.getMinimumTemperature());
 
         return batchstockItemResponseDTO;
+    }
+
+
+    public BatchStockItem converteToDto(BatchStockItemRequestDTO dto, ProductService productService, SellerService sellerService){
+        return BatchStockItem.builder()
+                .minimumTemperature(dto.getMinimumTemperature())
+                .volume(dto.getVolume())
+                .maximumTemperature(dto.getMaximumTemperature())
+                .product(productService.obtem(dto.getProduct_id()))
+                .quantity(dto.getQuantity())
+                .build();
+
     }
 
 
@@ -78,4 +90,8 @@ public class BatchStockItemService {
     }
 
 
+    public BatchStockItem obtem(Long id) {
+        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
+        return byId.get();
+    }
 }

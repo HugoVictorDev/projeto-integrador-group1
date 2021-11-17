@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.dto.response;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SellerResponseDTO {
 
     private String name;

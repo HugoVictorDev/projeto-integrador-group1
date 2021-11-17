@@ -22,6 +22,4 @@ public class Representante {
     private Long id;
     private String name;
     private String cpf;
-
-
 }

@@ -24,6 +24,11 @@ create table batch_stock (
                              primary key (id)
 );
 
+insert into batch_stock(batch_number, current_temperature,maximum_temperature, minimum_temperature, volume, quantity, manufacturing_time, due_date, seller_id, initial_quality, current_quality)
+values (1, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3'),
+       (2, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3'),
+       (3, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3');
+
 create table batch_stock_item (
                                   id  bigserial not null,
                                   maximum_temperature float8 not null,
@@ -34,6 +39,9 @@ create table batch_stock_item (
                                   product_id int8,
                                   primary key (id)
 );
+insert into batch_stock_item(maximum_temperature, minimum_temperature, quantity, volume, batch_stock_id, product_id)
+values (1,1,1,1,3,1),
+       (1,1,1,1,1,1), (1,1,1,1,2,1);
 
 create table in_bound_order (
                                 id bigserial not null,
@@ -48,11 +56,11 @@ create table in_bound_order (
 create table product (
                          id  bigserial not null,
                          stock_type varchar(20) not null,
-                         name varchar(255),
                          description varchar(255),
+                         name varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,name, description) values('FRESH', 'carne seca', 'descricao da carne seca');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc');
 
 create table representante (
                                id  bigserial not null,
@@ -71,7 +79,8 @@ create table section (
                          warehouse_id int8,
                          primary key (id)
 );
-insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id) values (1, 'FRESH', '12', 150,  1);
+insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id)
+values (1, 'FRESH', '12', 150,  1), (2, 'NATURAL', '12', 150,  1), (3, 'FRESH', '12', 150,  1);
 
 
 create table seller (

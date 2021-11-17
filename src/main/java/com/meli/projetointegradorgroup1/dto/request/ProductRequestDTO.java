@@ -1,15 +1,12 @@
 package com.meli.projetointegradorgroup1.dto.request;
 
-import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.StockType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -17,20 +14,13 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class ProductRequestDTO {
 
-    @NotBlank(message = "O campo nome não pode estar vazio")
+
+    @NotBlank(message = "Campo Name é obrigatorio")
+    @Pattern(regexp="^[a-zA-Z]+(?:\\s[a-zA-Z]+)?${3,50}",message="Apenas letras, minimo 3 caracteres")
     private String name;
 
+    @NotBlank(message = "Campo Descrição é obrigatório")
     private String description;
 
-    @Enumerated(value = EnumType.STRING)
-    private StockType stockType;
-
-    public Product converte(ProductRequestDTO dto){
-        return  Product.builder()
-                .stockType(dto.getStockType())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .build();
-    }
 
 }

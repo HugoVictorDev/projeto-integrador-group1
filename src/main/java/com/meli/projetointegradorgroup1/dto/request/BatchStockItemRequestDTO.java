@@ -1,7 +1,4 @@
 package com.meli.projetointegradorgroup1.dto.request;
-import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.services.ProductService;
-import com.meli.projetointegradorgroup1.services.SellerService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BatchStockItemRequestDTO {
 
-
     private int quantity;
     private Double volume;
     private Double maximumTemperature;
@@ -22,15 +18,4 @@ public class BatchStockItemRequestDTO {
     private Long product_id;
 
 
-
-    public BatchStockItem converte(BatchStockItemRequestDTO dto, ProductService productService, SellerService sellerService){
-        return BatchStockItem.builder()
-                .minimumTemperature(dto.getMinimumTemperature())
-                .volume(dto.getVolume())
-                .maximumTemperature(dto.getMaximumTemperature())
-                .product(productService.obtem(dto.product_id))
-                .quantity(dto.getQuantity())
-                .build();
-
-    }
 }
