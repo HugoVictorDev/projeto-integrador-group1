@@ -39,7 +39,10 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
+    public List<Long> listProductId(){
+        return productRepository.findAll().stream()
+                .map(product -> product.getId()).collect(Collectors.toList());
+    }
 
 
     public void valida(Long productId) {

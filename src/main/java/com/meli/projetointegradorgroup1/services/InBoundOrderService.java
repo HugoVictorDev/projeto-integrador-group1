@@ -68,6 +68,8 @@ public class InBoundOrderService {
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
        this.sectionHasCapacity(inb);
+       this.validProductInboud(inb);
+
 
         return inb;
     }
@@ -92,6 +94,22 @@ public class InBoundOrderService {
         }
         throw new RuntimeException("section  não corresponde ao tipo de produto");
     }
+
+
+    private boolean validProductInboud(InBoundOrderRequestDTO inb){
+        List<Long> listBtcItemID = inb.getBatchStockDTOList().stream()
+                .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem()).collect(Collectors.toList());
+
+        List<Long> listProductID = productService.listProductId();
+        if(listProductID.contains(listBtcItemID)){
+            return true;
+
+        }throw new RuntimeException("Produto nao existe");
+
+    }
+
+
+
 
 
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){

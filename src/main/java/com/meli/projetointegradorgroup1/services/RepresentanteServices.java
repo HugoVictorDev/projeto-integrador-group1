@@ -77,6 +77,6 @@ public class RepresentanteServices {
 
         if (representante.isPresent()){
             return representante.get();
-        }else throw new EntityNotFoundException("representante não encontrada");
+        }else throw new RuntimeException("representante não encontrada");
     }
 }

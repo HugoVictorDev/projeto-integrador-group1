@@ -25,6 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class InBoundOrderRequestDTO {
+
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
