@@ -1,8 +1,8 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
-import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping(path = "/section")
 public class SectionController {
-    @Autowired
-    private SectionRepository sectionRepository;
 
     @Autowired
     private SectionServices sectionServices;
@@ -23,42 +21,41 @@ public class SectionController {
     @Autowired
     private WarehouseServices warehouseServices;
 
-    @PostMapping("/create")
-    public SectionDTO ceateSection(@Valid @RequestBody SectionDTO sectionDTO){
-        sectionServices.validarWarehouse(sectionDTO);
-         this.sectionRepository.save(sectionDTO.converteBuilder(sectionDTO, warehouseServices)) ;
-         return sectionDTO;
+    public SectionController(SectionServices sectionServices) {
+        this.sectionServices = sectionServices;
     }
 
+    @PostMapping("/create")
+    public SectionResponseDTO ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO){
+        sectionServices.validarWarehouse(sectionRequestDTO);
+        Section section = sectionServices.convert(sectionRequestDTO, warehouseServices);
+        return sectionServices.convertToDto(sectionServices.save(section));
+    }
 
     //listar todas as sessões
     @GetMapping("/list")
-    public Iterable<SectionDTO> list(SectionDTO sectionDTO){
-//           return sectionDTO.converte(sectionServices.listaSection()); TODO REVISAR
-        return null;
+    public Iterable<SectionResponseDTO> list(){
+        return sectionServices.convertList(sectionServices.listaSection());
     }
 
     //busca sessões por id
     @GetMapping("/list/{id}")
-    public SectionDTO getSectionByID(@PathVariable ("id") Long id){
-//           return SectionDTO.converte(sectionServices.obterSection(id)); REVISAR TODO
-        return null;
+    public SectionResponseDTO getSectionByID(@PathVariable ("id") Long id){
+        return sectionServices.convertToDto(sectionServices.obterSection(id));
     }
 
     @PutMapping("/update/{id}")
-    public SectionDTO updateWarehouse(@PathVariable("id") Long id,@Valid @RequestBody SectionDTO sectionDTO){
-        Optional<Section> sectionFind = sectionRepository.findById(id);
-        Section section = sectionServices.validaUpdate(sectionFind, sectionDTO);
-//        return SectionDTO.converte(sectionRepository.save(section)); TODO REVISAR
-        return null;
+    public SectionResponseDTO updateSection(@PathVariable("id") Long id, @Valid @RequestBody com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO sectionRequestDTO){
+        Section sectionFind = sectionServices.obterSection(id);
+        Section section = sectionServices.validaUpdate(Optional.ofNullable(sectionFind), sectionRequestDTO);
+        return sectionServices.convertToDto(sectionServices.save(section));
     }
 
     //deletar por id
     @DeleteMapping("/delete/{id}")
-    public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
-           Section section = sectionServices.obterSection(id);
-           sectionRepository.deleteById(id);
-//           return SectionDTO.converte(section); TODO REVISAR
-        return null;
+    public SectionResponseDTO deleteSectionById(@PathVariable("id") Long id) {
+        Section section = sectionServices.obterSection(id);
+        sectionServices.deleta(id);
+        return sectionServices.convertToDto(section);
     }
 }

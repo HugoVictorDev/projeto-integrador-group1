@@ -1,12 +1,11 @@
 package com.meli.projetointegradorgroup1.services;
-import com.meli.projetointegradorgroup1.dto.response.RepresentanteDTO;
+import com.meli.projetointegradorgroup1.dto.RepresentanteDTO;
 import com.meli.projetointegradorgroup1.entity.Representante;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,25 +13,22 @@ import java.util.Optional;
 public class RepresentanteServices {
 
     @Autowired
-    private RepresentanteRepository representanteRepository;
+    RepresentanteRepository representanteRepository;
 
-    @Autowired
-    WarehouseServices warehouseServices;
 
-    public void valida(RepresentanteDTO representativedto)  {
-        validarCpf(representativedto.getCpf(), Long.parseLong(representativedto.getWarehouseID()));
+    public RepresentanteServices(RepresentanteRepository representanteRepository) {
+        this.representanteRepository = representanteRepository;
     }
 
 
-
-    private Warehouse obterWarehouse(Long warehouseID){
-        return warehouseServices.obterWarehouse(warehouseID);
+    public void valida(RepresentanteDTO representanteDTO)  {
+        validarCpf(representanteDTO.getCpf());
     }
 
-    private void validarCpf(String cpf, Long warehouseID)  {
-        Warehouse warehouse = warehouseServices.obterWarehouse(warehouseID);
-        if(warehouse.getRepresentante().getCpf().equals(cpf)){
-            throw new RuntimeException("CPF já cadstrado para essa Warehouse");
+    public void validarCpf(String cpf)  {
+        Representante representante = representanteRepository.findAllByCpf(maskCpf(cpf));
+        if (representante != null){
+            throw new RuntimeException("CPF já cadstrado");
         }
     }
 
@@ -40,43 +36,88 @@ public class RepresentanteServices {
        return (cpf.substring(0, 3) + "." +cpf.substring(3, 6) + "." +cpf.substring(6, 9) + "-" +cpf.substring(9, 11));
     }
 
-    public Representante validaUpdate(Optional<Representante> representativeFind, RepresentanteDTO representativedto) {
-        if (representativeFind.isPresent()) {
-            Representante representative = representativeFind.get();
-            representative.setName(representativedto.getName());
-            representative.setCpf(maskCpf(representativedto.getCpf()));
-            return representative;
-        }else{
+    public Representante validaUpdate(Representante representatneFind, RepresentanteDTO representatnedto) {
+        if (representatneFind.getId() == null){
             throw new RuntimeException("Representante não encontrado");
+        }else{
+            Representante representanteUpdate = representatneFind;
+            representanteUpdate.setName(representatnedto.getName());
+            representanteUpdate.setCpf(maskCpf(representatnedto.getCpf()));
+            return representanteUpdate;
         }
     }
 
-    public Representante findRepresentative(Optional<Representante> representativeFind) {
-        if (representativeFind.isPresent()) {
-            Representante representative = representativeFind.get();
-            return representative;
-    }else{
-        throw new RuntimeException("Representante não encontrado");
+    public RepresentanteDTO converteToDto(Representante representante) {
+        return RepresentanteDTO.builder()
+                .cpf(representante.getCpf())
+                .name(representante.getName())
+                .representatne_Id(representante.getId())
+                .build();
+    }
+
+    public Representante converte(RepresentanteDTO dto) {
+            return Representante.builder()
+                    .cpf(maskCpf(dto.getCpf()))
+                    .name(dto.getName())
+                    .build();
+    }
+
+    public List<RepresentanteDTO> converteList(List<Representante> representantes) {
+        List<RepresentanteDTO> listRepresentante = new ArrayList<>();
+            for (Representante representante: representantes) {
+                listRepresentante.add(
+                        RepresentanteDTO.builder()
+                                .representatne_Id(representante.getId())
+                                .name(representante.getName())
+                                .cpf(representante.getCpf())
+                                .build()
+                );
+            }
+            return listRepresentante;
+        }
+
+    public Representante obter(Long id) {
+        Representante representante = representanteRepository.findByid(id);
+        if (representante  == null){
+            throw new RuntimeException("Representante não encontrado");
+        }else {
+            return representante;
         }
     }
 
-    public List<Representante> listaRepresentative() {
-        List<Representante> representativeList = representanteRepository.findAll();
-        if(representativeList.size() == 0){
+    public Representante save(Representante representante) {
+        try {
+            representanteRepository.save(representante);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Erro na gravação do registro:", e );
+        }
+        return representante;
+    }
+
+
+    public List<Representante> listaRepresentante() {
+        List<Representante> representantList = representanteRepository.findAll();
+        if(representantList.size() == 0){
             throw new RuntimeException("Não existem Representantes cadastradas");
-        }return representativeList;
+        }return representantList;
     }
 
-    public Representante obter(Long id){
-        Optional<Representante> rep = this.representanteRepository.findById(id);
-        return rep.get();
+    public void deletaRepresentante(Long id) {
+        try{
+            representanteRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+                throw new RuntimeException("Referential integrity constraint violation");
+            }else {
+                throw e;
+            }
+        }
     }
 
     public Representante obterRepresentanteById(Long id) {
         Optional<Representante> representante = representanteRepository.findById(id);
-
         if (representante.isPresent()){
             return representante.get();
-        }else throw new EntityNotFoundException("representante não encontrada");
+        }else throw new RuntimeException("representante não encontrada");
     }
 }

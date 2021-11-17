@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepresentanteRepository extends JpaRepository<Representante, Long>{
 
+    Representante findByid(Long id);
+    Representante findAllByCpf(String maskCpf);
 }

@@ -5,17 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Data
 @Builder
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -30,17 +25,10 @@ public class Section {
     @Enumerated(value = EnumType.STRING)
     private StockType stockType;
 
-    @Column(name = "minimum_temperature")
     private String minimumTemperature;
-
     private Long capacity;
-
-
 
     @ManyToOne
     private Warehouse warehouse;
-
-
-
 
 }

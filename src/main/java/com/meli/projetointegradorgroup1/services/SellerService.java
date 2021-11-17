@@ -63,6 +63,7 @@ public class SellerService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
     public SellerResponseDTO convertEntityToDTO(Seller seller){
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
         sellerResponseDTO.setName(seller.getName());
@@ -93,15 +94,13 @@ public class SellerService {
         return sellerRequestDTO;
     }
 
-
     public Seller findSellerById(Long id){
         Optional<Seller> _byId = sellerRepository.findById(id);
 
         return _byId.get();
     }
 
-    public Seller obter(Long id){
-        Optional<Seller> byId = this.sellerRepository.findById(id);
-        return byId.get();
+    public Seller obter(Long sellerId) {
+        return null;
     }
 }

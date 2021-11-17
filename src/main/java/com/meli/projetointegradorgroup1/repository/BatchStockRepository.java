@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BatchStockRepository  extends JpaRepository<BatchStock, Long> {
-
+public interface BatchStockRepository extends JpaRepository<BatchStock, Long> {
     List<BatchStock> findAll();
+
     BatchStock findByBatchStockNumber(Long batchNumber);
 }

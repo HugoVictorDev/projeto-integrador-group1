@@ -3,9 +3,7 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
-
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BatchStockService {
@@ -23,6 +22,12 @@ public class BatchStockService {
     private BatchStockItemService batchStockItemService;
     @Autowired
     private SellerService sellerService;
+
+    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+        this.batchStockRepository = batchStockRepository;
+        this.batchStockItemService = batchStockItemService;
+        this.sellerService = sellerService;
+    }
 
 
     public void valida(Long productID) {
@@ -46,25 +51,14 @@ public class BatchStockService {
     }
 
 
-    public BatchStock findBatchNumber(Long batchNumber) {
-        BatchStock batchStock = batchStockRepository.findByBatchStockNumber(batchNumber);
-        if(batchStock == null){
-            throw new RuntimeException("BatchStock não cadastrada");
-        }
-        return batchStock;
-    }
-
     public void deleta(Long id) {
         try {
             batchStockRepository.deleteById(id);
         } catch (RuntimeException e) {
-            if (e.getCause().getCause().getMessage().contains("violates foreign key constraint ")) {
-                throw new RuntimeException("violates foreign key constraint");
-            } else {
-                throw e;
+            throw new RuntimeException("Erro ao deletar BatchStock");
             }
         }
-    }
+
 
     public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockRequestDTO dto) {
         if (batchStockFind == null){
@@ -73,7 +67,7 @@ public class BatchStockService {
             BatchStock batchStockUpdate = batchStockFind;
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
-            batchStockUpdate.setBatchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()));
+            batchStockUpdate.setBatchStockItem(batchStockItemService.obter(dto.getBatchStockItem()));
             batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
             batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
@@ -93,7 +87,7 @@ public class BatchStockService {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return BatchStock.builder()
                 .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()))
+                .batchStockItem(batchStockItemService.obter(dto.getBatchStockItem()))
                 .currentTemperature(dto.getCurrentTemperature())
                 .minimumTemperature(dto.getMinimumTemperature())
                 .maximumTemperature(dto.getMaximumTemperature())
@@ -144,5 +138,14 @@ public class BatchStockService {
                 .sellerId(batchStock.getSeller().getId())
                 .build();
     }
+
+    public BatchStock findById(Long id) {
+        Optional<BatchStock> batchStock = batchStockRepository.findById(id);
+        if(batchStock == null || batchStock.equals(Optional.empty())){
+            throw new RuntimeException("BatchStock não cadastrada");
+        }
+        return batchStock.get();
+    }
+
 
 }

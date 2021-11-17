@@ -118,7 +118,7 @@ public class InBoundOrderService {
             InBoundOrder inboundOrder = null;
             inboundOrder = InBoundOrder.builder()
                     .orderDate(inb.getOrderDate())
-                    .representative(representanteServices.obter(inb.getRepresentanteId()))
+                    .representante(representanteServices.obter(inb.getRepresentanteId()))
                     .orderNumber(inb.getOrderNumber())
                     .section(section)
                     .batchStock(converte(inb.getBatchStockDTOList(), productService, sellerService)).build();

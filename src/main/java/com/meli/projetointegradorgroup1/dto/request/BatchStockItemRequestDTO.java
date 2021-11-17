@@ -1,7 +1,4 @@
 package com.meli.projetointegradorgroup1.dto.request;
-import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.services.ProductService;
-import com.meli.projetointegradorgroup1.services.SellerService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BatchStockItemRequestDTO {
-
 
     private int quantity;
     private Double volume;
