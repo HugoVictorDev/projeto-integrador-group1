@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import io.swagger.annotations.ApiOperation;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+import java.util.List;
 
 
 @RestController
