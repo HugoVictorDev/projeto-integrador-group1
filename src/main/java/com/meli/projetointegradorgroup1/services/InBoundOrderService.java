@@ -1,18 +1,14 @@
 package com.meli.projetointegradorgroup1.services;
 
-import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
+
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class InBoundOrderService {
@@ -32,14 +28,18 @@ public class InBoundOrderService {
     @Autowired
     ProductService productService;
 
-    InBoundOrderRequestDTO inb;
+    @Autowired
+    SellerService sellerService;
+
+
     @Autowired
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
-                               RepresentanteServices representanteServices, ProductService productService){
+                               RepresentanteServices representanteServices, ProductService productService, SellerService sellerService){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
         this.productService = productService;
+        this.sellerService= sellerService;
     }
 
 
@@ -56,7 +56,7 @@ public class InBoundOrderService {
 
         }catch(RuntimeException e){
             e.printStackTrace();
-            throw new RuntimeException( "deu ruim");
+            throw new RuntimeException( "nao salvou a inboundOrder");
         }
     }
 
@@ -66,11 +66,13 @@ public class InBoundOrderService {
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-       this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
-       this.sectionHasCapacity(inb);
-       this.validProductInboud(inb);
-
-
+        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
+        this.sectionHasCapacity(inb);
+        this.sellerService.obter(inb.getSellerId());
+        this.validOrderNumber(inb.getOrderNumber());
+        if (!validProductInboud(inb)){
+            throw new RuntimeException("Produto nao encontrado");
+         }
         return inb;
     }
 
@@ -97,20 +99,31 @@ public class InBoundOrderService {
 
 
     private boolean validProductInboud(InBoundOrderRequestDTO inb){
+
         List<Long> listBtcItemID = inb.getBatchStockDTOList().stream()
                 .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem()).collect(Collectors.toList());
 
         List<Long> listProductID = productService.listProductId();
-        if(listProductID.contains(listBtcItemID)){
+
+        if (listProductID.containsAll(listBtcItemID)) {
             return true;
+        }
 
-        }throw new RuntimeException("Produto nao existe");
-
+        return false;
     }
 
 
+    private boolean validOrderNumber(Long id){
+        InBoundOrder byOrderNumber = inBoundOrderRepository.findByOrderNumber(id);
+        if (byOrderNumber != null){
+            throw new RuntimeException("Já contém uma inboundorder com essa ordernumber, utilize o método de atualizar");
+        }
+        return true;
+    }
 
-
+    private InBoundOrder obterInbound(Long batchnumber){
+       return inBoundOrderRepository.findByOrderNumber(batchnumber);
+    }
 
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
         //capacidade da section by code
@@ -128,59 +141,17 @@ public class InBoundOrderService {
     }
 
 
-    public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
-                                    ProductService productService, SellerService sellerService){
+    //TODO parei aqui PUT inmbound
 
-        Section section = sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
-        try{
-            InBoundOrder inboundOrder = null;
-            inboundOrder = InBoundOrder.builder()
-                    .orderDate(inb.getOrderDate())
-                    .representative(representanteServices.obter(inb.getRepresentanteId()))
-                    .orderNumber(inb.getOrderNumber())
-                    .section(section)
-                    .batchStock(converte(inb.getBatchStockDTOList(), productService, sellerService)).build();
+    public InBoundOrder validaUpdate( InBoundOrder inBoundOrder) {
+        if (inBoundOrder != null){
+            InBoundOrder inBoundOrderUpdated = obterInbound(inBoundOrder.getOrderNumber());
 
-
-            return inboundOrder;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
         }
 
+return null;
     }
 
-    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
-        List<BatchStock> resultList = new ArrayList<>();
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        for (BatchStockRequestDTO dto: dtos) {
-            BatchStock batchStock = null;
-            batchStock = BatchStock.builder()
-                    .batchStockNumber(dto.getBatchStockNumber())
-                    .dueDate(dto.getDueDate())
-                    .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(),fmt))
-                    .currentQuality(dto.getCurrentQuality())
-                    .initialQuality(dto.getInitialQuality())
-                    .minimumTemperature(dto.getMinimumTemperature())
-                    .maximumTemperature(dto.getMaximumTemperature())
-                    .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.obter(dto.getSellerId()))
-                    .quantity(dto.getQuantity())
-                    .volume(dto.getVolume())
-                    .batchStockItem(
-                            BatchStockItem.builder()
-                                    .maximumTemperature(dto.getMaximumTemperature())
-                                    .quantity(dto.getQuantity())
-                                    .volume(dto.getVolume())
-                                    .product(productService.obtem(dto.getBatchStockItem()))
-                                    .maximumTemperature(dto.getMinimumTemperature())
-                                    .build()
-                    )
-                    .build();
-            resultList.add(batchStock);
-        }
-        return resultList;
-    }
 
 }
 
