@@ -22,15 +22,11 @@ public class SectionServicesTest {
     SectionRequestDTO sectionUpdate = new SectionRequestDTO(null,1l,"5", StockType.FRESH,7l,1l);
     SectionResponseDTO sectionResponseDTO = new  SectionResponseDTO( 2l, "30", StockType.FRESH, 8l,null);
 
-
-    Section sectionNull = new Section();
-
     WarehouseServices warehouseServices;
     SectionRepository sectionRepository;
     SectionServices sectionServices;
     List<Section> listSection = new ArrayList();
     List<SectionResponseDTO> listSectionRequestDTO = new ArrayList();
-
 
     String message = "";
 

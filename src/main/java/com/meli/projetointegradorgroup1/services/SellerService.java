@@ -71,9 +71,9 @@ public class SellerService {
         return sellerResponseDTO;
     }
 
-    public Seller validaUpdate(Optional<Seller> sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (sellerFind.isPresent()) {
-            Seller _seller = sellerFind.get();
+    public Seller validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
+        if (sellerFind.equals(null)) {
+            Seller _seller = sellerFind;
             _seller.setName(sellerRequestDTO.getName());
             _seller.setCpf(sellerRequestDTO.getCpf());
             _seller.setEmail(sellerRequestDTO.getEmail());
@@ -100,4 +100,30 @@ public class SellerService {
         }
     }
 
+    public Seller save(Seller converte) {
+        return converte;
+    }
+
+    public Seller converte(SellerRequestDTO sellerRequestDTO) {
+        return null;
+    }
+
+    public Seller findById(Long id) {
+        return null;
+    }
+
+    public SellerResponseDTO convertToDto(Seller byId) {
+        return null;
+    }
+
+    public void deleta(Long id) {
+    }
+
+    public Seller getById(Long id) {
+        return null;
+    }
+
+    public Seller convert(SellerRequestDTO sellerRequestDTO) {
+        return null;
+    }
 }

@@ -25,11 +25,13 @@ public class InBoundOrderServiceTest {
     List<BatchStockRequestDTO> listBatchStockDto = new ArrayList();
     List<Section> listSection = new ArrayList();
 
+
     Representante representante = new Representante(1l, "Joao", "98765432178");
     Warehouse warehouse = new Warehouse(1l, 44l,"Miguel", "Rua: Hum", "3",representante);
     Section section = new Section(1l, 2l, StockType.FRESH,"30", 8l, warehouse);
     BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller,null);
 
+    List<BatchStockRequestDTO> ListrequestDTO = new ArrayList();
     SectionServices sectionServices;
     List<BatchStock> batchStockList = new ArrayList();
     RepresentanteServices representanteServices;
@@ -37,17 +39,21 @@ public class InBoundOrderServiceTest {
     ProductService productService;
     InBoundOrderRepository inBoundOrderRepository;
     InBoundOrderService inBoundOrderService;
+    SellerService sellerService;
     InBoundOrderRequestDTO inBoundOrderRequestDTO = new InBoundOrderRequestDTO(1l,LocalDate.now(), 3l,  sectionForInboundDTO, listBatchStockDto, 1l);
+
 
     InBoundOrder inBoundOrder = new InBoundOrder(1l,2l, LocalDate.now(), null, batchStockList, null);
 
     String message = null;
     @Test
-    public void registra(){
+    public void registraOK(){
+        batchStockList.add(batchStock);
+        batchStockList.add(batchStock);
         inBoundOrderRepository = Mockito.mock(InBoundOrderRepository.class);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
 
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null,null, null);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null, null);
         inBoundOrderService.registra(inBoundOrder);
 
         assert(inBoundOrder.getId() != null);
@@ -58,7 +64,7 @@ public class InBoundOrderServiceTest {
         inBoundOrderRepository = Mockito.mock(InBoundOrderRepository.class);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
 
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null,null, null);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null, null);
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         inBoundOrderService.registra(inBoundOrder);});
         message = "Erro ao Registrar InboundOrder";
@@ -67,7 +73,7 @@ public class InBoundOrderServiceTest {
     }
 
     @Test
-    public void validInboundOrder(){
+    public void validInboundOrderOK(){
         listSection.add(section);
 
         warehouseServices = Mockito.mock(WarehouseServices.class);
@@ -81,14 +87,24 @@ public class InBoundOrderServiceTest {
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
 
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices,null, sectionServices);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService, null, null, sectionServices);
 
         assert(inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO) != null);
     }
 
     @Test
-    public void converte(){
+    public void converteOK(){
+        ListrequestDTO.add(batchStockRequestDTO);
 
+        sellerService = Mockito.mock(SellerService.class);
+        productService = Mockito.mock(ProductService.class);
+
+        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(null);
+
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null,productService, null, sellerService, null);
+
+        assert  (inBoundOrderService.converte(ListrequestDTO, productService, sellerService).size() == 1);
     }
 
 

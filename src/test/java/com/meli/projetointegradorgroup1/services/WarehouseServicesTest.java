@@ -103,9 +103,9 @@ public class WarehouseServicesTest {
     public void converteToDtoOk(){
         warehouseServices = Mockito.mock(WarehouseServices.class);
 
-        Mockito.when(warehouseServices.converteToDto(Mockito.any())).thenReturn(warehouseDTO);
+        Mockito.when(warehouseServices.convertToDto(Mockito.any())).thenReturn(warehouseDTO);
         WarehouseServices warehouseServices = new WarehouseServices(null);
-        warehouseServices.converteToDto(warehouse);
+        warehouseServices.convertToDto(warehouse);
 
         assert (warehouse.getName().equals(warehouseConverte.getName()));
     }

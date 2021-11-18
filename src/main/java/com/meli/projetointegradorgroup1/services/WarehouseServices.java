@@ -105,7 +105,7 @@ public class WarehouseServices {
         return listWarehouse;
     }
 
-    public WarehouseDTO converteToDto(Warehouse warehouse) {
+    public WarehouseDTO convertToDto(Warehouse warehouse) {
         return WarehouseDTO.builder()
                 .name(warehouse.getName())
                 .address(warehouse.getAddress())

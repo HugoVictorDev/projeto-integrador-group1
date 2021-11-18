@@ -23,26 +23,29 @@ public class ProductService {
     }
 
     public List<ProductResponseDTO> listProductAll(){
-        try {
-            return productRepository.findAll()
-                    .stream()
-                    .map(ProductResponseDTO::new)
-                    .collect(Collectors.toList());
-        }catch (RuntimeException e){
-            throw new RuntimeException("Erro ao buscar Produto");
-        }
+        List <Product> list = productRepository.findAll();
+            if(list.size() != 0) {
+               return list
+                        .stream()
+                        .map(ProductResponseDTO::new)
+                        .collect(Collectors.toList());
+            }else {
+                throw new RuntimeException("Não existem produtos cadastrados");
+            }
     }
 
     public List<ProductResponseDTO> listProduct(String name){
-        try {
-        return productRepository.findByNameContaining(name)
-                .stream()
-                .map(ProductResponseDTO::new)
-                .collect(Collectors.toList());
-        }catch (RuntimeException e){
-            throw new RuntimeException("Erro ao buscar Produto");
+        List<Product> list = productRepository.findByNameContaining(name);
+        if(list.size() != 0) {
+            return list
+                    .stream()
+                    .map(ProductResponseDTO::new)
+                    .collect(Collectors.toList());
+        }else {
+            throw new RuntimeException("Produto não encontrado");
         }
     }
+
 
     public void valida(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -68,13 +71,15 @@ public class ProductService {
         return Product.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .stockType(dto.getStockType())
                 .build();
     }
 
     public ProductResponseDTO converteToDto(Product product) {
         return ProductResponseDTO.builder()
-                .productName(product.getName())
+                .name(product.getName())
                 .description(product.getDescription())
+                .stockType(product.getStockType())
                 .build();
     }
 

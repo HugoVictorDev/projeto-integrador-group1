@@ -30,14 +30,19 @@ public class InBoundOrderService {
     @Autowired
     ProductService productService;
 
-    InBoundOrderRequestDTO inb;
     @Autowired
+    SellerService sellerService;
+
+
+    InBoundOrderRequestDTO inb;
+
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
-                               RepresentanteServices representanteServices, ProductService productService, SectionServices sectionServices){
+                               RepresentanteServices representanteServices, ProductService service, ProductService productService, SellerService sellerService, SectionServices sectionServices){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
         this.productService = productService;
+        this.sellerService = sellerService;
         this.sectionServices = sectionServices;
     }
 
@@ -104,24 +109,6 @@ public class InBoundOrderService {
     }
 
 
-    public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
-                                    ProductService productService, SellerService sellerService){
-        Section section = sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
-        try{
-             InBoundOrder inboundOrder = null;
-             inboundOrder = InBoundOrder.builder()
-                    .orderDate(inb.getOrderDate())
-                    .representante(representanteServices.obter(inb.getRepresentanteId()))
-                    .orderNumber(inb.getOrderNumber())
-                    .section(section)
-                    .batchStock(converte(inb.getBatchStockDTOList(), productService, sellerService)).build();
-           return inboundOrder;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -145,6 +132,7 @@ public class InBoundOrderService {
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))
+                                //  .product(productService.obter(dto.getBatchStockItem()))
                                     .maximumTemperature(dto.getMinimumTemperature())
                                     .build()
                     )

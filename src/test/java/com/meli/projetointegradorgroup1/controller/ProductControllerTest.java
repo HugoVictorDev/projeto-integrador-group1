@@ -14,8 +14,8 @@ import java.util.List;
 public class ProductControllerTest {
 
     Product product = new Product(1l, "teste","cafe", StockType.FRESH);
-    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
-    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
+    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe", StockType.FRESH);
+    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe", StockType.FRESH);
 
     List<ProductResponseDTO> listProductResp = new ArrayList();
     ProductService productService;
@@ -57,7 +57,7 @@ public class ProductControllerTest {
         ProductController productController = new ProductController(productService);
         productController.getById(1l);
 
-        assert (productDtoRes.getProductName() != null);
+        assert (productDtoRes.getName() != null);
     }
 
     @Test
