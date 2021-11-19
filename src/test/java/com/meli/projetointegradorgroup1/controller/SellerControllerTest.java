@@ -18,7 +18,7 @@ class SellerControllerTest {
     Seller seller = new Seller(1l,"Edenilson", "36843012809","edenilson.paschoal@mercadolivre.com");
     SellerRequestDTO sellerRequestDTO = new SellerRequestDTO("Edenilson","36843012809","edenilson.paschoal@mercadolivre.com");
     List<SellerResponseDTO> list = new ArrayList();
-    SellerResponseDTO sellerResponseDTO = new SellerResponseDTO("Edenilson", "36843012809", "edenilson.paschoal@mercadolivre.com");
+    SellerResponseDTO sellerResponseDTO = new SellerResponseDTO(null,"Edenilson", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
 
     @Test

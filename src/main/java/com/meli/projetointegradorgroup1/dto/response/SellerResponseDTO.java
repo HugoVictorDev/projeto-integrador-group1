@@ -12,17 +12,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SellerResponseDTO {
 
+    private Long id;
     private String name;
     private String cpf;
     private String email;
 
 
 public SellerResponseDTO(Seller seller){
+    this.id= seller.getId();
     this.name = seller.getName();
     this.cpf = seller.getCpf();
     this.email = seller.getEmail();
-
-}
-
+    }
 
 }

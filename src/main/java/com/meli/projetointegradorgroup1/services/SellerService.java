@@ -106,6 +106,7 @@ public class SellerService {
 
     public SellerResponseDTO convertToDto(Seller seller) {
         return SellerResponseDTO.builder()
+                .id(seller.getId())
                 .name(seller.getName())
                 .cpf(seller.getCpf())
                 .email(seller.getEmail())
