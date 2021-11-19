@@ -1,14 +1,10 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
-import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +21,9 @@ public class SellerService {
     @Autowired
     RepresentanteServices representanteServices;
 
-    public SellerService(SellerRepository sellerRepository) {
+    public SellerService(SellerRepository sellerRepository, RepresentanteServices representanteServices) {
         this.sellerRepository = sellerRepository;
+        this.representanteServices = representanteServices;
     }
 
     public List<SellerResponseDTO> getSellers(){
@@ -37,11 +34,11 @@ public class SellerService {
                     .map(SellerResponseDTO::new)
                     .collect(Collectors.toList());
         }else {
-            throw new RuntimeException("Não existem Selers cadastrados");
+            throw new RuntimeException("Não existem Sellers cadastrados");
         }
     }
 
-
+/*
     public ResponseEntity<HttpStatus> valida(Long sellerId) {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
         if (seller == null){
@@ -49,23 +46,19 @@ public class SellerService {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+*/
 
     public Seller validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (!sellerFind.equals(null)) {
             Seller _seller = sellerFind;
             _seller.setName(sellerRequestDTO.getName());
             _seller.setCpf(representanteServices.maskCpf(sellerRequestDTO.getCpf()));
             _seller.setEmail(sellerRequestDTO.getEmail());
             return _seller;
-        }else{
-            throw new RuntimeException("Seller não encontrado");
-        }
     }
 
     public Seller obter(Long id){
         Optional<Seller> _byId = sellerRepository.findById(id);
-        if(_byId.equals(Optional.empty()) || _byId == null){
+        if(_byId == null || _byId.equals(Optional.empty())){
             throw new RuntimeException("Seller não encontrado");
         }else {
             return _byId.get();
@@ -114,7 +107,6 @@ public class SellerService {
     public SellerResponseDTO convertToDto(Seller seller) {
         return SellerResponseDTO.builder()
                 .name(seller.getName())
-          //      .cpf(representanteServices.maskCpf(seller.getCpf()))
                 .cpf(seller.getCpf())
                 .email(seller.getEmail())
                 .build();

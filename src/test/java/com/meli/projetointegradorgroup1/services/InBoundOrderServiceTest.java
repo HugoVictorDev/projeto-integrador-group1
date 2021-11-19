@@ -25,23 +25,20 @@ public class InBoundOrderServiceTest {
     List<BatchStockRequestDTO> listBatchStockDto = new ArrayList();
     List<Section> listSection = new ArrayList();
 
-
     Representante representante = new Representante(1l, "Joao", "98765432178");
     Warehouse warehouse = new Warehouse(1l, 44l,"Miguel", "Rua: Hum", "3",representante);
     Section section = new Section(1l, 2l, StockType.FRESH,"30", 8l, warehouse);
     BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller,null);
 
     List<BatchStockRequestDTO> ListrequestDTO = new ArrayList();
-    SectionServices sectionServices;
+    SectionServices sectionServices = Mockito.mock(SectionServices.class);
     List<BatchStock> batchStockList = new ArrayList();
-    RepresentanteServices representanteServices;
-    WarehouseServices warehouseServices;
-    ProductService productService;
-    InBoundOrderRepository inBoundOrderRepository;
-    InBoundOrderService inBoundOrderService;
-    SellerService sellerService;
+    RepresentanteServices representanteServices = Mockito.mock(RepresentanteServices.class);
+    WarehouseServices warehouseServices = Mockito.mock(WarehouseServices.class);
+    ProductService productService = Mockito.mock(ProductService.class);
+    InBoundOrderRepository inBoundOrderRepository = Mockito.mock(InBoundOrderRepository.class);
+    SellerService sellerService = Mockito.mock(SellerService.class);
     InBoundOrderRequestDTO inBoundOrderRequestDTO = new InBoundOrderRequestDTO(1l,LocalDate.now(), 3l,  sectionForInboundDTO, listBatchStockDto, 1l);
-
 
     InBoundOrder inBoundOrder = new InBoundOrder(1l,2l, LocalDate.now(), null, batchStockList, null);
 
@@ -50,25 +47,19 @@ public class InBoundOrderServiceTest {
     public void registraOK(){
         batchStockList.add(batchStock);
         batchStockList.add(batchStock);
-        inBoundOrderRepository = Mockito.mock(InBoundOrderRepository.class);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
-
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null, null);
         inBoundOrderService.registra(inBoundOrder);
-
         assert(inBoundOrder.getId() != null);
     }
 
     @Test
     public void registraNok(){
-        inBoundOrderRepository = Mockito.mock(InBoundOrderRepository.class);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
-
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null, null);
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        inBoundOrderService.registra(inBoundOrder);});
+             inBoundOrderService.registra(inBoundOrder);});
         message = "Erro ao Registrar InboundOrder";
-
         assert (exception.getMessage().contains(message));
     }
 
@@ -76,34 +67,21 @@ public class InBoundOrderServiceTest {
     public void validInboundOrderOK(){
         listSection.add(section);
 
-        warehouseServices = Mockito.mock(WarehouseServices.class);
-        representanteServices = Mockito.mock(RepresentanteServices.class);
-        sectionServices = Mockito.mock(SectionServices.class);
-        inBoundOrderService = Mockito.mock(InBoundOrderService.class);
-
         Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(null);
         Mockito.when(sectionServices.obterSectionByCode(Mockito.anyLong())).thenReturn(null);
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
-
         InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService, null, null, sectionServices);
-
         assert(inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO) != null);
     }
 
     @Test
     public void converteOK(){
         ListrequestDTO.add(batchStockRequestDTO);
-
-        sellerService = Mockito.mock(SellerService.class);
-        productService = Mockito.mock(ProductService.class);
-
         Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(null);
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(null);
-
         InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null,productService, null, sellerService, null);
-
         assert  (inBoundOrderService.converte(ListrequestDTO, productService, sellerService).size() == 1);
     }
 
