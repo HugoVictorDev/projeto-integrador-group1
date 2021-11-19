@@ -66,8 +66,7 @@ public class ProductService {
         }
     }
 
-
-    public Product converte(ProductRequestDTO dto) {
+    public Product convert(ProductRequestDTO dto) {
         return Product.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -75,7 +74,7 @@ public class ProductService {
                 .build();
     }
 
-    public ProductResponseDTO converteToDto(Product product) {
+    public ProductResponseDTO convertToDto(Product product) {
         return ProductResponseDTO.builder()
                 .name(product.getName())
                 .description(product.getDescription())

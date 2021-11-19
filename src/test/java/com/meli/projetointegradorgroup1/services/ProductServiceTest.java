@@ -149,15 +149,15 @@ public class ProductServiceTest {
     public void converteOk(){
         productService = Mockito.mock(ProductService.class);
         ProductService productService = new ProductService(productRepository);
-        productService.converte(productDtoReq);
-        assert (productService.converte(productDtoReq).getName().equals(productDtoReq.getName()));
+        productService.convert(productDtoReq);
+        assert (productService.convert(productDtoReq).getName().equals(productDtoReq.getName()));
     }
 
     @Test
     public void converteToDto(){
         productService = Mockito.mock(ProductService.class);
         ProductService productService = new ProductService( null);
-        assert (productService.converteToDto(product).getName().equals(product.getName()));
+        assert (productService.convertToDto(product).getName().equals(product.getName()));
     }
 
     @Test

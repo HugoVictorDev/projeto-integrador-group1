@@ -47,7 +47,6 @@ public class InBoundOrderService {
     }
 
 
-
     public void registra(InBoundOrder inBoundOrder){
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {

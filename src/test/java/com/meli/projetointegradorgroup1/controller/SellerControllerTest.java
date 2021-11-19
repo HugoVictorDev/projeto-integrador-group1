@@ -3,9 +3,7 @@ package com.meli.projetointegradorgroup1.controller;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.SellerService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,23 +13,12 @@ import java.util.List;
 
 
 class SellerControllerTest {
-    SellerRepository sellerRepository;
     SellerService sellerService;
 
-    // -- MASSA PARA OS TESTES
     Seller seller = new Seller(1l,"Edenilson", "36843012809","edenilson.paschoal@mercadolivre.com");
     SellerRequestDTO sellerRequestDTO = new SellerRequestDTO("Edenilson","36843012809","edenilson.paschoal@mercadolivre.com");
     List<SellerResponseDTO> list = new ArrayList();
-
-    // - ID Seller
-    Long sellerId = 1L;
-    Long sellerIdNok = 2L;
-    // - DTOS
-    SellerRequestDTO seller1RequestDTO = new SellerRequestDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
-    SellerResponseDTO sellerResponseDTO = new SellerResponseDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
-
-    ArrayList<SellerResponseDTO> sellerArrayList = new ArrayList<>();
-
+    SellerResponseDTO sellerResponseDTO = new SellerResponseDTO("Edenilson", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
 
     @Test
@@ -39,7 +26,7 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
 
         Mockito.when(sellerService.save(Mockito.any())).thenReturn(null);
-        Mockito.when(sellerService.converte(Mockito.any())).thenReturn(null);
+        Mockito.when(sellerService.convert(Mockito.any())).thenReturn(null);
         Mockito.when(sellerService.convertToDto(Mockito.any())).thenReturn(sellerResponseDTO);
 
         SellerController sellerController = new SellerController(sellerService);

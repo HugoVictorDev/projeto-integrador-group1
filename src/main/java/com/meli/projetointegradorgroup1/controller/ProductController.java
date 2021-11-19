@@ -27,8 +27,8 @@ public class ProductController {
     // cadastrar novo produto
     @PostMapping("/create")
     public ProductResponseDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDto){
-        Product product = productService.save(productService.converte(productRequestDto));
-        return productService.converteToDto(product);
+        Product product = productService.save(productService.convert(productRequestDto));
+        return productService.convertToDto(product);
     }
 
     // listar todos os produtos
@@ -40,7 +40,7 @@ public class ProductController {
     // buscar produto por id
     @GetMapping("/id/{id}")
     public ProductResponseDTO getById(@PathVariable("id") Long id){
-        return productService.converteToDto(productService.obtem(id));
+        return productService.convertToDto(productService.obtem(id));
     }
 
     // buscar produto por nome
@@ -54,7 +54,7 @@ public class ProductController {
     public ProductResponseDTO updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductRequestDTO productRequestDto){
         Product productFind = productService.obtem(id);
         Product product = productService.validaUpdate(productFind, productRequestDto);
-        return productService.converteToDto(productService.save(product));
+        return productService.convertToDto(productService.save(product));
     }
 
     // deletar produto por id
@@ -62,7 +62,7 @@ public class ProductController {
     public ProductResponseDTO deleteProduct(@PathVariable Long id){
         Product product  = productService.obtem(id);
         productService.deletaProduct(id);
-        return productService.converteToDto(product);
+        return productService.convertToDto(product);
     }
 }
 

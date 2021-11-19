@@ -1,7 +1,9 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
+import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,39 +22,25 @@ public class SellerService {
     @Autowired
     SellerRepository sellerRepository;
 
+    @Autowired
+    RepresentanteServices representanteServices;
+
     public SellerService(SellerRepository sellerRepository) {
         this.sellerRepository = sellerRepository;
     }
 
     public List<SellerResponseDTO> getSellers(){
-        return sellerRepository.findAll()
-                .stream()
-                .map(SellerResponseDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public SellerResponseDTO setSeller(Seller seller){
-        return convertEntityToDTO(sellerRepository.save(seller));
-    }
-
-    public ResponseEntity<HttpStatus> delSeller(Long id){// ok
-        try {
-            this.obter(id);
-            sellerRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List <Seller> list = sellerRepository.findAll();
+        if(list.size() != 0) {
+            return list
+                    .stream()
+                    .map(SellerResponseDTO::new)
+                    .collect(Collectors.toList());
+        }else {
+            throw new RuntimeException("Não existem Selers cadastrados");
         }
     }
 
-    public ResponseEntity<HttpStatus> delAllSellers(){
-        try {
-            sellerRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     public ResponseEntity<HttpStatus> valida(Long sellerId) {
         Optional<Seller> seller = sellerRepository.findById(sellerId);
@@ -63,32 +51,16 @@ public class SellerService {
     }
 
 
-    public SellerResponseDTO convertEntityToDTO(Seller seller){
-        SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
-        sellerResponseDTO.setName(seller.getName());
-        sellerResponseDTO.setCpf(seller.getCpf());
-        sellerResponseDTO.setEmail(seller.getEmail());
-        return sellerResponseDTO;
-    }
-
     public Seller validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
-        if (sellerFind.equals(null)) {
+        if (!sellerFind.equals(null)) {
             Seller _seller = sellerFind;
             _seller.setName(sellerRequestDTO.getName());
-            _seller.setCpf(sellerRequestDTO.getCpf());
+            _seller.setCpf(representanteServices.maskCpf(sellerRequestDTO.getCpf()));
             _seller.setEmail(sellerRequestDTO.getEmail());
             return _seller;
         }else{
             throw new RuntimeException("Seller não encontrado");
         }
-    }
-
-    public SellerRequestDTO convertEntityToDTORequest(Seller seller){
-        SellerRequestDTO sellerRequestDTO = new SellerRequestDTO();
-        sellerRequestDTO.setName(seller.getName());
-        sellerRequestDTO.setCpf(seller.getCpf());
-        sellerRequestDTO.setEmail(seller.getEmail());
-        return sellerRequestDTO;
     }
 
     public Seller obter(Long id){
@@ -100,30 +72,51 @@ public class SellerService {
         }
     }
 
-    public Seller save(Seller converte) {
-        return converte;
+    public Seller save(Seller seller) {
+        try {
+            sellerRepository.save(seller);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Erro na gravação do seller:", e );
+        }
+        return seller;
     }
 
-    public Seller converte(SellerRequestDTO sellerRequestDTO) {
-        return null;
+    public boolean validaCpf(String cpf) {
+        Seller seller = sellerRepository.findByCpf(representanteServices.maskCpf(cpf));
+        if (seller!= null){
+            throw new RuntimeException("Seller já cadastrado");
+        }
+        return true;
     }
 
-    public Seller findById(Long id) {
-        return null;
-    }
-
-    public SellerResponseDTO convertToDto(Seller byId) {
-        return null;
-    }
 
     public void deleta(Long id) {
+        try {
+            sellerRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            if (e.getCause().getCause().getMessage().contains("violates foreign key constraint")) {
+                throw new RuntimeException("Referential integrity constraint violation");
+            } else {
+                throw e;
+            }
+        }
     }
 
-    public Seller getById(Long id) {
-        return null;
+
+    public Seller convert(SellerRequestDTO dto) {
+        return Seller.builder()
+                .name(dto.getName())
+                .cpf(representanteServices.maskCpf(dto.getCpf()))
+                .email(dto.getEmail())
+                .build();
     }
 
-    public Seller convert(SellerRequestDTO sellerRequestDTO) {
-        return null;
+    public SellerResponseDTO convertToDto(Seller seller) {
+        return SellerResponseDTO.builder()
+                .name(seller.getName())
+          //      .cpf(representanteServices.maskCpf(seller.getCpf()))
+                .cpf(seller.getCpf())
+                .email(seller.getEmail())
+                .build();
     }
 }

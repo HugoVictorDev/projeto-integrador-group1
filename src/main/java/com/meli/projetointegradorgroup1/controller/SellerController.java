@@ -4,9 +4,13 @@ import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.services.SellerService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -22,7 +26,8 @@ public class SellerController {
     }
 
     @PostMapping("/create")
-    public SellerResponseDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO){
+    public SellerResponseDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
+        sellerService.validaCpf(sellerRequestDTO.getCpf());
         Seller seller = sellerService.save(sellerService.convert(sellerRequestDTO));
         return sellerService.convertToDto(seller);
     }
@@ -32,7 +37,7 @@ public class SellerController {
         return sellerService.getSellers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/list/{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
         return sellerService.convertToDto(sellerService.obter(id));
     }

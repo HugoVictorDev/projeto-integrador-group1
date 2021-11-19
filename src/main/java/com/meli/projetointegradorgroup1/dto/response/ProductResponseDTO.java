@@ -2,6 +2,7 @@ package com.meli.projetointegradorgroup1.dto.response;
 
 
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.entity.StockType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,5 @@ public class ProductResponseDTO {
         this.description = product.getDescription();
         this.stockType = product.getStockType();
     }
+
 }

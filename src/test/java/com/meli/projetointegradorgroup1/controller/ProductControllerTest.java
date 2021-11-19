@@ -26,7 +26,7 @@ public class ProductControllerTest {
         productService = Mockito.mock(ProductService.class);
 
         Mockito.when(productService.save(Mockito.any())).thenReturn(product);
-        Mockito.when(productService.converte(Mockito.any())).thenReturn(product);
+        Mockito.when(productService.convert(Mockito.any())).thenReturn(product);
 
         ProductController productController = new ProductController (productService);
         productController.createProduct(productDtoReq);
@@ -51,7 +51,7 @@ public class ProductControllerTest {
     public void getByIdOK(){
         productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
         Mockito.when(productService.obtem(Mockito.any())).thenReturn(product);
 
         ProductController productController = new ProductController(productService);
@@ -81,7 +81,7 @@ public class ProductControllerTest {
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
         Mockito.when(productService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(product);
         Mockito.when(productService.save(Mockito.any())).thenReturn(product);
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
 
         ProductController productController = new ProductController (productService);
         productController.updateProduct(1l, productDtoReq);
@@ -95,7 +95,7 @@ public class ProductControllerTest {
 
         Mockito.when(productService.obtem(Mockito.any())).thenReturn(product);
         Mockito.doNothing().when(productService).deletaProduct(Mockito.anyLong());
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
 
         ProductController productController = new ProductController (productService);
         productController.deleteProduct(1l);
