@@ -67,6 +67,10 @@ public class BatchStockItemService {
     }
 
 
+    public BatchStockItem findByProdutctId(Long product_id){
+        BatchStockItem item = this.batchStockItemRepository.findByProduct_id(product_id);
+        return item;
+    }
 
     //validacao update por ID
     public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
@@ -88,6 +92,8 @@ public class BatchStockItemService {
             throw new RuntimeException("BatchStokItem não encotrada");
         }
     }
+
+
 
 
 }

@@ -23,7 +23,7 @@ public class InBoundOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "orderNumber", nullable = false)
+//    @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
 
     private LocalDate orderDate;
@@ -31,7 +31,8 @@ public class InBoundOrder {
     @OneToOne
     private Section section;
 
-    @OneToMany(mappedBy = "inboundOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name= "inbound_order_id", nullable = false)
     private List<BatchStock> batchStock;
 
     @ManyToOne
