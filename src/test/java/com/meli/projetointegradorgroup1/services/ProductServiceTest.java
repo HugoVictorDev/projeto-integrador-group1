@@ -6,9 +6,12 @@ import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ public class ProductServiceTest {
     Product productNull = new Product();
 
     String message = null;
+    String uri = "http//Mock";
 
     @Test
     public void listProducAllOk(){
@@ -94,19 +98,22 @@ public class ProductServiceTest {
 
     @Test
     public void saveOk(){
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
         ProductService productService = new ProductService(productRepository);
-        assert (productService.save(product).getId() == 1);
+        ResponseEntity<Object> sevaReturn = productService.save(product, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+
     }
 
     @Test
     public void saveNok(){
         Mockito.when(productRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         ProductService productService = new ProductService(productRepository);
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            productService.save(null);});
-        message = "Erro na gravação do produto:";
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = productService.save(product, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
 
     @Test

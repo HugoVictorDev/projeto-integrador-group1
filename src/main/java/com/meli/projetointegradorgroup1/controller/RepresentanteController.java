@@ -5,7 +5,9 @@ import com.meli.projetointegradorgroup1.dto.RepresentanteDTO;
 import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 import javax.validation.Valid;
@@ -24,31 +26,31 @@ public class RepresentanteController {
 
     //Cadastrar representante
     @PostMapping("/post")
-    public RepresentanteDTO createrepResentante (@Valid @RequestBody RepresentanteDTO representanteDTO){
+    public ResponseEntity<Object>createrepResentante(@Valid @RequestBody RepresentanteDTO representanteDTO, UriComponentsBuilder uriBuilder){
            representanteServices.valida(representanteDTO);
-           Representante representante = representanteServices.converte(representanteDTO);
-           return representanteServices.converteToDto(representanteServices.save(representante));
+           Representante representante = representanteServices.convert(representanteDTO);
+           return representanteServices.save(representante, uriBuilder);
     }
 
     //Consultar lista de  representantes
     @GetMapping("/list")
-    public List<RepresentanteDTO> getRepresentanteList() {
-           return representanteServices.converteList(representanteServices.listaRepresentante());
+    public List<RepresentanteDTO>getRepresentanteList() {
+           return representanteServices.convertList(representanteServices.listaRepresentante());
     }
 
     //Atualizar por id
     @PutMapping("/update")
-    public RepresentanteDTO updateRepresentante(@Valid @RequestBody RepresentanteDTO representanteDTO) {
+    public ResponseEntity<Object>updateRepresentante(@Valid @RequestBody RepresentanteDTO representanteDTO, UriComponentsBuilder uriBuilder) {
            Representante representanteFind = representanteServices.obter(representanteDTO.getRepresentatne_Id());
            Representante representante = representanteServices.validaUpdate(representanteFind, representanteDTO);
-           return representanteServices.converteToDto(representanteServices.save(representante));
+           return representanteServices.save(representante, uriBuilder);
     }
 
     //consultar representatnte pelo ID
     @GetMapping("{id}")
     public RepresentanteDTO getRepresentanteById(@PathVariable("id") Long id) {
            Representante representatne = representanteServices.obter(id);
-           return representanteServices.converteToDto(representatne);
+           return representanteServices.convertToDto(representatne);
     }
 
     //deletar representatnte pelo ID
@@ -56,7 +58,7 @@ public class RepresentanteController {
     public RepresentanteDTO deleteRepresentanteById(@PathVariable("id") Long id){
            Representante representante  = representanteServices.obter(id);
            representanteServices.deletaRepresentante(id);
-           return representanteServices.converteToDto(representante);
+           return representanteServices.convertToDto(representante);
         }
     }
 

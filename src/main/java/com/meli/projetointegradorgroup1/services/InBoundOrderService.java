@@ -2,11 +2,17 @@ package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
+import com.meli.projetointegradorgroup1.dto.response.InBoundOrderResponseDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,7 +53,7 @@ public class InBoundOrderService {
     }
 
 
-    public void registra(InBoundOrder inBoundOrder){
+    public ResponseEntity<Object> registra2(InBoundOrder inBoundOrder, UriComponentsBuilder uriBuilder){
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
             b.setInboundOrder(inBoundOrder);
@@ -55,10 +61,14 @@ public class InBoundOrderService {
         });
         try{
             this.inBoundOrderRepository.save(inBoundOrder);
-        }catch(RuntimeException e){
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao Registrar InboundOrder");
+        }catch (RuntimeException e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro ao Registrar InboundOrder"));
         }
+        URI uri = uriBuilder.path("/inBoundOrder/{id}").buildAndExpand(inBoundOrder.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(inBoundOrder);
     }
 
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
@@ -108,7 +118,7 @@ public class InBoundOrderService {
     }
 
 
-    public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
+    public List<BatchStock> convert(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         for (BatchStockRequestDTO dto: dtos) {
@@ -141,5 +151,18 @@ public class InBoundOrderService {
         return resultList;
     }
 
+    public void registra(InBoundOrder inBoundOrder) {
+        List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
+        batchStocks.forEach(b -> {
+            b.setInboundOrder(inBoundOrder);
+            b.getBatchStockItem().setBatchStock(b);
+        });
+        try{
+            this.inBoundOrderRepository.save(inBoundOrder);
+        }catch(RuntimeException e){
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao Registrar InboundOrder");
+        }
+    }
 }
 

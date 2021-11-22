@@ -6,9 +6,12 @@ import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ public class SectionServicesTest {
     List<SectionResponseDTO> listSectionRequestDTO = new ArrayList();
 
     String message = "";
+    String uri = "http//Mock";
 
 
     @Test
@@ -148,18 +152,21 @@ public class SectionServicesTest {
 
     @Test
     public void saveOk(){
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(sectionRepository.save(Mockito.any())).thenReturn(section);
         sectionServices = new SectionServices(sectionRepository, null);
-        assert (sectionServices.save(section).getId() == 1);
+        ResponseEntity<Object> sevaReturn = sectionServices.save(section, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
     }
 
     @Test
     public void saveNok(){
         Mockito.when(sectionRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         sectionServices = new SectionServices(sectionRepository, null);
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            sectionServices.save(null);});
-        message = "Erro na gravação Section:";
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = sectionServices.save(section, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
+
 }

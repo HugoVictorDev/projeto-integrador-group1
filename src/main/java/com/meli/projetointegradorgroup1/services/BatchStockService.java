@@ -5,9 +5,13 @@ import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,13 +38,18 @@ public class BatchStockService {
         batchStockItemService.validaBatchStockItem(productID);
     }
 
-    public BatchStock save(BatchStock batchStock) {
+    public ResponseEntity<Object> save(BatchStock batchStock, UriComponentsBuilder uriBuilder) {
         try {
             batchStockRepository.save(batchStock);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação Stock:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação Stock:", e));
         }
-        return batchStock;
+        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(batchStock.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(batchStock));
+
     }
 
     public List<BatchStock> findBatchSotck() {

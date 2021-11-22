@@ -6,9 +6,12 @@ import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +33,7 @@ public class BatchStockServiceTest {
     List<BatchStock> list = new ArrayList();
 
     String message = null;
+    String uri = "http//Me=ock";
 
 
     @Test
@@ -42,19 +46,20 @@ public class BatchStockServiceTest {
 
     @Test
     public void saveOk(){
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
         Mockito.when(batchStockRepository.save(Mockito.any())).thenReturn(batchStock);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-        assert (batchStockService.save(batchStock).getBatchStockNumber() == 2);
-    }
+        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );}
 
     @Test
     public void saveNok(){
         Mockito.when(batchStockRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            batchStockService.save(null);});
-        message = "Erro na gravação Stock:";
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
 
     @Test

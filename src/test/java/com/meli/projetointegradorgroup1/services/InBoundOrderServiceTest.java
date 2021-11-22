@@ -6,9 +6,12 @@ import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,14 +46,19 @@ public class InBoundOrderServiceTest {
     InBoundOrder inBoundOrder = new InBoundOrder(1l,2l, LocalDate.now(), null, batchStockList, null);
 
     String message = null;
+    String uri = "http//Mock";
     @Test
     public void registraOK(){
         batchStockList.add(batchStock);
         batchStockList.add(batchStock);
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null, null);
-        inBoundOrderService.registra(inBoundOrder);
-        assert(inBoundOrder.getId() != null);
+        ResponseEntity<Object> sevaReturn = inBoundOrderService.registra2(inBoundOrder,null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+
     }
 
     @Test
@@ -82,7 +90,7 @@ public class InBoundOrderServiceTest {
         Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(null);
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(null);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null,productService, null, sellerService, null);
-        assert  (inBoundOrderService.converte(ListrequestDTO, productService, sellerService).size() == 1);
+        assert  (inBoundOrderService.convert(ListrequestDTO, productService, sellerService).size() == 1);
     }
 
 

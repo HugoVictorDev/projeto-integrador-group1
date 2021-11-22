@@ -7,6 +7,7 @@ import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ public class ProductControllerTest {
     public void createProductDto(){
         productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.save(Mockito.any())).thenReturn(product);
+        Mockito.when(productService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(product));
         Mockito.when(productService.convert(Mockito.any())).thenReturn(product);
 
         ProductController productController = new ProductController (productService);
-        productController.createProduct(productDtoReq);
+        productController.createProduct(productDtoReq, null);
 
         assert(product.getId() != null);
     }
@@ -80,11 +81,11 @@ public class ProductControllerTest {
 
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
         Mockito.when(productService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(product);
-        Mockito.when(productService.save(Mockito.any())).thenReturn(product);
+        Mockito.when(productService.save(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(product));
         Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
 
         ProductController productController = new ProductController (productService);
-        productController.updateProduct(1l, productDtoReq);
+        productController.updateProduct(1l, productDtoReq, null);
 
         assert (productDtoReq.getName().equals(product.getName()));
     }

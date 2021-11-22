@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -26,10 +27,10 @@ public class SellerController {
     }
 
     @PostMapping("/create")
-    public SellerResponseDTO createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
+    public ResponseEntity<Object>createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO, UriComponentsBuilder uriBuilder) {
         sellerService.validaCpf(sellerRequestDTO.getCpf());
-        Seller seller = sellerService.save(sellerService.convert(sellerRequestDTO));
-        return sellerService.convertToDto(seller);
+        Seller seller = sellerService.convert(sellerRequestDTO);
+        return sellerService.save(seller, uriBuilder);
     }
 
     @GetMapping("/list")
@@ -43,10 +44,10 @@ public class SellerController {
     }
 
     @PutMapping("/update/{id}")
-    public SellerResponseDTO updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO) {
+    public ResponseEntity<Object> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO, UriComponentsBuilder uriBuilder) {
         Seller sellerFind = sellerService.obter(id);
         Seller seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
-        return sellerService.convertToDto(sellerService.save(seller));
+        return sellerService.save(seller, uriBuilder);
     }
 
     @DeleteMapping("/delete/{id}")

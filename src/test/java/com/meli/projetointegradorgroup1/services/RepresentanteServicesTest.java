@@ -7,6 +7,9 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,8 @@ public class RepresentanteServicesTest {
     List<Representante> representanteList = new ArrayList();
     List<RepresentanteDTO> representanteListDTO = new ArrayList();
 
-    String message = "null";
+    String message = "";
+    String uri = "http//Mock";
 
     @Test
     public void valida(){
@@ -100,15 +104,15 @@ public class RepresentanteServicesTest {
     public void converteOk(){
 
         RepresentanteServices representanteServices = new RepresentanteServices( null);
-        representanteServices.converte(representatneConverte);
-        assert (representanteServices.converte(representatneConverte).getName().equals(representatneConverte.getName()));
+        representanteServices.convert(representatneConverte);
+        assert (representanteServices.convert(representatneConverte).getName().equals(representatneConverte.getName()));
     }
 
     @Test
     public void converteToDto(){
         representanteServices = Mockito.mock(RepresentanteServices.class);
         RepresentanteServices representanteServices = new RepresentanteServices( null);
-        assert (representanteServices.converteToDto(representante).getRepresentatne_Id().equals(representante.getId()));
+        assert (representanteServices.convertToDto(representante).getRepresentatne_Id().equals(representante.getId()));
 
     }
 
@@ -116,9 +120,9 @@ public class RepresentanteServicesTest {
     public void converteListOk(){
         representanteListDTO.add(representatneConverte);
         representanteList.add(representante);
-        Mockito.when(this.representanteServices.converteList(Mockito.any())).thenReturn(representanteListDTO);
+        Mockito.when(this.representanteServices.convertList(Mockito.any())).thenReturn(representanteListDTO);
         RepresentanteServices representanteServices = new RepresentanteServices( null);
-        representanteServices.converteList(representanteList);
+        representanteServices.convertList(representanteList);
         assert (representante.getName().equals(representatneConverte.getName()));
     }
 
@@ -132,18 +136,20 @@ public class RepresentanteServicesTest {
 
     @Test
     public void saveOk(){
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(representanteRepository.save(Mockito.any())).thenReturn(representante);
         RepresentanteServices representanteServices = new RepresentanteServices(representanteRepository);
-        assert (representanteServices.save(representante).getId() == 1);
+        ResponseEntity<Object> sevaReturn = representanteServices.save(representante, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
     }
 
     @Test
     public void saveNok(){
         Mockito.when(representanteRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         RepresentanteServices representanteServices = new RepresentanteServices(representanteRepository);
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            representanteServices.save(null);});
-        message = "Erro na gravação do registro:";
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = representanteServices.save(representante, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
 }

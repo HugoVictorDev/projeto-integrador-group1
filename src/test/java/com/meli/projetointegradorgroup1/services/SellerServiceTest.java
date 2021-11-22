@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ class SellerServiceTest {
     List<Seller> sellerArrayList = new ArrayList();
 
     String message = null ;
-
+    String uri = "http//Mock";
 
     @Test
     void getSellers() {
@@ -72,20 +74,24 @@ class SellerServiceTest {
 
     @Test
     public void saveOk(){
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller);
         SellerService sellerService = new SellerService(sellerRepository, null);
-        assert (!sellerService.save(seller).equals(null));
+        ResponseEntity<Object> sevaReturn = sellerService.save(seller, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
     }
+
 
     @Test
     public void saveNok(){
         Mockito.when(sellerRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         SellerService sellerService = new SellerService(sellerRepository, null);
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            sellerService.save(null);});
-        message = "Erro na gravação do seller:";
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = sellerService.save(seller, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
+
 
     @Test
     public void validaCpf(){

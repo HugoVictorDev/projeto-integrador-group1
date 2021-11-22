@@ -7,6 +7,7 @@ import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,11 +28,11 @@ public class BatchStockControllerTest {
         batchStockService = Mockito.mock(BatchStockService.class);
 
         Mockito.doNothing().when(batchStockService).valida(Mockito.anyLong());
-        Mockito.when(batchStockService.save(Mockito.any())).thenReturn(batchStock);
+        Mockito.when(batchStockService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(batchStockResponseDTO));
         Mockito.when(batchStockService.convert(Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(batchStock);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.createBatchStock(batchStockRequestDTO);
+        batchStockController.createBatchStock(batchStockRequestDTO,null);
 
         assert (batchStock.getId()!= null);
     }
@@ -82,11 +83,11 @@ public class BatchStockControllerTest {
 
         Mockito.when(batchStockService.findById(Mockito.anyLong())).thenReturn(batchStockUpdate);
         Mockito.when(batchStockService.updateBatchStock(Mockito.any(), Mockito.any())).thenReturn(batchStockUpdate);
-        Mockito.when(batchStockService.save(Mockito.any())).thenReturn(batchStockUpdate);
+        Mockito.when(batchStockService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(batchStockResponseDTO));
         Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
 
         BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.updateBatchStockNumber(1l, batchStockRequestDTO);
+        batchStockController.updateBatchStockNumber(1l, batchStockRequestDTO,null);
 
         assert(batchStockUpdate.getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }

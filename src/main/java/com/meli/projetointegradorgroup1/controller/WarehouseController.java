@@ -3,7 +3,9 @@ import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -20,12 +22,13 @@ public class WarehouseController {
         this.warehouseServices = warehouseServices;
     }
 
+
     //criar warehouse
     @PostMapping("/create")
-    public WarehouseDTO createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO){
-       Warehouse warehouse = warehouseServices.converte(warehouseDTO);
-       return warehouseServices.convertToDto(warehouseServices.save(warehouse));
-        }
+    public ResponseEntity<Object>createWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO, UriComponentsBuilder uriBuilder) {
+        Warehouse warehouse = warehouseServices.converte(warehouseDTO);
+        return warehouseServices.save(warehouse,uriBuilder);
+    }
 
     //listar warehouses
     @GetMapping("/list")
@@ -41,10 +44,10 @@ public class WarehouseController {
 
     //atualizar por id
     @PutMapping("/update/{id}")
-    public WarehouseDTO updateWarehouse(@PathVariable("id") Long id, @Valid @RequestBody WarehouseDTO warehouseDTO){
+    public ResponseEntity<Object>  updateWarehouse(@PathVariable("id") Long id, @Valid @RequestBody WarehouseDTO warehouseDTO, UriComponentsBuilder uriBuilder ){
            Warehouse warehouseFind = warehouseServices.obterWarehouseById(id);
            Warehouse warehouse = warehouseServices.validaUpdate(Optional.ofNullable(warehouseFind), warehouseDTO);
-           return warehouseServices.convertToDto(warehouseServices.save(warehouse));
+           return warehouseServices.save(warehouse,uriBuilder);
     }
 
     //deletar por id

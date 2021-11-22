@@ -5,6 +5,7 @@ import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.services.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 
@@ -22,11 +23,11 @@ public class InBoundOrderControllerTest {
         inBoundOrderRequestDTO = Mockito.mock(InBoundOrderRequestDTO.class);
 
         Mockito.when(inBoundOrderService.validInboundOrder(Mockito.any())).thenReturn(inBoundOrderRequestDTO);
-        Mockito.doNothing().when(inBoundOrderService).registra(Mockito.any());
+        Mockito.when(inBoundOrderService.registra2(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(inBoundOrder));
         Mockito.when(inBoundOrderRequestDTO.convertedto(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(inBoundOrder);
 
         InBoundOrderController inBoundOrderController = new InBoundOrderController(inBoundOrderService);
-        inBoundOrderController.create(inBoundOrderRequestDTO);
+        inBoundOrderController.created(inBoundOrderRequestDTO,null);
 
         assert(inBoundOrder.getId() != null);
     }

@@ -6,7 +6,9 @@ import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -26,10 +28,10 @@ public class SectionController {
     }
 
     @PostMapping("/create")
-    public SectionResponseDTO ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO){
+    public ResponseEntity<Object> ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO, UriComponentsBuilder uriBuilder){
         sectionServices.validarWarehouse(sectionRequestDTO);
         Section section = sectionServices.convert(sectionRequestDTO, warehouseServices);
-        return sectionServices.convertToDto(sectionServices.save(section));
+        return sectionServices.save(section, uriBuilder);
     }
 
     //listar todas as sessões
@@ -45,10 +47,10 @@ public class SectionController {
     }
 
     @PutMapping("/update/{id}")
-    public SectionResponseDTO updateSection(@PathVariable("id") Long id, @Valid @RequestBody com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO sectionRequestDTO){
+    public ResponseEntity<Object> updateSection(@PathVariable("id") Long id, @Valid @RequestBody SectionRequestDTO sectionRequestDTO, UriComponentsBuilder uriBuilder){
         Section sectionFind = sectionServices.obterSection(id);
         Section section = sectionServices.validaUpdate(Optional.ofNullable(sectionFind), sectionRequestDTO);
-        return sectionServices.convertToDto(sectionServices.save(section));
+        return sectionServices.save(section, uriBuilder);
     }
 
     //deletar por id

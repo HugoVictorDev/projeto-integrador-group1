@@ -3,10 +3,15 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,13 +87,17 @@ public class ProductService {
                 .build();
     }
 
-    public Product save(Product product) {
+    public ResponseEntity<Object> save(Product product , UriComponentsBuilder uriBuilder){
         try {
             productRepository.save(product);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação do produto:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação do produto:",e));
         }
-        return product;
+        URI uri = uriBuilder.path("/product/{id}").buildAndExpand(product.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(product));
     }
 
 

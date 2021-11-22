@@ -4,6 +4,7 @@ import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,71 +18,58 @@ public class WarehouseControllerTest {
     List<WarehouseDTO> listWarehouseDto = new ArrayList();
     WarehouseServices warehouseServices;
 
+
     @Test
     public void createWarehouseOK() {
         warehouseServices = Mockito.mock(WarehouseServices.class);
-
         Mockito.when(warehouseServices.converte(Mockito.any())).thenReturn(warehouse);
-        Mockito.when(warehouseServices.convertToDto(Mockito.any())).thenReturn(warehouseDTO);
-        Mockito.when(warehouseServices.save(Mockito.any())).thenReturn(warehouse);
-
+        Mockito.when(warehouseServices.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(warehouseDTO));
         WarehouseController warehouseController = new WarehouseController(warehouseServices);
-        warehouseController.createWarehouse(warehouseDTO);
-
+        warehouseController.createWarehouse(warehouseDTO, null);
         assert(warehouse.getId()!=null);
     }
 
     @Test
     public void listOK() {
         listWarehouse.add(warehouse);
-
         warehouseServices = Mockito.mock(WarehouseServices.class);
-
         Mockito.when(warehouseServices.converteList(Mockito.anyList())).thenReturn(listWarehouseDto);
         Mockito.when(warehouseServices.listaWarehouse()).thenReturn(listWarehouse);
-
         WarehouseController warehouseController = new WarehouseController(warehouseServices);
         warehouseController.list();
-
         assert(listWarehouse.size() == 1);
     }
 
     @Test
     public void getWarehouseByIdOK() {
         warehouseServices = Mockito.mock(WarehouseServices.class);
-
         Mockito.when(warehouseServices.convertToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(warehouse);
         WarehouseController warehouseController = new WarehouseController(warehouseServices);
         warehouseController.getWarehouseById(1l);
-
         assert(warehouse.getName()!=null);
     }
 
     @Test
     public void UpdateWarehouseOk() {
         warehouseServices = Mockito.mock(WarehouseServices.class);
-
         Mockito.when(warehouseServices.convertToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(warehouse);
         Mockito.when(warehouseServices.validaUpdate(Mockito.any(),Mockito.any())).thenReturn(warehouse);
-        Mockito.when(warehouseServices.save(Mockito.any())).thenReturn(warehouse);
+        Mockito.when(warehouseServices.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(warehouseDTO));
         WarehouseController warehouseController = new WarehouseController(warehouseServices);
-        warehouseController.updateWarehouse(4l, warehouseUpdate);
-
+        warehouseController.updateWarehouse(4l, warehouseUpdate,null);
         assert(warehouse.getName().equals(warehouseUpdate.getName()));
     }
 
     @Test
     public void deleteWarehouseByIdOk() {
         warehouseServices = Mockito.mock(WarehouseServices.class);
-
         Mockito.when(warehouseServices.convertToDto(Mockito.any())).thenReturn(warehouseDTO);
         Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(warehouse);
         Mockito.doNothing().when(warehouseServices).deleta(Mockito.anyLong());
         WarehouseController warehouseController = new WarehouseController(warehouseServices);
         warehouseController.deleteWarehouseById(4l);
-
         assert(warehouse.getId() == 4);
     }
 }

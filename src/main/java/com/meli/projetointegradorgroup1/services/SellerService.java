@@ -5,8 +5,12 @@ import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import java.util.Optional;
@@ -38,15 +42,6 @@ public class SellerService {
         }
     }
 
-/*
-    public ResponseEntity<HttpStatus> valida(Long sellerId) {
-        Optional<Seller> seller = sellerRepository.findById(sellerId);
-        if (seller == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-*/
 
     public Seller validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
             Seller _seller = sellerFind;
@@ -65,13 +60,17 @@ public class SellerService {
         }
     }
 
-    public Seller save(Seller seller) {
+    public ResponseEntity<Object> save(Seller seller, UriComponentsBuilder uriBuilder) {
         try {
             sellerRepository.save(seller);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação do seller:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação do seller:", e));
         }
-        return seller;
+        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(seller.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(seller));
     }
 
     public boolean validaCpf(String cpf) {
