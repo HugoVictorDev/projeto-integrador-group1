@@ -35,9 +35,19 @@ public class BatchStockService {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<HttpStatus> deleteBybatchStockNumber (Long BatchNumber){
-        //batchStockRepository.deleteBybatchStockNumber(BatchNumber); TODO implementar no repository
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> deleteBybatchStockNumber (Long batchNumber){
+        Long idBatchStock = batchStockRepository.findById(batchNumber).get().getBatchStockNumber();
+
+        if (idBatchStock == 0 ){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+            try {
+                batchStockRepository.deleteById(batchNumber);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }catch (RuntimeException e){
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
     }
 
     public ResponseEntity<HttpStatus> deleteById (Long id){
@@ -50,13 +60,20 @@ public class BatchStockService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<HttpStatus> update(BatchStock batchStock){
+    public ResponseEntity<String> update(BatchStock batchStock){
         BatchStock batchStockReturn = batchStockRepository.findById(batchStock.getBatchStockNumber()).get();
-        if (batchStockReturn != null) {
-            batchStockRepository.save(batchStock);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            if (batchStockReturn != null) {
+                batchStockRepository.save(batchStock);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+
+
     }
 
     public BatchStockResponseDTO findById(Long id) {

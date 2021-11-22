@@ -70,7 +70,7 @@ public class BatchStockItemService {
                 .stream()
                 .map(BatchStockItemResponseDTO::new)
                 .collect(Collectors.toList());
-    }// TODO Funciona mas tem que acertar, copiar do seller
+    }
 
     public BatchStockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
         BatchStockItemResponseDTO batchstockItemResponseDTO = new BatchStockItemResponseDTO();
@@ -105,9 +105,9 @@ public class BatchStockItemService {
 
 
     //validacao update por ID
-    public ResponseEntity<HttpStatus> update(BatchStockItem batchStockItem) {
+    public ResponseEntity<String> update(BatchStockItem batchStockItem) {
         if (batchStockItem != null) {
-           //batchStockItemRepository. //.setSellerInfoById(seller.getName(), seller.getCpf(), seller.getEmail(), id);
+            this.setBatchStockItem(batchStockItem);
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

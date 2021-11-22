@@ -59,7 +59,7 @@ public class BatchStockItemController {
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updateBatchStockItemID(@RequestBody BatchStockItem batchStockItem) {
+    public ResponseEntity<String> updateBatchStockItemID(@RequestBody BatchStockItem batchStockItem) {
         return batchStockItemService.update(batchStockItem);
     }
 
@@ -75,7 +75,7 @@ public class BatchStockItemController {
     public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
         try {
             batchStockItemRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
