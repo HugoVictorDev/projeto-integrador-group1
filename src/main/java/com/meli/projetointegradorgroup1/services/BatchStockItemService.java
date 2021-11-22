@@ -57,7 +57,9 @@ public class BatchStockItemService {
         }
 
         batchStockItemRepository.save(batchStockItem);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("BatchStockItem created");
     }
 
     public BatchStockItem getBatchStockItem(Long id){
