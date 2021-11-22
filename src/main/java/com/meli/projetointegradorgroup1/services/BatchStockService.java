@@ -63,6 +63,10 @@ public class BatchStockService {
         return batchStockResponseDTO.converte(batchStockRepository.findById(id).get());
     }
 
+    public BatchStock findByIdE(Long id) {
+        return batchStockRepository.findById(id).get();
+    }
+
     public List<BatchStockResponseDTO> findAll() {
         List<BatchStock> batchStocks = batchStockRepository.findAll();
         List<BatchStockResponseDTO> batchStockResponseDTOS = new ArrayList();

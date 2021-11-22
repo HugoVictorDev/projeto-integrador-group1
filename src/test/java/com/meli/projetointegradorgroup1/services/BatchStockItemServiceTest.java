@@ -51,7 +51,7 @@ class BatchStockItemServiceTest {
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(BatchStockItem1);
         BatchStockItemService batchStockItemService = new BatchStockItemService(repositoryMock);
 
-        batchStockItemReturn = batchStockItemService.setBatchStockItem(BatchStockItem1);
+        //batchStockItemReturn = batchStockItemService.setBatchStockItem(BatchStockItem1);
         Assert.assertEquals(BatchStockItem1,batchStockItemReturn);
 
     }

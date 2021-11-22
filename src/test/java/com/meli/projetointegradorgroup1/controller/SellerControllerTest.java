@@ -86,6 +86,7 @@ class SellerControllerTest {
         sellerArrayList.add(seller1ResponseDTO);
 
         Mockito.when(sellerRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(seller1));
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller1);
 
         SellerController sellerController = new SellerController(sellerService);
         Seller sellerReturn = sellerController.getSellerById(sellerId);
@@ -99,12 +100,12 @@ class SellerControllerTest {
         sellerRepository = Mockito.mock(SellerRepository.class);
 
         Mockito.when(sellerService.delSeller(Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
-        //Mockito.when(sellerService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(seller1ResponseDTO);
+        Mockito.when(sellerService.update(Mockito.any(), Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
 
         SellerController sellerController = new SellerController(sellerService);
         ResponseEntity<HttpStatus> sellerReturn =  sellerController.updateSeller(1L,seller1);
 
-        assertTrue (sellerReturn.equals(seller1ResponseDTO));
+        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
     }
 
     @Test

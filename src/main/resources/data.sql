@@ -145,3 +145,7 @@ INSERT INTO in_bound_order
 VALUES(0, now(),1, 1);
 
 INSERT INTO batch_stock (batch_number, current_quality, current_temperature, due_date, initial_quality, manufacturing_time, minimum_temperature, inbound_order_id, seller_id, volume, maximum_temperature, quantity) VALUES(0, '', 0, now(), '', now(), 1, 1, 1, 0, 0, 0);
+
+INSERT INTO public.batch_stock_item(
+	 maximum_temperature, minimum_temperature, quantity, volume, batch_stock_id, product_id)
+	VALUES (0.0, 0.0, 112, 1, 1, 1);

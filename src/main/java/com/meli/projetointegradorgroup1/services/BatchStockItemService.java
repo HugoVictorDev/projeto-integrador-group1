@@ -8,7 +8,10 @@ import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,18 +27,41 @@ public class BatchStockItemService {
     SellerService sellerService;
 
     @Autowired
+    BatchStockService batchStockService;
+
+
+    @Autowired
     ProductService productService;
 
     public BatchStockItemService(BatchStockItemRepository repositoryMock) {
         this.batchStockItemRepository = repositoryMock;
     }
 
-    public BatchStockItem setBatchStockItem(BatchStockItem batchStockItem){ // - ok
-        return batchStockItemRepository.save(batchStockItem);
+    public ResponseEntity<String>  setBatchStockItem(BatchStockItem batchStockItem){
+        Long IdProduct = batchStockItem.getProduct().getId();
+        Long IdBatchStock = batchStockItem.getBatchStock().getId();
+
+        if (IdProduct != 0){
+            if (IdBatchStock != 0) {
+                batchStockItem.setBatchStock(batchStockService.findByIdE(IdBatchStock));
+                batchStockItem.setProduct(productService.obtem(IdProduct));
+            }else {
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("IdBatchStock não encontrado");
+            }
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("IdProduct não encontrado");
+        }
+
+        batchStockItemRepository.save(batchStockItem);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public BatchStockItem getBatchStockItem(Long id){
-        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
+        Optional<BatchStockItem> byId = batchStockItemRepository.findById(id);
         return byId.get();
     }
 
@@ -44,7 +70,7 @@ public class BatchStockItemService {
                 .stream()
                 .map(BatchStockItemResponseDTO::new)
                 .collect(Collectors.toList());
-    }
+    }// TODO Funciona mas tem que acertar, copiar do seller
 
     public BatchStockItemResponseDTO convertEntityToDTO(BatchStockItem batchStockItem){
         BatchStockItemResponseDTO batchstockItemResponseDTO = new BatchStockItemResponseDTO();
@@ -56,6 +82,15 @@ public class BatchStockItemService {
         return batchstockItemResponseDTO;
     }
 
+    public ResponseEntity<HttpStatus> delAllBatchStock(){
+
+        try {
+            batchStockItemRepository.deleteAll();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "BatchStockItem - Erro inesperado");
+        }
+    }
 
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
@@ -63,17 +98,19 @@ public class BatchStockItemService {
 
     }
 
+    public BatchStockItem findBatchStockItemById(Long Id){
+        return this.batchStockItemRepository.findById(Id).get();
+    }
+
 
 
     //validacao update por ID
-    public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
-        if (batchStockItemFind.isPresent()) {
-            BatchStockItem _batchStockItem = batchStockItemFind.get();
-            _batchStockItem.setQuantity(batchStockItem.getQuantity());
-
-            return _batchStockItem;
+    public ResponseEntity<HttpStatus> update(BatchStockItem batchStockItem) {
+        if (batchStockItem != null) {
+           //batchStockItemRepository. //.setSellerInfoById(seller.getName(), seller.getCpf(), seller.getEmail(), id);
+            return new ResponseEntity<>(HttpStatus.OK);
         }else{
-            throw new RuntimeException("BatchStockItem não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 

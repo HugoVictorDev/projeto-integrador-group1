@@ -39,10 +39,8 @@ public class BatchStockItemController {
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
-    public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
-        batchStockItemService.validProductExist(batchStockItemRequestDTO);
-        this.batchStockItemRepository.save(batchStockItemRequestDTO.converte(batchStockItemRequestDTO, productService, sellerService));
-        return batchStockItemRequestDTO;
+    public ResponseEntity<String> createBatchStockItem(@RequestBody BatchStockItem batchStockItem) {
+        return batchStockItemService.setBatchStockItem(batchStockItem);
     }
 
 
@@ -61,18 +59,14 @@ public class BatchStockItemController {
 
     // atualizando vendedor pelo ID
     @PutMapping("/update/{id}")
-    public BatchStockItem updateBatchStockItemID(@PathVariable("id") Long id, @RequestBody BatchStockItem batchStockItem) {
-        Optional<BatchStockItem> batchStockItemFind = batchStockItemRepository.findById(id);
-        BatchStockItem _bat = batchStockItemService.validaUpdate(batchStockItemFind, batchStockItem);
-        return batchStockItemRepository.save(_bat);
-
+    public ResponseEntity<HttpStatus> updateBatchStockItemID(@RequestBody BatchStockItem batchStockItem) {
+        return batchStockItemService.update(batchStockItem);
     }
 
     //delete todos vendedores
     @DeleteMapping("/deleteall")
-    public BatchStockItem deleteAllBatchStockItems() {
-        batchStockItemRepository.deleteAll();
-        return null;
+    public ResponseEntity<HttpStatus>  deleteAllBatchStockItems() {
+        return batchStockItemService.delAllBatchStock();
 
     }
 
