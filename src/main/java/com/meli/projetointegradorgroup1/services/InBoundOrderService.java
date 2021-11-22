@@ -141,15 +141,18 @@ public class InBoundOrderService {
     }
 
 
-    //TODO parei aqui PUT inmbound
 
-    public InBoundOrder validaUpdate( InBoundOrder inBoundOrder) {
-        if (inBoundOrder != null){
-            InBoundOrder inBoundOrderUpdated = obterInbound(inBoundOrder.getOrderNumber());
-
+    public InBoundOrder UpdateInbound( InBoundOrderRequestDTO dto) {
+        InBoundOrder byOrderNumber = inBoundOrderRepository.findByOrderNumber(dto.getOrderNumber());
+        if (byOrderNumber != null){
+            InBoundOrder inBoundOrderUpdated = obterInbound(dto.getOrderNumber());
+            inBoundOrderUpdated.setOrderDate(dto.getOrderDate());
+            inBoundOrderUpdated.setRepresentative(representanteServices.obterRepresentanteById(dto.getRepresentanteId()));
+            return inBoundOrderUpdated;
         }
+        throw new RuntimeException("Inbound nao encontrada");
 
-return null;
+
     }
 
 

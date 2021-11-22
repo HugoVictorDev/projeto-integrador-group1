@@ -6,6 +6,7 @@ import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.dto.response.InBoundOrderResponse;
+import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,13 @@ public class InBoundOrderController {
         return inBoundOrderRequestDTO;
     }
 
-//    @PutMapping("/update/")
-//    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
-//
-//    }
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/update")
+    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
+        this.inBoundOrderService.UpdateInbound(inBoundOrderRequestDTO);
+        this.inBoundOrderService.registra(inBoundOrderRequestDTO.convertedto(representanteServices,
+                sectionServices, productService, sellerService));
+        return inBoundOrderRequestDTO;
+
+    }
 }
