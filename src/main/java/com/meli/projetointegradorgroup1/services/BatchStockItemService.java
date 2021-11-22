@@ -63,8 +63,8 @@ public class BatchStockItemService {
     }
 
     public BatchStockItem getBatchStockItem(Long id){
-        Optional<BatchStockItem> byId = batchStockItemRepository.findById(id);
-        return byId.get();
+        BatchStockItem byId = batchStockItemRepository.findById(id).get();
+        return byId;
     }
 
     public List<BatchStockItemResponseDTO> getBatchStockItemsList(){
@@ -101,6 +101,7 @@ public class BatchStockItemService {
     }
 
     public BatchStockItem findBatchStockItemById(Long Id){
+
         return this.batchStockItemRepository.findById(Id).get();
     }
 
