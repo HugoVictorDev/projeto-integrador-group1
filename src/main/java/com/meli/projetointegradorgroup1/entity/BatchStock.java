@@ -1,5 +1,4 @@
 package com.meli.projetointegradorgroup1.entity;
-import com.meli.projetointegradorgroup1.services.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

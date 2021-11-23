@@ -30,7 +30,7 @@ public class InBoundOrderServiceTest {
     Representante representante = new Representante(1l, "Joao", "98765432178");
     Warehouse warehouse = new Warehouse(1l, 44l,"Miguel", "Rua: Hum", "3",representante);
     Section section = new Section(1l, 2l, StockType.FRESH,"30", 8l, warehouse);
-    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller,null);
+    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller);
 
     List<BatchStockRequestDTO> ListrequestDTO = new ArrayList();
     SectionServices sectionServices = Mockito.mock(SectionServices.class);
@@ -54,7 +54,8 @@ public class InBoundOrderServiceTest {
         uriBuilder = Mockito.mock(UriComponentsBuilder.class);
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService,
+                null, null, null, null);
         ResponseEntity<Object> sevaReturn = inBoundOrderService.registra(uriBuilder,inBoundOrderRequestDTO,inBoundOrder);
         Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
     }
@@ -62,7 +63,8 @@ public class InBoundOrderServiceTest {
     @Test
     public void registraNok(){
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService, null, null);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,null, productService,
+                null, null, null, null);
         ResponseEntity<Object> sevaReturn = inBoundOrderService.registra(null,null,inBoundOrder);
         Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
@@ -75,17 +77,9 @@ public class InBoundOrderServiceTest {
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService, null,  sectionServices);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService,
+                null,  sectionServices, null, null);
         assert(inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO) != null);
-    }
-
-    @Test
-    public void converteOK(){
-        ListrequestDTO.add(batchStockRequestDTO);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(null);
-        Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(null);
-        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null,productService,  sellerService, null);
-        assert  (inBoundOrderService.convert(ListrequestDTO, productService, sellerService).size() == 1);
     }
 
 }

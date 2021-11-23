@@ -46,20 +46,20 @@ public class BatchStockController {
     }
 
     @GetMapping("/list/{id}")
-    public BatchStockResponseDTO listBastchStockNumber(@PathVariable("id") Long id) {
-        return batchStockService.convertToDto(batchStockService.findById(id));
+    public BatchStockResponseDTO listBastchStockID(@PathVariable("id") Long id) {
+        return batchStockService.convertToDto(batchStockService.findByIds(id));
     }
 
     @DeleteMapping("/delete/{id}")
     public BatchStockResponseDTO deleteBatchStockNumber(@PathVariable("id") Long id) {
-           BatchStock batchStock = batchStockService.findById(id);
+           BatchStock batchStock = batchStockService.findByIds(id);
            batchStockService.deleta(batchStock.getId());
            return batchStockService.convertToDto(batchStock);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateBatchStockNumber(@PathVariable("id") Long id, @RequestBody @Valid BatchStockRequestDTO batchStockDTO, UriComponentsBuilder uriBuilder) {
-           BatchStock batchStockFind = batchStockService.findById(id);
+           BatchStock batchStockFind = batchStockService.findByIds(id);
            BatchStock batchStock = batchStockService.updateBatchStock(batchStockFind, batchStockDTO);
         return batchStockService.save(batchStock, uriBuilder);
     }

@@ -59,7 +59,7 @@ class SellerServiceTest {
     public void obterOk(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(seller));
         SellerService sellerService = new SellerService(sellerRepository, null);
-        assert (sellerService.obter(1l) != null);
+        assert (sellerService.obtem(1l) != null);
     }
 
     @Test
@@ -67,7 +67,7 @@ class SellerServiceTest {
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(null));
         SellerService sellerService = new SellerService(sellerRepository, null);
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        sellerService.obter(1l) ;});
+        sellerService.obtem(1l) ;});
         message = "Seller não encontrado";
         assert (message.contains(exception.getMessage()));
     }

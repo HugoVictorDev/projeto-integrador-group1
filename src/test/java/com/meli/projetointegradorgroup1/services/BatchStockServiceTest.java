@@ -23,7 +23,7 @@ public class BatchStockServiceTest {
     SellerService sellerService;
     Seller seller = new Seller();
 
-    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller,null);
+    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller);
     BatchStockRequestDTO batchStockRequestDTO = new BatchStockRequestDTO(1l,2l,1l,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
     BatchStockResponseDTO batchStockResponseDTO = new BatchStockResponseDTO(2l,null,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
 
@@ -103,8 +103,8 @@ public class BatchStockServiceTest {
     @Test
     public void updateBatchStockOk(){
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
         assert (batchStockService.updateBatchStock(batchStock, batchStockRequestDTO).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
@@ -121,8 +121,8 @@ public class BatchStockServiceTest {
     @Test
     public void convert(){
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
         assert (batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
@@ -145,7 +145,7 @@ public class BatchStockServiceTest {
     public void findByIdOK(){
         Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(batchStock));
         batchStockService = new BatchStockService(null, batchStockRepository, null );
-        batchStockService.findById(1l);
+        batchStockService.findByIds(1l);
         assert (batchStock.getId() == 1);
     }
 
@@ -154,7 +154,7 @@ public class BatchStockServiceTest {
         Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(null));
         batchStockService = new BatchStockService(null, batchStockRepository, null );
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        batchStockService.findById(1l);});
+        batchStockService.findByIds(1l);});
         message = "BatchStock não cadastrada";
         assert (exception.getMessage().contains(message));
     }

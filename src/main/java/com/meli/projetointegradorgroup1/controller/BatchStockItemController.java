@@ -63,14 +63,6 @@ public class BatchStockItemController {
 
     }
 
-    //delete todos vendedores
-    @DeleteMapping("/deleteall")
-    public BatchStockItem deleteAllBatchStockItems() {
-        batchStockItemRepository.deleteAll();
-        return null;
-
-    }
-
     //deletar vendedor pelo ID
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {

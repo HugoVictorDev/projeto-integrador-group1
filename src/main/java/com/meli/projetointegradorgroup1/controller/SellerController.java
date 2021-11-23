@@ -40,19 +40,19 @@ public class SellerController {
 
     @GetMapping("/list/{id}")
     public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        return sellerService.convertToDto(sellerService.obter(id));
+        return sellerService.convertToDto(sellerService.obtem(id));
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO, UriComponentsBuilder uriBuilder) {
-        Seller sellerFind = sellerService.obter(id);
+        Seller sellerFind = sellerService.obtem(id);
         Seller seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
         return sellerService.save(seller, uriBuilder);
     }
 
     @DeleteMapping("/delete/{id}")
     public SellerResponseDTO deleteSellerById(@PathVariable("id") Long id) {
-        Seller seller = sellerService.obter(id);
+        Seller seller = sellerService.obtem(id);
         sellerService.deleta(id);
         return sellerService.convertToDto(seller);
     }

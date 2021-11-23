@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
+import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,9 @@ public class InBoundOrderController {
     @Autowired
     InBoundOrderRepository inBoundOrderRepository;
 
+    public InBoundOrderController(InBoundOrderService inBoundOrderService) {
+        this.inBoundOrderService = inBoundOrderService;
+    }
 
 
     @PostMapping("/create")

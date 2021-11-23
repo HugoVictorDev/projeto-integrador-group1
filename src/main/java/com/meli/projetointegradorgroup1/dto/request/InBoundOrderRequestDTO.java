@@ -82,7 +82,7 @@ public class InBoundOrderRequestDTO {
                     .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
         //            .seller(sellerService.obter(this.sellerId))
-                    .seller(sellerService.obter(this.sellerId))
+                    .seller(sellerService.obtem(this.sellerId))
                     .quantity(dto.getQuantity())
                     .volume(dto.getVolume())
                     .batchStockItem(

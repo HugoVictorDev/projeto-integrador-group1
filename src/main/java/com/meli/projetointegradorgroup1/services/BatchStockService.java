@@ -84,7 +84,6 @@ public class BatchStockService {
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
             batchStockUpdate.setBatchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()));
-            batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
             batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
             batchStockUpdate.setQuantity(dto.getQuantity());
@@ -94,6 +93,7 @@ public class BatchStockService {
             batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
             batchStockUpdate.setDueDate(dto.getDueDate());
             batchStockUpdate.setSeller(sellerService.obtem(dto.getSellerId()));
+            batchStockUpdate.setCurrentQuality(dto.getCurrentQuality());
             return batchStockUpdate;
         }
     }
@@ -155,12 +155,13 @@ public class BatchStockService {
                 .build();
     }
 
-    public BatchStock findById(Long id) {
+    public BatchStock findByIds(Long id) {
         Optional<BatchStock> batchStock = batchStockRepository.findById(id);
-        if(batchStock == null || batchStock.equals(Optional.empty())){
+        BatchStock batchStock1 = batchStock.get();
+        if(batchStock1 == null){
             throw new RuntimeException("BatchStock não cadastrada");
         }
-        return batchStock.get();
+        return batchStock1;
     }
 
 

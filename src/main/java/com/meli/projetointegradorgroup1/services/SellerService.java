@@ -52,16 +52,8 @@ public class SellerService {
         return _seller;
     }
 
-    public List<Seller> listSeller(){
-        return sellerRepository.findAll();
-    }
 
-    public Seller findSellerById(Long id){
-        Optional<Seller> _byId = sellerRepository.findById(id);
-        return _byId.get();
-    }
-
-    public Seller obter(Long id){
+    public Seller obtem(Long id){
         Optional<Seller> _byId = sellerRepository.findById(id);
         if(_byId == null || _byId.equals(Optional.empty())){
             throw new RuntimeException("Seller não encontrado");

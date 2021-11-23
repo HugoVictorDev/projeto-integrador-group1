@@ -12,10 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,16 +28,12 @@ public class InBoundOrderService {
 
     @Autowired
     private InBoundOrderRepository inBoundOrderRepository;
-
     @Autowired
     private final WarehouseServices warehouseServices;
-
     @Autowired
     private  SectionServices sectionServices;
-
     @Autowired
     RepresentanteServices representanteServices;
-
     @Autowired
     ProductService productService;
     @Autowired
@@ -43,11 +43,11 @@ public class InBoundOrderService {
     @Autowired
     BatchStockItemService batchStockItemService;
 
-    InBoundOrderRequestDTO inb;
+    
     @Autowired
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
                                RepresentanteServices representanteServices, ProductService productService,
-                               SellerService sellerService, BatchStockItemService batchStockItemService, BatchStockService batchStockService){
+                               SellerService sellerService, SectionServices sectionServices, BatchStockItemService batchStockItemService, BatchStockService batchStockService){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
@@ -55,6 +55,7 @@ public class InBoundOrderService {
         this.sellerService= sellerService;
         this.batchStockService = batchStockService;
         this.batchStockItemService = batchStockItemService;
+        this.sectionServices = sectionServices;
     }
 
 
@@ -87,7 +88,7 @@ public class InBoundOrderService {
         this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
         this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
         this.sectionHasCapacity(inb);
-        this.sellerService.obter(inb.getSellerId());
+        this.sellerService.obtem(inb.getSellerId());
         if (!validProductInboud(inb)){
             throw new RuntimeException("Produto nao encontrado");
         }
@@ -174,7 +175,7 @@ public class InBoundOrderService {
         InBoundOrder io = op.get();
         io.setOrderDate(dto.getOrderDate());
         io.setSection(section);
-        io.setRepresentative(representanteServices.obterRepresentanteById(dto.getRepresentanteId()));
+        io.setRepresentante(representanteServices.obterRepresentanteById(dto.getRepresentanteId()));
         List<BatchStock> listaExistentes = new ArrayList<>();
         List<BatchStock> listaNovos = new ArrayList<>();
         identificaBatchStocks(dto, listaExistentes, listaNovos);
@@ -211,7 +212,7 @@ public class InBoundOrderService {
         bs.setMinimumTemperature(dto.getMinimumTemperature());
         bs.setMaximumTemperature(dto.getMaximumTemperature());
         bs.setCurrentTemperature(dto.getCurrentTemperature());
-        bs.setSeller(sellerService.obter(inboundOrderDTO.getSellerId()));
+        bs.setSeller(sellerService.obtem(inboundOrderDTO.getSellerId()));
         bs.setQuantity(dto.getQuantity());
         bs.setVolume(dto.getVolume());
         bs.getBatchStockItem().setQuantity(dto.getQuantity());
@@ -235,7 +236,7 @@ public class InBoundOrderService {
                 .minimumTemperature(btc.getMinimumTemperature())
                 .maximumTemperature(btc.getMaximumTemperature())
                 .currentTemperature(btc.getMaximumTemperature())
-                .seller(sellerService.obter(inboundOrderDTO.getSellerId()))
+                .seller(sellerService.obtem(inboundOrderDTO.getSellerId()))
                 .quantity(btc.getQuantity())
                 .volume(btc.getVolume())
                 .batchStockItem(

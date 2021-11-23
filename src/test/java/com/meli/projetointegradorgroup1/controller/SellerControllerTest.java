@@ -44,7 +44,7 @@ class SellerControllerTest {
     @Test
     void getSellerById() {
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         Mockito.when(sellerService.convertToDto(Mockito.any())).thenReturn(sellerResponseDTO);
         SellerController sellerController = new SellerController(sellerService);
         assert (!sellerController.getSellerById(1l).equals(null));
@@ -53,7 +53,7 @@ class SellerControllerTest {
     @Test
     void updateSeller() {
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         Mockito.when(sellerService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(seller);
         Mockito.when(sellerService.convertToDto(Mockito.any())).thenReturn(sellerResponseDTO);
         Mockito.when(sellerService.save(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(seller));
@@ -64,7 +64,7 @@ class SellerControllerTest {
     @Test
     void deleteSellerById() {
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(sellerService.obter(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         Mockito.doNothing().when(sellerService).deleta(Mockito.anyLong());
         Mockito.when(sellerService.convertToDto(Mockito.any())).thenReturn(sellerResponseDTO);
         SellerController sellerController = new SellerController(sellerService);

@@ -1,12 +1,16 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,7 +51,7 @@ public class ProductService {
     }
 
 
-    public List<Product> listProduct(String type){
+    public List<Product> listProductByType(String type){
         return productRepository.findAll()
                 .stream().filter(product -> product.getStockType().equals(type))
                 .collect(Collectors.toList());
@@ -66,14 +70,7 @@ public class ProductService {
         }
     }
 
-    public Product obtem(Long id){
-        Optional<Product> byId = this.productRepository.findById(id);
-        if(byId.isPresent()){
-            return byId.get();
-        }else {
-        throw new RuntimeException("Produto não cadastrado");
-        }
-    }
+
 
 
     public Product validaUpdate(Product productFind, ProductRequestDTO productRequestDto){
@@ -116,7 +113,6 @@ public class ProductService {
                 .created(uri).body(convertToDto(product));
     }
 
-
     public Product obtem(Long id){
         Optional<Product> byId = productRepository.findById(id);
         if(byId == null || byId.equals(Optional.empty()) ){
@@ -130,7 +126,7 @@ public class ProductService {
         try{
             productRepository.deleteById(id);
         } catch (RuntimeException e) {
-            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+            if(e.getCause().getCause().getMessage().contains("violates foreign key constraint")){
                 throw new RuntimeException("Referential integrity constraint violation");
             }else {
                 throw e;
