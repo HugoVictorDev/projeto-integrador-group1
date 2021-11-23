@@ -3,17 +3,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
+@Data
 @Entity
-//conjunto de lote
 public class BatchStock {
 
     @Id
@@ -22,9 +24,9 @@ public class BatchStock {
 
     @Column(name =  "batch_number", nullable = false)
     private Long batchStockNumber;
-    private double currentTemperature;
-    private double minimumTemperature;
-    private double maximumTemperature;
+    private Double currentTemperature;
+    private Double minimumTemperature;
+    private Double maximumTemperature;
     private String initialQuality;
     private String currentQuality;
     private LocalDateTime manufacturingTime;
@@ -38,8 +40,11 @@ public class BatchStock {
     @OneToOne
     private Seller seller;
 
-    @ManyToOne
-    private InBoundOrder inboundOrder;
+    @Override
+    public boolean equals(Object o) {
+        BatchStock bs = (BatchStock) o;
+        return bs.batchStockNumber.equals(this.batchStockNumber);
+    }
 
 
 }

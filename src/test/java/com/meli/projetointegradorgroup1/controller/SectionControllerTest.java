@@ -7,6 +7,7 @@ import com.meli.projetointegradorgroup1.entity.StockType;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class SectionControllerTest {
         Mockito.doNothing().when(sectionServices).validarWarehouse(Mockito.any());
 
         SectionController sectionController = new SectionController(sectionServices);
-        sectionController.ceateSection(sectionRequestDTO);
+        sectionController.ceateSection(sectionRequestDTO, null);
 
         assert (section.getId() != null);
     }
@@ -66,10 +67,10 @@ public class SectionControllerTest {
         Mockito.when(sectionServices.convertToDto(Mockito.any())).thenReturn(sectionResponseDTO);
         Mockito.when(sectionServices.obterSection(Mockito.anyLong())).thenReturn(sectionUpdate);
         Mockito.when(sectionServices.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(sectionUpdate);
-        Mockito.when(sectionServices.save(Mockito.any())).thenReturn(sectionUpdate);
+        Mockito.when(sectionServices.save(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(sectionUpdate));
 
         SectionController sectionController = new SectionController(sectionServices);
-        sectionController.updateSection(1l, sectionRequestDTO);
+        sectionController.updateSection(1l, sectionRequestDTO,null);
 
         assert (sectionUpdate.getStockType().equals(sectionRequestDTO.getStockType()));
     }

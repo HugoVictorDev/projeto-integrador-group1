@@ -7,6 +7,7 @@ import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.List;
 public class ProductControllerTest {
 
     Product product = new Product(1l, "teste","cafe", StockType.FRESH);
-    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
-    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
+    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe", StockType.FRESH);
+    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe", StockType.FRESH);
 
     List<ProductResponseDTO> listProductResp = new ArrayList();
     ProductService productService;
@@ -25,11 +26,11 @@ public class ProductControllerTest {
     public void createProductDto(){
         productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.save(Mockito.any())).thenReturn(product);
-        Mockito.when(productService.converte(Mockito.any())).thenReturn(product);
+        Mockito.when(productService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(product));
+        Mockito.when(productService.convert(Mockito.any())).thenReturn(product);
 
         ProductController productController = new ProductController (productService);
-        productController.createProduct(productDtoReq);
+        productController.createProduct(productDtoReq, null);
 
         assert(product.getId() != null);
     }
@@ -51,13 +52,13 @@ public class ProductControllerTest {
     public void getByIdOK(){
         productService = Mockito.mock(ProductService.class);
 
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
         Mockito.when(productService.obtem(Mockito.any())).thenReturn(product);
 
         ProductController productController = new ProductController(productService);
         productController.getById(1l);
 
-        assert (productDtoRes.getProductName() != null);
+        assert (productDtoRes.getName() != null);
     }
 
     @Test
@@ -80,11 +81,11 @@ public class ProductControllerTest {
 
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
         Mockito.when(productService.validaUpdate(Mockito.any(), Mockito.any())).thenReturn(product);
-        Mockito.when(productService.save(Mockito.any())).thenReturn(product);
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.save(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(product));
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
 
         ProductController productController = new ProductController (productService);
-        productController.updateProduct(1l, productDtoReq);
+        productController.updateProduct(1l, productDtoReq, null);
 
         assert (productDtoReq.getName().equals(product.getName()));
     }
@@ -95,7 +96,7 @@ public class ProductControllerTest {
 
         Mockito.when(productService.obtem(Mockito.any())).thenReturn(product);
         Mockito.doNothing().when(productService).deletaProduct(Mockito.anyLong());
-        Mockito.when(productService.converteToDto(Mockito.any())).thenReturn(productDtoRes);
+        Mockito.when(productService.convertToDto(Mockito.any())).thenReturn(productDtoRes);
 
         ProductController productController = new ProductController (productService);
         productController.deleteProduct(1l);

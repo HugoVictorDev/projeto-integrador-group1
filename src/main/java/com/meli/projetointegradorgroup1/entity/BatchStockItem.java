@@ -24,7 +24,9 @@ public class BatchStockItem {
     private Product product;
 
     @OneToOne
+    @JoinColumn(name= "batch_stock_id")
     private BatchStock batchStock;
+
 }
 
 
