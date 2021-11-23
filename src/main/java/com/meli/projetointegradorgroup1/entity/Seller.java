@@ -23,16 +23,8 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @Size(min = 3, message = "minimo 3 letras")
-    @Column(name = "name")
     private String name;
-    @CPF
-    @Column(name = "cpf")
     private String cpf;
-    @Email
-    @Column(name = "email")
     private String email;
 
     public Seller(String name, String cpf, String email) {

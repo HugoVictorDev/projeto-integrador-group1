@@ -29,7 +29,7 @@ public class BatchStockItemService {
         this.batchStockItemRepository = batchStockItemRepository;
     }
 
-    public BatchStockItem obter(Long id){
+    public BatchStockItem obtem(Long id){
         Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
         return byId.get();
     }
@@ -71,6 +71,10 @@ public class BatchStockItemService {
     }
 
 
+    public BatchStockItem findByProdutctId(Long product_id){
+        BatchStockItem item = this.batchStockItemRepository.findByProduct_id(product_id);
+        return item;
+    }
 
     //validacao update por ID
     public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {
@@ -94,8 +98,4 @@ public class BatchStockItemService {
     }
 
 
-    public BatchStockItem obtem(Long id) {
-        Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
-        return byId.get();
-    }
 }

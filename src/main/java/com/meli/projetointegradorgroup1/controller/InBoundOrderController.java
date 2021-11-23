@@ -1,5 +1,6 @@
 package com.meli.projetointegradorgroup1.controller;
 
+
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.services.*;
@@ -28,10 +29,10 @@ public class InBoundOrderController {
     RepresentanteServices representanteServices;
     @Autowired
     SellerService sellerService;
+    @Autowired
+    InBoundOrderRepository inBoundOrderRepository;
 
-    public InBoundOrderController(InBoundOrderService inBoundOrderService) {
-        this.inBoundOrderService = inBoundOrderService;
-    }
+
 
     @PostMapping("/create")
     public ResponseEntity<Object>create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
@@ -39,5 +40,13 @@ public class InBoundOrderController {
         return inBoundOrderService.registra(uriBuilder, inBoundOrderRequestDTO, (inBoundOrderRequestDTO.convertedto(representanteServices,
                 sectionServices, productService, sellerService)));
     }
-}
 
+
+    @PutMapping("/update")
+    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
+        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
+        this.inBoundOrderService.updateInbound(inBoundOrderRequestDTO);
+        return inBoundOrderRequestDTO;
+
+    }
+}

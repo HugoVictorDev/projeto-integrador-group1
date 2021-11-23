@@ -60,7 +60,7 @@ create table product (
                          name varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc'),  ('NATURAL', 'Bacon',  'desc');
 
 create table representante (
                                id  bigserial not null,
@@ -68,7 +68,7 @@ create table representante (
                                name varchar(255) not null,
                                primary key (id)
 );
-insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
+insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo'),( '234.098.109-22',  'Jeff');
 
 create table section (
                          id  bigserial not null,
@@ -90,7 +90,7 @@ create table seller (
                         name varchar(255),
                         primary key (id)
 );
-insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'hugo');
+insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'hugo'),( '161.453.010-66',  'mail@mail.com',  'Carlos');
 
 create table warehouse (
                            id  bigserial not null,

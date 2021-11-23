@@ -3,13 +3,13 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 
@@ -43,12 +43,22 @@ public class SellerService {
     }
 
 
+
     public Seller validaUpdate(Seller sellerFind, SellerRequestDTO sellerRequestDTO) {
-            Seller _seller = sellerFind;
-            _seller.setName(sellerRequestDTO.getName());
-            _seller.setCpf(representanteServices.maskCpf(sellerRequestDTO.getCpf()));
-            _seller.setEmail(sellerRequestDTO.getEmail());
-            return _seller;
+        Seller _seller = sellerFind;
+        _seller.setName(sellerRequestDTO.getName());
+        _seller.setCpf(representanteServices.maskCpf(sellerRequestDTO.getCpf()));
+        _seller.setEmail(sellerRequestDTO.getEmail());
+        return _seller;
+    }
+
+    public List<Seller> listSeller(){
+        return sellerRepository.findAll();
+    }
+
+    public Seller findSellerById(Long id){
+        Optional<Seller> _byId = sellerRepository.findById(id);
+        return _byId.get();
     }
 
     public Seller obter(Long id){
@@ -72,6 +82,7 @@ public class SellerService {
         return ResponseEntity
                 .created(uri).body(convertToDto(seller));
     }
+
 
     public boolean validaCpf(String cpf) {
         Seller seller = sellerRepository.findByCpf(representanteServices.maskCpf(cpf));
@@ -111,4 +122,6 @@ public class SellerService {
                 .email(seller.getEmail())
                 .build();
     }
+
+
 }

@@ -22,7 +22,6 @@ public class Warehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long code;
     private String name;
     private String address;

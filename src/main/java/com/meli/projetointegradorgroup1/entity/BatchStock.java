@@ -1,4 +1,5 @@
 package com.meli.projetointegradorgroup1.entity;
+import com.meli.projetointegradorgroup1.services.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,6 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 @Entity
-//conjunto de lote
 public class BatchStock {
 
     @Id
@@ -41,8 +41,11 @@ public class BatchStock {
     @OneToOne
     private Seller seller;
 
-    @ManyToOne
-    private InBoundOrder inboundOrder;
+    @Override
+    public boolean equals(Object o) {
+        BatchStock bs = (BatchStock) o;
+        return bs.batchStockNumber.equals(this.batchStockNumber);
+    }
 
 
 }

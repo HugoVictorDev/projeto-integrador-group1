@@ -25,6 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class InBoundOrderRequestDTO {
+
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
@@ -86,7 +87,7 @@ public class InBoundOrderRequestDTO {
                     .volume(dto.getVolume())
                     .batchStockItem(
                             BatchStockItem.builder()
-                                    .maximumTemperature(dto.getMaximumTemperature())
+                                    .minimumTemperature(dto.getMinimumTemperature())
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))

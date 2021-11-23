@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface BatchStockItemRepository extends JpaRepository<BatchStockItem, Long> {
 
+    BatchStockItem findByProduct_id(Long productId);
 }

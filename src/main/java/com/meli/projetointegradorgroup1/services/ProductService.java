@@ -1,16 +1,12 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDto;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,14 +24,14 @@ public class ProductService {
 
     public List<ProductResponseDTO> listProductAll(){
         List <Product> list = productRepository.findAll();
-            if(list.size() != 0) {
-               return list
-                        .stream()
-                        .map(ProductResponseDTO::new)
-                        .collect(Collectors.toList());
-            }else {
-                throw new RuntimeException("Não existem produtos cadastrados");
-            }
+        if(list.size() != 0) {
+            return list
+                    .stream()
+                    .map(ProductResponseDTO::new)
+                    .collect(Collectors.toList());
+        }else {
+            throw new RuntimeException("Não existem produtos cadastrados");
+        }
     }
 
     public List<ProductResponseDTO> listProduct(String name){
@@ -51,10 +47,31 @@ public class ProductService {
     }
 
 
+    public List<Product> listProduct(String type){
+        return productRepository.findAll()
+                .stream().filter(product -> product.getStockType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> listProductId(){
+        return productRepository.findAll().stream()
+                .map(product -> product.getId()).collect(Collectors.toList());
+    }
+
+
     public void valida(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         if(!optionalProduct.isPresent()){
             throw new RuntimeException("Produto não cadastrado");
+        }
+    }
+
+    public Product obtem(Long id){
+        Optional<Product> byId = this.productRepository.findById(id);
+        if(byId.isPresent()){
+            return byId.get();
+        }else {
+        throw new RuntimeException("Produto não cadastrado");
         }
     }
 

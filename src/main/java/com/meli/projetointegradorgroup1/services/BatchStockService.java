@@ -3,7 +3,9 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
+
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,7 @@ public class BatchStockService {
 
     }
 
+
     public List<BatchStock> findBatchSotck() {
         List<BatchStock> batchStockList = batchStockRepository.findAll();
         if(batchStockList.size() == 0){
@@ -60,14 +63,18 @@ public class BatchStockService {
     }
 
 
+    public BatchStock findBatchNumber(Long batchNumber) {
+        BatchStock batchStock = batchStockRepository.findByBatchStockNumber(batchNumber);
+        return batchStock;
+    }
+
     public void deleta(Long id) {
         try {
             batchStockRepository.deleteById(id);
         } catch (RuntimeException e) {
             throw new RuntimeException("Erro ao deletar BatchStock");
-            }
         }
-
+    }
 
     public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockRequestDTO dto) {
         if (batchStockFind == null){
@@ -76,7 +83,7 @@ public class BatchStockService {
             BatchStock batchStockUpdate = batchStockFind;
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
-            batchStockUpdate.setBatchStockItem(batchStockItemService.obter(dto.getBatchStockItem()));
+            batchStockUpdate.setBatchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()));
             batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
             batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
@@ -86,7 +93,7 @@ public class BatchStockService {
             batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
             batchStockUpdate.setDueDate(dto.getDueDate());
-            batchStockUpdate.setSeller(sellerService.obter(dto.getSellerId()));
+            batchStockUpdate.setSeller(sellerService.obtem(dto.getSellerId()));
             return batchStockUpdate;
         }
     }
@@ -96,7 +103,7 @@ public class BatchStockService {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return BatchStock.builder()
                 .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.obter(dto.getBatchStockItem()))
+                .batchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()))
                 .currentTemperature(dto.getCurrentTemperature())
                 .minimumTemperature(dto.getMinimumTemperature())
                 .maximumTemperature(dto.getMaximumTemperature())
@@ -106,7 +113,7 @@ public class BatchStockService {
                 .currentQuality(dto.getCurrentQuality())
                 .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
                 .dueDate(dto.getDueDate())
-                .seller(sellerService.obter(dto.getSellerId()))
+                .seller(sellerService.obtem(dto.getSellerId()))
                 .build();
     }
 
