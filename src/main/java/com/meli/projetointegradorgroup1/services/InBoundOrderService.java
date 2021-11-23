@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +29,7 @@ public class InBoundOrderService {
     private final WarehouseServices warehouseServices;
 
     @Autowired
-    private  SectionServices sectionServices;
+    private SectionServices sectionServices;
 
     @Autowired
     RepresentanteServices representanteServices;
@@ -40,10 +41,8 @@ public class InBoundOrderService {
     SellerService sellerService;
 
 
-    InBoundOrderRequestDTO inb;
-
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
-                               RepresentanteServices representanteServices, ProductService service, ProductService productService, SellerService sellerService, SectionServices sectionServices){
+                               RepresentanteServices representanteServices, ProductService productService, SellerService sellerService, SectionServices sectionServices) {
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
@@ -53,25 +52,8 @@ public class InBoundOrderService {
     }
 
 
-    public ResponseEntity<Object> registra2(InBoundOrder inBoundOrder, UriComponentsBuilder uriBuilder){
-        List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
-        batchStocks.forEach(b -> {
-            b.setInboundOrder(inBoundOrder);
-            b.getBatchStockItem().setBatchStock(b);
-        });
-        try{
-            this.inBoundOrderRepository.save(inBoundOrder);
-        }catch (RuntimeException e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new RuntimeException("Erro ao Registrar InboundOrder"));
-        }
-        URI uri = uriBuilder.path("/inBoundOrder/{id}").buildAndExpand(inBoundOrder.getId()).toUri();
-        return ResponseEntity
-                .created(uri).body(inBoundOrder);
-    }
-
-    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
+    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb) {
+        sellerService.obter(inb.getSellerId());
         this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
@@ -82,12 +64,12 @@ public class InBoundOrderService {
         return inb;
     }
 
-    private boolean  representanteIsPresenteWarehouse(Long id){
-        for (Section sec : sectionServices.listaSection()){
-            if (sec.getWarehouse().getRepresentante().getId() == id){
+    private boolean representanteIsPresenteWarehouse(Long id) {
+        for (Section sec : sectionServices.listaSection()) {
+            if (sec.getWarehouse().getRepresentante().getId() == id) {
                 Representante representante = sec.getWarehouse().getRepresentante();
                 return representante != null; // return true TODO
-            }else throw new RuntimeException("representante não pertence ao armazem");
+            } else throw new RuntimeException("representante não pertence ao armazem");
         }
         return false;
     }
@@ -95,7 +77,7 @@ public class InBoundOrderService {
     private boolean sectionMatchStockType(Long code) {
         StockType stockType = sectionServices.obtemTypeStockSection(code);
         List<Section> listsec = sectionServices.listaSection();
-        for (Section section : listsec ) {
+        for (Section section : listsec) {
             if (section.getStockType().equals(stockType)) {
                 return true;
             }
@@ -104,29 +86,30 @@ public class InBoundOrderService {
     }
 
 
-    private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
+    private boolean sectionHasCapacity(InBoundOrderRequestDTO inb) {
         //capacidade da section by code
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
         //soma de valores da lista de batchstock
         int sumOfProductQuantity = inb.getBatchStockDTOList()
                 .stream().mapToInt(value -> value.getQuantity()).sum();
 
-        if (capacitySection >= sumOfProductQuantity){
+        if (capacitySection >= sumOfProductQuantity) {
             return true;
-        }       throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
+        }
+        throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
                 " lotes e voce está inserindo: " + sumOfProductQuantity + "  lotes");
     }
 
 
-    public List<BatchStock> convert(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
+    public List<BatchStock> convert(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService) {
         List<BatchStock> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        for (BatchStockRequestDTO dto: dtos) {
+        for (BatchStockRequestDTO dto : dtos) {
             BatchStock batchStock = null;
             batchStock = BatchStock.builder()
                     .batchStockNumber(dto.getBatchStockNumber())
                     .dueDate(dto.getDueDate())
-                    .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(),fmt))
+                    .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
                     .currentQuality(dto.getCurrentQuality())
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
@@ -141,7 +124,7 @@ public class InBoundOrderService {
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))
-                                //  .product(productService.obter(dto.getBatchStockItem()))
+                                    //  .product(productService.obter(dto.getBatchStockItem()))
                                     .maximumTemperature(dto.getMinimumTemperature())
                                     .build()
                     )
@@ -151,18 +134,24 @@ public class InBoundOrderService {
         return resultList;
     }
 
-    public void registra(InBoundOrder inBoundOrder) {
+
+    public ResponseEntity<Object> registra(UriComponentsBuilder uriBuilder, InBoundOrderRequestDTO inBoundOrderRequestDTO, InBoundOrder inBoundOrder) {
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
             b.setInboundOrder(inBoundOrder);
             b.getBatchStockItem().setBatchStock(b);
         });
-        try{
+        try {
             this.inBoundOrderRepository.save(inBoundOrder);
-        }catch(RuntimeException e){
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao Registrar InboundOrder");
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro ao Registrar InboundOrder"));
         }
+        URI uri = uriBuilder.path("/inBoundOrder/{id}").buildAndExpand(inBoundOrder.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(inBoundOrderRequestDTO);
     }
 }
+
 

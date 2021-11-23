@@ -21,14 +21,11 @@ public class InBoundOrderControllerTest {
         inBoundOrderController = Mockito.mock(InBoundOrderController.class);
         inBoundOrderService = Mockito.mock(InBoundOrderService.class);
         inBoundOrderRequestDTO = Mockito.mock(InBoundOrderRequestDTO.class);
-
         Mockito.when(inBoundOrderService.validInboundOrder(Mockito.any())).thenReturn(inBoundOrderRequestDTO);
-        Mockito.when(inBoundOrderService.registra2(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(inBoundOrder));
+        Mockito.when(inBoundOrderService.registra(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.accepted().body(inBoundOrder));
         Mockito.when(inBoundOrderRequestDTO.convertedto(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(inBoundOrder);
-
         InBoundOrderController inBoundOrderController = new InBoundOrderController(inBoundOrderService);
-        inBoundOrderController.created(inBoundOrderRequestDTO,null);
-
+        inBoundOrderController.create(inBoundOrderRequestDTO,null);
         assert(inBoundOrder.getId() != null);
     }
 }

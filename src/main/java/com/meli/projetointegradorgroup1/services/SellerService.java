@@ -68,7 +68,7 @@ public class SellerService {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new RuntimeException("Erro na gravação do seller:", e));
         }
-        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(seller.getId()).toUri();
+        URI uri = uriBuilder.path("/seller/{id}").buildAndExpand(seller.getId()).toUri();
         return ResponseEntity
                 .created(uri).body(convertToDto(seller));
     }

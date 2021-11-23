@@ -46,7 +46,7 @@ public class BatchStockService {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new RuntimeException("Erro na gravação Stock:", e));
         }
-        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(batchStock.getId()).toUri();
+        URI uri = uriBuilder.path("/batchstock/{id}").buildAndExpand(batchStock.getId()).toUri();
         return ResponseEntity
                 .created(uri).body(convertToDto(batchStock));
 
@@ -71,7 +71,7 @@ public class BatchStockService {
 
     public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockRequestDTO dto) {
         if (batchStockFind == null){
-            throw new RuntimeException("Representante não encontrado");
+            throw new RuntimeException("BatchStock não encontrado");
         }else{
             BatchStock batchStockUpdate = batchStockFind;
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

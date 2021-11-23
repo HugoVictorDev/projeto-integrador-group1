@@ -3,7 +3,6 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

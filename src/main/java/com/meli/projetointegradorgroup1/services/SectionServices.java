@@ -33,7 +33,6 @@ public class SectionServices {
    WarehouseRepository warehouseRepository;
 
 
-    SectionForInboundDTO sectionForInboundDTO;
 
     public SectionServices(SectionRepository sectionRepository, WarehouseServices warehouseServices) {
         this.sectionRepository = sectionRepository;
@@ -142,7 +141,7 @@ public class SectionServices {
                     .status(HttpStatus.BAD_REQUEST)
                     .body(new RuntimeException("Erro na gravação Section:", e));
         }
-        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(section.getId()).toUri();
+        URI uri = uriBuilder.path("/section/{id}").buildAndExpand(section.getId()).toUri();
         return ResponseEntity
                 .created(uri).body(convertToDto(section));
     }
