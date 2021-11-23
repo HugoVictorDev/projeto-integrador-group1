@@ -22,10 +22,7 @@ public class InBoundOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @Column(name = "orderNumber", nullable = false)
     private Long orderNumber;
-
     private LocalDate orderDate;
 
     @OneToOne

@@ -20,12 +20,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "O campo nome nao pode estar vazio")
     private String name;
-
     private String description;
-
     @Enumerated(value = EnumType.STRING)
     private StockType stockType;
 

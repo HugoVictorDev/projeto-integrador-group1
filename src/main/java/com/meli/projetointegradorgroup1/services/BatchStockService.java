@@ -48,9 +48,6 @@ public class BatchStockService {
 
     public BatchStock findBatchNumber(Long batchNumber) {
         BatchStock batchStock = batchStockRepository.findByBatchStockNumber(batchNumber);
-//        if(batchStock == null){
-//            throw new RuntimeException("BatchStock não cadastrada");
-//        }
         return batchStock;
     }
 

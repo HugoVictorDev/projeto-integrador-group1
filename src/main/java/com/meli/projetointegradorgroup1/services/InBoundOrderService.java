@@ -21,36 +21,32 @@ public class InBoundOrderService {
 
     @Autowired
     private InBoundOrderRepository inBoundOrderRepository;
-
     @Autowired
     private final WarehouseServices warehouseServices;
-
     @Autowired
     private  SectionServices sectionServices;
-
     @Autowired
     RepresentanteServices representanteServices;
-
     @Autowired
     ProductService productService;
-
     @Autowired
     SellerService sellerService;
-
     @Autowired
     BatchStockService batchStockService;
-
     @Autowired
     BatchStockItemService batchStockItemService;
 
     @Autowired
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
-                               RepresentanteServices representanteServices, ProductService productService, SellerService sellerService){
+                               RepresentanteServices representanteServices, ProductService productService,
+                               SellerService sellerService, BatchStockItemService batchStockItemService, BatchStockService batchStockService){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
         this.productService = productService;
         this.sellerService= sellerService;
+        this.batchStockService = batchStockService;
+        this.batchStockItemService = batchStockItemService;
     }
 
 
@@ -74,9 +70,8 @@ public class InBoundOrderService {
 
     }
 
-
+    //acoplamento de todas validocoes da inboundOrder, usada no controller.
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
-
         this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
@@ -90,6 +85,7 @@ public class InBoundOrderService {
         return inb;
     }
 
+    //Faz a validacao se o representante pertence a warehouse
     public boolean  representanteIsPresenteWarehouse(Long id){
         for (Section sec : sectionServices.listaSection()){
             if (sec.getWarehouse().getRepresentante().getId() == id){
@@ -100,6 +96,7 @@ public class InBoundOrderService {
         return false;
     }
 
+    //Faz a validacao se a section cadastrada corresponde ao StockType(Enum).
     private boolean sectionMatchStockType(Long code) {
         StockType stockType = sectionServices.obtemTypeStockSection(code);
         List<Section> listsec = sectionServices.listaSection();
@@ -111,7 +108,8 @@ public class InBoundOrderService {
         throw new RuntimeException("section  não corresponde ao tipo de produto");
     }
 
-
+    //Faz a validacao se o produto existe, entao ele entra na lista de batchstock
+    // e pega o id de cada batchstockitem da lista de batchstock e verifica se o produto esta cadastrado.
     private boolean validProductInboud(InBoundOrderRequestDTO inb){
 
         List<Long> listBtcItemID = inb.getBatchStockDTOList().stream()
@@ -131,6 +129,7 @@ public class InBoundOrderService {
        return inBoundOrderRepository.findByOrderNumber(batchnumber);
     }
 
+    //Faz interacao na lista de bacthstocks e tras uma soma da quantidade de itens de cada batchstock e valida com a quantidade da section
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
         //capacidade da section by code
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
@@ -159,18 +158,11 @@ public class InBoundOrderService {
 
     }
 
-    /**
-     *
-     * @param inBoundOrder representa a inboudorder existente na base de dados
-     * @param dto representa a nova (com dados atualizados) inboundorder
-     * @return
-     */
+
     private InBoundOrder atualiza(InBoundOrder inBoundOrder, InBoundOrderRequestDTO dto){
         Section section = sectionServices.obterSectionByCode(dto.getSectionForInboundDTO().getCode());
         Optional<InBoundOrder> op = this.inBoundOrderRepository.findById(inBoundOrder.getId());
-
         InBoundOrder io = op.get();
-
         io.setOrderDate(dto.getOrderDate());
         io.setSection(section);
         io.setRepresentative(representanteServices.obterRepresentanteById(dto.getRepresentanteId()));

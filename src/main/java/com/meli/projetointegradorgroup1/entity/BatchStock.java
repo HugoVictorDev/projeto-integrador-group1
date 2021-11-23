@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Entity
-//conjunto de lote
 public class BatchStock {
 
     @Id
