@@ -3,8 +3,10 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
+import com.meli.projetointegradorgroup1.exception.ProdutoNaoCadastradoException;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,13 +71,15 @@ public class ProductService {
         return Product.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .stockType(dto.getStockType())
                 .build();
     }
 
     public ProductResponseDTO converteToDto(Product product) {
         return ProductResponseDTO.builder()
-                .productName(product.getName())
+                .name(product.getName())
                 .description(product.getDescription())
+                .stockType(product.getStockType())
                 .build();
     }
 

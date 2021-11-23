@@ -1,26 +1,24 @@
 package com.meli.projetointegradorgroup1.advisor;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.meli.projetointegradorgroup1.exception.ProdutoNaoCadastradoException;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class RuntimeHandler {
 
 
@@ -32,6 +30,13 @@ public class RuntimeHandler {
 
 	@ExceptionHandler(value = RuntimeException.class)
 	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+		String bodyOfResponse = ex.getMessage();
+		return ResponseEntity.badRequest().body(bodyOfResponse);
+	}
+
+	@ExceptionHandler(ProdutoNaoCadastradoException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	protected ResponseEntity<String> handleConflict(ProdutoNaoCadastradoException ex, WebRequest request) {
 		String bodyOfResponse = ex.getMessage();
 		return ResponseEntity.badRequest().body(bodyOfResponse);
 	}

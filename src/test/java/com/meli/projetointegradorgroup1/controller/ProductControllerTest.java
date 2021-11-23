@@ -3,7 +3,6 @@ import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.StockType;
-import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,8 +13,8 @@ import java.util.List;
 public class ProductControllerTest {
 
     Product product = new Product(1l, "teste","cafe", StockType.FRESH);
-    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
-    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
+    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe", StockType.NATURAL);
+    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe", StockType.NATURAL);
 
     List<ProductResponseDTO> listProductResp = new ArrayList();
     ProductService productService;
@@ -57,7 +56,7 @@ public class ProductControllerTest {
         ProductController productController = new ProductController(productService);
         productController.getById(1l);
 
-        assert (productDtoRes.getProductName() != null);
+        assert (productDtoRes.getName() != null);
     }
 
     @Test

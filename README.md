@@ -3,7 +3,7 @@
 > Mercado Livre Frescos - Wave 3 Grupo 1
 
 ##  📄 Objetivo
-> Implementar uma API REST com os conteúdos trabalhados durante o Bootcamp Meli, propondo solução que atenda as regras de negócios do Mercado Livre Frescos.
+> Implementar uma API REST com os conteúdos trabalhados durante o Bootcamp Meli, propondo soluções que atenda as regras de negócios do Mercado Livre Frescos.
 
 ##  🛠️ Tecnologias Utilizadas
 > - [Java](https://www.java.com/pt-BR/download/help/index.html)
@@ -22,7 +22,7 @@ que se possa mostrar ao colaborador que vai procurar o produto (picking) onde es
 
 ## ✒️ Autores
 > - [Edenilson Teixeira](https://github.com/EddieMeli)
-> - [Hugo Vitor](https://github.com/HugoVictorDev)
+> - [Hugo Victor](https://github.com/HugoVictorDev)
 > - [Marco Siqueira](https://github.com/siqueirama)
 > - [Maurício Nakabar](https://github.com/mnakabar)
 > - [Patrícia Souza](https://github.com/patriciasouzass)

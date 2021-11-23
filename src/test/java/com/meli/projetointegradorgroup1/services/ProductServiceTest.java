@@ -15,8 +15,8 @@ import java.util.List;
 
 public class ProductServiceTest {
     Product product = new Product(1l, "teste","cafe", StockType.FRESH);
-    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe");
-    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe");
+    ProductResponseDTO productDtoRes = new ProductResponseDTO("teste","cafe", StockType.NATURAL);
+    ProductRequestDTO productDtoReq = new ProductRequestDTO("teste","cafe", StockType.NATURAL);
     Product productUpdate = new Product(null, "teste","cafe",StockType.FRESH);
 
     List<Product> listProduct = new ArrayList();
@@ -110,7 +110,7 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository);
         productService.validaUpdate(product, productDtoReq);
 
-        assert (productUpdate.getName().equals(productDtoRes.getProductName()));
+        assert (productUpdate.getName().equals(productDtoRes.getName()));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class ProductServiceTest {
     public void converteToDto(){
         productService = Mockito.mock(ProductService.class);
         ProductService productService = new ProductService( null);
-        assert (productService.converteToDto(product).getProductName().equals(product.getName()));
+        assert (productService.converteToDto(product).getName().equals(product.getName()));
     }
 
     @Test
