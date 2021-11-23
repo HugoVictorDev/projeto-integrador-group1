@@ -52,7 +52,7 @@ create table product (
                          name varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc'),  ('NATURAL', 'Bacon',  'desc');
 
 create table representante (
                                id  bigserial not null,

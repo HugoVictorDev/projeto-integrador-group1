@@ -7,10 +7,7 @@ import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -47,6 +44,7 @@ public class InBoundOrderController {
 
     @PutMapping("/update")
     public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
+        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         this.inBoundOrderService.updateInbound(inBoundOrderRequestDTO);
         return inBoundOrderRequestDTO;
 

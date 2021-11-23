@@ -57,18 +57,9 @@ public class InBoundOrderService {
     public void registra(InBoundOrder inBoundOrder){
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
-       // b.setInboundOrder(inBoundOrder);
             b.getBatchStockItem().setBatchStock(b);
         });
 
-//        if(inBoundOrder.getId()!=null){
-//            atualiza(inBoundOrder);
-//        }else{
-            //List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
-            //batchStocks.forEach(b -> {
-                //b.setInboundOrder(inBoundOrder);
-                //b.getBatchStockItem().setBatchStock(b);
-            //});
         InBoundOrder byOrderNumber = inBoundOrderRepository.findByOrderNumber(inBoundOrder.getOrderNumber());
         if (byOrderNumber != null){
             throw new RuntimeException("Já contém uma inboundorder com essa ordernumber, utilize o método de atualizar");
@@ -252,7 +243,7 @@ public class InBoundOrderService {
                                 .quantity(btc.getQuantity())
                                 .volume(btc.getVolume())
                                 .product(productService.obtem(btc.getBatchStockItem()))
-                                .maximumTemperature(btc.getMinimumTemperature())
+                                .minimumTemperature(btc.getMinimumTemperature())
                                 .build()
                 )
                 .build();
