@@ -23,8 +23,6 @@ public class InBoundOrderController {
     @Autowired
     BatchStockService batchStockService;
     @Autowired
-    StockService stockService;
-    @Autowired
     ProductService productService;
     @Autowired
     RepresentanteServices representanteServices;
