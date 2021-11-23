@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -31,9 +32,9 @@ public class SellerController {
 
     //Cadastrar vendedor - ok
     @PostMapping("/create")
-    public Seller createSeller(@RequestBody Seller seller){
+    public Seller createSeller(@RequestBody Seller seller, UriComponentsBuilder uriBuilder){
 
-        return sellerService.setSeller(seller);
+        return sellerService.setSeller(seller,uriBuilder);
     }
 
 

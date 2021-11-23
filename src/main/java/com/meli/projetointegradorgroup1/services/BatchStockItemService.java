@@ -58,7 +58,7 @@ public class BatchStockItemService {
 
         batchStockItemRepository.save(batchStockItem);
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body("BatchStockItem created");
     }
 
@@ -97,11 +97,9 @@ public class BatchStockItemService {
     //    valida product
     public void validProductExist(BatchStockItemRequestDTO batchStockItemRequestDTO) {
         productService.valida(batchStockItemRequestDTO.getProduct_id());
-
     }
 
     public BatchStockItem findBatchStockItemById(Long Id){
-
         return this.batchStockItemRepository.findById(Id).get();
     }
 

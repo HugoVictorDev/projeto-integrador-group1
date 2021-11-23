@@ -14,6 +14,7 @@ import org.springframework.boot.devtools.remote.server.HttpStatusHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ class SellerServiceTest {
     SellerRequestDTO seller1RequestDTO = new SellerRequestDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
     SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
+
+    String message = "";
+    String uri = "http//Mock";
+
     ArrayList<Seller> sellers = new ArrayList();
 
     @BeforeEach
@@ -50,6 +55,10 @@ class SellerServiceTest {
     @Test
     void setSeller() { // - CADASTRO DE SELLER - OK
 
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
+
         Seller sellerReturn = new Seller();
         List<Seller> sellerArrayList = new ArrayList();
         sellerArrayList.add(seller1);
@@ -57,7 +66,7 @@ class SellerServiceTest {
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         SellerService sellerService = new SellerService(repositoryMock);
 
-        sellerReturn = sellerService.setSeller(seller1);
+        sellerReturn = sellerService.setSeller(seller1,uriBuilder);
         Assert.assertEquals(seller1,sellerReturn);
     }
     @Test

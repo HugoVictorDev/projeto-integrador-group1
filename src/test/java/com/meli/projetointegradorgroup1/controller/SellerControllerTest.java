@@ -46,13 +46,13 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 //
-        Mockito.when(sellerService.setSeller(Mockito.any())).thenReturn(seller1);
+        Mockito.when(sellerService.setSeller(Mockito.any(),Mockito.any())).thenReturn(seller1);
 
         Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
 
 
         SellerController sellerController = new SellerController(sellerService);
-        Seller sellerReturn =  sellerController.createSeller(seller1);
+        Seller sellerReturn =  sellerController.createSeller(seller1,null);
 
         assert (sellerReturn != null);
 
@@ -91,7 +91,7 @@ class SellerControllerTest {
         SellerController sellerController = new SellerController(sellerService);
         Seller sellerReturn = sellerController.getSellerById(sellerId);
 
-        assertTrue (sellerReturn.equals(seller1));
+        assert(sellerReturn.equals(seller1));
     }
 
     @Test
@@ -99,7 +99,7 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 
-        Mockito.when(sellerService.delSeller(Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
+        Mockito.when(sellerService.delSeller(Mockito.anyLong())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
         Mockito.when(sellerService.update(Mockito.any(), Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
 
         SellerController sellerController = new SellerController(sellerService);

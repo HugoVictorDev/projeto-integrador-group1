@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import java.util.Optional;
@@ -33,7 +35,8 @@ public class SellerService {
                 .collect(Collectors.toList());
     }
 
-    public Seller setSeller(Seller seller){ // - ok
+    public Seller setSeller(Seller seller, UriComponentsBuilder uriBuilder){ // - ok
+        URI uri = uriBuilder.path("/seller/{id}").buildAndExpand(seller.getId()).toUri();
         return sellerRepository.save(seller);
     }
 

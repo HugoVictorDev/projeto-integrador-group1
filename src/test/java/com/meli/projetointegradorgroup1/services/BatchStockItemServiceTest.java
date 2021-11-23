@@ -93,10 +93,7 @@ class BatchStockItemServiceTest {
         Assert.assertEquals(batchStockItemResponseDTO1, batchStockItemResponseDTO);
     }
 
-    @Test
-    void validProductExist() {
 
-    }
 
     @Test
     void validaUpdate() {
