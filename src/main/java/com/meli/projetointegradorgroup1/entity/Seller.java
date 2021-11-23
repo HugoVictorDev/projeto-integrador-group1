@@ -12,10 +12,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
+@Accessors(chain = true)
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Builder
+@Data
 @Entity
 public class Seller {
 
@@ -34,4 +35,9 @@ public class Seller {
     @Column(name = "email")
     private String email;
 
+    public Seller(String name, String cpf, String email) {
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+    }
 }
