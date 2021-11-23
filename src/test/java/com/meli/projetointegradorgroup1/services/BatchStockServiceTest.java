@@ -114,7 +114,7 @@ public class BatchStockServiceTest {
         batchStockService = new BatchStockService(null, null, null);
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         batchStockService.updateBatchStock(null, null);});
-        message = "Representante não encontrado";
+        message = "BatchStock não encontrado";
         assert (exception.getMessage().contains(message));
     }
 

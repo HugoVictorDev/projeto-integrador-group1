@@ -25,6 +25,10 @@ public class BatchStockItemService {
     @Autowired
     ProductService productService;
 
+    public BatchStockItemService(BatchStockItemRepository batchStockItemRepository) {
+        this.batchStockItemRepository = batchStockItemRepository;
+    }
+
     public BatchStockItem obter(Long id){
         Optional<BatchStockItem> byId = this.batchStockItemRepository.findById(id);
         return byId.get();

@@ -53,7 +53,6 @@ public class InBoundOrderService {
 
 
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb) {
-        sellerService.obter(inb.getSellerId());
         this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
         this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());

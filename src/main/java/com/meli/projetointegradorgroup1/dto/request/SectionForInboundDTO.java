@@ -19,16 +19,7 @@ import javax.validation.constraints.NotNull;
 public class SectionForInboundDTO {
 
     @JsonProperty(value = "sectionCode")
-
     private Long code;
-
     private Long warehouseCode;
 
-    public Section converte(SectionForInboundDTO dto, WarehouseServices warehouseServices){
-        Warehouse warehouse1 = warehouseServices.obterWarhouseByCode(warehouseCode);
-        return Section.builder()
-                .code(dto.code)
-                .warehouse(warehouse1)
-                .build();
-    }
 }

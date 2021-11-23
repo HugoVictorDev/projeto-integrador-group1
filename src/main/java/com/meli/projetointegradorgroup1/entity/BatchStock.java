@@ -34,7 +34,6 @@ public class BatchStock {
     private LocalDate dueDate;
     private int quantity;
     private double volume;
-    private Long productID;
 
     @OneToOne(mappedBy =  "batchStock", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BatchStockItem batchStockItem;
