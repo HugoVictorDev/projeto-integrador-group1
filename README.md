@@ -22,7 +22,7 @@ que se possa mostrar ao colaborador que vai procurar o produto (picking) onde es
 
 ## ✒️ Autores
 > - [Edenilson Teixeira](https://github.com/EddieMeli)
-> - [Hugo Vitor](https://github.com/HugoVictorDev) <p>
-> - [Marco Siqueira](https://github.com/siqueirama) <p>
-> - [Maurício Nakabar](https://github.com/mnakabar) <p>
+> - [Hugo Vitor](https://github.com/HugoVictorDev)
+> - [Marco Siqueira](https://github.com/siqueirama)
+> - [Maurício Nakabar](https://github.com/mnakabar)
 > - [Patrícia Souza](https://github.com/patriciasouzass)
