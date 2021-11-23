@@ -35,7 +35,7 @@ public class InBoundOrderController {
     InBoundOrderRepository inBoundOrderRepository;
 
 
-    @ResponseStatus(HttpStatus.CREATED)
+
     @PostMapping("/create")
     public InBoundOrderRequestDTO create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO) {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
@@ -44,7 +44,7 @@ public class InBoundOrderController {
         return inBoundOrderRequestDTO;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+
     @PutMapping("/update")
     public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
         this.inBoundOrderService.updateInbound(inBoundOrderRequestDTO);

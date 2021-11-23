@@ -86,7 +86,7 @@ public class InBoundOrderRequestDTO {
                     .volume(dto.getVolume())
                     .batchStockItem(
                             BatchStockItem.builder()
-                                    .maximumTemperature(dto.getMaximumTemperature())
+                                    .minimumTemperature(dto.getMinimumTemperature())
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))

@@ -160,7 +160,9 @@ public class InBoundOrderService {
     public InBoundOrder updateInbound(InBoundOrderRequestDTO dto) {
         InBoundOrder existingInboundOrder = inBoundOrderRepository.findByOrderNumber(dto.getOrderNumber());
         if (existingInboundOrder != null){
-            return atualiza(existingInboundOrder, dto);
+            InBoundOrder io = atualiza(existingInboundOrder, dto);
+            this.inBoundOrderRepository.save(io);
+            return io;
         }
         throw new RuntimeException("Inbound nao encontrada");
 
@@ -220,7 +222,6 @@ public class InBoundOrderService {
         bs.setSeller(sellerService.obter(inboundOrderDTO.getSellerId()));
         bs.setQuantity(dto.getQuantity());
         bs.setVolume(dto.getVolume());
-
         bs.getBatchStockItem().setQuantity(dto.getQuantity());
         bs.getBatchStockItem().setVolume(dto.getVolume());
         bs.getBatchStockItem().setMaximumTemperature(dto.getMaximumTemperature());
