@@ -90,7 +90,7 @@ insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com
 
 create table warehouse (
                            id  bigserial not null,
-                           code bigserial not null,
+                           code bigint not null,
                            address varchar(255) not null,
                            name varchar(255) not null,
                            size varchar(255) not null,
