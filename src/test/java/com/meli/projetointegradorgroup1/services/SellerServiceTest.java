@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
+/**
+ * @author Marco Siqueiraa
+ */
 
 class SellerServiceTest {
     SellerRepository sellerRepository = Mockito.mock(SellerRepository.class);

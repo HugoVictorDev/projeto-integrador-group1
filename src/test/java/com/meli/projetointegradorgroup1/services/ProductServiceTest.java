@@ -15,6 +15,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Marco Siqueiraa
+ */
 
 public class ProductServiceTest {
     Product product = new Product(1l, "teste","cafe", StockType.FRESH);

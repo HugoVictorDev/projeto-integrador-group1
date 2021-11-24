@@ -1,6 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,8 @@ public class InBoundOrderService {
         }
         throw new RuntimeException("section  não corresponde ao tipo de produto");
     }
+
+
 
     /**
      * @author Hugo Victor
@@ -292,6 +295,13 @@ public class InBoundOrderService {
         return batchStock;
     }
 
-
+    public List<InBoundOrder> listInboundRepresentante(Long id) {
+        Representante representante = representanteServices.obterRepresentanteById(id);
+        List<InBoundOrder> byRepresentante = inBoundOrderRepository.findByRepresentante(representante);
+        if (byRepresentante.size() != 0) {
+            return byRepresentante;
+        }
+        return byRepresentante.stream().collect(Collectors.toList());
+    }
 }
 

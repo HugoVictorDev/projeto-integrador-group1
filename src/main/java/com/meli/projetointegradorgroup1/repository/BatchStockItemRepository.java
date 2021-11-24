@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BatchStockItemRepository extends JpaRepository<BatchStockItem, Long> {
 
-    BatchStockItem findByProduct_id(Long productId);
+
 }

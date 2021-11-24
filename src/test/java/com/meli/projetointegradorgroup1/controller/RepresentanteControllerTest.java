@@ -9,6 +9,9 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Marco Siqueiraa
+ */
 
 public class RepresentanteControllerTest {
     Representante representante = new Representante(1l, "Joao", "98765432178");

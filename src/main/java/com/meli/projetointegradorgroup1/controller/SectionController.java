@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 /**
  * @author Marco Siqueira
@@ -41,6 +42,7 @@ public class SectionController {
     public Iterable<SectionResponseDTO> list(){
         return sectionServices.convertList(sectionServices.listaSection());
     }
+
 
     //busca sessões por id
     @GetMapping("/list/{id}")

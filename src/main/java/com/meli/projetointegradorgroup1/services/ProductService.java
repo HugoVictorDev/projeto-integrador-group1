@@ -14,10 +14,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * @author Patricia Souza
+ * @author Hugo Victor
+ * @author Marco Siqueiraa
+ */
 
 @Service
 public class ProductService {
+
 
     @Autowired
     ProductRepository productRepository;
@@ -26,6 +31,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public List<ProductResponseDTO> listProductAll(){
         List <Product> list = productRepository.findAll();
         if(list.size() != 0) {
@@ -38,6 +47,9 @@ public class ProductService {
         }
     }
 
+    /**
+     * @author Patricia Souza
+     */
     public List<ProductResponseDTO> listProduct(String name){
         List<Product> list = productRepository.findByNameContaining(name);
         if(list.size() != 0) {
@@ -50,13 +62,18 @@ public class ProductService {
         }
     }
 
-
+    /**
+     * @author Hugo Victor
+     */
     public List<Product> listProductByType(String type){
         return productRepository.findAll()
                 .stream().filter(product -> product.getStockType().equals(type))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @author Hugo Victor
+     */
     public List<Long> listProductId(){
         return productRepository.findAll().stream()
                 .map(product -> product.getId()).collect(Collectors.toList());
@@ -72,7 +89,10 @@ public class ProductService {
 
 
 
-
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public Product validaUpdate(Product productFind, ProductRequestDTO productRequestDto){
         if (productFind.getId() == null) {
             throw new RuntimeException("Produto não encontrado");
@@ -80,10 +100,15 @@ public class ProductService {
             Product newProduct = productFind;
             newProduct.setName(productRequestDto.getName());
             newProduct.setDescription(productRequestDto.getDescription());
+            newProduct.setStockType(productRequestDto.getStockType());
             return newProduct;
         }
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public Product convert(ProductRequestDTO dto) {
         return Product.builder()
                 .name(dto.getName())
@@ -92,6 +117,10 @@ public class ProductService {
                 .build();
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public ProductResponseDTO convertToDto(Product product) {
         return ProductResponseDTO.builder()
                 .name(product.getName())
@@ -100,6 +129,10 @@ public class ProductService {
                 .build();
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public ResponseEntity<Object> save(Product product , UriComponentsBuilder uriBuilder){
         try {
             productRepository.save(product);
@@ -113,6 +146,10 @@ public class ProductService {
                 .created(uri).body(convertToDto(product));
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public Product obtem(Long id){
         Optional<Product> byId = productRepository.findById(id);
         if(byId == null || byId.equals(Optional.empty()) ){
@@ -122,6 +159,10 @@ public class ProductService {
         }
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Marco Siqueiraa
+     */
     public void deletaProduct(Long id) {
         try{
             productRepository.deleteById(id);

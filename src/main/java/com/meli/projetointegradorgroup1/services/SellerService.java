@@ -15,6 +15,10 @@ import java.util.List;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
+/**
+ * @author Hugo Victor
+ * @author Marco Siqueiraa
+ */
 
 @Service
 public class SellerService {
