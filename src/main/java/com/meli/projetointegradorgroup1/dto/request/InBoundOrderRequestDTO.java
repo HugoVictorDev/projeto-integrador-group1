@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
@@ -24,16 +26,22 @@ import java.util.List;
 @Builder
 public class InBoundOrderRequestDTO {
 
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private LocalDate orderDate;
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         @JsonProperty(value =  "seller_id")
-        private Long sellerId; //
+        private Long sellerId;
         @JsonProperty(value = "section")
         private SectionForInboundDTO sectionForInboundDTO;
         @JsonProperty(value= "batchStockList")
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+        @Valid
         private List<BatchStockRequestDTO> batchStockDTOList;
-
+        @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long representanteId;
+
 
 
 
@@ -48,7 +56,6 @@ public class InBoundOrderRequestDTO {
                         .orderNumber(this.orderNumber)
                         .section(section)
                         .batchStock(converte(batchStockDTOList, productService, sellerService)).build();
-
 
                 return inboundOrder;
             }catch(Exception e){
@@ -72,10 +79,15 @@ public class InBoundOrderRequestDTO {
                     .currentQuality(dto.getCurrentQuality())
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
+                    .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.findSellerById(this.sellerId))
+        //            .seller(sellerService.obter(this.sellerId))
+                    .seller(sellerService.obtem(this.sellerId))
+                    .quantity(dto.getQuantity())
+                    .volume(dto.getVolume())
                     .batchStockItem(
                             BatchStockItem.builder()
+                                    .minimumTemperature(dto.getMinimumTemperature())
                                     .quantity(dto.getQuantity())
                                     .volume(dto.getVolume())
                                     .product(productService.obtem(dto.getBatchStockItem()))

@@ -1,12 +1,16 @@
 package com.meli.projetointegradorgroup1.services;
-import com.meli.projetointegradorgroup1.dto.response.WarehouseDTO;
+import com.meli.projetointegradorgroup1.dto.WarehouseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -81,14 +85,20 @@ public class WarehouseServices {
                 .build();
     }
 
-    public Warehouse save(Warehouse warehouse) {
+
+    public ResponseEntity<Object>save(Warehouse warehouse , UriComponentsBuilder uriBuilder){
         try {
             warehouseRepository.save(warehouse);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação Warehouse:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação Warehouse:",e));
         }
-        return warehouse;
+        URI uri = uriBuilder.path("/warehouse/{id}").buildAndExpand(warehouse.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(warehouse));
     }
+
 
     public Iterable<WarehouseDTO> converteList(List<Warehouse> warehouses) {
         List<WarehouseDTO> listWarehouse = new ArrayList<>();
@@ -105,7 +115,7 @@ public class WarehouseServices {
         return listWarehouse;
     }
 
-    public WarehouseDTO converteToDto(Warehouse warehouse) {
+    public WarehouseDTO convertToDto(Warehouse warehouse) {
         return WarehouseDTO.builder()
                 .name(warehouse.getName())
                 .address(warehouse.getAddress())

@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.entity;
 
 
-import com.meli.projetointegradorgroup1.services.EnumNamePattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,16 +23,15 @@ public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private Long code;
-
     @Enumerated(value = EnumType.STRING)
     private StockType stockType;
-
+    @Column(name = "minimum_temperature")
     private String minimumTemperature;
     private Long capacity;
 
     @ManyToOne
     private Warehouse warehouse;
+
 
 }

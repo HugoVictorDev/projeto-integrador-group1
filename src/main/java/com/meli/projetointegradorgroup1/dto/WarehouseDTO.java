@@ -1,16 +1,22 @@
 package com.meli.projetointegradorgroup1.dto;
 
-
+import com.meli.projetointegradorgroup1.entity.Warehouse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import javax.validation.constraints.*;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class WarehouseDTO {
 
-    private Long warehouseId;
-
-    @NotBlank(message = "Campo é obrigatorio")
+    @NotNull(message = "Campo é obrigatorio")
     private Long code;
 
     @NotBlank(message = "Campo é obrigatorio")
@@ -24,12 +30,4 @@ public class WarehouseDTO {
     @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros")
     private String size;
 
-
-    public WarehouseDTO(Long warehouseId, String name, String address, String size) {
-        this.warehouseId = warehouseId;
-        this.name = name;
-        this.address = address;
-        this.size = size;
-
-    }
 }

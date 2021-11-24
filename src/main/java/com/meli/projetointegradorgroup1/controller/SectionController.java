@@ -1,12 +1,14 @@
 package com.meli.projetointegradorgroup1.controller;
 
 import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.SectionDTO;
+import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.services.SectionServices;
 import com.meli.projetointegradorgroup1.services.WarehouseServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -26,34 +28,34 @@ public class SectionController {
     }
 
     @PostMapping("/create")
-    public SectionDTO ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO){
+    public ResponseEntity<Object> ceateSection(@Valid @RequestBody SectionRequestDTO sectionRequestDTO, UriComponentsBuilder uriBuilder){
         sectionServices.validarWarehouse(sectionRequestDTO);
         Section section = sectionServices.convert(sectionRequestDTO, warehouseServices);
-        return sectionServices.convertToDto(sectionServices.save(section));
+        return sectionServices.save(section, uriBuilder);
     }
 
     //listar todas as sessões
     @GetMapping("/list")
-    public Iterable<SectionDTO> list(){
+    public Iterable<SectionResponseDTO> list(){
         return sectionServices.convertList(sectionServices.listaSection());
     }
 
     //busca sessões por id
     @GetMapping("/list/{id}")
-    public SectionDTO getSectionByID(@PathVariable ("id") Long id){
+    public SectionResponseDTO getSectionByID(@PathVariable ("id") Long id){
         return sectionServices.convertToDto(sectionServices.obterSection(id));
     }
 
     @PutMapping("/update/{id}")
-    public SectionDTO updateSection(@PathVariable("id") Long id,@Valid @RequestBody SectionRequestDTO sectionRequestDTO){
-        Optional<Section> sectionFind = sectionServices.findById(id);
-        Section section = sectionServices.validaUpdate(sectionFind, sectionRequestDTO);
-        return sectionServices.convertToDto(sectionServices.save(section));
+    public ResponseEntity<Object> updateSection(@PathVariable("id") Long id, @Valid @RequestBody SectionRequestDTO sectionRequestDTO, UriComponentsBuilder uriBuilder){
+        Section sectionFind = sectionServices.obterSection(id);
+        Section section = sectionServices.validaUpdate(Optional.ofNullable(sectionFind), sectionRequestDTO);
+        return sectionServices.save(section, uriBuilder);
     }
 
     //deletar por id
     @DeleteMapping("/delete/{id}")
-    public SectionDTO  deleteSectionById(@PathVariable("id") Long id) {
+    public SectionResponseDTO deleteSectionById(@PathVariable("id") Long id) {
         Section section = sectionServices.obterSection(id);
         sectionServices.deleta(id);
         return sectionServices.convertToDto(section);

@@ -1,61 +1,56 @@
 package com.meli.projetointegradorgroup1.dto.request;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.services.BatchStockItemService;
-import com.meli.projetointegradorgroup1.services.SellerService;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
+
 public class BatchStockRequestDTO {
 
-    BatchStockItemService batchStockItemService;
-    Seller sellerService;
-    SellerService sellerRepository;
-
+    @NotNull(message = "Campo batchStockNumber é obrigatorio")
     private Long batchStockNumber;
+
+    @NotNull(message = "Campo batchStockItem é obrigatorio")
     private Long batchStockItem;
+
     private Long sellerId;
+
+    @NotNull (message = "Campo currentTemperature é obrigatorio")
     private double currentTemperature;
+
+    @NotNull(message = "Campo minimumTemperature é obrigatorio")
     private double minimumTemperature;
+
+    @NotNull(message = "Campo maximumTemperature é obrigatorio")
     private double maximumTemperature;
+
+    @NotBlank(message = "campo initialQuality é obrigatorio")
     private String initialQuality;
+
+    @NotBlank(message = "campo currentQuality é obrigatorio")
     private String currentQuality;
+
+    @NotBlank(message = "campo manufacturingTime é obrigatorio")
     private String  manufacturingTime;
+
+    @NotNull(message = "campo dueDate é obrigatorio")
     private LocalDate dueDate;
+
+    @NotNull(message = "campo dueDate é obrigatorio")
     private int quantity; //quantidade de produtos chegando no lote
+
+    @NotNull(message = "campo dueDate é obrigatorio")
     private double volume; //volume total ocupado pelo lote de produtos
-    private Seller seller;
 
-
-    public BatchStock convertedto(BatchStockRequestDTO dto){
-
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        return BatchStock.builder()
-                .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.getBatchStockItem(dto.batchStockItem))
-                .currentTemperature(dto.getCurrentTemperature())
-                .minimumTemperature(dto.getMinimumTemperature())
-                .maximumTemperature(dto.getMaximumTemperature())
-                .initialQuality(dto.getInitialQuality())
-                .currentQuality(dto.getCurrentQuality())
-                .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
-                .dueDate(dto.getDueDate())
-                .quantity(dto.getQuantity())
-                .volume(dto.getVolume())
-                .seller(sellerRepository.findSellerById(dto.getSellerId()))
-                .build();
-        
-
-    }
 }

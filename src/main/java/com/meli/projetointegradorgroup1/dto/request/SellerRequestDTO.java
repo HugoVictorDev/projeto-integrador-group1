@@ -30,16 +30,4 @@ public class SellerRequestDTO {
     @Email
     private String email;
 
-
-    public Seller converte(SellerRequestDTO dto){
-        return Seller.builder()
-                .name(dto.getName())
-                .cpf(dto.getCpf())
-                .email(dto.getEmail())
-                .build();
-    }
-
-
-
-
 }

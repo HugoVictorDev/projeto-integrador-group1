@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Long> {
+    Seller findByCpf(String cpf);
     Optional<Seller> findById(Long Id);
     List<Seller> findAll();
 

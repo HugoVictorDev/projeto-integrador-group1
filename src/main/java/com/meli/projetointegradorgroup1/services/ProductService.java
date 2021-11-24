@@ -3,11 +3,14 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.ProductRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Product;
-import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,27 +27,41 @@ public class ProductService {
     }
 
     public List<ProductResponseDTO> listProductAll(){
-        try {
-            return productRepository.findAll()
+        List <Product> list = productRepository.findAll();
+        if(list.size() != 0) {
+            return list
                     .stream()
                     .map(ProductResponseDTO::new)
                     .collect(Collectors.toList());
-        }catch (RuntimeException e){
-            throw new RuntimeException("Erro ao buscar Produto");
+        }else {
+            throw new RuntimeException("Não existem produtos cadastrados");
         }
-
     }
 
     public List<ProductResponseDTO> listProduct(String name){
-        try {
-        return productRepository.findByNameContaining(name)
-                .stream()
-                .map(ProductResponseDTO::new)
-                .collect(Collectors.toList());
-        }catch (RuntimeException e){
-            throw new RuntimeException("Erro ao buscar Produto");
+        List<Product> list = productRepository.findByNameContaining(name);
+        if(list.size() != 0) {
+            return list
+                    .stream()
+                    .map(ProductResponseDTO::new)
+                    .collect(Collectors.toList());
+        }else {
+            throw new RuntimeException("Produto não encontrado");
         }
     }
+
+
+    public List<Product> listProductByType(String type){
+        return productRepository.findAll()
+                .stream().filter(product -> product.getStockType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> listProductId(){
+        return productRepository.findAll().stream()
+                .map(product -> product.getId()).collect(Collectors.toList());
+    }
+
 
     public void valida(Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -52,6 +69,8 @@ public class ProductService {
             throw new RuntimeException("Produto não cadastrado");
         }
     }
+
+
 
 
     public Product validaUpdate(Product productFind, ProductRequestDTO productRequestDto){
@@ -65,30 +84,34 @@ public class ProductService {
         }
     }
 
-
-    public Product converte(ProductRequestDTO dto) {
+    public Product convert(ProductRequestDTO dto) {
         return Product.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .stockType(dto.getStockType())
                 .build();
     }
 
-    public ProductResponseDTO converteToDto(Product product) {
+    public ProductResponseDTO convertToDto(Product product) {
         return ProductResponseDTO.builder()
-                .productName(product.getName())
+                .name(product.getName())
                 .description(product.getDescription())
+                .stockType(product.getStockType())
                 .build();
     }
 
-    public Product save(Product product) {
+    public ResponseEntity<Object> save(Product product , UriComponentsBuilder uriBuilder){
         try {
             productRepository.save(product);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação do produto:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação do produto:",e));
         }
-        return product;
+        URI uri = uriBuilder.path("/product/{id}").buildAndExpand(product.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(product));
     }
-
 
     public Product obtem(Long id){
         Optional<Product> byId = productRepository.findById(id);
@@ -103,7 +126,7 @@ public class ProductService {
         try{
             productRepository.deleteById(id);
         } catch (RuntimeException e) {
-            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+            if(e.getCause().getCause().getMessage().contains("violates foreign key constraint")){
                 throw new RuntimeException("Referential integrity constraint violation");
             }else {
                 throw e;

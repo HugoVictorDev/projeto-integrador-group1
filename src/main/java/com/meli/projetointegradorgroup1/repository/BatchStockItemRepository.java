@@ -16,4 +16,5 @@ public interface BatchStockItemRepository extends JpaRepository<BatchStockItem, 
     List<BatchStockItem> findAll();
 
 
+    BatchStockItem findByProduct_id(Long productId);
 }

@@ -1,10 +1,15 @@
 package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.RepresentanteDTO;
 import com.meli.projetointegradorgroup1.entity.Representante;
+import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.RepresentanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +37,7 @@ public class RepresentanteServices {
         }
     }
 
-    public static String maskCpf(String cpf) {
+    public String maskCpf(String cpf) {
        return (cpf.substring(0, 3) + "." +cpf.substring(3, 6) + "." +cpf.substring(6, 9) + "-" +cpf.substring(9, 11));
     }
 
@@ -47,7 +52,7 @@ public class RepresentanteServices {
         }
     }
 
-    public RepresentanteDTO converteToDto(Representante representante) {
+    public RepresentanteDTO convertToDto(Representante representante) {
         return RepresentanteDTO.builder()
                 .cpf(representante.getCpf())
                 .name(representante.getName())
@@ -55,14 +60,14 @@ public class RepresentanteServices {
                 .build();
     }
 
-    public Representante converte(RepresentanteDTO dto) {
+    public Representante convert(RepresentanteDTO dto) {
             return Representante.builder()
                     .cpf(maskCpf(dto.getCpf()))
                     .name(dto.getName())
                     .build();
     }
 
-    public List<RepresentanteDTO> converteList(List<Representante> representantes) {
+    public List<RepresentanteDTO> convertList(List<Representante> representantes) {
         List<RepresentanteDTO> listRepresentante = new ArrayList<>();
             for (Representante representante: representantes) {
                 listRepresentante.add(
@@ -85,13 +90,18 @@ public class RepresentanteServices {
         }
     }
 
-    public Representante save(Representante representante) {
-        try {
+    public ResponseEntity<Object> save(Representante representante , UriComponentsBuilder uriBuilder){
+
+            try {
             representanteRepository.save(representante);
-        }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação do registro:", e );
+            }catch (RuntimeException e){
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(new RuntimeException("Erro na gravação do registro:", e));
         }
-        return representante;
+        URI uri = uriBuilder.path("/representante/{id}").buildAndExpand(representante.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(representante));
     }
 
 
@@ -112,5 +122,12 @@ public class RepresentanteServices {
                 throw e;
             }
         }
+    }
+
+    public Representante obterRepresentanteById(Long id) {
+        Optional<Representante> representante = representanteRepository.findById(id);
+        if (representante.isPresent()){
+            return representante.get();
+        }else throw new RuntimeException("representante não encontrada");
     }
 }

@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 @Entity
-//conjunto de lote
 public class BatchStock {
 
     @Id
@@ -34,7 +33,6 @@ public class BatchStock {
     private LocalDate dueDate;
     private int quantity;
     private double volume;
-    private Long productID;
 
     @OneToOne(mappedBy =  "batchStock", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private BatchStockItem batchStockItem;
@@ -42,8 +40,11 @@ public class BatchStock {
     @OneToOne
     private Seller seller;
 
-    @ManyToOne
-    private InBoundOrder inboundOrder;
+    @Override
+    public boolean equals(Object o) {
+        BatchStock bs = (BatchStock) o;
+        return bs.batchStockNumber.equals(this.batchStockNumber);
+    }
 
 
 }

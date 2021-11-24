@@ -1,21 +1,24 @@
 package com.meli.projetointegradorgroup1.services;
 
+import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
-import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
+
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.function.EntityResponse;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
+import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BatchStockService {
@@ -23,88 +26,143 @@ public class BatchStockService {
     private BatchStockRepository batchStockRepository;
     @Autowired
     private BatchStockItemService batchStockItemService;
+    @Autowired
+    private SellerService sellerService;
 
-    BatchStockResponseDTO batchStockResponseDTO;
-
-    public ResponseEntity<HttpStatus> save(BatchStock batchStock){
-        BatchStock batchStockReturn = batchStockRepository.findById(batchStock.getBatchStockNumber()).get();
-        if (batchStockReturn == null) {
-            batchStock = batchStockRepository.save(batchStock);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+        this.batchStockRepository = batchStockRepository;
+        this.batchStockItemService = batchStockItemService;
+        this.sellerService = sellerService;
     }
 
-    public ResponseEntity<String> deleteBybatchStockNumber (Long batchNumber){
-        Long idBatchStock = batchStockRepository.findById(batchNumber).get().getBatchStockNumber();
 
-        if (idBatchStock == 0 ){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-            try {
-                batchStockRepository.deleteById(batchNumber);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }catch (RuntimeException e){
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public void valida(Long productID) {
+        batchStockItemService.validaBatchStockItem(productID);
     }
 
-    public ResponseEntity<HttpStatus> deleteById (Long id){
-        batchStockRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    public ResponseEntity<HttpStatus> deleteAll (Long id){
-        batchStockRepository.deleteAll();
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    public ResponseEntity<String> update(BatchStock batchStock){
-        BatchStock batchStockReturn = batchStockRepository.findById(batchStock.getBatchStockNumber()).get();
+    public ResponseEntity<Object> save(BatchStock batchStock, UriComponentsBuilder uriBuilder) {
         try {
-            if (batchStockReturn != null) {
-                batchStockRepository.save(batchStock);
-                return new ResponseEntity<>(HttpStatus.OK);
-            }else{
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            batchStockRepository.save(batchStock);
         }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação Stock:", e));
         }
-
+        URI uri = uriBuilder.path("/batchstock/{id}").buildAndExpand(batchStock.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(batchStock));
 
     }
 
-    public BatchStockResponseDTO findById(Long id) {
-        return batchStockResponseDTO.converte(batchStockRepository.findById(id).get());
+
+    public List<BatchStock> findBatchSotck() {
+        List<BatchStock> batchStockList = batchStockRepository.findAll();
+        if(batchStockList.size() == 0){
+            throw new RuntimeException("Não existem Stock cadastradas");
+        }return batchStockList;
     }
 
-    public BatchStock findByIdE(Long id) {
-        return batchStockRepository.findById(id).get();
+
+    public BatchStock findBatchNumber(Long batchNumber) {
+        BatchStock batchStock = batchStockRepository.findByBatchStockNumber(batchNumber);
+        return batchStock;
     }
 
-    public List<BatchStockResponseDTO> findAll() {
-        List<BatchStock> batchStocks = batchStockRepository.findAll();
-        List<BatchStockResponseDTO> batchStockResponseDTOS = new ArrayList();
-
-        for (BatchStock bs: batchStocks) {
-            batchStockResponseDTOS.add(BatchStockResponseDTO.builder()
-                    .batchStockNumber(bs.getBatchStockNumber())
-                    .currentTemperature(bs.getCurrentTemperature())
-                    .minimumTemperature(bs.getMinimumTemperature())
-                    .maximumTemperature(bs.getMaximumTemperature())
-                    .initialQuality(bs.getInitialQuality())
-                    .currentQuality(bs.getCurrentQuality())
-                    .manufacturingTime(bs.getManufacturingTime())
-                    .dueDate(bs.getDueDate())
-                    .quantity(bs.getQuantity())
-                    .volume(bs.getVolume())
-                    .productID(bs.getProductID())
-                    .batchStockItem(bs.getBatchStockItem())
-                    .build());
+    public void deleta(Long id) {
+        try {
+            batchStockRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erro ao deletar BatchStock");
         }
-
-        return batchStockResponseDTOS;
     }
+
+    public BatchStock updateBatchStock(BatchStock batchStockFind, BatchStockRequestDTO dto) {
+        if (batchStockFind == null){
+            throw new RuntimeException("BatchStock não encontrado");
+        }else{
+            BatchStock batchStockUpdate = batchStockFind;
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
+            batchStockUpdate.setBatchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()));
+            batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
+            batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
+            batchStockUpdate.setQuantity(dto.getQuantity());
+            batchStockUpdate.setVolume(dto.getVolume());
+            batchStockUpdate.setInitialQuality(dto.getInitialQuality());
+            batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
+            batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
+            batchStockUpdate.setDueDate(dto.getDueDate());
+            batchStockUpdate.setSeller(sellerService.obtem(dto.getSellerId()));
+            batchStockUpdate.setCurrentQuality(dto.getCurrentQuality());
+            return batchStockUpdate;
+        }
+    }
+
+    public BatchStock convert(BatchStockRequestDTO dto,
+                              BatchStockItemService batchStockItemService, SellerService sellerService){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return BatchStock.builder()
+                .batchStockNumber(dto.getBatchStockNumber())
+                .batchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()))
+                .currentTemperature(dto.getCurrentTemperature())
+                .minimumTemperature(dto.getMinimumTemperature())
+                .maximumTemperature(dto.getMaximumTemperature())
+                .quantity(dto.getQuantity())
+                .volume(dto.getVolume())
+                .initialQuality(dto.getInitialQuality())
+                .currentQuality(dto.getCurrentQuality())
+                .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
+                .dueDate(dto.getDueDate())
+                .seller(sellerService.obtem(dto.getSellerId()))
+                .build();
+    }
+
+    public List<BatchStockResponseDTO> convertList(List<BatchStock> batchSotcks) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        List<BatchStockResponseDTO> ListBatchStock = new ArrayList();
+        for (BatchStock batchStock : batchSotcks) {
+            ListBatchStock.add(
+                    BatchStockResponseDTO.builder()
+                            .batchStockNumber(batchStock.getBatchStockNumber())
+                            .currentTemperature(batchStock.getCurrentTemperature())
+                            .minimumTemperature(batchStock.getMinimumTemperature())
+                            .maximumTemperature(batchStock.getMaximumTemperature())
+                            .quantity(batchStock.getQuantity())
+                            .volume(batchStock.getVolume())
+                            .initialQuality(batchStock.getInitialQuality())
+                            .currentQuality(batchStock.getCurrentQuality())
+                            .manufacturingTime(batchStock.getManufacturingTime().format(formatter))
+                            .dueDate(batchStock.getDueDate())
+                            .sellerId(batchStock.getSeller().getId())
+                            .build());
+        }
+        return ListBatchStock;
+    }
+
+    public BatchStockResponseDTO convertToDto(BatchStock batchStock) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return BatchStockResponseDTO.builder()
+                .batchStockNumber(batchStock.getBatchStockNumber())
+                .sellerId(batchStock.getSeller().getId())
+                .currentTemperature(batchStock.getCurrentTemperature())
+                .minimumTemperature(batchStock.getMinimumTemperature())
+                .maximumTemperature(batchStock.getMaximumTemperature())
+                .initialQuality(batchStock.getInitialQuality())
+                .currentQuality(batchStock.getCurrentQuality())
+                .manufacturingTime(batchStock.getManufacturingTime().format(formatter))
+                .dueDate(batchStock.getDueDate())
+                .sellerId(batchStock.getSeller().getId())
+                .build();
+    }
+
+    public BatchStock findByIds(Long id) {
+        Optional<BatchStock> batchStock = batchStockRepository.findById(id);
+        BatchStock batchStock1 = batchStock.get();
+        if(batchStock1 == null){
+            throw new RuntimeException("BatchStock não cadastrada");
+        }
+        return batchStock1;
+    }
+
+
 }
