@@ -51,15 +51,14 @@ public class BatchStockServiceTest {
         Mockito.when(batchStockRepository.save(Mockito.any())).thenReturn(batchStock);
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );}
+        assert (batchStockService.save(batchStock, uriBuilder).getStatusCodeValue() == 201 );
+    }
 
     @Test
     public void saveNok(){
         Mockito.when(batchStockRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (batchStockService.save(batchStock, null).getStatusCodeValue() == 400 );
     }
 
     @Test

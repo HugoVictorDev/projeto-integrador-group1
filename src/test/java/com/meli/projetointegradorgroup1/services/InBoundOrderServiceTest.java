@@ -20,6 +20,7 @@ import java.util.List;
 public class InBoundOrderServiceTest {
 
     String stockType = "FRESH";
+    Product product = new Product(1l, "teste","cafe", StockType.FRESH);
     SectionForInboundDTO sectionForInboundDTO = new SectionForInboundDTO(1l, 1l);
     BatchStockItem batchStockItem = new BatchStockItem(1l, 2, 3.0, 4.0, 5.0,null, null );
     Seller seller = new Seller (1l, "36843012809", "Edenilson", "edenilson.paschoal@mercadolivre.com");
@@ -77,9 +78,34 @@ public class InBoundOrderServiceTest {
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService,
-                null,  sectionServices, null, null);
+                sellerService,  sectionServices, null, null);
         assert(inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO) != null);
     }
+    @Test
+    public void updateInboundOk(){
+        listBatchStockDto.add(batchStockRequestDTO);
+        batchStockList.add(batchStock);
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
+        Mockito.when(inBoundOrderRepository.findByOrderNumber(Mockito.anyLong())).thenReturn(inBoundOrder);
+        Mockito.when(sectionServices.obterSectionByCode(Mockito.anyLong())).thenReturn(section);
+        Mockito.when(inBoundOrderRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(inBoundOrder));
+        Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,representanteServices, null,
+                null,  sectionServices, null, null);
+        assert (inBoundOrderService.updateInbound(inBoundOrderRequestDTO,uriBuilder).getStatusCodeValue()==201);
+    }
 
+    @Test
+    public void atualizaValoresBatchStockExistente(){
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null, productService,
+                sellerService,  null, null, null);
+        assert (inBoundOrderService.atualizaValoresBatchStockExistente(inBoundOrderRequestDTO,batchStockRequestDTO,batchStock) != null);
+    }
 }

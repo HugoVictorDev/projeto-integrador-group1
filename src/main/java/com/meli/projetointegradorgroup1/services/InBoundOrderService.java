@@ -2,26 +2,26 @@ package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
-import com.meli.projetointegradorgroup1.dto.response.InBoundOrderResponseDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
 import javax.transaction.Transactional;
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class InBoundOrderService {
@@ -60,9 +60,12 @@ public class InBoundOrderService {
 
 
     public ResponseEntity<Object> registra(UriComponentsBuilder uriBuilder, InBoundOrderRequestDTO inBoundOrderRequestDTO, InBoundOrder inBoundOrder) {
+
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
+            validaDate(inBoundOrderRequestDTO.getOrderDate(),b.getManufacturingTime(),b.getDueDate(), b.getBatchStockNumber());
             b.getBatchStockItem().setBatchStock(b);
+
         });
         InBoundOrder byOrderNumber = inBoundOrderRepository.findByOrderNumber(inBoundOrder.getOrderNumber());
         if (byOrderNumber != null){
@@ -79,6 +82,8 @@ public class InBoundOrderService {
         return ResponseEntity
                 .created(uri).body(inBoundOrderRequestDTO);
     }
+
+
 
     //acoplamento de todas validocoes da inboundOrder, usada no controller.
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
@@ -135,16 +140,9 @@ public class InBoundOrderService {
     }
 
 
-    private InBoundOrder obterInbound(Long batchnumber){
-        return inBoundOrderRepository.findByOrderNumber(batchnumber);
-    }
 
-    //Faz interacao na lista de bacthstocks e tras uma soma da quantidade de itens de cada batchstock e valida com a quantidade da section
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
-        //capacidade da section by code
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
-
-        //soma de valores da lista de batchstock
         int sumOfProductQuantity = inb.getBatchStockDTOList()
                 .stream().mapToInt(value -> value.getQuantity()).sum();
 
@@ -157,15 +155,22 @@ public class InBoundOrderService {
 
 
     @Transactional
-    public InBoundOrder updateInbound(InBoundOrderRequestDTO dto) {
+    public ResponseEntity<Object> updateInbound(InBoundOrderRequestDTO dto, UriComponentsBuilder uriBuilder) {
         InBoundOrder existingInboundOrder = inBoundOrderRepository.findByOrderNumber(dto.getOrderNumber());
-        if (existingInboundOrder != null){
+        if (existingInboundOrder != null) {
             InBoundOrder io = atualiza(existingInboundOrder, dto);
-            this.inBoundOrderRepository.save(io);
-            return io;
+            try {
+                this.inBoundOrderRepository.save(io);
+            } catch (RuntimeException e) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(new RuntimeException("Erro ao Ayualizar InboundOrder"));
+            }
+            URI uri = uriBuilder.path("/inBoundOrder/{id}").buildAndExpand(io.getId()).toUri();
+            return ResponseEntity
+                    .created(uri).body(dto);
         }
         throw new RuntimeException("Inbound nao encontrada");
-
     }
 
 
@@ -203,7 +208,7 @@ public class InBoundOrderService {
 
     }
 
-    private BatchStock atualizaValoresBatchStockExistente(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO dto, BatchStock bs) {
+    public BatchStock atualizaValoresBatchStockExistente(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO dto, BatchStock bs) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         bs.setDueDate(dto.getDueDate());
         bs.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(),fmt));
@@ -220,8 +225,6 @@ public class InBoundOrderService {
         bs.getBatchStockItem().setMaximumTemperature(dto.getMaximumTemperature());
         bs.getBatchStockItem().setMinimumTemperature(dto.getMinimumTemperature());
         bs.getBatchStockItem().setProduct(this.productService.obtem(dto.getBatchStockItem()));
-
-
         return bs;
     }
 
@@ -252,6 +255,21 @@ public class InBoundOrderService {
         return batchStock;
     }
 
+    private void validaDate(LocalDate orderDate, LocalDateTime manufacturingTime, LocalDate dueDate, Long batchStockNumber) {
+
+        LocalDate localDate = manufacturingTime.toLocalDate();
+        String dataAtual = orderDate.toString();
+        String dataVencimento = dueDate.toString();
+        String dataFabricacao = localDate.toString();
+
+        if(dataVencimento.compareTo(dataAtual) <= 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de validade expirada: DueDate deve ser maior que a data de hoje");
+        }
+
+        if(dataFabricacao.compareTo(dataAtual) > 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de fabricação invalida: manufatureDate deve ser menor que a data de hoje");
+        }
+    }
 
 }
 

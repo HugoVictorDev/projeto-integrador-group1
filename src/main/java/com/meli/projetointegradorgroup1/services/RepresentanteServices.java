@@ -116,7 +116,7 @@ public class RepresentanteServices {
         try{
             representanteRepository.deleteById(id);
         } catch (RuntimeException e) {
-            if(e.getCause().getCause().getMessage().contains("Referential integrity constraint violation")){
+            if(e.getCause().getCause().getMessage().contains("violates foreign key constraint ")){
                 throw new RuntimeException("Referential integrity constraint violation");
             }else {
                 throw e;
@@ -128,6 +128,6 @@ public class RepresentanteServices {
         Optional<Representante> representante = representanteRepository.findById(id);
         if (representante.isPresent()){
             return representante.get();
-        }else throw new RuntimeException("representante não encontrada");
+        }else throw new RuntimeException("representante não encontrado");
     }
 }

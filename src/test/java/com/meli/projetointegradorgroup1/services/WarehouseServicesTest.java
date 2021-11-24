@@ -127,16 +127,14 @@ public class WarehouseServicesTest {
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(warehouseRepository.save(Mockito.any())).thenReturn(warehouse);
         WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
-        ResponseEntity<Object> sevaReturn = warehouseServices.save(warehouse, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+        assert (warehouseServices.save(warehouse, uriBuilder).getStatusCodeValue() == 201 );
     }
 
     @Test
     public void saveNok(){
         Mockito.when(warehouseRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         WarehouseServices warehouseServices = new WarehouseServices(warehouseRepository);
-        ResponseEntity<Object> sevaReturn = warehouseServices.save(warehouse, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (warehouseServices.save(warehouse, null).getStatusCodeValue() == 400 );
     }
 }
 

@@ -4,6 +4,7 @@ import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 
+import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -157,11 +159,10 @@ public class BatchStockService {
 
     public BatchStock findByIds(Long id) {
         Optional<BatchStock> batchStock = batchStockRepository.findById(id);
-        BatchStock batchStock1 = batchStock.get();
-        if(batchStock1 == null){
+        if(batchStock != null || batchStock.isPresent()){
             throw new RuntimeException("BatchStock não cadastrada");
         }
-        return batchStock1;
+        throw new RuntimeException("BatchStock não cadastrada");
     }
 
 

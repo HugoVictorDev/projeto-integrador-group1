@@ -28,9 +28,9 @@ public class InBoundOrderRequestDTO {
 
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
-        private LocalDate orderDate;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+
+        private LocalDate orderDate = LocalDate.now();
+        @NotNull(message = "Campo sellerId é obrigatorio")
         @JsonProperty(value =  "seller_id")
         private Long sellerId;
         @JsonProperty(value = "section")
@@ -39,7 +39,7 @@ public class InBoundOrderRequestDTO {
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         @Valid
         private List<BatchStockRequestDTO> batchStockDTOList;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+        @NotNull(message = "Campo represententeId é obrigatorio")
         private Long representanteId;
 
 
@@ -81,7 +81,6 @@ public class InBoundOrderRequestDTO {
                     .minimumTemperature(dto.getMinimumTemperature())
                     .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-        //            .seller(sellerService.obter(this.sellerId))
                     .seller(sellerService.obtem(this.sellerId))
                     .quantity(dto.getQuantity())
                     .volume(dto.getVolume())
