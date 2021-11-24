@@ -103,8 +103,8 @@ public class BatchStockServiceTest {
     @Test
     public void updateBatchStockOk(){
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(batchStockItemService.getBatchStockItem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
         assert (batchStockService.updateBatchStock(batchStock, batchStockRequestDTO).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
@@ -121,8 +121,8 @@ public class BatchStockServiceTest {
     @Test
     public void convert(){
         sellerService = Mockito.mock(SellerService.class);
-        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(batchStockItemService.getBatchStockItem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
         assert (batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }

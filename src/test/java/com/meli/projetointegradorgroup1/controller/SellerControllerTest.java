@@ -35,7 +35,7 @@ class SellerControllerTest {
     Long sellerIdNok = 2L;
     // - DTOS
     SellerRequestDTO seller1RequestDTO = new SellerRequestDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
-    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
+    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO(1l, "Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
     ArrayList<SellerResponseDTO> sellerArrayList = new ArrayList<>();
 

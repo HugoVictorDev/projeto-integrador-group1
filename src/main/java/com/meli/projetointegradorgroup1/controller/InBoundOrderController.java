@@ -1,10 +1,11 @@
 package com.meli.projetointegradorgroup1.controller;
 
 
-import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+import com.meli.projetointegradorgroup1.dto.request.*;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
+import com.meli.projetointegradorgroup1.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,20 +36,20 @@ public class InBoundOrderController {
         this.inBoundOrderService = inBoundOrderService;
     }
 
+//
+//    @PostMapping("/create")
+//    public ResponseEntity<Object>create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
+//        //this.inBoundOrderService.registra(uriBuilder,inBoundOrderRequestDTO);
+//      //  return inBoundOrderService.registra(uriBuilder, inBoundOrderRequestDTO, (inBoundOrderRequestDTO.convertedto(representanteServices,
+//       //         sectionServices, productService, sellerService)));
+//    }
 
-    @PostMapping("/create")
-    public ResponseEntity<Object>create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
-        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
-        return inBoundOrderService.registra(uriBuilder, inBoundOrderRequestDTO, (inBoundOrderRequestDTO.convertedto(representanteServices,
-                sectionServices, productService, sellerService)));
-    }
 
-
-    @PutMapping("/update")
-    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
-        this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
-        this.inBoundOrderService.updateInbound(inBoundOrderRequestDTO);
-        return inBoundOrderRequestDTO;
-
-    }
+//    @PutMapping("/update")
+//    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
+//        //this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
+//        inBoundOrderService.updateInbound(inBoundOrderRequestDTO);
+//        return inBoundOrderRequestDTO;
+//
+//    }
 }

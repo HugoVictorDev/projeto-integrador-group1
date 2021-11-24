@@ -39,7 +39,7 @@ class SellerServiceTest {
     Long sellerIdNok = 2L;
     // - DTOS
     SellerRequestDTO seller1RequestDTO = new SellerRequestDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
-    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
+    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO(1L, "Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
 
     String message = "";

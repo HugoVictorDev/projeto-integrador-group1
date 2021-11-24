@@ -36,60 +36,60 @@ public class BatchStockControllerTest {
 
         assert (batchStock.getId()!= null);
     }
-
-    @Test
-    public void listBastchStock(){
-        list.add(batchStock);
-        batchStockService = Mockito.mock(BatchStockService.class);
-
-        Mockito.when(batchStockService.findBatchSotck()).thenReturn(list);
-
-        BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.listBastchStock();
-
-        assert (list.size() == 1);
-    }
-
-    @Test
-    public void listBastchStockNumber(){
-        batchStockService = Mockito.mock(BatchStockService.class);
-
-        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStock);
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
-
-        BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.listBastchStockID(2l);
-
-        assert (batchStock.getBatchStockNumber() == 2);
-    }
-
-    @Test
-    public void deleteBatchStockNumber(){
-        batchStockService = Mockito.mock(BatchStockService.class);
-
-        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStock);
-        Mockito.doNothing().when(batchStockService).deleta(Mockito.anyLong());
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
-
-        BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.deleteBatchStockNumber(2l);
-
-        assert(batchStock.getId() != null);
-    }
-
-    @Test
-    public void updateBatchStockNumber(){
-        batchStockService = Mockito.mock(BatchStockService.class);
-
-        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStockUpdate);
-        Mockito.when(batchStockService.updateBatchStock(Mockito.any(), Mockito.any())).thenReturn(batchStockUpdate);
-        Mockito.when(batchStockService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(batchStockResponseDTO));
-        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
-
-        BatchStockController batchStockController = new BatchStockController(batchStockService);
-        batchStockController.updateBatchStockNumber(1l, batchStockRequestDTO,null);
-
-        assert(batchStockUpdate.getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
-    }
-
+//
+//    @Test
+//    public void listBastchStock(){
+//        list.add(batchStock);
+//        batchStockService = Mockito.mock(BatchStockService.class);
+//
+//        Mockito.when(batchStockService.findBatchSotck()).thenReturn(list);
+//
+//        BatchStockController batchStockController = new BatchStockController(batchStockService);
+//        batchStockController.listBastchStock();
+//
+//        assert (list.size() == 1);
+//    }
+//
+//    @Test
+//    public void listBastchStockNumber(){
+//        batchStockService = Mockito.mock(BatchStockService.class);
+//
+//        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStock);
+//        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
+//
+//        BatchStockController batchStockController = new BatchStockController(batchStockService);
+//        batchStockController.listBastchStockID(2l);
+//
+//        assert (batchStock.getBatchStockNumber() == 2);
+//    }
+//
+//    @Test
+//    public void deleteBatchStockNumber(){
+//        batchStockService = Mockito.mock(BatchStockService.class);
+//
+//        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStock);
+//        Mockito.doNothing().when(batchStockService).deleta(Mockito.anyLong());
+//        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
+//
+//        BatchStockController batchStockController = new BatchStockController(batchStockService);
+//        batchStockController.deleteBatchStockNumber(2l);
+//
+//        assert(batchStock.getId() != null);
+//    }
+//
+//    @Test
+//    public void updateBatchStockNumber(){
+//        batchStockService = Mockito.mock(BatchStockService.class);
+//
+//        Mockito.when(batchStockService.findByIds(Mockito.anyLong())).thenReturn(batchStockUpdate);
+//        Mockito.when(batchStockService.updateBatchStock(Mockito.any(), Mockito.any())).thenReturn(batchStockUpdate);
+//        Mockito.when(batchStockService.save(Mockito.any(),Mockito.any())).thenReturn(ResponseEntity.accepted().body(batchStockResponseDTO));
+//        Mockito.when(batchStockService.convertToDto(Mockito.any())).thenReturn(batchStockResponseDTO);
+//
+//        BatchStockController batchStockController = new BatchStockController(batchStockService);
+//        batchStockController.updateBatchStockNumber(1l, batchStockRequestDTO,null);
+//
+//        assert(batchStockUpdate.getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
+//    }
+//
 }

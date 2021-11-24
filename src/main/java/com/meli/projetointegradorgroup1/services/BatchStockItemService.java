@@ -43,7 +43,7 @@ public class BatchStockItemService {
 
         if (IdProduct != 0){
             if (IdBatchStock != 0) {
-                batchStockItem.setBatchStock(batchStockService.findByIdE(IdBatchStock));
+                batchStockItem.setBatchStock(batchStockService.findBatchNumber(IdBatchStock));
                 batchStockItem.setProduct(productService.obtem(IdProduct));
             }else {
                 return ResponseEntity

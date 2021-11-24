@@ -28,17 +28,17 @@ class BatchStockItemServiceTest {
 
     // -- MASSA PARA OS TESTES
     BatchStockItem batchStockItem1 = BatchStockItem.builder().id(1L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(null).batchStock(null).build();
-    BatchStockItem batchStockItem2 = BatchStockItem.builder().id(2L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().productID(1L).build()).build();
-    BatchStockItem batchStockItem3 = BatchStockItem.builder().id(3L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().productID(1L).build()).build();
-    BatchStockItem batchStockItem4 = BatchStockItem.builder().id(4L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().productID(1L).build()).build();
+    BatchStockItem batchStockItem2 = BatchStockItem.builder().id(2L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().build()).build();
+    BatchStockItem batchStockItem3 = BatchStockItem.builder().id(3L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().build()).build();
+    BatchStockItem batchStockItem4 = BatchStockItem.builder().id(4L).quantity(12).volume(1.0).maximumTemperature(1.0).minimumTemperature(0.0).product(Product.builder().build().setId(1L)).batchStock(BatchStock.builder().build()).build();
 
 
     // - ID BatchStockItem
     Long batchStockItemId = 1L;
     Long batchStockItemIdNok = 2L;
     // - DTOS
-    BatchStockItemRequestDTO batchStockItemRequestDTO1 = new BatchStockItemRequestDTO(12,1D,1.0,0.0,null,null,null);
-    BatchStockItemResponseDTO batchStockItemResponseDTO1 = new BatchStockItemResponseDTO(12,1D,1D,0D,null,null);
+    BatchStockItemRequestDTO batchStockItemRequestDTO1 = new BatchStockItemRequestDTO(12,1D,1.0D,0.0D,1L);
+    BatchStockItemResponseDTO batchStockItemResponseDTO1 = new BatchStockItemResponseDTO(12,1D,1D,0D,null,1L);
 
     ArrayList<Seller> sellers = new ArrayList();
 

@@ -1,7 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+import com.meli.projetointegradorgroup1.dto.request.*;
 import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.dto.response.InBoundOrderResponseDTO;
 import com.meli.projetointegradorgroup1.entity.*;
@@ -81,19 +81,19 @@ public class InBoundOrderService {
     }
 
     //acoplamento de todas validocoes da inboundOrder, usada no controller.
-    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
-        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
-        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
-        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
-        this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
-        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
-        this.sectionHasCapacity(inb);
-        this.sellerService.obtem(inb.getSellerId());
-        if (!validProductInboud(inb)){
-            throw new RuntimeException("Produto nao encontrado");
-        }
-        return inb;
-    }
+//    public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
+//        this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
+//        this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
+//        this.representanteServices.obterRepresentanteById(inb.getRepresentanteId());
+//        this.representanteIsPresenteWarehouse(inb.getRepresentanteId());
+//        this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
+//        this.sectionHasCapacity(inb);
+//        this.sellerService.obtem(inb.getSellerId());
+//        if (!validProductInboud(inb)){
+//            throw new RuntimeException("Produto nao encontrado");
+//        }
+//        return inb;
+//    }
 
     //Faz a validacao se o representante pertence a warehouse
     public boolean  representanteIsPresenteWarehouse(Long id){
@@ -135,7 +135,7 @@ public class InBoundOrderService {
     }
 
 
-    private InBoundOrder obterInbound(Long batchnumber){
+    public InBoundOrder obterInbound(Long batchnumber){
         return inBoundOrderRepository.findByOrderNumber(batchnumber);
     }
 
@@ -212,7 +212,7 @@ public class InBoundOrderService {
         bs.setMinimumTemperature(dto.getMinimumTemperature());
         bs.setMaximumTemperature(dto.getMaximumTemperature());
         bs.setCurrentTemperature(dto.getCurrentTemperature());
-        bs.setSeller(sellerService.obtem(inboundOrderDTO.getSellerId()));
+        bs.setSeller(sellerService.sellerRepository.getById(inboundOrderDTO.getSellerId())); //TODO Eddie
         bs.setQuantity(dto.getQuantity());
         bs.setVolume(dto.getVolume());
         bs.getBatchStockItem().setQuantity(dto.getQuantity());
@@ -236,7 +236,7 @@ public class InBoundOrderService {
                 .minimumTemperature(btc.getMinimumTemperature())
                 .maximumTemperature(btc.getMaximumTemperature())
                 .currentTemperature(btc.getMaximumTemperature())
-                .seller(sellerService.obtem(inboundOrderDTO.getSellerId()))
+                .seller(sellerService.sellerRepository.getById(inboundOrderDTO.getSellerId())) //TODO Eddie
                 .quantity(btc.getQuantity())
                 .volume(btc.getVolume())
                 .batchStockItem(
@@ -244,7 +244,7 @@ public class InBoundOrderService {
                                 .maximumTemperature(btc.getMaximumTemperature())
                                 .quantity(btc.getQuantity())
                                 .volume(btc.getVolume())
-                                .product(productService.obtem(btc.getBatchStockItem()))
+                                .product(productService.productRepository.getById(btc.getBatchStockItem())) //TODO Eddie
                                 .minimumTemperature(btc.getMinimumTemperature())
                                 .build()
                 )
