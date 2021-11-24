@@ -1,9 +1,6 @@
 package com.meli.projetointegradorgroup1.services;
-
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
-import com.meli.projetointegradorgroup1.dto.response.InBoundOrderResponseDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +8,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+/**
+ * @author Patricia Souza
+ * @author Hugo Victor
+ * @author Marco Siqueira
+ */
+
 
 @Service
 public class InBoundOrderService {
@@ -58,7 +58,10 @@ public class InBoundOrderService {
         this.sectionServices = sectionServices;
     }
 
-
+    /**
+     * @author Hugo Victor
+     * @author Marco Siqueira
+     */
     public ResponseEntity<Object> registra(UriComponentsBuilder uriBuilder, InBoundOrderRequestDTO inBoundOrderRequestDTO, InBoundOrder inBoundOrder) {
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
@@ -80,7 +83,10 @@ public class InBoundOrderService {
                 .created(uri).body(inBoundOrderRequestDTO);
     }
 
-    //acoplamento de todas validocoes da inboundOrder, usada no controller.
+    /**
+     * @author Hugo Victor
+     * acoplamento de todas validocoes da inboundOrder, usada no controller.
+     */
     public InBoundOrderRequestDTO validInboundOrder(InBoundOrderRequestDTO inb){
         this.warehouseServices.obterWarhouseByCode(inb.getSectionForInboundDTO().getWarehouseCode());
         this.sectionServices.obterSectionByCode(inb.getSectionForInboundDTO().getCode());
@@ -95,7 +101,10 @@ public class InBoundOrderService {
         return inb;
     }
 
-    //Faz a validacao se o representante pertence a warehouse
+    /**
+     * @author Hugo Victor
+     *Faz a validacao se o representante pertence a warehouse
+     */
     public boolean  representanteIsPresenteWarehouse(Long id){
         for (Section sec : sectionServices.listaSection()){
             if (sec.getWarehouse().getRepresentante().getId() == id){
@@ -106,7 +115,10 @@ public class InBoundOrderService {
         return false;
     }
 
-    //Faz a validacao se a section cadastrada corresponde ao StockType(Enum).
+    /**
+     * @author Hugo Victor
+     *Faz a validacao se a section cadastrada corresponde ao StockType(Enum).
+     */
     private boolean sectionMatchStockType(Long code) {
         StockType stockType = sectionServices.obtemTypeStockSection(code);
         List<Section> listsec = sectionServices.listaSection();
@@ -118,32 +130,29 @@ public class InBoundOrderService {
         throw new RuntimeException("section  não corresponde ao tipo de produto");
     }
 
-    //Faz a validacao se o produto existe, entao ele entra na lista de batchstock
-    // e pega o id de cada batchstockitem da lista de batchstock e verifica se o produto esta cadastrado.
+    /**
+     * @author Hugo Victor
+     * Faz a validacao se o produto existe, entao ele entra na lista de batchstock
+     * e pega o id de cada batchstockitem da lista de batchstock e verifica se o produto esta cadastrado.
+     */
     private boolean validProductInboud(InBoundOrderRequestDTO inb){
-
         List<Long> listBtcItemID = inb.getBatchStockDTOList().stream()
-                .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem()).collect(Collectors.toList());
-
+                .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem())
+                .collect(Collectors.toList());
         List<Long> listProductID = productService.listProductId();
-
         if (listProductID.containsAll(listBtcItemID)) {
             return true;
         }
-
         return false;
     }
 
-
-    private InBoundOrder obterInbound(Long batchnumber){
-        return inBoundOrderRepository.findByOrderNumber(batchnumber);
-    }
-
-    //Faz interacao na lista de bacthstocks e tras uma soma da quantidade de itens de cada batchstock e valida com a quantidade da section
+    /**
+     * @author Hugo Victor
+     *Faz interacao na lista de bacthstocks e tras uma soma da quantidade de itens de
+     * cada batchstock e valida com a quantidade da section e retorna a capacidade passada e da section
+     */
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
-        //capacidade da section by code
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
-
         //soma de valores da lista de batchstock
         int sumOfProductQuantity = inb.getBatchStockDTOList()
                 .stream().mapToInt(value -> value.getQuantity()).sum();
@@ -155,20 +164,35 @@ public class InBoundOrderService {
                 " lotes e voce está inserindo: " + sumOfProductQuantity + "  lotes");
     }
 
-
+    /**
+     * @author Patricia Souza
+     * @author Hugo Victor
+     * @author Marco Siqueiraa
+     */
     @Transactional
-    public InBoundOrder updateInbound(InBoundOrderRequestDTO dto) {
+    public ResponseEntity<Object> updateInbound(InBoundOrderRequestDTO dto, UriComponentsBuilder uriBuilder) {
         InBoundOrder existingInboundOrder = inBoundOrderRepository.findByOrderNumber(dto.getOrderNumber());
-        if (existingInboundOrder != null){
+        if (existingInboundOrder != null) {
             InBoundOrder io = atualiza(existingInboundOrder, dto);
-            this.inBoundOrderRepository.save(io);
-            return io;
+            try {
+                this.inBoundOrderRepository.save(io);
+            } catch (RuntimeException e) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(new RuntimeException("Erro ao Ayualizar InboundOrder"));
+            }
+            URI uri = uriBuilder.path("/inBoundOrder/{id}").buildAndExpand(io.getId()).toUri();
+            return ResponseEntity
+                    .created(uri).body(dto);
         }
         throw new RuntimeException("Inbound nao encontrada");
-
     }
 
-
+    /**
+     * @author Patricia Souza
+     * @author Hugo Victor
+     * @author Marco Siqueiraa
+     */
     private InBoundOrder atualiza(InBoundOrder inBoundOrder, InBoundOrderRequestDTO dto){
         Section section = sectionServices.obterSectionByCode(dto.getSectionForInboundDTO().getCode());
         Optional<InBoundOrder> op = this.inBoundOrderRepository.findById(inBoundOrder.getId());
@@ -186,6 +210,12 @@ public class InBoundOrderService {
         return io;
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Hugo Victor
+     * @author Marco Siqueiraa
+     * identifica os batchstocks da lista pelo batchstocknumber, atualiza os existentes e se for null cria um novo.
+     */
     private void identificaBatchStocks(InBoundOrderRequestDTO inboundOrderDTO, List<BatchStock> listaExistentes, List<BatchStock> listaNovos){
         try{
             inboundOrderDTO.getBatchStockDTOList().forEach(bsDTO -> {
@@ -203,6 +233,11 @@ public class InBoundOrderService {
 
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Hugo Victor
+     * @author Marco Siqueiraa
+     */
     private BatchStock atualizaValoresBatchStockExistente(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO dto, BatchStock bs) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         bs.setDueDate(dto.getDueDate());
@@ -225,6 +260,11 @@ public class InBoundOrderService {
         return bs;
     }
 
+    /**
+     * @author Patricia Souza
+     * @author Hugo Victor
+     * @author Marco Siqueiraa
+     */
     private BatchStock toEntity(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO btc){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         BatchStock batchStock = BatchStock.builder()

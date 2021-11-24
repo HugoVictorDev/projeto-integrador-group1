@@ -1,19 +1,18 @@
 package com.meli.projetointegradorgroup1.controller;
-
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.services.SellerService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.*;
+/**
+ * @author Hugo Victor
+ */
+
 
 @RestController
 @RequestMapping("/seller")

@@ -1,17 +1,16 @@
 package com.meli.projetointegradorgroup1.controller;
-
 import com.meli.projetointegradorgroup1.dto.RepresentanteDTO;
-
 import com.meli.projetointegradorgroup1.entity.Representante;
 import com.meli.projetointegradorgroup1.services.RepresentanteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-
 import javax.validation.Valid;
 import java.util.List;
+/**
+ * @author Marco Siqueira
+ */
 
 @RestController
 @RequestMapping("/representante")

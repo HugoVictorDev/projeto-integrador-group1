@@ -1,6 +1,4 @@
 package com.meli.projetointegradorgroup1.dto.response;
-
-
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.entity.StockType;
@@ -8,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+/**
+ * @author Patricia Souza
+ */
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

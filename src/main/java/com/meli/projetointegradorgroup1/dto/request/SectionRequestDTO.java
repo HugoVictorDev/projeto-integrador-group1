@@ -1,14 +1,13 @@
 package com.meli.projetointegradorgroup1.dto.request;
-
 import com.meli.projetointegradorgroup1.entity.StockType;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.*;
-
+/**
+ * @author Marco Siqueira
+ */
 
 @AllArgsConstructor
 @NoArgsConstructor

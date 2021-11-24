@@ -1,6 +1,4 @@
 package com.meli.projetointegradorgroup1.dto.request;
-
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.services.*;
@@ -8,16 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Hugo Victor
+ */
 
 
 @Data

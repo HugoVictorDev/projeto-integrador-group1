@@ -1,7 +1,5 @@
 package com.meli.projetointegradorgroup1.controller;
-
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
@@ -11,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
 import java.util.List;
+/**
+ * @author Marco Siqueira
+ */
 
 @RestController
 @RequestMapping(path = "/batchstock")

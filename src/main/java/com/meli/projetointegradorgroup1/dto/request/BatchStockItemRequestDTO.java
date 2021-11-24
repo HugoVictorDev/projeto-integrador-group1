@@ -2,10 +2,10 @@ package com.meli.projetointegradorgroup1.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+/**
+ * @author Hugo Victor
+ */
 
-
-
-//Essa classe nao conecta com BD, intermedio entre o usuario e a classe
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

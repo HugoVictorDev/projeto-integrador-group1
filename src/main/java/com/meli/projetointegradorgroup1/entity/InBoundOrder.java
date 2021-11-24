@@ -10,6 +10,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ *
+ * @author Hugo Victor
+ */
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor

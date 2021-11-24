@@ -6,7 +6,6 @@ import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
-
 import com.meli.projetointegradorgroup1.services.BatchStockItemService;
 import com.meli.projetointegradorgroup1.services.ProductService;
 import com.meli.projetointegradorgroup1.services.SellerService;
@@ -17,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+/**
+ * @author Hugo Victor
+ */
 
 @RestController
 @RequestMapping("/batchstockitem")
@@ -31,7 +33,6 @@ public class BatchStockItemController {
     @Autowired
     SellerService sellerService;
 
-    //Cadastrar BatchStockItem
 
     @PostMapping("/create")
     public BatchStockItemRequestDTO createBatchStockItem(@Valid @RequestBody BatchStockItemRequestDTO batchStockItemRequestDTO) {
@@ -51,7 +52,7 @@ public class BatchStockItemController {
     @GetMapping("{id}")
     public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
         return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
-//
+
     }
 
     // atualizando vendedor pelo ID

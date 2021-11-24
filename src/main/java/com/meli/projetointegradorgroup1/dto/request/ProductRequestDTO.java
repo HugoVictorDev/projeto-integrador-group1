@@ -1,5 +1,4 @@
 package com.meli.projetointegradorgroup1.dto.request;
-
 import com.meli.projetointegradorgroup1.entity.StockType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+/**
+ * @author Patricia Souza
+ */
 
 @Data
 @Builder

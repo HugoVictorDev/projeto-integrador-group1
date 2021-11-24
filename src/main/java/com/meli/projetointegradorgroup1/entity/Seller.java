@@ -1,17 +1,15 @@
 package com.meli.projetointegradorgroup1.entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.br.CPF;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author Hugo Victor
+ */
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,9 +25,5 @@ public class Seller {
     private String cpf;
     private String email;
 
-    public Seller(String name, String cpf, String email) {
-        this.name = name;
-        this.cpf = cpf;
-        this.email = email;
-    }
+
 }

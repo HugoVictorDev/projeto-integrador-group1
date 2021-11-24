@@ -1,6 +1,4 @@
 package com.meli.projetointegradorgroup1.repository;
-
-
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.Seller;
 
@@ -13,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+/**
+ * @author Hugo Victor
+ */
 
 
 @Repository

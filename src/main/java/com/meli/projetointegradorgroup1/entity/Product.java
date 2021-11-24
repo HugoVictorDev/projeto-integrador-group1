@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-
+/**
+ *
+ * @author Patricia Souza
+ */
 
 @NoArgsConstructor
 @AllArgsConstructor
