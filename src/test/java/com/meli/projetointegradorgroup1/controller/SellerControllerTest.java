@@ -99,7 +99,6 @@ class SellerControllerTest {
         sellerService = Mockito.mock(SellerService.class);
         sellerRepository = Mockito.mock(SellerRepository.class);
 
-        Mockito.when(sellerService.delSeller(Mockito.anyLong())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
         Mockito.when(sellerService.update(Mockito.any(), Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
 
         SellerController sellerController = new SellerController(sellerService);
