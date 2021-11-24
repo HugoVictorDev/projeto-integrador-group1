@@ -1,15 +1,17 @@
 package com.meli.projetointegradorgroup1.services;
 
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,146 +23,107 @@ public class BatchStockServiceTest {
     SellerService sellerService;
     Seller seller = new Seller();
 
-    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller,null);
-    BatchStock batchStockUpdate = new BatchStock(2l, 1l,2.0,3.0,4.0,"5","6", LocalDateTime.now(),LocalDate.now(), 7, 8.0,null,null,null);
+    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller);
     BatchStockRequestDTO batchStockRequestDTO = new BatchStockRequestDTO(1l,2l,1l,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
     BatchStockResponseDTO batchStockResponseDTO = new BatchStockResponseDTO(2l,null,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
 
-    BatchStockService batchStockService;
-    BatchStockRepository batchStockRepository;
-    BatchStockItemService batchStockItemService;
+    BatchStockService batchStockService = Mockito.mock(BatchStockService.class);
+    BatchStockRepository batchStockRepository = Mockito.mock(BatchStockRepository.class);
+    BatchStockItemService batchStockItemService = Mockito.mock(BatchStockItemService.class);;
     List<BatchStock> list = new ArrayList();
 
     String message = null;
+    String uri = "http//Me=ock";
 
 
     @Test
     public void valida(){
-        batchStockService = Mockito.mock(BatchStockService.class);
-        batchStockItemService = Mockito.mock(BatchStockItemService.class);
-
         Mockito.doNothing().when(batchStockItemService).validaBatchStockItem(Mockito.anyLong());
-
         batchStockService = new BatchStockService(batchStockItemService, null, null );
         batchStockService.valida(1l);
-
         assert (batchStock.getBatchStockItem().getId() == 1);
     }
 
-
     @Test
     public void saveOk(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
-
+        UriComponentsBuilder uriBuilder;
+        uriBuilder = Mockito.mock(UriComponentsBuilder.class);
         Mockito.when(batchStockRepository.save(Mockito.any())).thenReturn(batchStock);
+        Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-
-        assert (batchStockService.save(batchStock).getBatchStockNumber() == 2);
-    }
+        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, uriBuilder);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );}
 
     @Test
     public void saveNok(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
-
         Mockito.when(batchStockRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-            batchStockService.save(null);});
-        message = "Erro na gravação Stock:";
-
-        assert (exception.getMessage().contains(message));
+        ResponseEntity<Object> sevaReturn = batchStockService.save(batchStock, null);
+        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
     }
 
     @Test
     public void findBatchSotckOk(){
         list.add(batchStock);
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.when(batchStockRepository.findAll()).thenReturn(list);
-
         batchStockService = new BatchStockService(null, batchStockRepository, null);
         batchStockService.findBatchSotck();
-
         assert (list.size() == 1);
 
     }
 
     @Test
     public void findBatchSotckNok(){ ;
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.when(batchStockRepository.findAll()).thenReturn(list);
-
         batchStockService = new BatchStockService(null, batchStockRepository, null);
-
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        batchStockService.findBatchSotck();});
-
+            batchStockService.findBatchSotck();});
         message = "Não existem Stock cadastradas";
-
         assert (exception.getMessage().contains(message));
-
     }
 
     @Test
     public void deleta(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.doNothing().when(batchStockRepository).deleteById(Mockito.anyLong());
-
         batchStockService = new BatchStockService(null, batchStockRepository, null);
         batchStockService.deleta(1l);
-
         assert (batchStock.getId() ==1 );
     }
 
     @Test
     public void deletaNok(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.doNothing().when(batchStockRepository).deleteById(Mockito.anyLong());
-
         batchStockService = new BatchStockService(null, null, null);
-
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
             batchStockService.deleta(1l);});
-
         message = "Erro ao deletar BatchStock";
-
         assert (exception.getMessage().contains(message));
     }
 
     @Test
     public void updateBatchStockOk(){
-        batchStockItemService = Mockito.mock(BatchStockItemService.class);
         sellerService = Mockito.mock(SellerService.class);
-
-        Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
-
+        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
-
         assert (batchStockService.updateBatchStock(batchStock, batchStockRequestDTO).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
 
     @Test
     public void updateBatchStockNok(){
         batchStockService = new BatchStockService(null, null, null);
-
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
         batchStockService.updateBatchStock(null, null);});
-
-        message = "Representante não encontrado";
+        message = "BatchStock não encontrado";
         assert (exception.getMessage().contains(message));
     }
 
     @Test
     public void convert(){
-        batchStockItemService = Mockito.mock(BatchStockItemService.class);
         sellerService = Mockito.mock(SellerService.class);
-
-        Mockito.when(batchStockItemService.obter(Mockito.anyLong())).thenReturn(batchStockItem);
-        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
-
+        Mockito.when(batchStockItemService.obtem(Mockito.anyLong())).thenReturn(batchStockItem);
+        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
         batchStockService = new BatchStockService(batchStockItemService, null, sellerService );
-
         assert (batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService).getBatchStockNumber().equals(batchStockRequestDTO.getBatchStockNumber()));
     }
 
@@ -169,7 +132,6 @@ public class BatchStockServiceTest {
         list.add(batchStock);
         batchStockService = new BatchStockService(null, null, null );
         batchStockService.convertList(list);
-
         assert (batchStock.getBatchStockNumber().equals(batchStockResponseDTO.getBatchStockNumber()));
     }
 
@@ -181,25 +143,18 @@ public class BatchStockServiceTest {
 
     @Test
     public void findByIdOK(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(batchStock));
-
         batchStockService = new BatchStockService(null, batchStockRepository, null );
-        batchStockService.findById(1l);
-
+        batchStockService.findByIds(1l);
         assert (batchStock.getId() == 1);
     }
 
     @Test
     public void findByIdNoK(){
-        batchStockRepository = Mockito.mock(BatchStockRepository.class);
         Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(null));
-
         batchStockService = new BatchStockService(null, batchStockRepository, null );
-
         RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        batchStockService.findById(1l);});
-
+        batchStockService.findByIds(1l);});
         message = "BatchStock não cadastrada";
         assert (exception.getMessage().contains(message));
     }

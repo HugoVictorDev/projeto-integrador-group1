@@ -9,5 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface InBoundOrderRepository extends JpaRepository<InBoundOrder, Long> {
-
+//  Long findByOrderNumber(Long orderNum);
+  InBoundOrder findByOrderNumber(Long orderNum);
 }

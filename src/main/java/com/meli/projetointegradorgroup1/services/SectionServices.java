@@ -9,9 +9,13 @@ import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SectionRepository;
 import com.meli.projetointegradorgroup1.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +33,6 @@ public class SectionServices {
    WarehouseRepository warehouseRepository;
 
 
-    SectionForInboundDTO sectionForInboundDTO;
 
     public SectionServices(SectionRepository sectionRepository, WarehouseServices warehouseServices) {
         this.sectionRepository = sectionRepository;
@@ -67,7 +70,6 @@ public class SectionServices {
     public StockType obtemTypeStockSection(Long code) {
         Section section = sectionRepository.findByCode(code);
         StockType stockType = section.getStockType();
-
         return stockType;
 
     }
@@ -131,13 +133,17 @@ public class SectionServices {
         return listaSection;
     }
 
-    public Section save(Section section) {
+    public ResponseEntity<Object>save(Section section, UriComponentsBuilder uriBuilder) {
         try {
             sectionRepository.save(section);
         }catch (RuntimeException e){
-            throw new RuntimeException("Erro na gravação Section:", e );
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new RuntimeException("Erro na gravação Section:", e));
         }
-        return section;
+        URI uri = uriBuilder.path("/section/{id}").buildAndExpand(section.getId()).toUri();
+        return ResponseEntity
+                .created(uri).body(convertToDto(section));
     }
 
     public void deleta(Long id) {
