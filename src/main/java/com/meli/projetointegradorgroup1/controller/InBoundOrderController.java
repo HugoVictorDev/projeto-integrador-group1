@@ -2,19 +2,14 @@ package com.meli.projetointegradorgroup1.controller;
 
 
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.entity.BatchStock;
-import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/inboundorder")
@@ -53,4 +48,5 @@ public class InBoundOrderController {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         return inBoundOrderService.updateInbound(inBoundOrderRequestDTO, uriBuilder);
     }
+
 }

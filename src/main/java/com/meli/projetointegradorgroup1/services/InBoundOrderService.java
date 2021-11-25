@@ -5,7 +5,6 @@ import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -63,7 +59,7 @@ public class InBoundOrderService {
 
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
-            validaDate(inBoundOrderRequestDTO.getOrderDate(),b.getManufacturingTime(),b.getDueDate(), b.getBatchStockNumber());
+            batchStockService.validaDate(inBoundOrderRequestDTO.getOrderDate(),b.getManufacturingTime(),b.getDueDate(), b.getBatchStockNumber());
             b.getBatchStockItem().setBatchStock(b);
 
         });
@@ -139,8 +135,6 @@ public class InBoundOrderService {
         return false;
     }
 
-
-
     private boolean sectionHasCapacity(InBoundOrderRequestDTO inb){
         int capacitySection = sectionServices.obtemQuantidadeDoSection(inb.getSectionForInboundDTO().getCode());
         int sumOfProductQuantity = inb.getBatchStockDTOList()
@@ -208,7 +202,7 @@ public class InBoundOrderService {
 
     }
 
-    public BatchStock atualizaValoresBatchStockExistente(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO dto, BatchStock bs) {
+    private BatchStock atualizaValoresBatchStockExistente(InBoundOrderRequestDTO inboundOrderDTO, BatchStockRequestDTO dto, BatchStock bs) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         bs.setDueDate(dto.getDueDate());
         bs.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(),fmt));
@@ -254,22 +248,5 @@ public class InBoundOrderService {
                 .build();
         return batchStock;
     }
-
-    private void validaDate(LocalDate orderDate, LocalDateTime manufacturingTime, LocalDate dueDate, Long batchStockNumber) {
-
-        LocalDate localDate = manufacturingTime.toLocalDate();
-        String dataAtual = orderDate.toString();
-        String dataVencimento = dueDate.toString();
-        String dataFabricacao = localDate.toString();
-
-        if(dataVencimento.compareTo(dataAtual) <= 0){
-            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de validade expirada: DueDate deve ser maior que a data de hoje");
-        }
-
-        if(dataFabricacao.compareTo(dataAtual) > 0){
-            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de fabricação invalida: manufatureDate deve ser menor que a data de hoje");
-        }
-    }
-
 }
 

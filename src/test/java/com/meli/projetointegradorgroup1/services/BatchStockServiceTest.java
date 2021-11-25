@@ -17,13 +17,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BatchStockServiceTest {
     BatchStockItem batchStockItem = new BatchStockItem(1l, 2, 3.0, 4.0, 5.0,null, null );
     SellerService sellerService;
     Seller seller = new Seller();
 
-    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now(), 7, 8.0, batchStockItem,seller);
+    BatchStock batchStock = new BatchStock(1l, 2l,2.0,3.0,4.0,"5","6", LocalDateTime.now(), LocalDate.now().plusDays(10), 7, 8.0, batchStockItem,seller);
     BatchStockRequestDTO batchStockRequestDTO = new BatchStockRequestDTO(1l,2l,1l,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
     BatchStockResponseDTO batchStockResponseDTO = new BatchStockResponseDTO(2l,null,2.0,3.0,4.0,"5","6", "2021-11-16 00:00:00",LocalDate.now(), 7, 8.0);
 
@@ -33,7 +34,7 @@ public class BatchStockServiceTest {
     List<BatchStock> list = new ArrayList();
 
     String message = null;
-    String uri = "http//Me=ock";
+    String uri = "http//Mock";
 
 
     @Test
@@ -144,17 +145,7 @@ public class BatchStockServiceTest {
     public void findByIdOK(){
         Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(batchStock));
         batchStockService = new BatchStockService(null, batchStockRepository, null );
-        batchStockService.findByIds(1l);
-        assert (batchStock.getId() == 1);
+        assert (batchStockService.findByIds(1l) != null);
     }
 
-    @Test
-    public void findByIdNoK(){
-        Mockito.when(batchStockRepository.findById(Mockito.anyLong())).thenReturn(java.util.Optional.ofNullable(null));
-        batchStockService = new BatchStockService(null, batchStockRepository, null );
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, ()->{
-        batchStockService.findByIds(1l);});
-        message = "BatchStock não cadastrada";
-        assert (exception.getMessage().contains(message));
-    }
 }

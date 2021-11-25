@@ -44,7 +44,6 @@ public class InBoundOrderRequestDTO {
 
 
 
-
         public InBoundOrder convertedto(RepresentanteServices representanteServices, SectionServices sectionServices,
                                         ProductService productService, SellerService sellerService){
             Section section = sectionServices.obterSectionByCode(sectionForInboundDTO.getCode());
@@ -64,8 +63,7 @@ public class InBoundOrderRequestDTO {
             }
 
         }
-
-
+        
 
     public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();

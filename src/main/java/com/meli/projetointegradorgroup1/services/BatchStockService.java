@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class BatchStockService {
     }
 
     public ResponseEntity<Object> save(BatchStock batchStock, UriComponentsBuilder uriBuilder) {
+        validaDate(LocalDate.now(),batchStock.getManufacturingTime(), batchStock.getDueDate(), batchStock.getBatchStockNumber());
         try {
             batchStockRepository.save(batchStock);
         }catch (RuntimeException e){
@@ -159,11 +161,25 @@ public class BatchStockService {
 
     public BatchStock findByIds(Long id) {
         Optional<BatchStock> batchStock = batchStockRepository.findById(id);
-        if(batchStock != null || batchStock.isPresent()){
+        if(batchStock == null || !batchStock.isPresent()){
             throw new RuntimeException("BatchStock não cadastrada");
         }
-        throw new RuntimeException("BatchStock não cadastrada");
+        return batchStock.get();
     }
 
+    public void validaDate(LocalDate orderDate, LocalDateTime manufacturingTime, LocalDate dueDate, Long batchStockNumber) {
+        LocalDate localDate = manufacturingTime.toLocalDate();
+        String dataAtual = orderDate.toString();
+        String dataVencimento = dueDate.toString();
+        String dataFabricacao = localDate.toString();
+
+        if(dataVencimento.compareTo(dataAtual) <= 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de validade expirada: DueDate deve ser maior que a data de hoje");
+        }
+
+        if(dataFabricacao.compareTo(dataAtual) > 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de fabricação invalida: manufatureDate deve ser menor que a data de hoje");
+        }
+    }
 
 }

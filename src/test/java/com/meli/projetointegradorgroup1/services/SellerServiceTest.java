@@ -96,7 +96,7 @@ class SellerServiceTest {
         Mockito.when(sellerRepository.findByCpf(Mockito.any())).thenReturn(null);
         Mockito.when(representanteServices.maskCpf(Mockito.any())).thenReturn(null);
         SellerService sellerService = new SellerService(sellerRepository, representanteServices);
-        Assert.assertTrue (sellerService.validaCpf("36843003859"));
+        assert (sellerService.validaCpf("36843003859"));
 
     }
     @Test
