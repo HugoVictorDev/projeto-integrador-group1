@@ -33,12 +33,12 @@ public class BatchStockController {
     }
 
 
-    @PostMapping("/create")
-    public ResponseEntity<Object> createBatchStock (@RequestBody @Valid BatchStockRequestDTO batchStockRequestDTO, UriComponentsBuilder uriBuilder){
-        batchStockService.valida(batchStockRequestDTO.getBatchStockItem());
-        BatchStock batchStock = batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService);
-        return batchStockService.save(batchStock, uriBuilder);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<Object> createBatchStock (@RequestBody @Valid BatchStockRequestDTO batchStockRequestDTO, UriComponentsBuilder uriBuilder){
+//        batchStockService.valida(batchStockRequestDTO.getBatchStockItem());
+//        BatchStock batchStock = batchStockService.convert(batchStockRequestDTO, batchStockItemService, sellerService);
+//        return batchStockService.save(batchStock, uriBuilder);
+//    }
 //
 //    @GetMapping("/list")
 //    public List<BatchStockResponseDTO> listBastchStock(){

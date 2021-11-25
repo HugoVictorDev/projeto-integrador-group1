@@ -3,7 +3,6 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.entity.Warehouse;
 import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,25 +42,14 @@ public class SellerService {
 
         try {
             this.findSellerById(id);
-
             sellerRepository.deleteById(id);
-
             return new ResponseEntity<>(HttpStatus.OK);
-
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<HttpStatus> delAllSellers(){
 
-        try {
-            sellerRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Seller - Erro inesperado");
-        }
-    }
 
     public SellerResponseDTO convertEntityToDTO(Seller seller){
         SellerResponseDTO sellerResponseDTO = new SellerResponseDTO();
@@ -72,14 +59,23 @@ public class SellerService {
         return sellerResponseDTO;
     }
 
-    public ResponseEntity<HttpStatus> update(Seller seller, Long id) {
-        if (seller != null) {
-            sellerRepository.setSellerInfoById(seller.getName(), seller.getCpf(), seller.getEmail(), id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public ResponseEntity<HttpStatus> update(Seller seller) {
+        Seller seller1 = sellerRepository.findById(seller.getId()).get();
+        seller1.setCpf(seller.getCpf());
+        seller1.setEmail (seller.getEmail());
+        seller1.setName(seller.getName());
+        try {
+            if (seller != null) {
+                sellerRepository.save(seller1);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Erro não esperado");
         }
     }
+
 
 
     public SellerRequestDTO convertEntityToDTORequest(Seller seller){
@@ -93,4 +89,5 @@ public class SellerService {
     public Seller findSellerById(Long id){
         return sellerRepository.findById(id).get();
     }
+
 }

@@ -39,9 +39,9 @@ public class InBoundOrderController {
 //
 //    @PostMapping("/create")
 //    public ResponseEntity<Object>create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
-//        //this.inBoundOrderService.registra(uriBuilder,inBoundOrderRequestDTO);
-//      //  return inBoundOrderService.registra(uriBuilder, inBoundOrderRequestDTO, (inBoundOrderRequestDTO.convertedto(representanteServices,
-//       //         sectionServices, productService, sellerService)));
+//        this.inBoundOrderService.registra(uriBuilder,inBoundOrderRequestDTO);
+//        return inBoundOrderService.registra(uriBuilder, inBoundOrderRequestDTO, (inBoundOrderRequestDTO.convertedto(representanteServices,
+//                sectionServices, productService, sellerService)));
 //    }
 
 

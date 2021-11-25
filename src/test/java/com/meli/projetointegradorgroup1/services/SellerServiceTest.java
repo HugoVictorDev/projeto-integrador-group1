@@ -39,7 +39,7 @@ class SellerServiceTest {
     Long sellerIdNok = 2L;
     // - DTOS
     SellerRequestDTO seller1RequestDTO = new SellerRequestDTO("Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
-    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO(1L, "Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
+    SellerResponseDTO seller1ResponseDTO = new SellerResponseDTO(null, "Edenilson0", "36843012809", "edenilson.paschoal@mercadolivre.com");
 
 
     String message = "";
@@ -69,20 +69,7 @@ class SellerServiceTest {
         sellerReturn = sellerService.setSeller(seller1,uriBuilder);
         Assert.assertEquals(seller1,sellerReturn);
     }
-    @Test
-    void deleteAllSellers() { // - delete de SELLER - OK
 
-        Seller sellerReturn = new Seller();
-        List<Seller> sellerArrayList = new ArrayList();
-        sellerArrayList.add(seller1);
-        Mockito.when(repositoryMock.findById(Mockito.any())).thenReturn(java.util.Optional.ofNullable(seller1));
-        Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1ResponseDTO);
-        Mockito.when(repositoryMock.setSellerInfoById(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong())).thenReturn(1);
-        SellerService sellerService = new SellerService(repositoryMock);
-
-        ResponseEntity<HttpStatus> deleteReturn = sellerService.delSeller(sellerId);
-        Assert.assertTrue(deleteReturn.getStatusCodeValue() == 200 );
-    }
     @Test
     void deleteSeller() { // - delete de SELLER - OK
 
@@ -94,7 +81,7 @@ class SellerServiceTest {
         doNothing().when(repositoryMock).deleteAll();
         SellerService sellerService = new SellerService(repositoryMock);
 
-        ResponseEntity<HttpStatus> deleteReturn = sellerService.delAllSellers();
+        ResponseEntity<HttpStatus> deleteReturn = sellerService.delSeller(1L);
         Assert.assertTrue(deleteReturn.getStatusCodeValue() == 200 );
     }
     @Test
@@ -159,7 +146,7 @@ class SellerServiceTest {
         Mockito.when(repositoryMock.save(Mockito.any())).thenReturn(seller1);
         SellerService sellerService = new SellerService(repositoryMock);
 
-        ResponseEntity<HttpStatus> Return = sellerService.update(seller1,1L);
+        ResponseEntity<HttpStatus> Return = sellerService.update(seller1);
 
         Assert.assertTrue(Return.getStatusCodeValue() == 200 );
     }

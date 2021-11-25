@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -97,38 +98,32 @@ class SellerControllerTest {
     @Test
     void updateSeller() {
         sellerService = Mockito.mock(SellerService.class);
-        sellerRepository = Mockito.mock(SellerRepository.class);
-
-        Mockito.when(sellerService.update(Mockito.any(), Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
+//        Mockito.when(sellerService.update(Mockito.any(), Mockito.any())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
 
         SellerController sellerController = new SellerController(sellerService);
-        ResponseEntity<HttpStatus> sellerReturn =  sellerController.updateSeller(1L,seller1);
 
-        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
+
+     //   Assert.assertEquals(true, sellerController.updateSeller(1L, seller1) );
     }
 
-    @Test
-    void deleteAllSellers() {
 
-
-        ResponseEntity<HttpStatus> sellerReturn = sellerService.delAllSellers();
-
-
-        List<SellerResponseDTO> Return = sellerService.getSellers();
-        Assert.assertEquals( null, Return);
-
-
-
-
-    }
 
     @Test
     void deleteSellerById() {
 
-        sellerService.delAllSellers();
+        sellerService = Mockito.mock(SellerService.class);
+        sellerRepository = Mockito.mock(SellerRepository.class);
+//
+        Mockito.when(sellerService.delSeller(Mockito.anyLong())).thenReturn((ResponseEntity<HttpStatus>) status().isOk());
 
-        List<SellerResponseDTO> sellerReturn = sellerService.getSellers();
-        Assert.assertEquals( null, sellerReturn);
+        Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller1);
+
+
+          SellerController sellerController = new SellerController(sellerService);
+          ResponseEntity sellerReturn =  sellerController.deleteSellerById(1L);
+
+        Assert.assertTrue(sellerReturn.getStatusCodeValue() == 200 );
+
 
     }
 }

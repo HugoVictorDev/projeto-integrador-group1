@@ -29,11 +29,11 @@ public class BatchStockService {
     @Autowired
     private SellerService sellerService;
 
-    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
-        this.batchStockRepository = batchStockRepository;
-        this.batchStockItemService = batchStockItemService;
-        this.sellerService = sellerService;
-    }
+//    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+//        this.batchStockRepository = batchStockRepository;
+//     //   this.batchStockItemService = batchStockItemService;
+//        this.sellerService = sellerService;
+//    }
 
 
     public void valida(Long productID) {
@@ -92,7 +92,7 @@ public class BatchStockService {
             batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
             batchStockUpdate.setDueDate(dto.getDueDate());
-            batchStockUpdate.setSeller(sellerService.sellerRepository.getById(dto.getSellerId())); //TODO Eddie
+            batchStockUpdate.setSeller(sellerService.sellerRepository.getById(dto.getSellerId()));
             batchStockUpdate.setCurrentQuality(dto.getCurrentQuality());
             return batchStockUpdate;
         }
@@ -113,7 +113,7 @@ public class BatchStockService {
                 .currentQuality(dto.getCurrentQuality())
                 .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
                 .dueDate(dto.getDueDate())
-                .seller(sellerService.sellerRepository.getById(dto.getSellerId())) //TODO Eddie
+                .seller(sellerService.sellerRepository.getById(dto.getSellerId()))
                 .build();
     }
 

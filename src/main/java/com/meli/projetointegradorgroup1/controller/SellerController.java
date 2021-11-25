@@ -1,15 +1,11 @@
 package com.meli.projetointegradorgroup1.controller;
 
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
-import com.meli.projetointegradorgroup1.repository.SellerRepository;
 import com.meli.projetointegradorgroup1.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -54,20 +50,11 @@ public class SellerController {
 
     // atualizando vendedor pelo ID -  ok
     @PutMapping("/update/{id}")
-    public ResponseEntity<HttpStatus> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody Seller seller) {
-
-        if(sellerService.findSellerById(id) != null) {
-            return sellerService.update(seller, id);
-        }
-        throw new RuntimeException("Representante não encontrado");
+    public ResponseEntity<HttpStatus>  updateSeller(@Valid @RequestBody Seller seller) {
+            return sellerService.update(seller);
     }
 
-    //delete todos vendedores - ok
-    @DeleteMapping("/deleteall")
-    public ResponseEntity<HttpStatus> deleteAllSellers() {
-        return sellerService.delAllSellers();
 
-    }
 
     //deletar vendedor pelo ID - ok
     @DeleteMapping("/delete/{id}")

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -39,8 +40,8 @@ public class BatchStockItemController {
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
-    public ResponseEntity<String> createBatchStockItem(@RequestBody BatchStockItem batchStockItem) {
-        return batchStockItemService.setBatchStockItem(batchStockItem);
+    public ResponseEntity<String> createBatchStockItem(@RequestBody BatchStockItem batchStockItem, UriComponentsBuilder uriBuilder) {
+        return batchStockItemService.setBatchStockItem(batchStockItem, uriBuilder);
     }
 
 

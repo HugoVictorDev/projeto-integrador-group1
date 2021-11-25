@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class BatchStockItemService {
         this.batchStockItemRepository = repositoryMock;
     }
 
-    public ResponseEntity<String>  setBatchStockItem(BatchStockItem batchStockItem){
+    public ResponseEntity<String>  setBatchStockItem(BatchStockItem batchStockItem, UriComponentsBuilder uriBuilder){
         Long IdProduct = batchStockItem.getProduct().getId();
         Long IdBatchStock = batchStockItem.getBatchStock().getId();
 
