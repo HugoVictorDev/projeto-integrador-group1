@@ -5,13 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
+/**
+ * @author Hugo Victor
+ * Requisito 6 Individual
+ */
+
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InboundOrderDTOList {
+public class InboundOrderDtoJustBatchStocks {
 
-    private List<BatchStockRequestDTO> batchStockDTOList;
+private List<BatchStockRequestDTO> batchStockDTOList;
 
 
 }

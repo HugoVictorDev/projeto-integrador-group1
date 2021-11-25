@@ -1,10 +1,7 @@
 package com.meli.projetointegradorgroup1.controller;
-import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.InboundOrderDTOList;
-import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.InboundOrderDtoJustBatchStocks;
 import com.meli.projetointegradorgroup1.entity.InBoundOrder;
-import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author Hugo Victor
+ * @author Marco Siqueira
  */
 
 @RestController
@@ -41,7 +38,9 @@ public class InBoundOrderController {
         this.inBoundOrderService = inBoundOrderService;
     }
 
-
+    /**
+     * @author Hugo Victor
+     */
     @PostMapping("/create")
     public ResponseEntity<Object>create(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
@@ -49,19 +48,25 @@ public class InBoundOrderController {
                 sectionServices, productService, sellerService)));
     }
 
-
+    /**
+     * @author Hugo Victor
+     */
     @PutMapping("/update")
     public ResponseEntity<Object>update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         return inBoundOrderService.updateInbound(inBoundOrderRequestDTO, uriBuilder);
     }
+    /**
+     * @author Hugo Victor
+     * Requisito 6 Individual
+     *  busca a inboundOrder pelo ID do representante e retorna apenas a lista de BatchStocks.
+     */
 
-    //busca inboundOrder por representante
-    @GetMapping("/list/{id}")
-    public InboundOrderDTOList inboundlistRepresentante(@PathVariable ("id") Long id){
+    @GetMapping("/representante/{id}")
+    public InboundOrderDtoJustBatchStocks listBatchsStocksFromInbound(@PathVariable ("id") Long id){
         InBoundOrder inBoundOrder = inBoundOrderService.listInboundRepresentante(id);
-        InboundOrderDTOList inboundOrderDTOList = inBoundOrderService.converteDto(inBoundOrder);
-        return inboundOrderDTOList;
+        InboundOrderDtoJustBatchStocks inboundOrderDtoJustBatchStocks = inBoundOrderService.converteDto(inBoundOrder);
+        return inboundOrderDtoJustBatchStocks;
 
     }
 }

@@ -1,8 +1,7 @@
 package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
-import com.meli.projetointegradorgroup1.dto.response.InboundOrderDTOList;
-import com.meli.projetointegradorgroup1.dto.response.ProductResponseDTO;
+import com.meli.projetointegradorgroup1.dto.response.InboundOrderDtoJustBatchStocks;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -295,11 +295,14 @@ public class InBoundOrderService {
         return batchStock;
     }
 
-
-    public InboundOrderDTOList converteDto(InBoundOrder inBoundOrder) {
-        InboundOrderDTOList inboundOrderDTOList = null;
+    /**
+     * @author Hugo Victor
+     * Requisito 6 Individual
+     */
+    public InboundOrderDtoJustBatchStocks converteDto(InBoundOrder inBoundOrder) {
+        InboundOrderDtoJustBatchStocks inboundOrderDtoJustBatchStocks = null;
         try {
-            inboundOrderDTOList = inboundOrderDTOList.builder()
+            inboundOrderDtoJustBatchStocks = inboundOrderDtoJustBatchStocks.builder()
                     .batchStockDTOList(converte(inBoundOrder.getBatchStock(), productService, sellerService))
                     .build();
 
@@ -307,9 +310,13 @@ public class InBoundOrderService {
             e.printStackTrace();
             return null;
         }
-        return inboundOrderDTOList;
+        return inboundOrderDtoJustBatchStocks;
     }
 
+    /**
+     * @author Hugo Victor
+     * Requisito 6 Individual
+     */
     public List<BatchStockRequestDTO> converte(List<BatchStock> dtos, ProductService productService, SellerService sellerService) {
         List<BatchStockRequestDTO> resultList = new ArrayList<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -318,31 +325,29 @@ public class InBoundOrderService {
             batchStockRequestDTO = batchStockRequestDTO.builder()
                     .batchStockNumber(dto.getBatchStockNumber())
                     .dueDate(dto.getDueDate())
-//                    .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(),fmt))
+                    .manufacturingTime(dto.getManufacturingTime().toString())
                     .currentQuality(dto.getCurrentQuality())
                     .initialQuality(dto.getInitialQuality())
                     .minimumTemperature(dto.getMinimumTemperature())
                     .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    //            .seller(sellerService.obter(this.sellerId))
-
+                    .sellerId(dto.getSeller().getId())
                     .quantity(dto.getQuantity())
                     .volume(dto.getVolume())
                     .batchStockItem(dto.getBatchStockItem().getId())
-//                            BatchStockItem.builder()
-//                                    .minimumTemperature(dto.getMinimumTemperature())
-//                                    .quantity(dto.getQuantity())
-//                                    .volume(dto.getVolume())
-//                                    .product(dto.getBatchStockItem().getProduct().getId())
-//                                    .maximumTemperature(dto.getMinimumTemperature())
-//                                    .build()
-//                    )
                     .build();
             resultList.add(batchStockRequestDTO);
         }
-        return resultList;
-    }
+        return resultList.stream()
+                .sorted(Comparator.comparing(BatchStockRequestDTO::getCurrentQuality))
+                .collect(Collectors.toList());
 
+
+    }
+    /**
+     * @author Hugo Victor
+     * Requisito 6 Individual
+     */
     public InBoundOrder listInboundRepresentante(Long id) {
         Representante representante = representanteServices.obterRepresentanteById(id);
         InBoundOrder byRepresentante = inBoundOrderRepository.findByRepresentante_Id(representante.getId());
