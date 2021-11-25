@@ -24,10 +24,7 @@ create table batch_stock (
                              primary key (id)
 );
 
-insert into batch_stock(batch_number, current_temperature,maximum_temperature, minimum_temperature, volume, quantity, manufacturing_time, due_date, seller_id, initial_quality, current_quality)
-values (1, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3'),
-       (2, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3'),
-       (3, 1, 1, 1, 1, 1, '2016-09-21 13:43:27' , current_date, 1, '2','3');
+
 
 create table batch_stock_item (
                                   id  bigserial not null,
@@ -39,9 +36,7 @@ create table batch_stock_item (
                                   product_id int8,
                                   primary key (id)
 );
-insert into batch_stock_item(maximum_temperature, minimum_temperature, quantity, volume, batch_stock_id, product_id)
-values (1,1,1,1,3,1),
-       (1,1,1,1,1,1), (1,1,1,1,2,1);
+
 
 create table in_bound_order (
                                 id bigserial not null,
@@ -51,7 +46,7 @@ create table in_bound_order (
                                 section_id int8,
                                 primary key (id)
 );
---insert into in_bound_order(order_number, order_date, representative_id, section_id) values ( 123, '2021-01-01', 1, 1);
+
 
 create table product (
                          id  bigserial not null,
@@ -60,7 +55,8 @@ create table product (
                          name varchar(255),
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc');
+insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc'),
+                                                         ('NATURAL', 'Bacon',  'desc');
 
 create table representante (
                                id  bigserial not null,
@@ -68,7 +64,7 @@ create table representante (
                                name varchar(255) not null,
                                primary key (id)
 );
-insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo');
+insert into representante(cpf, name) values ( '234.098.109-20',  'Kenyo'),( '234.098.109-22',  'Jeff');
 
 create table section (
                          id  bigserial not null,
@@ -90,7 +86,7 @@ create table seller (
                         name varchar(255),
                         primary key (id)
 );
-insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'hugo');
+insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'hugo'),( '161.453.010-66',  'mail@mail.com',  'Carlos');
 
 create table warehouse (
                            id  bigserial not null,
