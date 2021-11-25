@@ -27,7 +27,7 @@ public class WarehouseDTO {
     private String address;
 
     @NotBlank(message = "campo é obrigatorio")
-    @Pattern(regexp="^[0-9]",message = "Deve conter apenas numeros")
+    @Pattern(regexp="^[0-9]+$",message = "Deve conter apenas numeros")
     private String size;
 
 }

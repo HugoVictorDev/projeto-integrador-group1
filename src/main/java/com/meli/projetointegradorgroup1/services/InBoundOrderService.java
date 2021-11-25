@@ -1,5 +1,4 @@
 package com.meli.projetointegradorgroup1.services;
-
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.InboundOrderDtoJustBatchStocks;

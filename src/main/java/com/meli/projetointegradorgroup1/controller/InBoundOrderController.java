@@ -2,6 +2,8 @@ package com.meli.projetointegradorgroup1.controller;
 
 
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
+import com.meli.projetointegradorgroup1.dto.response.InboundOrderDtoJustBatchStocks;
+import com.meli.projetointegradorgroup1.entity.InBoundOrder;
 import com.meli.projetointegradorgroup1.repository.InBoundOrderRepository;
 import com.meli.projetointegradorgroup1.services.*;
 import io.swagger.annotations.ApiOperation;
@@ -54,9 +56,11 @@ public class InBoundOrderController {
     /**
      * @author Hugo Victor
      */
+
+
     @PutMapping("/update")
     @ApiOperation(value = "Atualizar InBoundOrder")
-    public  InBoundOrderRequestDTO update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO){
+    public ResponseEntity<Object>update(@Valid @RequestBody InBoundOrderRequestDTO inBoundOrderRequestDTO, UriComponentsBuilder uriBuilder) {
         this.inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO);
         return inBoundOrderService.updateInbound(inBoundOrderRequestDTO, uriBuilder);
     }
