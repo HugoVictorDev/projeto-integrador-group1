@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class SellerService {
         this.sellerRepository = sellerRepository;
     }
 
-    public List<SellerResponseDTO> getSellers(){
+    public List<SellerResponseDTO> getSellers(@NotNull Long sellerId){
         return sellerRepository.findAll()
                 .stream()
                 .map(SellerResponseDTO::new)

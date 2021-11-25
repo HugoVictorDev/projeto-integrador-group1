@@ -29,11 +29,13 @@ public class BatchStockService {
     @Autowired
     private SellerService sellerService;
 
-//    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
-//        this.batchStockRepository = batchStockRepository;
-//     //   this.batchStockItemService = batchStockItemService;
-//        this.sellerService = sellerService;
-//    }
+
+    //--teste
+    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+        this.batchStockRepository = batchStockRepository;
+     //   this.batchStockItemService = batchStockItemService;
+        this.sellerService = sellerService;
+    }
 
 
     public void valida(Long productID) {

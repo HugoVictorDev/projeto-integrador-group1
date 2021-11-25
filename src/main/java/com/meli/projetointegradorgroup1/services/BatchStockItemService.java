@@ -108,17 +108,24 @@ public class BatchStockItemService {
 
     //validacao update por ID
     public ResponseEntity<String> update(BatchStockItem batchStockItem) {
-        //BatchStockItem batchStockItemFind = batchStockItemRepository.findById(batchStockItem.getId()).get();
-        Product product = productService.obtem(batchStockItem.getProduct().getId());
-        BatchStock batchStock = batchStockService.findByIds(batchStockItem.getBatchStock().getId());
-        batchStockItem.setProduct(product);
-        batchStockItem.setBatchStock(batchStock);
-        if (batchStockItem != null) {
-            this.batchStockItemRepository.save(batchStockItem);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        BatchStockItem batchStockItemFind = batchStockItemRepository.findById(batchStockItem.getId()).get();
+        if (batchStockItemFind == null ){
+            throw new RuntimeException("BatchStockItem não encotrado");
         }
+        Product productFind = productService.obtem(batchStockItem.getProduct().getId());
+        if (productFind == null ){
+            throw new RuntimeException("Product não encotrado");
+        }
+        BatchStock batchStockFind = batchStockService.findByIds(batchStockItem.getBatchStock().getId());
+        if (batchStockFind == null ){
+            return new ResponseEntity<String>( HttpStatus.NOT_FOUND);
+        }
+
+        batchStockItem.setProduct(productFind);
+        batchStockItem.setBatchStock(batchStockFind);
+        this.batchStockItemRepository.save(batchStockItem);
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 
     public void validaBatchStockItem(Long productID) {

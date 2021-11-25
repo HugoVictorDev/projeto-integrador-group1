@@ -8,20 +8,14 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.devtools.remote.server.HttpStatusHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 
 class SellerServiceTest {
@@ -116,7 +110,7 @@ class SellerServiceTest {
 
         SellerService sellerService = new SellerService(repositoryMock);
 
-        List<SellerResponseDTO> listaResult = sellerService.getSellers();
+        List<SellerResponseDTO> listaResult = sellerService.getSellers(inb.getSellerId());
 
         Assert.assertEquals(4, listaResult.size());
     }

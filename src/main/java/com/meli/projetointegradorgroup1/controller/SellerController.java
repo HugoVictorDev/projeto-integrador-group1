@@ -38,7 +38,7 @@ public class SellerController {
     @GetMapping("/list") // - ok
     public List<SellerResponseDTO> getSellerList() {
 
-        return sellerService.getSellers();
+        return sellerService.getSellers(inb.getSellerId());
     }
 
     //busca vendedor pelo id
