@@ -1,3 +1,7 @@
+
+
+-------------------------------------------------------
+
 drop table if exists batch_stock cascade;
 drop table if exists batch_stock_item cascade;
 drop table if exists in_bound_order cascade;
@@ -50,13 +54,13 @@ create table in_bound_order (
 
 create table product (
                          id  bigserial not null,
-                         stock_type varchar(20) not null,
-                         description varchar(255),
                          name varchar(255),
+                         description varchar(255),
+                         stock_type varchar(20) not null,
                          primary key (id)
 );
-insert into product(stock_type ,description, name) values('FRESH', 'carne seca',  'descricao da carne seca'), ('NATURAL', 'banana',  'desc'),
-                                                          ('NATURAL', 'Bacon',  'desc');
+insert into product(name ,description, stock_type) values('Alcatra', 'Carne Bovina', 'FRESH'), ('Banana Prata', 'Sítio Vinhático', 'NATURAL'),
+                                                          ('Laranja Pera', 'Sítio Juizeiro', 'NATURAL');
 
 create table representante (
                                id  bigserial not null,
@@ -86,7 +90,7 @@ create table seller (
                         name varchar(255),
                         primary key (id)
 );
-insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'hugo'),( '161.453.010-66',  'mail@mail.com',  'Carlos');
+insert into seller (cpf, email, name) values ( '161.453.010-66',  'mail@mail.com',  'Hugo'),( '161.453.010-66',  'mail@mail.com',  'Carlos');
 
 create table warehouse (
                            id  bigserial not null,
@@ -97,7 +101,7 @@ create table warehouse (
                            representante_id int8,
                            primary key (id)
 );
-insert into warehouse (code, address, name, size, representante_id) values(1, 'endereco do armazem', 'armazem central',  10000, 1);
+insert into warehouse (code, address, name, size, representante_id) values(1, 'Rua Dezenove, 30', 'Armazém Central',  10000, 1);
 
 alter table batch_stock
     add constraint FKk2737y022ijpd4y2w7cixv1ew
@@ -138,3 +142,37 @@ alter table warehouse
     add constraint FKiabr4g8lokk0f3x2f6sck68rx
         foreign key (representante_id)
             references representante;
+
+
+-------------------------------------------------------
+
+drop table IF EXISTS users_perfis;
+drop table IF EXISTS users;
+drop table IF EXISTS perfil;
+
+create table users(
+                      username varchar(50) not null primary key,
+                      password varchar(500) not null,
+                      enabled boolean not null
+);
+
+insert into users values('admin', '$2a$10$FnSsqc9hnfZ.HLR0HDZ0gOGbNnd1yit.sZitZVibdCgle1E6cwL4a', '1');
+insert into users values('super', '$2a$10$rSq5gJbuvmosmSQpqkyIBeHrP05Av/qqUtsY0MQT1n750nDEX8AHe', '1');
+
+create table perfil(
+                       id serial not null primary key,
+                       nome varchar(20) not null
+);
+
+insert into perfil(nome) values ('ADMIN');
+insert into perfil(nome) values ('CUSTOMER');
+insert into perfil(nome) values ('SELLER');
+
+create table users_perfis(
+                             user_username  varchar(50) not null,
+                             perfis_id integer not null,
+                             constraint pk_usuario_perfil primary key (user_username , perfis_id)
+);
+
+insert into users_perfis values ('kenyo',1);
+insert into users_perfis values ('vitor',3);
