@@ -23,4 +23,5 @@ public class ProductResponseDTO {
         this.description = product.getDescription();
         this.stockType = product.getStockType();
     }
+
 }
