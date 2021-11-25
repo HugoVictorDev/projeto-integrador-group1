@@ -37,6 +37,10 @@ public class BatchStockItemController {
     @Autowired
     SellerService sellerService;
 
+    public BatchStockItemController(BatchStockItemService batchStockItemService) {
+        this.batchStockItemService = batchStockItemService;
+    }
+
     //Cadastrar BatchStockItem
 
     @PostMapping("/create")
@@ -54,7 +58,7 @@ public class BatchStockItemController {
     //busca vendedor pelo id
     @GetMapping("{id}")
     public BatchStockItemResponseDTO getBatchStockItemById(@PathVariable("id") Long id) {
-        return batchStockItemService.convertEntityToDTO(batchStockItemRepository.getById(id));
+        return batchStockItemService.convertEntityToDTO(batchStockItemService.findBatchStockItemById(id));
 //
     }
 
@@ -64,22 +68,10 @@ public class BatchStockItemController {
         return batchStockItemService.update(batchStockItem);
     }
 
-    //delete todos vendedores
-    @DeleteMapping("/deleteall")
-    public ResponseEntity<HttpStatus>  deleteAllBatchStockItems() {
-        return batchStockItemService.delAllBatchStock();
-
-    }
-
     //deletar vendedor pelo ID
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteBatchStockItemById(@PathVariable("id") Long id) {
-        try {
-            batchStockItemRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return batchStockItemService.delBatchStockItemById(id);
     }
 
 }

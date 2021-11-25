@@ -3,6 +3,7 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
 
+import com.meli.projetointegradorgroup1.entity.BatchStock;
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
 import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.entity.Seller;
@@ -85,10 +86,9 @@ public class BatchStockItemService {
         return batchstockItemResponseDTO;
     }
 
-    public ResponseEntity<HttpStatus> delAllBatchStock(){
-
+    public ResponseEntity<HttpStatus> delBatchStockItemById(Long id){
         try {
-            batchStockItemRepository.deleteAll();
+            batchStockItemRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "BatchStockItem - Erro inesperado");
@@ -108,8 +108,13 @@ public class BatchStockItemService {
 
     //validacao update por ID
     public ResponseEntity<String> update(BatchStockItem batchStockItem) {
+        //BatchStockItem batchStockItemFind = batchStockItemRepository.findById(batchStockItem.getId()).get();
+        Product product = productService.obtem(batchStockItem.getProduct().getId());
+        BatchStock batchStock = batchStockService.findByIds(batchStockItem.getBatchStock().getId());
+        batchStockItem.setProduct(product);
+        batchStockItem.setBatchStock(batchStock);
         if (batchStockItem != null) {
-            this.setBatchStockItem(batchStockItem);
+            this.batchStockItemRepository.save(batchStockItem);
             return new ResponseEntity<>(HttpStatus.OK);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
