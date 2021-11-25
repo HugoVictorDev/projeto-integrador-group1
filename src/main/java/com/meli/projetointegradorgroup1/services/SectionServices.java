@@ -181,9 +181,6 @@ public class SectionServices {
                 .created(uri).body(convertToDto(section));
     }
 
-    /**
-     * @author Marco Siqueiraa
-     */
     public void deleta(Long id) {
         try {
             sectionRepository.deleteById(id);
