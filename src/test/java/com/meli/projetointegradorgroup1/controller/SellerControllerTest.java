@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Marco Siqueiraa
+ */
 
 
 class SellerControllerTest {

@@ -1,4 +1,8 @@
 package com.meli.projetointegradorgroup1.entity;
+/**
+ *
+ * @author Marco Siqueira
+ */
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

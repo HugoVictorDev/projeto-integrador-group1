@@ -1,32 +1,31 @@
 package com.meli.projetointegradorgroup1.services;
-
 import com.meli.projetointegradorgroup1.dto.request.BatchStockItemRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockItemResponseDTO;
-
 import com.meli.projetointegradorgroup1.entity.BatchStockItem;
-import com.meli.projetointegradorgroup1.entity.Product;
 import com.meli.projetointegradorgroup1.repository.BatchStockItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+/**
+ * @author Hugo Victor
+ */
 
 @Service
 public class BatchStockItemService {
 
     @Autowired
     BatchStockItemRepository batchStockItemRepository;
-
     @Autowired
     SellerService sellerService;
-
     @Autowired
     ProductService productService;
 
-    public BatchStockItemService(BatchStockItemRepository batchStockItemRepository) {
+    public BatchStockItemService(BatchStockItemRepository batchStockItemRepository, SellerService sellerService, ProductService productService) {
         this.batchStockItemRepository = batchStockItemRepository;
+        this.sellerService = sellerService;
+        this.productService = productService;
     }
 
     public BatchStockItem obtem(Long id){
@@ -70,11 +69,6 @@ public class BatchStockItemService {
 
     }
 
-
-    public BatchStockItem findByProdutctId(Long product_id){
-        BatchStockItem item = this.batchStockItemRepository.findByProduct_id(product_id);
-        return item;
-    }
 
     //validacao update por ID
     public BatchStockItem validaUpdate(Optional<BatchStockItem> batchStockItemFind, BatchStockItem batchStockItem) {

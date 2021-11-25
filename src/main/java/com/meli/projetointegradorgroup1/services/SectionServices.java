@@ -1,7 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
-
 import com.meli.projetointegradorgroup1.dto.request.SectionRequestDTO;
-import com.meli.projetointegradorgroup1.dto.request.SectionForInboundDTO;
 import com.meli.projetointegradorgroup1.dto.response.SectionResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.entity.StockType;
@@ -19,6 +17,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+/**
+ * @author Hugo Victor
+ * @author Marco Siqueiraa
+ */
 
 @Service
 public class SectionServices {
@@ -39,11 +41,16 @@ public class SectionServices {
         this.warehouseServices = warehouseServices;
     }
 
+    /**
+     * @author Marco Siqueiraa
+     */
     public void validarWarehouse(SectionRequestDTO sectionRequestDTO) {
        warehouseServices.warehouseExist(sectionRequestDTO.getWarehouseID());
     }
 
-
+    /**
+     * @author Marco Siqueiraa
+     */
     public List<Section> listaSection() {
         List<Section> sectionList = sectionRepository.findAll();
         if(sectionList.size() == 0){
@@ -51,7 +58,9 @@ public class SectionServices {
         }return sectionList;
     }
 
-
+    /**
+     * @author Marco Siqueiraa
+     */
     public Section obterSection(Long id) {
         Optional<Section> section = sectionRepository.findById(id);
         if (section == null || section.equals(Optional.empty())){
@@ -60,6 +69,9 @@ public class SectionServices {
         return section.get();
     }
 
+    /**
+     * @author Hugo Victor
+     */
     public Section obterSectionByCode(Long code) {
         Section section = sectionRepository.findByCode(code);
         if (section != null) {
@@ -67,6 +79,9 @@ public class SectionServices {
         }else throw new EntityNotFoundException("Section não encontrada");
     }
 
+    /**
+     * @author Hugo Victor
+     */
     public StockType obtemTypeStockSection(Long code) {
         Section section = sectionRepository.findByCode(code);
         StockType stockType = section.getStockType();
@@ -74,6 +89,9 @@ public class SectionServices {
 
     }
 
+    /**
+     * @author Hugo Victor
+     */
     public int obtemQuantidadeDoSection(Long code){
         Section section = sectionRepository.findByCode(code);
         Long capacity = section.getCapacity();
@@ -81,6 +99,9 @@ public class SectionServices {
 
     }
 
+    /**
+     * @author Marco Siqueiraa
+     */
     public Section validaUpdate(Optional<Section> sectionFind, SectionRequestDTO sectionRequestDTO) {
         if(sectionFind.isPresent()){
             Section section = sectionFind.get();
@@ -93,11 +114,16 @@ public class SectionServices {
             throw new RuntimeException("Section não encontrada");
         }
 }
-
+    /**
+     * @author Marco Siqueiraa
+     */
     public Warehouse obterWarehouse(long warehouseID) {
         return warehouseServices.obterWarehouseById(warehouseID);
     }
 
+    /**
+     * @author Marco Siqueiraa
+     */
     public Section convert(SectionRequestDTO dto, WarehouseServices warehouseServices) {
         return Section.builder()
                 .code(dto.getCode())
@@ -108,6 +134,9 @@ public class SectionServices {
                 .build();
     }
 
+    /**
+     * @author Marco Siqueiraa
+     */
     public SectionResponseDTO convertToDto(Section section) {
         return SectionResponseDTO.builder()
                 .code(section.getCode())
@@ -118,7 +147,9 @@ public class SectionServices {
                 .build();
     }
 
-
+    /**
+     * @author Marco Siqueiraa
+     */
     public Iterable<SectionResponseDTO> convertList(List<Section> sections) {
         List<SectionResponseDTO> listaSection = new ArrayList();
         for (Section section: sections) {
@@ -133,6 +164,10 @@ public class SectionServices {
         return listaSection;
     }
 
+
+    /**
+     * @author Marco Siqueiraa
+     */
     public ResponseEntity<Object>save(Section section, UriComponentsBuilder uriBuilder) {
         try {
             sectionRepository.save(section);

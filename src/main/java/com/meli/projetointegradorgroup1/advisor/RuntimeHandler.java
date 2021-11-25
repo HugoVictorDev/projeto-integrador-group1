@@ -2,11 +2,11 @@ package com.meli.projetointegradorgroup1.advisor;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +16,10 @@ import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * @author Marco Siqueira
+ */
+
 
 @RestControllerAdvice
 public class RuntimeHandler {
@@ -70,17 +74,5 @@ public class RuntimeHandler {
 	    });
 	    return errors;
 	}
-
-/*	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	public Map<String, String> handleValidationExcep13tions(ConstraintViolationException ex) {
-		Map<String, String> errors = new HashMap<>();
-		ex.getConstraintViolations().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = "erro";
-			errors.put(fieldName, errorMessage);
-		});
-		return errors;
-	}*/
 
 }

@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Hugo Victor
+ */
 
 
 @Data
@@ -28,7 +31,6 @@ public class InBoundOrderRequestDTO {
 
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
-
         private LocalDate orderDate = LocalDate.now();
         @NotNull(message = "Campo sellerId é obrigatorio")
         @JsonProperty(value =  "seller_id")
@@ -41,6 +43,7 @@ public class InBoundOrderRequestDTO {
         private List<BatchStockRequestDTO> batchStockDTOList;
         @NotNull(message = "Campo represententeId é obrigatorio")
         private Long representanteId;
+
 
 
 
@@ -63,7 +66,8 @@ public class InBoundOrderRequestDTO {
             }
 
         }
-        
+
+
 
     public List<BatchStock> converte(List<BatchStockRequestDTO> dtos, ProductService productService, SellerService sellerService){
         List<BatchStock> resultList = new ArrayList<>();
@@ -79,7 +83,7 @@ public class InBoundOrderRequestDTO {
                     .minimumTemperature(dto.getMinimumTemperature())
                     .maximumTemperature(dto.getMaximumTemperature())
                     .currentTemperature(dto.getMaximumTemperature())
-                    .seller(sellerService.obtem(this.sellerId))
+                    .seller(sellerService.obtem(sellerId))
                     .quantity(dto.getQuantity())
                     .volume(dto.getVolume())
                     .batchStockItem(

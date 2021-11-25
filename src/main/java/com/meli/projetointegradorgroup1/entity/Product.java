@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-
+/**
+ *
+ * @author Patricia Souza
+ */
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,10 +24,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     private String description;
     @Enumerated(value = EnumType.STRING)
     private StockType stockType;
-
-
 
 }

@@ -9,7 +9,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
+/**
+ *
+ * @author Marco Siqueira
+ */
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor

@@ -3,7 +3,6 @@ package com.meli.projetointegradorgroup1.services;
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
-
 import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
 
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-
-
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.time.LocalDate;
@@ -22,6 +19,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+/**
+ * @author Marco Siqueiraa
+ */
 
 @Service
 public class BatchStockService {

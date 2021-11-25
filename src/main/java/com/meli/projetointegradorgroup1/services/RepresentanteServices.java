@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Marco Siqueiraa
+ */
 @Service
 public class RepresentanteServices {
 
@@ -81,14 +84,7 @@ public class RepresentanteServices {
             return listRepresentante;
         }
 
-    public Representante obter(Long id) {
-        Representante representante = representanteRepository.findByid(id);
-        if (representante  == null){
-            throw new RuntimeException("Representante não encontrado");
-        }else {
-            return representante;
-        }
-    }
+
 
     public ResponseEntity<Object> save(Representante representante , UriComponentsBuilder uriBuilder){
 
@@ -121,6 +117,15 @@ public class RepresentanteServices {
             }else {
                 throw e;
             }
+        }
+    }
+
+    public Representante obter(Long id) {
+        Representante representante = representanteRepository.findByid(id);
+        if (representante  == null){
+            throw new RuntimeException("Representante não encontrado");
+        }else {
+            return representante;
         }
     }
 
