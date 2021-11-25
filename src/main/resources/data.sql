@@ -42,7 +42,7 @@ create table in_bound_order (
                                 id bigserial not null,
                                 order_number  int not null,
                                 order_date date,
-                                representative_id int8,
+                                representante_id int8,
                                 section_id int8,
                                 primary key (id)
 );
@@ -76,7 +76,7 @@ create table section (
                          primary key (id)
 );
 insert into section (code, stock_type , minimum_temperature, capacity, warehouse_id)
-values (1, 'FRESH', '12', 150,  1), (2, 'NATURAL', '12', 150,  1), (3, 'FRESH', '12', 150,  1);
+values (1, 'FRESH', '12', 150,  1), (2, 'NATURAL', '12', 150,  2), (3, 'FRESH', '12', 150,  1);
 
 
 create table seller (
@@ -97,7 +97,7 @@ create table warehouse (
                            representante_id int8,
                            primary key (id)
 );
-insert into warehouse (code, address, name, size, representante_id) values(1, 'endereco do armazem', 'armazem central',  10000, 1);
+insert into warehouse (code, address, name, size, representante_id) values(1, 'endereco do armazem', 'armazem central',  10000, 1), (2, 'endereco do armazem', 'armazem central',  10000, 2);
 
 alter table batch_stock
     add constraint FKk2737y022ijpd4y2w7cixv1ew
@@ -121,7 +121,7 @@ alter table batch_stock_item
 
 alter table in_bound_order
     add constraint FKisau45ihrn98bmlwfnlo23axk
-        foreign key (representative_id)
+        foreign key (representante_id)
             references representante;
 
 alter table in_bound_order

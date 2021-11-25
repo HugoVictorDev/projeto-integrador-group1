@@ -16,5 +16,5 @@ import java.util.List;
 public interface InBoundOrderRepository extends JpaRepository<InBoundOrder, Long> {
   InBoundOrder findByOrderNumber(Long orderNum);
 
-List<InBoundOrder> findByRepresentante(Representante representante);
+InBoundOrder findByRepresentante_Id(Long id);
 }
