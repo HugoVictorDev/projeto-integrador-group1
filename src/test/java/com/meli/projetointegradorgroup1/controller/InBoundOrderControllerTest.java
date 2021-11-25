@@ -20,7 +20,7 @@ public class InBoundOrderControllerTest {
     InBoundOrder inBoundOrder = new InBoundOrder(1l,2l, LocalDate.now(), null, null, null);
 
     @Test
-    public void createOk(){
+    public void create(){
         inBoundOrderController = Mockito.mock(InBoundOrderController.class);
         inBoundOrderService = Mockito.mock(InBoundOrderService.class);
         inBoundOrderRequestDTO = Mockito.mock(InBoundOrderRequestDTO.class);
@@ -30,5 +30,14 @@ public class InBoundOrderControllerTest {
         InBoundOrderController inBoundOrderController = new InBoundOrderController(inBoundOrderService);
         inBoundOrderController.create(inBoundOrderRequestDTO,null);
         assert(inBoundOrder.getId() != null);
+    }
+
+    @Test
+    public void update(){
+        inBoundOrderService = Mockito.mock(InBoundOrderService.class);
+        Mockito.when(inBoundOrderService.validInboundOrder(Mockito.any())).thenReturn(inBoundOrderRequestDTO);
+        Mockito.when(inBoundOrderService.updateInbound(Mockito.any(), Mockito.any())).thenReturn(ResponseEntity.created(Mockito.any()).body(null));
+        InBoundOrderController inBoundOrderController = new InBoundOrderController(inBoundOrderService);
+        assert (inBoundOrderController.update(inBoundOrderRequestDTO,null).getStatusCodeValue() == 201 );
     }
 }

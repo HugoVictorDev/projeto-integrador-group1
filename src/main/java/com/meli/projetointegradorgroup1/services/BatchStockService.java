@@ -1,13 +1,17 @@
 package com.meli.projetointegradorgroup1.services;
+
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.BatchStockResponseDTO;
 import com.meli.projetointegradorgroup1.entity.BatchStock;
+import com.meli.projetointegradorgroup1.entity.Section;
 import com.meli.projetointegradorgroup1.repository.BatchStockRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +43,7 @@ public class BatchStockService {
     }
 
     public ResponseEntity<Object> save(BatchStock batchStock, UriComponentsBuilder uriBuilder) {
+        validaDate(LocalDate.now(),batchStock.getManufacturingTime(), batchStock.getDueDate(), batchStock.getBatchStockNumber());
         try {
             batchStockRepository.save(batchStock);
         }catch (RuntimeException e){
@@ -155,12 +160,25 @@ public class BatchStockService {
 
     public BatchStock findByIds(Long id) {
         Optional<BatchStock> batchStock = batchStockRepository.findById(id);
-        BatchStock batchStock1 = batchStock.get();
-        if(batchStock1 == null){
+        if(batchStock == null || !batchStock.isPresent()){
             throw new RuntimeException("BatchStock não cadastrada");
         }
-        return batchStock1;
+        return batchStock.get();
     }
 
+    public void validaDate(LocalDate orderDate, LocalDateTime manufacturingTime, LocalDate dueDate, Long batchStockNumber) {
+        LocalDate localDate = manufacturingTime.toLocalDate();
+        String dataAtual = orderDate.toString();
+        String dataVencimento = dueDate.toString();
+        String dataFabricacao = localDate.toString();
+
+        if(dataVencimento.compareTo(dataAtual) <= 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de validade expirada: DueDate deve ser maior que a data de hoje");
+        }
+
+        if(dataFabricacao.compareTo(dataAtual) > 0){
+            throw new RuntimeException("batchStockNumber: "+batchStockNumber+", Data de fabricação invalida: manufatureDate deve ser menor que a data de hoje");
+        }
+    }
 
 }

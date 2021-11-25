@@ -1,4 +1,5 @@
 package com.meli.projetointegradorgroup1.services;
+
 import com.meli.projetointegradorgroup1.dto.request.BatchStockRequestDTO;
 import com.meli.projetointegradorgroup1.dto.request.InBoundOrderRequestDTO;
 import com.meli.projetointegradorgroup1.dto.response.InboundOrderDtoJustBatchStocks;
@@ -33,7 +34,7 @@ public class InBoundOrderService {
     @Autowired
     private final WarehouseServices warehouseServices;
     @Autowired
-    private SectionServices sectionServices;
+    private  SectionServices sectionServices;
     @Autowired
     RepresentanteServices representanteServices;
     @Autowired
@@ -45,16 +46,16 @@ public class InBoundOrderService {
     @Autowired
     BatchStockItemService batchStockItemService;
 
-
+    
     @Autowired
     public InBoundOrderService(InBoundOrderRepository inBoundOrderRepository, WarehouseServices warehouseServices,
                                RepresentanteServices representanteServices, ProductService productService,
-                               SellerService sellerService, SectionServices sectionServices, BatchStockItemService batchStockItemService, BatchStockService batchStockService) {
+                               SellerService sellerService, SectionServices sectionServices, BatchStockItemService batchStockItemService, BatchStockService batchStockService){
         this.inBoundOrderRepository = inBoundOrderRepository;
         this.warehouseServices = warehouseServices;
         this.representanteServices = representanteServices;
         this.productService = productService;
-        this.sellerService = sellerService;
+        this.sellerService= sellerService;
         this.batchStockService = batchStockService;
         this.batchStockItemService = batchStockItemService;
         this.sectionServices = sectionServices;
@@ -67,10 +68,11 @@ public class InBoundOrderService {
     public ResponseEntity<Object> registra(UriComponentsBuilder uriBuilder, InBoundOrderRequestDTO inBoundOrderRequestDTO, InBoundOrder inBoundOrder) {
         List<BatchStock> batchStocks = inBoundOrder.getBatchStock();
         batchStocks.forEach(b -> {
+            batchStockService.validaDate(inBoundOrderRequestDTO.getOrderDate(),b.getManufacturingTime(),b.getDueDate(), b.getBatchStockNumber());
             b.getBatchStockItem().setBatchStock(b);
         });
         InBoundOrder byOrderNumber = inBoundOrderRepository.findByOrderNumber(inBoundOrder.getOrderNumber());
-        if (byOrderNumber != null) {
+        if (byOrderNumber != null){
             throw new RuntimeException("Já contém uma inboundorder com essa ordernumber, utilize o método de atualizar");
         }
         try {
@@ -97,7 +99,7 @@ public class InBoundOrderService {
         this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
         this.sectionHasCapacity(inb);
         this.sellerService.obtem(inb.getSellerId());
-        if (!validProductInboud(inb)) {
+        if (!validProductInboud(inb)){
             throw new RuntimeException("Produto nao encontrado");
         }
         return inb;
@@ -124,7 +126,7 @@ public class InBoundOrderService {
     private boolean sectionMatchStockType(Long code) {
         StockType stockType = sectionServices.obtemTypeStockSection(code);
         List<Section> listsec = sectionServices.listaSection();
-        for (Section section : listsec) {
+        for (Section section : listsec ) {
             if (section.getStockType().equals(stockType)) {
                 return true;
             }
@@ -140,8 +142,7 @@ public class InBoundOrderService {
      */
     private boolean validProductInboud(InBoundOrderRequestDTO inb) {
         List<Long> listBtcItemID = inb.getBatchStockDTOList().stream()
-                .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem())
-                .collect(Collectors.toList());
+                .map(batchStockRequestDTO -> batchStockRequestDTO.getBatchStockItem()).collect(Collectors.toList());
         List<Long> listProductID = productService.listProductId();
         if (listProductID.containsAll(listBtcItemID)) {
             return true;
@@ -160,7 +161,7 @@ public class InBoundOrderService {
         int sumOfProductQuantity = inb.getBatchStockDTOList()
                 .stream().mapToInt(value -> value.getQuantity()).sum();
 
-        if (capacitySection >= sumOfProductQuantity) {
+        if (capacitySection >= sumOfProductQuantity){
             return true;
         }
         throw new RuntimeException("Este setor contém uma capacidade de " + capacitySection +
@@ -209,7 +210,7 @@ public class InBoundOrderService {
         for (BatchStock bs : listaNovos) {
             bs.getBatchStockItem().setBatchStock(bs);
         }
-        io.getBatchStock().addAll(io.getBatchStock().size() - 1, listaNovos);
+        io.getBatchStock().addAll(io.getBatchStock().size()-1, listaNovos);
         return io;
     }
 
@@ -223,14 +224,14 @@ public class InBoundOrderService {
         try {
             inboundOrderDTO.getBatchStockDTOList().forEach(bsDTO -> {
                 BatchStock bs = this.batchStockService.findBatchNumber(bsDTO.getBatchStockNumber());
-                if (bs != null) {
+                if(bs !=null){
                     bs = atualizaValoresBatchStockExistente(inboundOrderDTO, bsDTO, bs);
                     listaExistentes.add(bs);
-                } else {
+                }else{
                     listaNovos.add(toEntity(inboundOrderDTO, bsDTO));
                 }
             });
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
@@ -273,7 +274,7 @@ public class InBoundOrderService {
         BatchStock batchStock = BatchStock.builder()
                 .batchStockNumber(btc.getBatchStockNumber())
                 .dueDate(btc.getDueDate())
-                .manufacturingTime(LocalDateTime.parse(btc.getManufacturingTime(), fmt))
+                .manufacturingTime(LocalDateTime.parse(btc.getManufacturingTime(),fmt))
                 .currentQuality(btc.getCurrentQuality())
                 .initialQuality(btc.getInitialQuality())
                 .minimumTemperature(btc.getMinimumTemperature())

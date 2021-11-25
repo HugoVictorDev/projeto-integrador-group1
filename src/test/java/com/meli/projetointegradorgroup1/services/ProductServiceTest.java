@@ -106,8 +106,7 @@ public class ProductServiceTest {
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
         ProductService productService = new ProductService(productRepository);
-        ResponseEntity<Object> sevaReturn = productService.save(product, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+        assert (productService.save(product, uriBuilder).getStatusCodeValue() == 201 );
 
     }
 
@@ -115,8 +114,7 @@ public class ProductServiceTest {
     public void saveNok(){
         Mockito.when(productRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         ProductService productService = new ProductService(productRepository);
-        ResponseEntity<Object> sevaReturn = productService.save(product, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (productService.save(product, null).getStatusCodeValue() == 400 );
     }
 
     @Test

@@ -82,8 +82,7 @@ class SellerServiceTest {
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(sellerRepository.save(Mockito.any())).thenReturn(seller);
         SellerService sellerService = new SellerService(sellerRepository, null);
-        ResponseEntity<Object> sevaReturn = sellerService.save(seller, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+        assert (sellerService.save(seller, uriBuilder).getStatusCodeValue() == 201 );
     }
 
 
@@ -91,8 +90,7 @@ class SellerServiceTest {
     public void saveNok(){
         Mockito.when(sellerRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         SellerService sellerService = new SellerService(sellerRepository, null);
-        ResponseEntity<Object> sevaReturn = sellerService.save(seller, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (sellerService.save(seller, null).getStatusCodeValue() == 400 );
     }
 
 
@@ -101,7 +99,7 @@ class SellerServiceTest {
         Mockito.when(sellerRepository.findByCpf(Mockito.any())).thenReturn(null);
         Mockito.when(representanteServices.maskCpf(Mockito.any())).thenReturn(null);
         SellerService sellerService = new SellerService(sellerRepository, representanteServices);
-        Assert.assertTrue (sellerService.validaCpf("36843003859"));
+        assert (sellerService.validaCpf("36843003859"));
 
     }
     @Test

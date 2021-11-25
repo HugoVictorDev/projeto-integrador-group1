@@ -1,4 +1,6 @@
 package com.meli.projetointegradorgroup1.dto.request;
+
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.meli.projetointegradorgroup1.entity.*;
 import com.meli.projetointegradorgroup1.services.*;
@@ -6,9 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,9 +31,8 @@ public class InBoundOrderRequestDTO {
 
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         private Long orderNumber;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
-        private LocalDate orderDate;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+        private LocalDate orderDate = LocalDate.now();
+        @NotNull(message = "Campo sellerId é obrigatorio")
         @JsonProperty(value =  "seller_id")
         private Long sellerId;
         @JsonProperty(value = "section")
@@ -37,7 +41,7 @@ public class InBoundOrderRequestDTO {
         @NotNull(message = "Campo batchStockNumber é obrigatorio")
         @Valid
         private List<BatchStockRequestDTO> batchStockDTOList;
-        @NotNull(message = "Campo batchStockNumber é obrigatorio")
+        @NotNull(message = "Campo represententeId é obrigatorio")
         private Long representanteId;
 
 

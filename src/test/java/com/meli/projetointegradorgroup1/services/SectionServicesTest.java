@@ -160,16 +160,14 @@ public class SectionServicesTest {
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(sectionRepository.save(Mockito.any())).thenReturn(section);
         sectionServices = new SectionServices(sectionRepository, null);
-        ResponseEntity<Object> sevaReturn = sectionServices.save(section, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+        assert (sectionServices.save(section, uriBuilder).getStatusCodeValue() == 201 );
     }
 
     @Test
     public void saveNok(){
         Mockito.when(sectionRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         sectionServices = new SectionServices(sectionRepository, null);
-        ResponseEntity<Object> sevaReturn = sectionServices.save(section, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (sectionServices.save(section, null).getStatusCodeValue() == 400 );
     }
 
 }

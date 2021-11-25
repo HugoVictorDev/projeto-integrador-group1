@@ -143,15 +143,13 @@ public class RepresentanteServicesTest {
         Mockito.when(uriBuilder.path(Mockito.anyString())).thenReturn(UriComponentsBuilder.fromPath(uri));
         Mockito.when(representanteRepository.save(Mockito.any())).thenReturn(representante);
         RepresentanteServices representanteServices = new RepresentanteServices(representanteRepository);
-        ResponseEntity<Object> sevaReturn = representanteServices.save(representante, uriBuilder);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 201 );
+        assert (representanteServices.save(representante, uriBuilder).getStatusCodeValue() == 201 );
     }
 
     @Test
     public void saveNok(){
         Mockito.when(representanteRepository.save(Mockito.any())).thenThrow(RuntimeException.class);
         RepresentanteServices representanteServices = new RepresentanteServices(representanteRepository);
-        ResponseEntity<Object> sevaReturn = representanteServices.save(representante, null);
-        Assert.assertTrue(sevaReturn.getStatusCodeValue() == 400 );
+        assert (representanteServices.save(representante, null).getStatusCodeValue() == 400 );
     }
 }
