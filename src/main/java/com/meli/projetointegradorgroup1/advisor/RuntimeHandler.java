@@ -1,7 +1,6 @@
 package com.meli.projetointegradorgroup1.advisor;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.meli.projetointegradorgroup1.exception.ProdutoNaoCadastradoException;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.persistence.PersistenceException;
@@ -30,13 +28,6 @@ public class RuntimeHandler {
 
 	@ExceptionHandler(value = RuntimeException.class)
 	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-		String bodyOfResponse = ex.getMessage();
-		return ResponseEntity.badRequest().body(bodyOfResponse);
-	}
-
-	@ExceptionHandler(ProdutoNaoCadastradoException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	protected ResponseEntity<String> handleConflict(ProdutoNaoCadastradoException ex, WebRequest request) {
 		String bodyOfResponse = ex.getMessage();
 		return ResponseEntity.badRequest().body(bodyOfResponse);
 	}
@@ -66,7 +57,6 @@ public class RuntimeHandler {
 	}
 
 
-	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleValidationExcep13tions(MethodArgumentNotValidException ex) {
@@ -78,17 +68,5 @@ public class RuntimeHandler {
 	    });
 	    return errors;
 	}
-
-/*	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	public Map<String, String> handleValidationExcep13tions(ConstraintViolationException ex) {
-		Map<String, String> errors = new HashMap<>();
-		ex.getConstraintViolations().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = "erro";
-			errors.put(fieldName, errorMessage);
-		});
-		return errors;
-	}*/
 
 }
