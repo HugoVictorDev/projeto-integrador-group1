@@ -15,6 +15,10 @@ public class AutenticacaoService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    public AutenticacaoService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         User user = userRepository.findByUser(username);
         if (userRepository.findByUser(username) != user){

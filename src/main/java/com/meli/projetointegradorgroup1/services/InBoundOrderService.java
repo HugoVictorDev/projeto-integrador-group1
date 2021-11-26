@@ -351,7 +351,6 @@ public class InBoundOrderService {
     public InBoundOrder listInboundRepresentante(Long id) {
         Representante representante = representanteServices.obterRepresentanteById(id);
         InBoundOrder byRepresentante = inBoundOrderRepository.findByRepresentante_Id(representante.getId());
-
         return byRepresentante;
     }
 }

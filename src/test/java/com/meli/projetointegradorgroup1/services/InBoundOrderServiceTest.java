@@ -75,9 +75,9 @@ public class InBoundOrderServiceTest {
     @Test
     public void validInboundOrderOK(){
         listSection.add(section);
-        Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(warehouseServices.obterWarhouseByCode(Mockito.anyLong())).thenReturn(warehouse);
         Mockito.when(sectionServices.obterSectionByCode(Mockito.anyLong())).thenReturn(null);
-        Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
+        Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(representante);
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
         Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
@@ -123,6 +123,24 @@ public class InBoundOrderServiceTest {
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,representanteServices, productService,
                 sellerService,  sectionServices, null, batchStockService);
         assert (inBoundOrderService.updateInbound(inBoundOrderRequestDTO,uriBuilder).getStatusCodeValue()==201);
+    }
+
+    @Test
+    public void converteDto(){
+        batchStockList.add(batchStock);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(null,null,null, productService,
+                sellerService,  null, null, null);
+        assert (inBoundOrderService.converteDto(inBoundOrder)!=null);
+    }
+
+
+    @Test
+    public void listInboundRepresentante(){
+        Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(representante);
+        Mockito.when(inBoundOrderRepository.findByRepresentante_Id(Mockito.anyLong())).thenReturn(inBoundOrder);
+        InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,representanteServices, null,
+                null,  null, null, null);
+        assert (inBoundOrderService.listInboundRepresentante(1l)!=null);
     }
 
 }

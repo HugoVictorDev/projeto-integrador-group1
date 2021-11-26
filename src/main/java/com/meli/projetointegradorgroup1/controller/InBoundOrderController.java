@@ -71,6 +71,7 @@ public class InBoundOrderController {
      */
 
     @GetMapping("/representante/{id}")
+    @ApiOperation(value = "Listar InBoundOrder")
     public InboundOrderDtoJustBatchStocks listBatchsStocksFromInbound(@PathVariable ("id") Long id){
         InBoundOrder inBoundOrder = inBoundOrderService.listInboundRepresentante(id);
         InboundOrderDtoJustBatchStocks inboundOrderDtoJustBatchStocks = inBoundOrderService.converteDto(inBoundOrder);
