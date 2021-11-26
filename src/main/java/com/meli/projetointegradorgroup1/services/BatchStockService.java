@@ -32,10 +32,14 @@ public class BatchStockService {
     @Autowired
     private SellerService sellerService;
 
-    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+//    public BatchStockService(BatchStockItemService batchStockItemService, BatchStockRepository batchStockRepository, SellerService sellerService) {
+//        this.batchStockRepository = batchStockRepository;
+//        this.batchStockItemService = batchStockItemService;
+//        this.sellerService = sellerService;
+//    }
+
+    public BatchStockService(BatchStockRepository batchStockRepository) {
         this.batchStockRepository = batchStockRepository;
-        this.batchStockItemService = batchStockItemService;
-        this.sellerService = sellerService;
     }
 
 
@@ -87,7 +91,7 @@ public class BatchStockService {
             BatchStock batchStockUpdate = batchStockFind;
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             batchStockUpdate.setBatchStockNumber(dto.getBatchStockNumber());
-            batchStockUpdate.setBatchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()));
+            batchStockUpdate.setBatchStockItem(batchStockItemService.getBatchStockItem(dto.getBatchStockItem()));
             batchStockUpdate.setMinimumTemperature(dto.getMinimumTemperature());
             batchStockUpdate.setMaximumTemperature(dto.getMaximumTemperature());
             batchStockUpdate.setQuantity(dto.getQuantity());
@@ -96,7 +100,7 @@ public class BatchStockService {
             batchStockUpdate.setCurrentTemperature(dto.getCurrentTemperature());
             batchStockUpdate.setManufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt));
             batchStockUpdate.setDueDate(dto.getDueDate());
-            batchStockUpdate.setSeller(sellerService.obtem(dto.getSellerId()));
+            batchStockUpdate.setSeller(sellerService.findSellerById(dto.getSellerId()));
             batchStockUpdate.setCurrentQuality(dto.getCurrentQuality());
             return batchStockUpdate;
         }
@@ -107,7 +111,7 @@ public class BatchStockService {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return BatchStock.builder()
                 .batchStockNumber(dto.getBatchStockNumber())
-                .batchStockItem(batchStockItemService.obtem(dto.getBatchStockItem()))
+                .batchStockItem(batchStockItemService.getBatchStockItem(dto.getBatchStockItem()))
                 .currentTemperature(dto.getCurrentTemperature())
                 .minimumTemperature(dto.getMinimumTemperature())
                 .maximumTemperature(dto.getMaximumTemperature())
@@ -117,7 +121,7 @@ public class BatchStockService {
                 .currentQuality(dto.getCurrentQuality())
                 .manufacturingTime(LocalDateTime.parse(dto.getManufacturingTime(), fmt))
                 .dueDate(dto.getDueDate())
-                .seller(sellerService.obtem(dto.getSellerId()))
+                .seller(sellerService.findSellerById(dto.getSellerId()))
                 .build();
     }
 

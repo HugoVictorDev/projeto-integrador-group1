@@ -97,7 +97,7 @@ public class InBoundOrderService {
         this.representanteIsPresenteWarehouse(inb);
         this.sectionMatchStockType(inb.getSectionForInboundDTO().getCode());
         this.sectionHasCapacity(inb);
-        this.sellerService.obtem(inb.getSellerId());
+        this.sellerService.findSellerById(inb.getSellerId());
         if (!validProductInboud(inb)){
             throw new RuntimeException("Produto nao encontrado");
         }
@@ -250,7 +250,7 @@ public class InBoundOrderService {
         bs.setMinimumTemperature(dto.getMinimumTemperature());
         bs.setMaximumTemperature(dto.getMaximumTemperature());
         bs.setCurrentTemperature(dto.getCurrentTemperature());
-        bs.setSeller(sellerService.obtem(inboundOrderDTO.getSellerId()));
+        bs.setSeller(sellerService.findSellerById(inboundOrderDTO.getSellerId()));
         bs.setQuantity(dto.getQuantity());
         bs.setVolume(dto.getVolume());
         bs.getBatchStockItem().setQuantity(dto.getQuantity());
@@ -279,7 +279,7 @@ public class InBoundOrderService {
                 .minimumTemperature(btc.getMinimumTemperature())
                 .maximumTemperature(btc.getMaximumTemperature())
                 .currentTemperature(btc.getMaximumTemperature())
-                .seller(sellerService.obtem(inboundOrderDTO.getSellerId()))
+                .seller(sellerService.findSellerById(inboundOrderDTO.getSellerId()))
                 .quantity(btc.getQuantity())
                 .volume(btc.getVolume())
                 .batchStockItem(

@@ -80,7 +80,7 @@ public class InBoundOrderServiceTest {
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(representante);
         Mockito.when(sectionServices.obtemTypeStockSection(Mockito.anyLong())).thenReturn(StockType.valueOf(stockType));
         Mockito.when(sectionServices.listaSection()).thenReturn(listSection);
-        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(null,warehouseServices,representanteServices, productService,
                 sellerService,  sectionServices, null, null);
         assert(inBoundOrderService.validInboundOrder(inBoundOrderRequestDTO) != null);
@@ -98,7 +98,7 @@ public class InBoundOrderServiceTest {
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(batchStockService.findBatchNumber(Mockito.anyLong())).thenReturn(batchStock);
-        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,representanteServices, productService,
                 sellerService,  sectionServices, null, batchStockService);
@@ -118,7 +118,7 @@ public class InBoundOrderServiceTest {
         Mockito.when(representanteServices.obterRepresentanteById(Mockito.anyLong())).thenReturn(null);
         Mockito.when(inBoundOrderRepository.save(Mockito.any())).thenReturn(null);
         Mockito.when(batchStockService.findBatchNumber(Mockito.anyLong())).thenReturn(null);
-        Mockito.when(sellerService.obtem(Mockito.anyLong())).thenReturn(seller);
+        Mockito.when(sellerService.findSellerById(Mockito.anyLong())).thenReturn(seller);
         Mockito.when(productService.obtem(Mockito.anyLong())).thenReturn(product);
         InBoundOrderService inBoundOrderService= new InBoundOrderService(inBoundOrderRepository,null,representanteServices, productService,
                 sellerService,  sectionServices, null, batchStockService);

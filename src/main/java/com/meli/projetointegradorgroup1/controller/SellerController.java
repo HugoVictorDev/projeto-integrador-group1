@@ -1,22 +1,19 @@
 package com.meli.projetointegradorgroup1.controller;
-import com.meli.projetointegradorgroup1.dto.request.SellerRequestDTO;
+
 import com.meli.projetointegradorgroup1.dto.response.SellerResponseDTO;
 import com.meli.projetointegradorgroup1.entity.Seller;
 import com.meli.projetointegradorgroup1.services.SellerService;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import javax.validation.Valid;
 import java.util.*;
-/**
- * @author Hugo Victor
- */
-
 
 @RestController
-@RequestMapping("/seller")
+@RequestMapping(value = "/seller")
 public class SellerController {
 
     @Autowired
@@ -26,40 +23,46 @@ public class SellerController {
         this.sellerService = sellerService;
     }
 
+
+
+
+    //Cadastrar vendedor - ok
     @PostMapping("/create")
-    @ApiOperation(value = "Cadastrar novo Seller")
-    public ResponseEntity<Object>createSeller(@Valid @RequestBody SellerRequestDTO sellerRequestDTO, UriComponentsBuilder uriBuilder) {
-        sellerService.validaCpf(sellerRequestDTO.getCpf());
-        Seller seller = sellerService.convert(sellerRequestDTO);
-        return sellerService.save(seller, uriBuilder);
+    public Seller createSeller(@RequestBody Seller seller, UriComponentsBuilder uriBuilder){
+
+        return sellerService.setSeller(seller,uriBuilder);
     }
 
-    @GetMapping("/list")
-    @ApiOperation(value = "Retornar lista de Sellers")
-    List<SellerResponseDTO> getSellerList() {
+
+    //Consultar lista de  vendedores
+    @GetMapping("/list") // - ok
+    public List<SellerResponseDTO> getSellerList() {
+
         return sellerService.getSellers();
     }
 
-    @GetMapping("/list/{id}")
-    @ApiOperation(value = "Retornar Seller único a partir do id")
-    public SellerResponseDTO getSellerById(@PathVariable("id") Long id) {
-        return sellerService.convertToDto(sellerService.obtem(id));
+    //busca vendedor pelo id
+    @GetMapping("/find/{id}") // - ok
+    public Seller getSellerById(@PathVariable("id") Long id) {
+        return sellerService.findSellerById(id);
+
     }
 
+    // atualizando vendedor pelo ID -  ok
     @PutMapping("/update/{id}")
-    @ApiOperation(value = "Atualizar Seller a partir do id")
-    public ResponseEntity<Object> updateSeller(@PathVariable("id") Long id, @Valid @RequestBody SellerRequestDTO sellerRequestDTO, UriComponentsBuilder uriBuilder) {
-        Seller sellerFind = sellerService.obtem(id);
-        Seller seller = sellerService.validaUpdate(sellerFind, sellerRequestDTO);
-        return sellerService.save(seller, uriBuilder);
+    public ResponseEntity<HttpStatus>  updateSeller(@Valid @RequestBody Seller seller) {
+        return sellerService.update(seller);
     }
 
+
+
+    //deletar vendedor pelo ID - ok
     @DeleteMapping("/delete/{id}")
-    @ApiOperation(value = "Deletar Seller a partir do id")
-    public SellerResponseDTO deleteSellerById(@PathVariable("id") Long id) {
-        Seller seller = sellerService.obtem(id);
-        sellerService.deleta(id);
-        return sellerService.convertToDto(seller);
+    public ResponseEntity<HttpStatus> deleteSellerById(@PathVariable("id") Long id) {
+        //// delete
+        return sellerService.delSeller((id));
     }
+
+
 
 }
